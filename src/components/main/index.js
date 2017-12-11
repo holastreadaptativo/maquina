@@ -6,23 +6,6 @@ export class Home extends Component {
 	constructor(props) {
 		super(props); this.state = { length:0, temp:0, code:0, search:[] }
 	}
-	handlerSubmit(e) {
-		e.preventDefault()
-		let code = $('search-id-code').value, search = [], count = 0
-		
-		if (code.length == 15) search.push({ id:1 })
-		else
-			for (let i = 0; i < this.random(20) + 1; i++)
-				search.push({ id:++count })
-
-		this.setState({ code:code, search:search })
-		this.props.setCode(code)
-	}
-	handlerClear(e) {
-		e.preventDefault()
-		this.setState({ code:0, search:[] })
-		$('search-id-code').value = ''
-	}
 	checkLength(e) {
 		let n = e.target.value, l = n.length, m = parseInt(n.substring(l - 1, l))
 		if (!Number.isInteger(m)) {
@@ -42,6 +25,25 @@ export class Home extends Component {
 		while (aux.length < 15) {
 			aux += this.random(10)
 		} return aux
+	}
+	handlerClear(e) {
+		e.preventDefault()
+		this.setState({ code:0, search:[] })
+		$('search-id-code').value = ''
+	}
+	handlerSubmit(e) {
+		e.preventDefault()
+		let code = $('search-id-code').value, search = [], count = 0
+		
+		if (code.length == 15) {
+			browserHistory.push(`/variables/${code}`)
+		}
+		else
+			for (let i = 0; i < this.random(20) + 1; i++)
+				search.push({ id:++count })
+
+		this.setState({ code:code, search:search })
+		this.props.setCode(code)
 	}
 	render() {
 		const { temp, length, search, code } = this.state

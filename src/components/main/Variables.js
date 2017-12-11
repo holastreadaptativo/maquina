@@ -5,6 +5,8 @@ import $ from 'actions'
 export default class Variables extends Component {
 	constructor(props) {
 		super(props); this.state = { variables:[], count:0 }
+		this.checkAll = this.checkAll.bind(this)
+		this.check = this.check.bind(this)
 	}
 	componentDidMount() {
 		data.child(`${this.props.code}/variables`).orderByChild('var').on('value', snap => {
@@ -112,6 +114,15 @@ export default class Variables extends Component {
 			default: return 'remove'
 		}
 	}
+	checkAll() {
+		for (let i = 0; i < 6; i++) 
+			if (this.check(i) == 'remove') return false
+		return true
+	}
+	handlerSubmit(e) {
+		e.preventDefault()
+		alert('todo ok')
+	}
 	render() {
 		let code = this.props.params.id
 		const { variables } = this.state
@@ -215,6 +226,9 @@ export default class Variables extends Component {
 									<span class={`glyphicon glyphicon-${this.check(5)}`}/>Ingresar variables distintas, no repetir la letra
 								</li>
 							</ul>
+							<div class="add">
+								<button class={`${this.checkAll() ? 'btn btn-success' : 'hidden'}`} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
+							</div>
 						</form>
 					</div>
 				</div>
