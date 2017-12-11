@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { data } from 'stores'
 import $ from 'actions'
 
 export default class Variables extends Component {
 	constructor(props) {
-		super(props); this.state = { variables:[], count:0 }
+		super(props); this.state = { variables:[], count:0, clicked:false, checked:[false, false, false, false, false, false, false] }
 		this.checkAll = this.checkAll.bind(this)
-		this.check = this.check.bind(this)
 	}
 	componentDidMount() {
 		data.child(`${this.props.code}/variables`).orderByChild('var').on('value', snap => {
@@ -17,26 +17,30 @@ export default class Variables extends Component {
 			})
 			if (count == 0) {
 				let key = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
-				variables.push({ id:key, var:'', type:'numero', val:'', vt:'', res:'', count:++count })
+				variables.push({ id:key, var:'', type:'numero', val:'', count:++count, vt:'', res:'' })
 				this.setState({ variables:variables, count:count })
 			}
+			this.checkAll()
 		})		
 	}
-	componentwillUnmount() {
+	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
 	}
 	handlerCreate(e) {
 		e.preventDefault()
-		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' }).then(() => { this.checkAll() })
 	}
 	handlerRemove(id) {
-		data.child(`${this.props.code}/variables/${id}`).remove()
+		data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.checkAll() })
 	}
 	handlerUpdate(input, id) {
-		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
+		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() }).then(() => { this.checkAll() })
 	}
-	setFormat(val) {
-		let aux = val.toLowerCase(), arr = []
+	setClicked() {
+		this.setState({ clicked:!this.state.clicked })
+	}
+	setFormat(value) {
+		let aux = value.toLowerCase(), arr = []
 		if (aux.includes('..')) {
 			arr = aux.split(',')
 			for (let i = 0; i < arr.length; i++) {
@@ -48,7 +52,7 @@ export default class Variables extends Component {
 			}
 			aux = `[${arr.join(', ')}]`
 		}
-		else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/')) {
+		else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/') || aux.length == 1) {
 			arr = aux.split('')
 			for (let i = 0; i < arr.length; i++)
 				if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
@@ -58,79 +62,81 @@ export default class Variables extends Component {
 		}
 		return aux
 	}
-	check(val) {
-		const { variables } = this.state
-		switch(val) {
-			case 0: if (variables.length > 0) return 'ok'
-			case 1: for (let i = 0; i < variables.length; i++) {
-						let val = variables[i].val, type = variables[i].type
-						if (val.includes('..') && type != 'numero') return 'remove'
-						if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/')) {
-							if (type != 'funcion') return 'remove'
-						} else {
-							if (type == 'funcion') return 'remove'
-						}
-						if (val.includes(',')) {
-							let aux = val.split(','), number = true
-							for (let j = 0; j < aux.length; j++) {
-								if (!Number.isInteger(parseInt(aux[j].trim()))) { number = false; break }
-							}
-							if ((type == 'numero' && number == true) || (type == 'texto' && number == false)) {}
-							else return 'remove'
-						}
-						else if (Number.isInteger(parseInt(val.trim())) && type != 'numero') return 'remove'
-					}
-					return 'ok'
-			case 2: for (let i = 0; i < variables.length; i++) {
-						let aux = variables[i].val
-						if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/')) {
-							let arr = aux.split('')
-							for (let k = 0; k < arr.length; k++)
-								if (arr[k].charCodeAt(0) >= 97 && arr[k].charCodeAt(0) <= 122) {
-									let ok = false
-									for (let j = 0; j < variables.length; j++) {
-										if (arr[k].trim() == variables[j].var) {
-											ok = true; break
-										}
-									}
-									if (!ok) return 'remove'
-								}
-						}
-					}
-					return 'ok'
-			case 3: for (let i = 0; i < variables.length; i++)
-						if (variables[i].res && variables[i].res.trim() != '' && !variables[i].res.includes(variables[i].var))
-							return 'remove'
-					return 'ok'
-			case 4: for (let i = 0; i < variables.length; i++)
-						if (variables[i].vt.trim() == '')
-							return 'remove'
-					return 'ok'
-			case 5: for (let i = 0; i < variables.length; i++) 
-						for (let j = i + 1; j < variables.length; j++) 
-							if (variables[i].var == variables[j].var)
-								return 'remove'
-					return 'ok'
-			default: return 'remove'
-		}
-	}
 	checkAll() {
-		for (let i = 0; i < 6; i++) 
-			if (this.check(i) == 'remove') return false
-		return true
+		const { variables } = this.state
+		let aux = [variables.length > 0 && variables[0].var != '' && variables[0].val != '', true, true, true, true, true, true]
+		for (let i = 0; i < variables.length; i++) {
+			let val = variables[i].val, res = variables[i].res, type = variables[i].type 
+			if (val.length == 1) {
+				if (val.charCodeAt(0) >= 97 && val.charCodeAt(0) <= 122 && type == 'funcion') {}
+				else if (Number.isInteger(parseInt(val)) && type == 'numero') {} else aux[1] = false
+			} else {
+				if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/')) {
+					if (type == 'numero' || type == 'texto') aux[1] = false
+				} else if (val.includes('..')) {
+					if (type == 'funcion' || type == 'texto') aux[1] = false
+				} else if (val.includes(',')) {
+					if (type == 'funcion') aux[1] = false
+					else {
+						let ref = val.split(','), number = true
+						for (let j = 0; j < ref.length; j++) {
+							if (!Number.isInteger(parseInt(ref[j].trim()))) { number = false; break }
+						}
+						if ((type == 'numero' && number == true) || (type == 'texto' && number == false)) {}
+						else aux[1] = false
+					}
+				}
+			}
+			if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.length == 1) {
+				let arr = val.split('')
+				for (let k = 0; k < arr.length; k++) {
+					if (arr[k].charCodeAt(0) >= 97 && arr[k].charCodeAt(0) <= 122) {
+						let ok = false
+						for (let j = 0; j < variables.length; j++) {
+							if (arr[k].trim() == variables[j].var) {
+								ok = true; break
+							}
+						} if (!ok) {
+							aux[2] = false; break
+						}
+					}
+				}	
+			}
+			if (res && res.trim() != '' && !res.includes(variables[i].var)) {
+				aux[3] = false
+			}
+			if (variables[i].vt.trim() == '') {
+				aux[4] = false
+			}
+			for (let j = i + 1; j < variables.length; j++) {
+				if (variables[i].var == variables[j].var) {
+					aux[5] = false; break
+				}
+			}
+		}
+		for (let i = 0; i < aux.length - 1; i++) {
+			if (aux[i] == false) { aux[6] = false; break }
+		}
+		this.setState({ checked:aux })
 	}
 	handlerSubmit(e) {
 		e.preventDefault()
 		alert('todo ok')
 	}
 	render() {
-		let code = this.props.params.id
-		const { variables } = this.state
+		const { variables, checked } = this.state
+		const { code } = this.props
 		return (
 			<div class="variables">
 				<div class="container">
 					<h3>Ingreso de Variables
-						<span class="glyphicon glyphicon-option-vertical"/>
+						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked.bind(this)}>
+							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
+								<ul>
+									<li onClick={() => { browserHistory.push('/') }}><a>Cambiar código</a></li>
+								</ul>
+							</div>
+						</span>
 						<span class="glyphicon glyphicon-info-sign">
 							<div class="info">Información sobre el funcionamiento de esta sección y el uso de variables</div>
 						</span>
@@ -158,7 +164,7 @@ export default class Variables extends Component {
 							</ul>
 						</div>	
 						<form class="col-md-9">
-							<table class="table table-condensed table-striped table-hover">
+							<table class="table table-condensed table-hover">
 								<thead>
 									<tr>
 										<th>#</th>
@@ -208,26 +214,26 @@ export default class Variables extends Component {
 							<ul class="checklist">
 								<li class="title"><b>Requisitos</b></li>
 								<li title="Crear al menos una variable, esta debe cumplir con todas las condiciones que suceden a esta">
-									<span class={`glyphicon glyphicon-${this.check(0)}`}/>Ingresar al menos una variable para el desarrollo del ejercicio
+									<span class={`glyphicon glyphicon-${checked[0] ? 'ok' : 'remove'}`}/>Ingresar al menos una variable para el desarrollo del ejercicio
 								</li>
 								<li title="Para cada variable seleccionar si es número, función o texto, e ingresar sus posibles valores">
-									<span class={`glyphicon glyphicon-${this.check(1)}`}/>Ingresar correctamente el tipo de variable y sus posibles valores
+									<span class={`glyphicon glyphicon-${checked[1] ? 'ok' : 'remove'}`}/>Ingresar correctamente el tipo de variable y sus posibles valores
 								</li>
 								<li title="Todas las variables usadas en las ecuaciones deben existir, es decir, deben ser creadas en otra fila">
-									<span class={`glyphicon glyphicon-${this.check(2)}`}/>Ingresar una variable por cada variable usada en las ecuaciones
+									<span class={`glyphicon glyphicon-${checked[2] ? 'ok' : 'remove'}`}/>Ingresar una variable por cada variable usada en las ecuaciones
 								</li>
 								<li title="Si en una fila se crea la variable $a, y una restricción, esta debe incluir la variable $a">
-									<span class={`glyphicon glyphicon-${this.check(3)}`}/>Ingresar restricciones que incluyan la variable referenciada
+									<span class={`glyphicon glyphicon-${checked[3] ? 'ok' : 'remove'}`}/>Ingresar restricciones que incluyan la variable referenciada
 								</li>
 								<li title="Para cada variable creada se debe ingresar los valores usados en el ejercicio del video tutorial">
-									<span class={`glyphicon glyphicon-${this.check(4)}`}/>Ingresar para cada variable el valor del el video tutorial
+									<span class={`glyphicon glyphicon-${checked[4] ? 'ok' : 'remove'}`}/>Ingresar para cada variable el valor del el video tutorial
 								</li>
 								<li title="Si en una fila se crea la variable $a, esta variable no debe volver a definirse en otra fila">
-									<span class={`glyphicon glyphicon-${this.check(5)}`}/>Ingresar variables distintas, no repetir la letra
+									<span class={`glyphicon glyphicon-${checked[5] ? 'ok' : 'remove'}`}/>Ingresar variables distintas, no repetir la letra
 								</li>
 							</ul>
 							<div class="add">
-								<button class={`${this.checkAll() ? 'btn btn-success' : 'hidden'}`} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
+								<button class={`${checked[6] ? 'btn btn-success' : 'hidden'}`} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
 							</div>
 						</form>
 					</div>

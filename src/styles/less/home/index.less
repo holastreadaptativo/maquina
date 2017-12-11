@@ -78,14 +78,7 @@
 		span
 		{
 			margin-left: 20px;
-			&.glyphicon-info-sign
-			{
-				cursor: pointer;
-				float: right;
-				font-size: 17px;
-				margin-right: 0;
-			}
-			&.glyphicon-option-vertical
+			&.glyphicon-info-sign, &.glyphicon-option-vertical
 			{
 				cursor: pointer;
 				float: right;
@@ -104,6 +97,36 @@
 				top: 25px;
 				width: 350px;
 				z-index: 10;
+			}
+			.options
+			{
+				background-color: @info-color;
+				padding: 0;
+				width: 200px;
+				ul
+				{
+					background-color: white;
+					list-style: none;
+					margin-bottom: 0px;
+					padding: 0px;
+					li
+					{
+						padding: 10px;
+						transition: all .2s ease;
+						&:hover
+						{
+							background-color: @info-color;
+							a
+							{
+								color: #222;
+							}
+						}
+					}
+				}
+				&.clicked
+				{
+					display: initial;
+				}
 			}
 			&:hover .info
 			{
