@@ -23,6 +23,18 @@
 				color: green;
 			}
 		}
+		span.input-group-addon
+		{
+			background-color: white;
+		}
+		input.form-control
+		{
+			border-left-color: white;
+			&:hover, &:focus
+			{
+				border-color: #66afe9;
+			}
+		}
 		.row
 		{
 			margin-top: -25px;
@@ -49,6 +61,79 @@
 	div.clean
 	{
 		text-align: right;
+	}
+}
+.react-app
+{
+	h3
+	{
+		width: 100%;
+		padding-right: 20px;
+		b.local
+		{
+			color: @sec-color;
+			font-weight: normal;
+			margin-left: 5px;
+		}
+		span
+		{
+			margin-left: 20px;
+			&.glyphicon-info-sign
+			{
+				cursor: pointer;
+				float: right;
+				font-size: 17px;
+				margin-right: 0;
+			}
+			&.glyphicon-option-vertical
+			{
+				cursor: pointer;
+				float: right;
+				font-size: 17px;
+				margin-right: 0;
+			}
+			.info, .options
+			{
+				background-color: white;
+				border: 1px solid #aaa;
+				display: none;
+				font-size: 13px;
+				position: absolute;
+				padding: 10px;
+				right: 0;
+				top: 25px;
+				width: 350px;
+				z-index: 10;
+			}
+			&:hover .info
+			{
+				display: initial;
+				z-index: 9;
+			}
+		}
+		a.button
+	    {
+	        background-color: @sec-color;
+	        bottom: 30px;
+	        box-shadow: 0px 1px 3px #777;
+	        color: white;
+	        cursor: pointer;
+			float: right;
+	        font-size: 13px;
+	        margin-top: -8px;
+	        margin-right: 8px;
+	        padding: 9px 25px;
+	       	transition: all .2s ease;
+	        &:hover
+	        {
+	            background-color: @sec-hover;
+	            text-decoration: none;
+	        }
+	    }
+		span + span, b + span
+		{
+			margin-left: 25px;
+		}
 	}
 }
 

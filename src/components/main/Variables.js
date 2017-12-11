@@ -31,7 +31,86 @@ export default class Variables extends Component {
 		data.child(`${this.props.code}/variables/${id}`).remove()
 	}
 	handlerUpdate(input, id) {
-		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.trim() })
+		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
+	}
+	setFormat(val) {
+		let aux = val.toLowerCase(), arr = []
+		if (aux.includes('..')) {
+			arr = aux.split(',')
+			for (let i = 0; i < arr.length; i++) {
+				let k = arr[i].split('..')
+				for (let j = 0; j < k.length; j++) {
+					k[j] = k[j].replace('.', '')
+				}
+				arr[i] = k.filter(n => n).join('..')
+			}
+			aux = `[${arr.join(', ')}]`
+		}
+		else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/')) {
+			arr = aux.split('')
+			for (let i = 0; i < arr.length; i++)
+				if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
+					arr[i] = `$${arr[i].trim()}`
+				}
+			aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ')
+		}
+		return aux
+	}
+	check(val) {
+		const { variables } = this.state
+		switch(val) {
+			case 0: if (variables.length > 0) return 'ok'
+			case 1: for (let i = 0; i < variables.length; i++) {
+						let val = variables[i].val, type = variables[i].type
+						if (val.includes('..') && type != 'numero') return 'remove'
+						if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/')) {
+							if (type != 'funcion') return 'remove'
+						} else {
+							if (type == 'funcion') return 'remove'
+						}
+						if (val.includes(',')) {
+							let aux = val.split(','), number = true
+							for (let j = 0; j < aux.length; j++) {
+								if (!Number.isInteger(parseInt(aux[j].trim()))) { number = false; break }
+							}
+							if ((type == 'numero' && number == true) || (type == 'texto' && number == false)) {}
+							else return 'remove'
+						}
+						else if (Number.isInteger(parseInt(val.trim())) && type != 'numero') return 'remove'
+					}
+					return 'ok'
+			case 2: for (let i = 0; i < variables.length; i++) {
+						let aux = variables[i].val
+						if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/')) {
+							let arr = aux.split('')
+							for (let k = 0; k < arr.length; k++)
+								if (arr[k].charCodeAt(0) >= 97 && arr[k].charCodeAt(0) <= 122) {
+									let ok = false
+									for (let j = 0; j < variables.length; j++) {
+										if (arr[k].trim() == variables[j].var) {
+											ok = true; break
+										}
+									}
+									if (!ok) return 'remove'
+								}
+						}
+					}
+					return 'ok'
+			case 3: for (let i = 0; i < variables.length; i++)
+						if (variables[i].res && variables[i].res.trim() != '' && !variables[i].res.includes(variables[i].var))
+							return 'remove'
+					return 'ok'
+			case 4: for (let i = 0; i < variables.length; i++)
+						if (variables[i].vt.trim() == '')
+							return 'remove'
+					return 'ok'
+			case 5: for (let i = 0; i < variables.length; i++) 
+						for (let j = i + 1; j < variables.length; j++) 
+							if (variables[i].var == variables[j].var)
+								return 'remove'
+					return 'ok'
+			default: return 'remove'
+		}
 	}
 	render() {
 		let code = this.props.params.id
@@ -39,7 +118,12 @@ export default class Variables extends Component {
 		return (
 			<div class="variables">
 				<div class="container">
-					<h3>Ingreso de Variables</h3>				
+					<h3>Ingreso de Variables
+						<span class="glyphicon glyphicon-option-vertical"/>
+						<span class="glyphicon glyphicon-info-sign">
+							<div class="info">Información sobre el funcionamiento de esta sección y el uso de variables</div>
+						</span>
+					</h3>				
 					<div class="row">
 						<div class="col-md-3 resume">
 							<h5><b>Resumen</b></h5>
@@ -55,29 +139,10 @@ export default class Variables extends Component {
 							<ul> 
 							{
 								variables.map(m => { 
-									if (m.var == '' || m.val == '') return
-
-									let val = m.val, aux = []
-									if (val.includes('..')) val = `[${m.val}]`
-									if (val.includes('-')) {
-										aux = val.split('-'); //
-										for (let i = 0; i < aux.length; i++) {
-											if (!aux[i].startsWith('$'))
-												aux[i] = '$' + aux[i].trim()
-										}
-										val = aux.join(' - ')
-									}
-									if (val.includes('+')) {
-										aux = val.split('+'); //
-										for (let i = 0; i < aux.length; i++) {
-											if (!aux[i].startsWith('$'))
-												aux[i] = '$' + aux[i].trim()
-										}
-										val = aux.join(' + ')
-									}							
-									return (
-										<h6 key={m.id}>${m.var} = {val};</h6>
-								)})
+									if (m.var != '' && m.val != '') return (
+										<h6 key={m.id}>${m.var.toLowerCase()} = {this.setFormat(m.val)};</h6>
+									)
+								})
 							}
 							</ul>
 						</div>	
@@ -119,7 +184,7 @@ export default class Variables extends Component {
 												<input id={`vt-${m.id}`} type="text" class="form-control vt" onChange={this.handlerUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
 											</td>
 											<td>
-												<span class="glyphicon glyphicon-remove" onClick={this.handlerRemove.bind(this, m.id)}/>
+												<span class="glyphicon glyphicon-remove" onClick={this.handlerRemove.bind(this, m.id)} title="Eliminar"/>
 											</td>
 										</tr>
 									)})
@@ -129,6 +194,27 @@ export default class Variables extends Component {
 							<div class="add">		
 								<button class="btn btn-default" onClick={this.handlerCreate.bind(this)}>Agregar</button>
 							</div>
+							<ul class="checklist">
+								<li class="title"><b>Requisitos</b></li>
+								<li title="Crear al menos una variable, esta debe cumplir con todas las condiciones que suceden a esta">
+									<span class={`glyphicon glyphicon-${this.check(0)}`}/>Ingresar al menos una variable para el desarrollo del ejercicio
+								</li>
+								<li title="Para cada variable seleccionar si es número, función o texto, e ingresar sus posibles valores">
+									<span class={`glyphicon glyphicon-${this.check(1)}`}/>Ingresar correctamente el tipo de variable y sus posibles valores
+								</li>
+								<li title="Todas las variables usadas en las ecuaciones deben existir, es decir, deben ser creadas en otra fila">
+									<span class={`glyphicon glyphicon-${this.check(2)}`}/>Ingresar una variable por cada variable usada en las ecuaciones
+								</li>
+								<li title="Si en una fila se crea la variable $a, y una restricción, esta debe incluir la variable $a">
+									<span class={`glyphicon glyphicon-${this.check(3)}`}/>Ingresar restricciones que incluyan la variable referenciada
+								</li>
+								<li title="Para cada variable creada se debe ingresar los valores usados en el ejercicio del video tutorial">
+									<span class={`glyphicon glyphicon-${this.check(4)}`}/>Ingresar para cada variable el valor del el video tutorial
+								</li>
+								<li title="Si en una fila se crea la variable $a, esta variable no debe volver a definirse en otra fila">
+									<span class={`glyphicon glyphicon-${this.check(5)}`}/>Ingresar variables distintas, no repetir la letra
+								</li>
+							</ul>
 						</form>
 					</div>
 				</div>
