@@ -1,0 +1,20 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+#app
+{
+    background-color: white;
+    min-height: 90vh;
+}
+#app p.app
+{
+	padding-top: 35vh; 
+	text-align: center;	
+} 
+#app img.app
+{
+	margin-bottom: 5px;
+	width: 120px;
+}
