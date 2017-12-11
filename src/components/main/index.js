@@ -49,7 +49,7 @@ export class Home extends Component {
 		const { temp, length, search, code } = this.state
 		return (
 			<div class="home">
-				<h3 style={{paddingTop:`${code == 0 ? '30vh' : '5vh'}`}}>Buscar por código</h3>
+				<h3 style={{paddingTop:`${code == 0 ? '33vh' : '10vh'}`}}>Buscar por código</h3>
 				<form>
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { auth, users, uid } from 'stores'
-//import { Header } from 'components'
+import { Header } from 'components'
 
 export class App extends Component {
   	constructor(props) {
@@ -20,7 +20,7 @@ export class App extends Component {
 	}
 	render() {
     	return (
-      		<div class="react-app">{ React.cloneElement( this.props.children, {...this.state} )}</div>
+      		<div class="react-app"><Header {...this.state}/>{ React.cloneElement( this.props.children, {...this.state} )}</div>
     	)
   	}	
 }

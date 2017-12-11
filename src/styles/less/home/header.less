@@ -1,5 +1,75 @@
 .main-header
 {
-	width: 100%;
+	@navh: 45px;
+	@navw: 55px;
+	background-color: @nav-bg-hover;
+	color: @nav-color;
+	height: @navh;
+	padding: 0;
+	top: 0;
+	left: 0;
 	position: fixed;
+	width: 100%;
+	z-index: 999;
+	div.logo
+	{
+		background-color: @sec-color;
+		font-size: 32px;
+		font-weight: bold;
+		height: @navh;
+		left: 0;
+		padding-left: 15px;
+		position: absolute;
+		width: @navw;
+		top: 0;
+	}
+	div.title
+	{
+		height: @navh;
+		position: absolute;
+		left: @navw;
+		top: 0;
+		width: auto;
+		h5
+		{
+			color: white;
+			font-size: 16px;
+			margin: 15px;
+			cursor: pointer;
+		}
+	}
+	nav
+	{
+		background-color: @nav-bg-color;
+		color: @nav-color;
+		position: fixed;
+		left: 0;
+		top: @navh;
+		height: ~'calc(100vh - 45px)';
+		width: @navw;
+		ul
+		{
+			list-style: none;
+			margin-top: 55px;
+			li
+			{
+				color: white;
+				cursor: pointer;
+				padding: 12px 18px 10px;
+				border-bottom: 3px solid @nav-bg-color;
+				&:hover
+				{
+					background-color: lighten(@nav-bg-color, 3%);
+				}
+				span
+				{
+					font-size: 16px;
+				}
+				&.active
+				{
+					background-color: lighten(@nav-bg-color, 10%);
+				}
+			}
+		}
+	}
 }
