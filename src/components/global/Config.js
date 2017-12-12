@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 
-export default class Config extends Component {
-   render() {
+export default class Configuracion extends Component {
+    render() {
         return(
-        	<div>Config</div>
+        	<div>
+        		<div class="container">
+					<h3>Configuración</h3>
+        		</div>
+        	</div>
         )
     }
 }

@@ -38,7 +38,7 @@ export class Home extends Component {
 		
 		if (code.length == 15) {
 			this.props.setActive(1)
-			browserHistory.push(`/variables/${code}`)
+			browserHistory.push('/variables')
 		}
 		else
 			for (let i = 0; i < this.random(20) + 1; i++)
@@ -51,7 +51,7 @@ export class Home extends Component {
 		const { temp, length, search, code } = this.state
 		return (
 			<div class="home">
-				<h3 style={{paddingTop:`${code == '000000000000000' ? '28vh' : '0vh'}`}}>Buscar por código</h3>
+				<h3 style={{paddingTop:`${code == DEFAULT ? '28vh' : '0vh'}`}}>Buscar por código</h3>
 				<form>
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
@@ -87,7 +87,7 @@ export class Home extends Component {
 								<tbody>
 								{
 									search.map(m => { return (
-										<tr key={m.id} onClick={() => { browserHistory.push(`/variables/${$(`${m.id}-code`).innerText}` ) }}>
+										<tr key={m.id} onClick={() => { this.props.setCode($(`${m.id}-code`).innerText); browserHistory.push('/variables') }}>
 											<td>{m.id}</td>
 											<td id={`${m.id}-code`}>{this.complete(code, 15)}</td>
 											<td>{this.random(15) + 5}</td>

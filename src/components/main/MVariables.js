@@ -6,6 +6,7 @@ import $ from 'actions'
 export default class Variables extends Component {
 	constructor(props) {
 		super(props); this.state = { variables:[], count:0, clicked:false, checked:[false, false, false, false, false, false, false] }
+		this.setClicked = this.setClicked.bind(this)
 		this.checkAll = this.checkAll.bind(this)
 	}
 	componentDidMount() {
@@ -129,12 +130,12 @@ export default class Variables extends Component {
 		return (
 			<div class="variables">
 				<div class="container">
-					<h3>Ingreso de Variables
-						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked.bind(this)}>
+					<h3>Ingresar variables
+						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
 							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
 								<ul>
 									<li onClick={() => { this.props.setActive(0); browserHistory.push('/') }}><a>Cambiar código</a></li>
-									<li><a>Nuevas Variables</a></li>
+									<li><a>Crear variables</a></li>
 								</ul>
 							</div>
 						</span>

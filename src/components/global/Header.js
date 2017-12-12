@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 export default class Header extends Component {
    render() {
-        const { active, setActive, code } = this.props
+        const { active, setActive } = this.props
         return(
             <header class="main-header">
                 <div class="logo">A</div>
@@ -13,19 +13,19 @@ export default class Header extends Component {
                         <Link to="/" onClick={() => setActive(0)}>
                             <li class={`${active == 0 ? 'active' : ''}`}><span class="glyphicon glyphicon-home"/></li>
                         </Link>
-                        <Link to={`/variables/${code}`} onClick={() => { if(code != '0') setActive(1) }}>
+                        <Link to="/variables" onClick={() => setActive(1)}>
                             <li class={`${active == 1 ? 'active' : ''}`}><span class="glyphicon glyphicon-th"/></li>
                         </Link>
-                        <Link to={`/ejercicios/${code}`} onClick={() => { if(code != '0') setActive(2) }}>
+                        <Link to="/ejercicios" onClick={() => setActive(2)}>
                             <li class={`${active == 2 ? 'active' : ''}`}><span class="glyphicon glyphicon-education"/></li>
                         </Link>
-                        <Link to={`/respuestas/${code}`} onClick={() => { if(code != '0') setActive(3) }}>
+                        <Link to="/respuestas" onClick={() => setActive(3)}>
                             <li class={`${active == 3 ? 'active' : ''}`}><span class="glyphicon glyphicon-list-alt"/></li>
                         </Link>
-                        <Link to={`/versiones/${code}`} onClick={() => { if(code != '0') setActive(4) }}>
+                        <Link to="/versiones" onClick={() => setActive(4)}>
                             <li class={`${active == 4 ? 'active' : ''}`}><span class="glyphicon glyphicon-duplicate"/></li>
                         </Link>
-                        <Link to={`/descargas/${code}`} onClick={() => { if(code != '0') setActive(5) }}>
+                        <Link to="/descargas" onClick={() => setActive(5)}>
                             <li class={`${active == 5 ? 'active' : ''}`}><span class="glyphicon glyphicon-download-alt"/></li>
                         </Link>
                         <Link to="/configuracion" onClick={() => setActive(6)}>
