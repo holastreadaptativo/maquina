@@ -1,0 +1,41 @@
+.react-app .ejercicios
+{
+	.row
+	{
+		.design
+		{
+			background-color: @info-color;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			padding: 10px 15px;
+			margin-top: 20px;
+			height: 400px;
+			width: 97%;
+			h5, h6.code
+			{
+				margin-bottom: 20px;
+			}
+			.devices
+			{
+				position: absolute;
+				top: 15px;
+				right: ~'calc(50% - 55px)';
+				border-bottom: 1px solid #ccc;
+				padding-bottom: 3px;
+				i
+				{
+					margin: 2px;
+					padding: 8px;
+					border-bottom: 1px solid #ccc;
+					padding-bottom: 8px;
+					transition: all .3s ease;
+					cursor: pointer;
+					&.active
+					{
+						border-bottom: 1px solid @sec-hover;
+					}
+				}
+			}
+		}
+	}
+}

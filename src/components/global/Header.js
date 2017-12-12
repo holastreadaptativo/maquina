@@ -7,7 +7,7 @@ export default class Header extends Component {
         return(
             <header class="main-header">
                 <div class="logo">A</div>
-                <div class="title"><h5>Máquina de Ejercicios</h5></div>
+                <div class="title"><h5>Máquina de Ejercicios<span class="glyphicon glyphicon-education"/></h5></div>
                 <nav>
                     <ul>
                         <Link to="/" onClick={() => setActive(0)}>
@@ -17,7 +17,7 @@ export default class Header extends Component {
                             <li class={`${active == 1 ? 'active' : ''}`}><span class="glyphicon glyphicon-th"/></li>
                         </Link>
                         <Link to="/ejercicios" onClick={() => setActive(2)}>
-                            <li class={`${active == 2 ? 'active' : ''}`}><span class="glyphicon glyphicon-education"/></li>
+                            <li class={`${active == 2 ? 'active' : ''}`}><span class="glyphicon glyphicon-edit"/></li>
                         </Link>
                         <Link to="/respuestas" onClick={() => setActive(3)}>
                             <li class={`${active == 3 ? 'active' : ''}`}><span class="glyphicon glyphicon-list-alt"/></li>

@@ -122,7 +122,8 @@ export default class Variables extends Component {
 	}
 	handlerSubmit(e) {
 		e.preventDefault()
-		alert('todo ok')
+		 this.props.setActive(2)
+		 browserHistory.push('/ejercicios')
 	}
 	render() {
 		const { variables, checked } = this.state
