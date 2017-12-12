@@ -133,14 +133,15 @@ export default class Variables extends Component {
 						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked.bind(this)}>
 							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
 								<ul>
-									<li onClick={() => { browserHistory.push('/') }}><a>Cambiar código</a></li>
+									<li onClick={() => { this.props.setActive(0); browserHistory.push('/') }}><a>Cambiar código</a></li>
+									<li><a>Nuevas Variables</a></li>
 								</ul>
 							</div>
 						</span>
 						<span class="glyphicon glyphicon-info-sign">
 							<div class="info">Información sobre el funcionamiento de esta sección y el uso de variables</div>
 						</span>
-					</h3>				
+					</h3>
 					<div class="row">
 						<div class="col-md-3 resume">
 							<h5><b>Resumen</b></h5>

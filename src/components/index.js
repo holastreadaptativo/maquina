@@ -4,7 +4,8 @@ import { Header } from 'components'
 
 export class App extends Component {
   	constructor(props) {
-		super(props); this.state = { fn:'', ln:'', code:0, setCode:this.setCode.bind(this) }
+		super(props)
+		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this) }
 	}
 	componentWillMount() {
 		auth.onAuthStateChanged(() => {
@@ -18,6 +19,9 @@ export class App extends Component {
 	setCode(code) {
 		this.setState({ code:code })
 	}
+    setActive(active) {
+        this.setState({ active:active })
+    }
 	render() {
     	return (
       		<div class="react-app"><Header {...this.state}/>{ React.cloneElement( this.props.children, {...this.state} )}</div>
@@ -27,3 +31,4 @@ export class App extends Component {
 
 export * from './main'
 export * from './global'
+export const DEFAULT = '000000000000000'

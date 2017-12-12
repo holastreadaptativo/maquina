@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { DEFAULT } from 'components'
 import $ from 'actions'
 
 export class Home extends Component {
 	constructor(props) {
-		super(props); this.state = { length:0, temp:0, code:0, search:[] }
+		super(props); this.state = { length:0, temp:0, code:DEFAULT, search:[] }
 	}
 	checkLength(e) {
 		let n = e.target.value, l = n.length, m = parseInt(n.substring(l - 1, l))
@@ -13,8 +14,8 @@ export class Home extends Component {
 		}
 		this.setState({ length:n.length, temp:n })
 		if (n.length == 0) {
-			this.setState({ code:0 })
-			this.props.setCode(0)
+			this.setState({ code:DEFAULT })
+			this.props.setCode(DEFAULT)
 		}
 	}
 	random(n) {
@@ -28,7 +29,7 @@ export class Home extends Component {
 	}
 	handlerClear(e) {
 		e.preventDefault()
-		this.setState({ code:0, search:[] })
+		this.setState({ code:DEFAULT, search:[] })
 		$('search-id-code').value = ''
 	}
 	handlerSubmit(e) {
@@ -36,6 +37,7 @@ export class Home extends Component {
 		let code = $('search-id-code').value, search = [], count = 0
 		
 		if (code.length == 15) {
+			this.props.setActive(1)
 			browserHistory.push(`/variables/${code}`)
 		}
 		else
@@ -49,7 +51,7 @@ export class Home extends Component {
 		const { temp, length, search, code } = this.state
 		return (
 			<div class="home">
-				<h3 style={{paddingTop:`${code == 0 ? '33vh' : '10vh'}`}}>Buscar por código</h3>
+				<h3 style={{paddingTop:`${code == '000000000000000' ? '28vh' : '0vh'}`}}>Buscar por código</h3>
 				<form>
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
@@ -71,7 +73,7 @@ export class Home extends Component {
 						</div>
 					</div>
 					{ 
-						code != 0 ? 
+						code != '000000000000000' ? 
 						<div>
 							<table class="table table-condensed table-striped table-hover">
 								<thead>
@@ -107,4 +109,8 @@ export class Home extends Component {
 	}
 }
 
-export Variables from './Variables'
+export Descargas from './MDescargas'
+export Variables from './MVariables'
+export Ejercicios from './MEjercicios'
+export Versiones from './MVersiones'
+export Respuestas from './MRespuestas'

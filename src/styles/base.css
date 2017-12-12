@@ -5,16 +5,18 @@
 }
 #app
 {
-    background-color: white;
-    min-height: 90vh;
+    background-color: #ffd48b;
+    min-height: 100vh;
+    margin: 0;
 }
 #app p.app
 {
 	padding-top: 35vh; 
 	text-align: center;	
+	margin: 0;
 } 
 #app img.app
 {
-	margin-bottom: 5px;
+	margin: 0;
 	width: 120px;
 }

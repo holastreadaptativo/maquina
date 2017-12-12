@@ -12,6 +12,11 @@ render(
         <Route path="/" component={k.App}>
             <IndexRoute component={k.Home}/>
             <Route path="/variables/:id" component={k.Variables}/>
+            <Route path="/ejercicios/:id" component={k.Ejercicios}/>
+            <Route path="/respuestas/:id" component={k.Respuestas}/>
+            <Route path="/versiones/:id" component={k.Versiones}/>
+            <Route path="/descargas/:id" component={k.Descargas}/>
+            <Route path="/configuracion" component={k.Config}/>
         </Route>
     </Router>
 , $('app'))
