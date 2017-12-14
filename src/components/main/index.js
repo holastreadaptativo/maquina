@@ -51,7 +51,7 @@ export class Home extends Component {
 		const { temp, length, search, code } = this.state
 		return (
 			<div class="home">
-				<h3 style={{paddingTop:`${code == DEFAULT ? '28vh' : '0vh'}`}}>Buscar por código</h3>
+				<h3 style={{paddingTop:`${code == DEFAULT || code.length < 3 ? '28vh' : '0vh'}`}}>Buscar por código</h3>
 				<form>
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
@@ -73,7 +73,7 @@ export class Home extends Component {
 						</div>
 					</div>
 					{ 
-						code != '000000000000000' ? 
+						code != '000000000000000' && code.length > 2 ? 
 						<div>
 							<table class="table table-condensed table-striped table-hover">
 								<thead>

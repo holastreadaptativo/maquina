@@ -1,0 +1,36 @@
+.react-app .descargas
+{
+	min-height: 100vh;
+	@keyframes latidos {
+		from { transform: none; }
+		50% { transform: scale(1.4); }
+		to { transform: none; }
+	}
+	#circle-css
+	{
+		height: 100px;
+		width: 100px;
+		border-radius: 50%;
+		margin-top: 0px;
+		cursor: pointer;
+		transition: all .1s ease;
+		position: absolute;
+		box-shadow: 3px 3px 10px #999;
+		z-index: 99;
+		animation: latidos .5s infinite;
+		transform-origin: center;
+		display: inline-block;
+	}
+	text-align: center;
+	button
+	{
+		position: absolute;
+		margin: 0 auto;
+		top: 45vh;
+		z-index: 100;
+		&.b
+		{
+			margin-top: 30px;
+		}
+	}
+}

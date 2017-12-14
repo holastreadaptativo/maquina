@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Ejercicios extends Component {
     constructor(props) {
-		super(props); this.state = { clicked:false, active:0 }
+		super(props); this.state = { clicked:false, active:0, width:'960px' }
 		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
 	}
@@ -10,10 +10,10 @@ export default class Ejercicios extends Component {
 		this.setState({ clicked:!this.state.clicked })
 	}
     setActive(active) {
-        this.setState({ active:active })
+        this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
     }
 	render() {
-		const { active } = this.state
+		const { active, width } = this.state
         return(
         	<div class="ejercicios">
         		<div class="container">
@@ -37,6 +37,9 @@ export default class Ejercicios extends Component {
 								<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>
 								<i class={`${active == 2 ? 'active' : ''}`} onClick={() => this.setActive(2)}>phone_iphone</i>
 							</nav>
+							<div class="device" style={{width:width}}>
+
+							</div>
 						</div>
 					</div>
         		</div>
