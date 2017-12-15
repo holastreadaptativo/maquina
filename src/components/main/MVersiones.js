@@ -3,9 +3,16 @@ import $ from 'actions'
 
 export default class Versiones extends Component {
     constructor(props) {
-		super(props); this.state = { clicked:false, drag:'' }
+		super(props); this.state = { clicked:false, drag:'', versions:[] }
 		this.setClicked = this.setClicked.bind(this)
-		this.se
+		this.drag = this.drag.bind(this)
+		this.drop = this.drop.bind(this)
+	}
+	componentDidMount() {
+		let versions = []
+		for (let i = 0; i < 25; i++) {
+			versions.push({ id:`version-${i}`, count:i })
+		} this.setState({ versions:versions })
 	}
 	setClicked() {
 		this.setState({ clicked:!this.state.clicked })
@@ -19,7 +26,8 @@ export default class Versiones extends Component {
 	}
 	drop(ev) {
 	    ev.preventDefault()
-	   	$(ev.target.id).appendChild($(this.state.drag))
+	    if (!ev.target.id.includes('version'))
+		   	$(ev.target.id).appendChild($(this.state.drag))
 	}
 	render() {
         return(
@@ -39,27 +47,17 @@ export default class Versiones extends Component {
 					</h3>
 					<div class="row">
 						<div class="col-md-3">
-							<div id="div1" class="combinaciones" onDrop={this.drop.bind(this)} onDragOver={this.allowDrop}>
+							<div id="options" class="combinaciones">
 								<h5>Versiones:</h5>
-								<h4 id="h4-1" draggable="true" onDragStart={this.drag.bind(this)}>Version 1</h4>
-								<h4 id="h4-2" draggable="true" onDragStart={this.drag.bind(this)}>Version 2</h4>
-								<h4 id="h4-3" draggable="true" onDragStart={this.drag.bind(this)}>Version 3</h4>
-								<h4 id="h4-4" draggable="true" onDragStart={this.drag.bind(this)}>Version 4</h4>
-								<h4 id="h4-5" draggable="true" onDragStart={this.drag.bind(this)}>Version 5</h4>
-								<h4 id="h4-6" draggable="true" onDragStart={this.drag.bind(this)}>Version 6</h4>
-								<h4 id="h4-7" draggable="true" onDragStart={this.drag.bind(this)}>Version 7</h4>
-								<h4 id="h4-8" draggable="true" onDragStart={this.drag.bind(this)}>Version 8</h4>
-								<h4 id="h4-9" draggable="true" onDragStart={this.drag.bind(this)}>Version 9</h4>
-								<h4 id="h4-10" draggable="true" onDragStart={this.drag.bind(this)}>Version 10</h4>
-								<h4 id="h4-11" draggable="true" onDragStart={this.drag.bind(this)}>Version 11</h4>
-								<h4 id="h4-12" draggable="true" onDragStart={this.drag.bind(this)}>Version 12</h4>
-								<h4 id="h4-13" draggable="true" onDragStart={this.drag.bind(this)}>Version 13</h4>
-								<h4 id="h4-14" draggable="true" onDragStart={this.drag.bind(this)}>Version 14</h4>
-								<h4 id="h4-15" draggable="true" onDragStart={this.drag.bind(this)}>Version 15</h4>
+								{
+									this.state.versions.map(m => { return (
+										<h4 id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
+									)})
+								}
 							</div>
 						</div>	
 						<div class="col-md-3">
-							<div id="div2" class="seleccion" onDrop={this.drop.bind(this)} onDragOver={this.allowDrop}>
+							<div id="selection" class="seleccion" onDrop={this.drop} onDragOver={this.allowDrop}>
 								<h5>Selección:</h5>
 							</div>
 						</div>	

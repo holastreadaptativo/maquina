@@ -1,17 +1,40 @@
 import React, { Component } from 'react'
+import $ from 'actions'
 
 export default class Ejercicios extends Component {
     constructor(props) {
-		super(props); this.state = { clicked:false, active:0, width:'960px' }
+		super(props); this.state = { clicked:false, active:0, width:'960px', drag:'', functions:[] }
 		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
+		this.drag = this.drag.bind(this)
+		this.drop = this.drop.bind(this)
 	}
+	componentDidMount() {
+		let functions = []
+		for (let i = 0; i < 20; i++) {
+			functions.push({ id:`fn-${i}`, count:i })
+		} 
+		this.setState({ functions:functions })
+	}
+	
 	setClicked() {
 		this.setState({ clicked:!this.state.clicked })
 	}
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
     }
+	allowDrop(ev) {
+    	ev.preventDefault()
+	}	
+	drag(ev) {
+		this.setState({ drag:ev.target.id })
+		ev.dataTransfer.setData('text', $(ev.target.id))
+	}
+	drop(ev) {
+	    ev.preventDefault()
+	    if (!ev.target.id.includes('fn'))
+	   		$(ev.target.id).appendChild( $(this.state.drag) )
+	}
 	render() {
 		const { active, width } = this.state
         return(
@@ -41,6 +64,21 @@ export default class Ejercicios extends Component {
 
 							</div>
 						</div>
+						<div class="col-md-12">
+							<div id="ej-functions" class="selection" onDrop={this.drop} onDragOver={this.allowDrop}>
+								<h5>Funcionalidades:</h5>
+								{
+									this.state.functions.map(m => { return (
+										<h4 id={m.id} draggable="true" onDragStart={this.drag}>Funcionalidad {m.count + 1}</h4>
+									)})
+								}
+							</div>
+						</div>	
+						<div class="col-md-12">
+							<div id="ej-selected" class="selection selected" onDrop={this.drop} onDragOver={this.allowDrop}>
+								<h5>Selección:</h5>
+							</div>
+						</div>	
 					</div>
         		</div>
         	</div>

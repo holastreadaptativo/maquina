@@ -11,9 +11,30 @@
 			margin-top: 20px;
 			overflow-y: scroll;
 			height: 400px; 
-			h5
+			h4
 			{
-
+				cursor: move;
+			    cursor: grab;
+			    cursor: -moz-grab;
+			    cursor: -webkit-grab;
+			    background-color: @sec-color;
+			    font-size: 13px;
+			    border-radius: 20px;
+			    padding: 5px 10px;
+			    font-weight: bold;
+			    color: white;
+			    transition: all .3s ease;
+				&:hover
+				{
+					background-color: @sec-hover;
+				}
+			    &:active 
+			    { 
+				    cursor: grabbing;
+				    cursor: -moz-grabbing;
+				    cursor: -webkit-grabbing;
+				    background-color: darken(@sec-hover, 10%);
+				}
 			}
 		}
 		.preview
