@@ -7,13 +7,16 @@
 			background-color: @info-color;
 			border: 1px solid #ddd;
 			border-radius: 5px;
-			padding: 10px 15px;
+			padding: 10px 25px 20px;
 			margin-top: 20px;
-			height: 415px;
 			width: 97%;
 			h5, h6.code
 			{
 				margin-bottom: 20px;
+			    &.subtitle
+			    {
+			    	margin-top: 20px;
+			    }
 			}
 			.devices
 			{
@@ -45,7 +48,6 @@
 				margin: 0 auto;
 				transition: all .3s ease;
 			}
-			
 		}
 		.selection
 		{
@@ -54,8 +56,9 @@
 			border-radius: 5px;
 			padding: 10px 15px;
 			margin-top: 20px;
-			overflow-y: scroll;
+			overflow-y: auto;
 			min-height: 50px; 
+			height: 80px;
 			h5
 			{
 				display: inline-block;
@@ -89,10 +92,31 @@
 				    background-color: darken(@sec-hover, 10%);
 				}
 			}
-			&.selected h4
+			&.selected 
 			{
-				background-color: @nav-bg-color;
+				margin: 10px auto 0;
+				width: 960px;
+				border-radius: 0;
+				height: 80px;
+				 overflow-y: auto;
+				h4
+				{
+					background-color: @nav-bg-color;
+				cursor: pointer;
+				}
+				&:empty:not(:focus):before
+				{
+				    content:attr(data-text)
+				}
 			}
+		}
+		.fn
+		{
+			margin-left: -16px;
+		    h5
+		    {
+		    	margin: 20px 5px -10px;
+		    }
 		}
 	}
 }

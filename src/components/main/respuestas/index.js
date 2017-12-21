@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Respuestas extends Component {
+export class Respuestas extends Component {
     constructor(props) {
 		super(props); this.state = { clicked:false, active:0, width:'960px' }
 		this.setClicked = this.setClicked.bind(this)

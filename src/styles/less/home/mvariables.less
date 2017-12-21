@@ -9,7 +9,7 @@
 		form
 		{
 			margin-top: 10px;
-			width: ~'calc(100% - 250px)';
+			width: auto;
 			padding: 0 40px;
 			table
 			{
@@ -30,6 +30,10 @@
 			input.form-control.vt
 			{
 				width: 50px;
+			}
+			input.form-control.vr
+			{
+				width: 100px;
 			}
 			ul.checklist
 			{
@@ -63,26 +67,28 @@
 			border-radius: 5px;
 			padding: 10px 15px;
 			margin-top: 20px;
-			width: 250px;
+			//width: 250px;
 			h5, h6.code
 			{
 				margin-bottom: 20px;
 			}
 		}
 	}
-	.row form .js
+	.row div .js
 	{
 		background-color: @white;
 		border: 1px solid black;
-		margin-top: 10px;
+		margin-top: 20px;
 		min-height: 400px;
-		//border-radius: 5px;
-		overflow-y: scroll;
+		overflow-y: auto;
 		background-image: url('@{images}/logos/js.png');
 		background-repeat: no-repeat;
 		background-position: center;
 		background-size: 80px; 
 		width: 100%;
 		padding: 10px 12px;
+		resize: none;
+		border: 1px solid #ddd;
+			border-radius: 5px;
 	}
 }

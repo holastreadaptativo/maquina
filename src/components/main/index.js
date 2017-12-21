@@ -109,8 +109,8 @@ export class Home extends Component {
 	}
 }
 
-export Descargas from './MDescargas'
-export Variables from './MVariables'
-export Ejercicios from './MEjercicios'
-export Versiones from './MVersiones'
-export Respuestas from './MRespuestas'
+export * from './variables'
+export * from './ejercicios'
+export * from './respuestas'
+export * from './versiones'
+export * from './descargas'

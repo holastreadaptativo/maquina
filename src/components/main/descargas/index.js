@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Descargas extends Component {
+export class Descargas extends Component {
     constructor(props) {
 		super(props); this.state = { clicked:false, radius:100, color:'red', x:-100, y:-100 }
 		this.setClicked = this.setClicked.bind(this)

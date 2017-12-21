@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import $ from 'actions'
 
-export default class Versiones extends Component {
+export class Versiones extends Component {
     constructor(props) {
 		super(props); this.state = { clicked:false, drag:'', versions:[] }
 		this.setClicked = this.setClicked.bind(this)

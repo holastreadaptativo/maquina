@@ -7,7 +7,7 @@ let config = {
     projectId: 'maquina-d0d32',
     storageBucket: 'maquina-d0d32.appspot.com',
     messagingSenderId: '245000417064'
-  }
+ }
 
 const firebase = db.initializeApp(config)
 const firebase2 = db.initializeApp(config, 'Secondary')
