@@ -3,7 +3,7 @@ import $ from 'actions'
 
 export class Versiones extends Component {
     constructor(props) {
-		super(props); this.state = { clicked:false, drag:'', versions:[] }
+		super(props); this.state = { clicked:false, drag:'', versions:[], selection:[] }
 		this.setClicked = this.setClicked.bind(this)
 		this.drag = this.drag.bind(this)
 		this.drop = this.drop.bind(this)
@@ -12,7 +12,10 @@ export class Versiones extends Component {
 		let versions = []
 		for (let i = 0; i < 25; i++) {
 			versions.push({ id:`version-${i}`, count:i })
-		} this.setState({ versions:versions })
+		} 
+		versions.sort(function(){return 0.5 - Math.random()})
+
+		this.setState({ selection:versions.slice(0, 10) , versions:versions.slice(10, versions.length) })
 	}
 	setClicked() {
 		this.setState({ clicked:!this.state.clicked })
@@ -59,6 +62,11 @@ export class Versiones extends Component {
 						<div class="col-md-3">
 							<div id="selection" class="seleccion" onDrop={this.drop} onDragOver={this.allowDrop}>
 								<h5>Selección:</h5>
+								{
+									this.state.selection.map(m => { return (
+										<h4 id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
+									)})
+								}
 							</div>
 						</div>	
 						<div class="col-md-6">
@@ -67,6 +75,7 @@ export class Versiones extends Component {
 							</div>
 						</div>	
 					</div>
+
         		</div>
         	</div>
         )

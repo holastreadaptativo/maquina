@@ -4,7 +4,7 @@
 	{
 		.design
 		{
-			background-color: @info-color;
+			background-color: darken(@info-color, 1%);
 			border: 1px solid #ddd;
 			border-radius: 5px;
 			padding: 10px 25px 20px;
@@ -35,7 +35,7 @@
 					cursor: pointer;
 					&.active
 					{
-						border-bottom: 1px solid @sec-hover;
+						border-bottom: 1px solid @sec-color;
 					}
 				}
 			}
@@ -94,19 +94,19 @@
 			}
 			&.selected 
 			{
-				margin: 10px auto 0;
-				width: 960px;
 				border-radius: 0;
 				height: 80px;
-				 overflow-y: auto;
+				margin: 10px auto 0;
+				overflow-y: auto;
+				width: 960px;
 				h4
 				{
 					background-color: @nav-bg-color;
-				cursor: pointer;
+					cursor: pointer;
 				}
 				&:empty:not(:focus):before
 				{
-				    content:attr(data-text)
+				    content: attr(data-text);
 				}
 			}
 		}
@@ -117,6 +117,98 @@
 		    {
 		    	margin: 20px 5px -10px;
 		    }
+		}
+		.editor
+		{
+			margin-top: 70px;
+			.resizable
+			{
+				max-height: 350px !important;
+				margin-bottom: 60px;
+				&.main
+				{
+					width: 84%;
+					margin-left: ~'calc(7.5% + 32px)';
+					border-bottom: 1px solid #aaa;
+				}				
+				.editable
+				{
+					background-color: darken(@info-color, 1%);
+					color: black;
+					padding: 10px;
+					resize: none;
+					width: 100%;
+					min-width: 120px;
+					height: 350px;
+					overflow: auto;
+					transition: all .3s ease;
+					&:hover
+					{
+						background-color: darken(@info-color, 4%)
+					}
+					&:focus
+					{
+						outline: none;
+						background-color: darken(@info-color, 6%);
+					}
+				}
+			}
+			h5
+			{
+				width: 100%;
+				background-color: darken(@info-color, 10%);
+				margin: 10px auto 0;
+				padding: 7px 10px;
+				font-weight: bold;
+				font-size: 16px;
+				border: 1px solid #aaa;
+				border-bottom: none;
+				span
+				{
+					margin-right: 5px;
+					font-size: 13px;
+					margin-top: 3px;
+					&.glyphicon-menu-down
+					{
+						float: right;
+						cursor: pointer;
+					}
+				}
+			}
+		}
+		.selector
+		{
+			list-style: none;
+			margin-top: 20px;
+			width: 97%;
+			li
+			{
+				text-align: center;
+				background-color: darken(@info-color, 3%);
+				padding-top: 8px;
+				padding-bottom: 6px;
+				border-bottom: 3px solid darken(@info-color, 3%);
+				transition: all .5s ease;
+				a
+				{
+					color: black;
+					i 
+					{
+						display: block;
+						font-size: 22px;
+					}
+					span
+					{
+						display: block;
+						font-size: 12px;
+						margin-top: 0px;
+					}
+				}
+				&.active
+				{
+					border-bottom-color: @sec-color;
+				}
+			}
 		}
 	}
 }

@@ -37,11 +37,20 @@ export class Respuestas extends Component {
 								<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>
 								<i class={`${active == 2 ? 'active' : ''}`} onClick={() => this.setActive(2)}>phone_iphone</i>
 							</nav>
-							<div class="device" style={{width:width}}>
-
-							</div>
+							<div class="device" style={{width:width}}/>
 						</div>
-					</div>
+					</div>	
+					<div class="row">
+						<br/>
+						<div class="form-group">
+							<label>Respuesta correcta</label>
+							<input type="text" placeholder="formula" class="form-control"/>
+							<input type="text" placeholder="feedback" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<input type="text" placeholder="glosa" class="form-control"/>
+						</div>
+					</div>		
         		</div>
         	</div>
         )

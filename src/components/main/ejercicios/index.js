@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { ExDesign } from 'components'
+import { ExDesign, ExFunctions, ExEditor } from 'components'
 import { render } from 'react-dom'
 import $ from 'actions'
 
 export class Ejercicios extends Component {
-    constructor(props) {
-		super(props); this.state = { clicked:false, drag:'', functions:[], count:0 }
+    constructor(props) {	
+		super(props); this.state = { clicked:false, drag:'', functions:[], count:0, value:0 }
 		this.setClicked = this.setClicked.bind(this)
 		this.drag = this.drag.bind(this)
 		this.drop = this.drop.bind(this)
 	}
 	componentDidMount() {
 		let functions = []
-		for (let i = 0; i < 28; i++) { functions.push({ id:`fn-${i}`, count:i }) } 
+		for (let i = 0; i < 28; i++) { functions.push({ id:`fn-${i}`, count:i }) }
 		this.setState({ functions:functions })
 	}	
 	setClicked() {
@@ -37,7 +37,11 @@ export class Ejercicios extends Component {
 	   		this.setState({ count:count })
 	    }
 	}
+	handleChange(value) {
+		this.setState({ value:value })
+	}
 	render() {
+		const { value } = this.state
 		return(
         	<div class="ejercicios">
         		<div class="container">
@@ -56,11 +60,31 @@ export class Ejercicios extends Component {
 					<div class="row">
 						<div class="col-md-12 design">
 							<ExDesign drop={this.drop.bind(this)} allowDrop={this.allowDrop}/>
-							<div id="ex-selected" class="selection selected" onDrop={this.drop} onDragOver={this.allowDrop} 
+							<div id="ex-selected" class="selection selected hidden" onDrop={this.drop} onDragOver={this.allowDrop} 
 								data-text="Funcionalidades..."/>
 						</div>
 					</div>
-					<div class="row hidden">			
+
+					<div class="row">
+						<ul class="selector">
+							<li class={`col-xs-4 ${value == 0 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 0)}>
+								<a><i>spellcheck</i><span>Variables</span></a>
+							</li>
+							<li class={`col-xs-4 ${value == 1 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 1)}>
+								<a><i>dashboard</i><span>Funciones</span></a>
+							</li>
+							<li class={`col-xs-4 ${value == 2 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 2)}>
+								<a><i>code</i><span>Código</span></a>
+							</li>
+						</ul>
+						{ 
+							value == 0 ? <div style={{background:'#1e1f40', height:'275px', width:'97%', color:'white', padding:'65px 10px'}}>Variables</div> :
+							value == 1 ? <ExFunctions active={Math.floor(this.props.code / 100000000000)}/> : 
+							value == 2 ? <ExEditor/> : '' 
+						}
+					</div>
+
+					<div class="row hidden">
 						<div class="col-md-12 fn">
 							<h5><b>Funcionalidades:</b></h5>
 							<div id="ex-functions" class="selection">	
@@ -72,21 +96,12 @@ export class Ejercicios extends Component {
 							</div>
 						</div>	
 					</div>
-					<div class="row">
-						<div class="col-md-4">
-							HTML
-						</div>
-						<div class="col-md-4">
-							CSS
-						</div>
-						<div class="col-md-4">
-							JS
-						</div>
-					</div>
         		</div>
         	</div>
         )
     }
 }
 
-export ExDesign from './ExDesign'
+export ExDesign from './2_ExDesign'
+export ExFunctions from './2_ExFunctions'
+export ExEditor from './2_ExEditor'
