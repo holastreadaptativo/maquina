@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export class Respuestas extends Component {
     constructor(props) {
-		super(props); this.state = { clicked:false, active:0, width:'960px' }
+		super(props); this.state = { clicked:false, active:0, width:'960px', value:1 }
 		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
 	}
@@ -12,8 +12,11 @@ export class Respuestas extends Component {
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
     }
+	handleChange(value) {
+		this.setState({ value:value })
+	}
 	render() {
-		const { active, width } = this.state
+		const { active, width, value } = this.state
         return(
         	<div class="ejercicios">
         		<div class="container">
@@ -40,6 +43,21 @@ export class Respuestas extends Component {
 							<div class="device" style={{width:width}}/>
 						</div>
 					</div>	
+
+					<div class="row">
+						<ul class="selector">
+							<li class={`col-xs-4 ${value == 0 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 0)}>
+								<a><i>spellcheck</i><span>Variables</span></a>
+							</li>
+							<li class={`col-xs-4 ${value == 1 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 1)}>
+								<a><i>receipt</i><span>Respuestas</span></a>
+							</li>
+							<li class={`col-xs-4 ${value == 2 ? 'active' : ''}`} onClick={this.handleChange.bind(this, 2)}>
+								<a><i>code</i><span>Código</span></a>
+							</li>
+						</ul>
+					</div>
+
 					<div class="row">
 						<br/>
 						<div class="form-group">
@@ -50,7 +68,7 @@ export class Respuestas extends Component {
 						<div class="form-group">
 							<input type="text" placeholder="glosa" class="form-control"/>
 						</div>
-					</div>		
+					</div>	
         		</div>
         	</div>
         )

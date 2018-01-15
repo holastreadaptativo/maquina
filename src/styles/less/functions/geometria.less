@@ -1,0 +1,131 @@
+.modal-geometria
+{
+	padding: 10px;
+	min-height: 400px;
+	.modal-title
+	{
+		background-color: @color-geometria;
+		color: white;
+		padding: 7px;
+		font-weight: bold;
+		font-size: 15px;
+		margin: 5px 10px 0;
+		b
+		{
+			text-transform: uppercase;
+		}
+	}
+	h5, label
+	{
+		margin: 15px 20px;
+		color: darken(@color-geometria, 5%);
+		font-weight: bold;
+	}
+	form
+	{
+		margin: 0 10px;
+		.form-inline
+		{
+			margin: 0 10px 5px;
+		}
+		label
+		{
+			margin: 0;
+			margin-left: 10px;
+			font-size: 13px;
+		}
+		h5
+		{
+			font-size: 13px;
+			text-transform: uppercase;
+			margin: 0 20px;
+			display: inline-block;
+		}
+		input
+		{
+			margin: 0 10px;
+			border: none;
+			box-shadow: none;
+			border-radius: 0;
+			&[type="number"]
+			{
+				width: 70px;
+				padding: 10px;
+				margin: 0;
+				margin-left: 5px;
+				//border-bottom: 2px solid @color-geometria;
+			}
+			&[type="color"]
+			{
+				width: 30px;
+				padding: 5px;
+				cursor: pointer;
+			}	
+			&, &:hover, &:focus
+			{
+				outline: none;
+			}
+		}
+	}
+	div.canvas
+	{	
+		text-align: center;
+		canvas
+		{
+			background-color: @info-color;
+			border: 3px solid #bbb;
+			margin: 5px auto;
+		}
+	}
+	div.button
+	{
+		text-align: right;
+		button
+		{
+			background-color: @color-geometria;
+			color: white;
+			padding: 7px 25px;
+			border: 1px solid darken(@color-geometria, 5%);
+			transition: all .3s ease;
+			margin: 5px 15px 10px;
+			font-weight: bold;
+			&:hover
+			{
+				background-color: darken(@color-geometria, 3%);
+			}
+		}
+	}	
+	.modal-tabs
+	{
+		list-style: none;
+		margin: 0 10px;
+		li
+		{
+			color: @color-geometria;
+			display: inline-block;
+			text-align: center;
+			padding: 7px;
+			font-size: 12px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			a
+			{
+				color: @color-geometria;
+				font-weight: bold;
+			}
+			i, span
+			{
+				display: block;
+				font-size: 20px;
+			}
+			&.active
+			{
+				background-color: darken(@color-geometria, 3%);
+				a
+				{
+					color: white;
+				}
+			}
+		}
+	}
+}

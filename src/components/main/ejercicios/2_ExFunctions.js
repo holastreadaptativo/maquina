@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { F1 } from 'components'
 
 export default class Functions extends Component {
 	constructor() {
@@ -56,8 +57,12 @@ export default class Functions extends Component {
 				          	<a>Geometría</a>
 				        </div>
 				        <div class="paragraph">
-				          	<h1>Geometría</h1>
-				          	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus vitae felis ac tempor. </p>
+				          	<h3>Geometría</h3>
+				          	<ul>				          		
+				          		<li><F1 text={'F1'}/></li>		
+				          		<li><F1 text={'F2'}/></li>		
+				          		<li><F1 text={'F3'}/></li>
+				          	</ul>
 				        </div>
 				    </li>
 			    </ul>

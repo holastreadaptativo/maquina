@@ -5,7 +5,7 @@ import $ from 'actions'
 
 export class Ejercicios extends Component {
     constructor(props) {	
-		super(props); this.state = { clicked:false, drag:'', functions:[], count:0, value:0 }
+		super(props); this.state = { clicked:false, drag:'', functions:[], count:0, value:1 }
 		this.setClicked = this.setClicked.bind(this)
 		this.drag = this.drag.bind(this)
 		this.drop = this.drop.bind(this)

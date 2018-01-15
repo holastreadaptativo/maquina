@@ -86,19 +86,37 @@
 			    position: relative;
 			    width: 450px;
 			    margin-left: 80px;
-			    padding: 50px 0 0 10px;
+			    padding: 15px;
 			    height: 200px;
 			    background: #fff;
-
-			    h1 {
-			      font-size: 2.5em;
-			      margin-bottom: 10px;
+			    h1 
+			    {
+			      	font-size: 2.5em;
+			      	margin-bottom: 10px;
 			    } 
-
-			    p {
-			      font-size: 0.88em;
-			      line-height: 1.5em;
-			      padding-right: 30px;
+				h3 
+				{
+					margin-top: 0;
+				}
+			    p 	
+			    {
+			      	font-size: 0.88em;
+			      	line-height: 1.5em;
+			      	padding-right: 30px;
+			    }
+			    li
+			    {
+			    	border-radius: 30px;
+			    	padding: 5px 10px;
+			    	display: inline-block;
+			    	margin-right: 5px;
+					color: white;
+					font-weight: bold;
+					cursor: pointer;
+					a
+					{
+						color: white;
+					}
 			    }
 		  	}
 		}
@@ -159,8 +177,12 @@
 		    	}
 		    	&:after 
 		    	{
-		    		background: #00aaad;
+		    		background: @color-geometria;
 		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-geometria;
 		  	}
 		}
 		&.fn-algebra 
@@ -173,8 +195,12 @@
 		    	}
 		    	&:after 
 		    	{
-		    		background: #91518f;
+		    		background: @color-algebra;
 		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-algebra;
 		  	}
 		}
 		&.fn-medicion 
@@ -187,8 +213,12 @@
 		    	}
 		    	&:after 
 		    	{
-		    		background: #175389;
+		    		background: @color-medicion;
 		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-medicion;
 		  	}
 		}
 		&.fn-numeracion 
@@ -201,8 +231,12 @@
 		    	}
 		    	&:after 
 		    	{
-		    		background: #bc2424;
+		    		background: @color-numeracion;
 		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-numeracion;
 		  	}
 		}
 		&.fn-datos 
@@ -215,8 +249,12 @@
 		    	}
 		    	&:after 
 		    	{
-		    		background: #549c02;
+		    		background: @color-datos;
 		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-datos;
 		  	}
 		}
 	}

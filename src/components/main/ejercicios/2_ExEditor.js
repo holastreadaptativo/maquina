@@ -32,6 +32,20 @@ export default class Editor extends Component {
 		else this.setState({ w2:width, w3:(wx - width) })
 		if(!b2) this.setState({ b2:true })
 	}	
+	handleChange(id) {
+		let text = $(id).value, aux = ''
+		if (text.includes('<')) {
+			for (let i = 0; i < text.length; i++) {
+				let char = text.charAt(i)
+				if (char == '<') { 
+					aux += char.fontcolor('bb0000')
+				} else {
+					aux += char.fontcolor('000000')
+				}
+			}
+			$(id).innerHTML = aux
+		}
+	}
 	render() {
 		const { w1, w2, w } = this.state
 		return (
@@ -40,17 +54,17 @@ export default class Editor extends Component {
 				 onChange={this.handleDrag.bind(this)}>
 		            <div class="editor-html">
 		            	<h5><span class="glyphicon glyphicon-cog"/>HTML<span class="glyphicon glyphicon-menu-down"/></h5>
-						<textarea class="editable"/>
-		            </div>
+						<textarea id="editor-html" onChange={this.handleChange.bind(this, 'editor-html')} class="editable"/>
+					</div>
 		            <SplitPane defaultSize="50%" minSize={120} maxSize={w-w1-120} split="vertical" class="resizable" 
 		            onChange={this.handleDrop.bind(this)}>
-			            <div id="editor-css">
+			            <div class="editor-css">
 							<h5><span class="glyphicon glyphicon-cog"/>CSS<span class="glyphicon glyphicon-menu-down"/></h5>
-							<textarea class="editable"/>
+							<textarea id="editor-css" onChange={this.handleChange.bind(this, 'editor-css')} class="editable"/>
 						</div>
-			            <div id="editor-js">
+			            <div class="editor-js">
 							<h5><span class="glyphicon glyphicon-cog"/>JS<span class="glyphicon glyphicon-menu-down"/></h5>
-							<textarea class="editable"/>
+							<textarea id="editor-js" onChange={this.handleChange.bind(this, 'editor-js')} class="editable"/>
 						</div>
 			        </SplitPane>
 		        </SplitPane>
