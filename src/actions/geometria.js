@@ -1,6 +1,3 @@
-
-
-
 export function generarPlanoCartesiano(canvas, state) {
 
 	canvas.width = state.width; canvas.height = state.height
@@ -107,5 +104,46 @@ export function reflejarCuadrado(canvas, state) {
 		}
 	}
 	
+	ctx.closePath()
+}
+
+export function generarCuadradosUnidos(canvas, state) {
+
+	let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
+	let w = state.width/state.cols, h = state.height/state.rows, headlen = w/3, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
+
+	ctx.beginPath()
+	ctx.fillStyle = red
+	ax = Math.floor(Math.random()*state.cols)*w
+	ay = Math.floor(Math.random()*state.rows)*h
+	ctx.fillRect(ax, ay, w, h)	
+
+	ctx.fillStyle = blue
+	bx = Math.floor(Math.random()*state.cols)*w
+	by = Math.floor(Math.random()*state.rows)*h
+	ctx.fillRect(bx, by, w, h)
+	ctx.closePath()
+
+	if (ax < bx) { fx = ax; tx = bx; fy = ay; ty = by; } 
+   	else { fx = bx; tx = ax; fy = by; ty = ay; }
+
+   	ctx.beginPath()
+	ctx.strokeStyle = green
+	for (let x = fx, a = Math.atan2(0, w); x < tx; x += w) {
+		ctx.moveTo(x, fy); ctx.arc(x + w/2, fy + h/2 - 3, 220/320*w, 220*rad, 320*rad, false)
+		ctx.lineTo(x + w - headlen * Math.cos(a + Math.PI/24), fy - headlen * Math.sin(a + Math.PI/24))
+		ctx.moveTo(x + w, fy)
+		ctx.lineTo(x + w - headlen * Math.cos(a + Math.PI/2), fy - headlen * Math.sin(a + Math.PI/2))
+	}
+	let i = fy < ty ? 1 : -1
+	for (let y = fy, a = Math.atan2(h, 0); i*y < i*ty; y += i*h) {
+		ctx.moveTo(tx, y + i*h)
+		ctx.moveTo(tx, y + i*h)
+		ctx.lineTo(tx - headlen * Math.cos(a + i*Math.PI/2), y + i*h - i*headlen * Math.sin(a + i*Math.PI/2)) 
+		ctx.moveTo(tx, y + i*h)
+		ctx.lineTo(tx - headlen * Math.cos(a + i*Math.PI/24), y + i*h - i*headlen * Math.sin(a + i*Math.PI/24))
+		ctx.moveTo(tx, y); ctx.arc(tx - i*w/2 + i*3, y + i*h/2, 220/320*w, (i > 0 ? 310 : 130)*rad, (i > 0 ? 50 : 230)*rad, false)
+	}
+	ctx.stroke()
 	ctx.closePath()
 }

@@ -24,6 +24,7 @@ export default class Functions extends Component {
     }
 	render() {
         const { active, modal, setActive, fn } = this.state
+        let items = ['F1', 'F2']
 		return(
 			<div>
 				<div class="fn-accordion">
@@ -71,7 +72,11 @@ export default class Functions extends Component {
 					        <div class="paragraph" onClick={this.handleModal}>
 					          	<h3>Geometría</h3>
 					          	<ul>				          		
-					          		<li onClick={this.handleFunction.bind(this, 'F2')} class="button">F2</li>	
+					          	{
+					          		items.map(i => { return (
+					          			<li key={i} onClick={this.handleFunction.bind(this, i)} class="button">{i}</li>
+					          		)})
+					          	}
 					          	</ul>
 					        </div>
 					    </li>
@@ -79,7 +84,7 @@ export default class Functions extends Component {
 			    </div>
 			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 				{
-					fn == 'F2' ? <F2/> : 'hola'
+					fn == 'F1' ? <F1/> : fn == 'F2' ? <F2/> : ''					
 				}
 				</Modal>
 		    </div>
