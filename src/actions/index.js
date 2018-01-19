@@ -59,3 +59,4 @@ export function signOut() {
 }
 
 export * from './variables'
+export * from './geometria'
