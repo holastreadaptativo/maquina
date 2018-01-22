@@ -18,7 +18,7 @@ export default class Design extends Component {
 					<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>
 					<i class={`${active == 2 ? 'active' : ''}`} onClick={() => this.setActive(2)}>phone_iphone</i>
 				</nav>
-				<div id="ex-design" class="device" style={{width:width}} onDrop={this.props.drop} onDragOver={this.props.allowDrop}/>
+				<div id="ex-design" class="device canvas" style={{width:width}} onDrop={this.props.drop} onDragOver={this.props.allowDrop}/>
 			</div>
 		)
 	}

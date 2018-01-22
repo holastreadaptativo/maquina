@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
-import { F1, F2 } from 'components'
+import * as k from 'components'
+import $ from 'actions'
 
 export default class Functions extends Component {
 	constructor() {
@@ -22,9 +23,13 @@ export default class Functions extends Component {
     setActive(active) {
         this.setState({ active:active })
     }
+	addCanvas(canvas) {
+		new Promise((resolve) => resolve( $('ex-design').append(canvas) ) )
+		.then(() => { this.setState({ modal:false }) })
+	}
 	render() {
         const { active, modal, setActive, fn } = this.state
-        let items = ['F1', 'F2']
+        let items = ['Plano Cartesiano', 'Ángulos']
 		return(
 			<div>
 				<div class="fn-accordion">
@@ -84,7 +89,8 @@ export default class Functions extends Component {
 			    </div>
 			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 				{
-					fn == 'F1' ? <F1/> : fn == 'F2' ? <F2/> : ''					
+					fn == items[0] ? <k.F1 add={(i) => this.addCanvas.bind(this, i)}/> : 
+					fn == items[1] ? <k.F2 add={(i) => this.addCanvas.bind(this, i)}/> : ''					
 				}
 				</Modal>
 		    </div>

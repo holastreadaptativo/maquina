@@ -5,23 +5,14 @@ import * as geometria from 'actions'
 export default class F1 extends Component {
 	constructor(props) {
 		super(props); this.state = { height:300, width:800, rows:15, cols:40, active:0,
-			background:COLORS['background'], border:COLORS['border'], font:COLORS['geometria'], grid:COLORS['grid'] 
+			background:COLORS['background'], border:COLORS['border'], font:COLORS['geometria'], grid:COLORS['grid']
 		}
 		this.update = this.update.bind(this)
-	}
-	componentDidMount() {
-		this.setState({ width:800, height:300 })
 	}
 	componentDidUpdate() {
 		let canvas = this.refs.canvas
 		geometria.generarPlanoCartesiano(canvas, this.state)
 		geometria.generarCuadradosUnidos(canvas, this.state)
-	}
-	componentWillUnmount() {
-		this.setState({ modal:false })
-	}
-	handleModal() {
-		this.setState({ modal:!this.state.modal })
 	}
 	handleActive(active) {
 		this.setState({ active:active })
@@ -84,12 +75,12 @@ export default class F1 extends Component {
 					</form>
 				</div>
 				<div class="canvas">
-					<canvas ref="canvas" style={{ background:background, borderColor:border, width:`${width}px`, height:`${height}px`, color:font }}>
+					<canvas ref="canvas" id="canvas" style={{ background:background, borderColor:border, width:`${width}px`, height:`${height}px`, color:font }}>
 						Your browser does not support the HTML5 canvas.
 					</canvas>
 				</div>	
-				<div class="button hidden">
-					<button onClick={this.update}>Dibujar</button>
+				<div class="button">
+					<button onClick={this.props.add(this.refs.canvas)}>Agregar</button>
 				</div>	
 			</div>
 		)
