@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { auth, users, uid } from 'stores'
 import { Header } from 'components'
+import { DEFAULT } from 'stores'
 
 export class App extends Component {
   	constructor(props) {
@@ -34,9 +35,7 @@ export class App extends Component {
   	}	
 }
 
-export * from './main'
+export * from './design'
 export * from './global'
+export * from './main'
 export * from './tools'
-
-export const DEFAULT = '000000000000000';
-export const COLORS = { geometria:'#00aaad', algebra:'#91518f', medicion:'#175389', numeracion:'#bc2424', datos:'#549c02', background:'#ffffff', border:'#cccccc', grid:'#dddddd' }
