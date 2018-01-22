@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { focus } from 'actions'
 
 export default class Design extends Component {
 	 constructor(props) {
@@ -10,13 +11,16 @@ export default class Design extends Component {
     }
 	render() {
 		const { active, width } = this.state
+		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']
 		return (
 			<div>
 				<h5><b>Diseño</b></h5>
 				<nav class="devices">
-					<i class={`${active == 0 ? 'active' : ''}`} onClick={() => this.setActive(0)}>desktop_windows</i>
-					<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>
-					<i class={`${active == 2 ? 'active' : ''}`} onClick={() => this.setActive(2)}>phone_iphone</i>
+				{
+					items.map((m, i) => { return (
+						<i class={focus(active == i, 'active')} onClick={() => this.setActive(i)}>{m}</i>
+					)})
+				}
 				</nav>
 				<div id="ex-design" class="device canvas" style={{width:width}} onDrop={this.props.drop} onDragOver={this.props.allowDrop}/>
 			</div>

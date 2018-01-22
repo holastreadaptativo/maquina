@@ -35,23 +35,28 @@ export default class Table extends Component {
 							<tr key={m.id}>
 								<td>{m.count}</td>
 								<td>
-									<input id={`var-${m.id}`} type="text" class="form-control vr" onChange={this.handlerUpdate.bind(this, 'var', m.id)} defaultValue={m.var}></input>
+									<input id={`var-${m.id}`} type="text" class="form-control vr" 
+									onChange={this.handlerUpdate.bind(this, 'var', m.id)} defaultValue={m.var}></input>
 								</td>
 								<td>
-									<select id={`type-${m.id}`} class="form-control" defaultValue={m.type} onChange={this.handlerUpdate.bind(this, 'type', m.id)}>
+									<select id={`type-${m.id}`} class="form-control" defaultValue={m.type} 
+									onChange={this.handlerUpdate.bind(this, 'type', m.id)}>
 										<option value="numero">Número</option>
 										<option value="funcion">Función</option>
 										<option value="texto">Texto</option>
 									</select>
 								</td>
 								<td>
-									<input id={`val-${m.id}`} type="text" class="form-control" onChange={this.handlerUpdate.bind(this, 'val', m.id)} defaultValue={m.val}></input>
+									<input id={`val-${m.id}`} type="text" class="form-control" 
+									onChange={this.handlerUpdate.bind(this, 'val', m.id)} defaultValue={m.val}></input>
 								</td>
 								<td>
-									<input id={`res-${m.id}`} type="text" class="form-control" onChange={this.handlerUpdate.bind(this, 'res', m.id)} defaultValue={m.res}></input>
+									<input id={`res-${m.id}`} type="text" class="form-control" 
+									onChange={this.handlerUpdate.bind(this, 'res', m.id)} defaultValue={m.res}></input>
 								</td>
 								<td>
-									<input id={`vt-${m.id}`} type="text" class="form-control vt" onChange={this.handlerUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
+									<input id={`vt-${m.id}`} type="text" class="form-control vt" 
+									onChange={this.handlerUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
 								</td>
 								<td>
 									<span class="glyphicon glyphicon-remove" onClick={this.handlerRemove.bind(this, m.id)} title="Eliminar"/>

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
 export class Respuestas extends Component {
-    constructor(props) {
-		super(props); this.state = { clicked:false, active:0, width:'960px', value:1 }
+    constructor() {
+		super()
+		this.state = { clicked:false, active:0, width:'960px', value:1 }
 		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
 	}

@@ -1,16 +1,19 @@
-.react-app .home
+.react-app .buscador
 {
 	padding-bottom: 80px;
 	text-align: center;
 	width: 100%;
 	h3
 	{
-		padding-top: 30vh;
+		padding: 28vh 0 10px;
 		transition: all .3s ease;
+		&.selected
+		{
+			padding-top: 0;
+		}
 	}
 	form
 	{
-		padding-top: 10px;
 		width: 600px;
 		margin: 0 auto;
 		h6.search-count
@@ -58,7 +61,7 @@
 			cursor: pointer;
 		}
 	}
-	div.clean
+	section
 	{
 		text-align: right;
 	}

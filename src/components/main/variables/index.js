@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { Resume, VarsTable, VarsCheck, VarsAdvan } from 'components'
 import { checkAll } from 'actions'
 import { data } from 'stores'
 
@@ -65,11 +64,11 @@ export class Variables extends Component {
 						{
 							!advanced ? 
 							<div class="col-sm-9">
-								<VarsTable code={code} variables={variables} checkAll={this.checkAll.bind(this)}/>
-								<VarsCheck checked={checked} variables={variables} setActive={this.props.setActive}/>
+								<Table code={code} variables={variables} checkAll={this.checkAll.bind(this)}/>
+								<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
 							</div>
 							:
-							<VarsAdvan code={code}/>
+							<Advan code={code}/>
 						}
 					</div>
 				</div>
@@ -78,7 +77,7 @@ export class Variables extends Component {
 	}
 }
 
-export Resume from './1_Resume'
-export VarsTable from './1_VarsTable'
-export VarsCheck from './1_VarsCheck'
-export VarsAdvan from './1_VarsAdvan'
+import Advan from './1_Advan'
+import Check from './1_Check'
+import Resume from './1_Resume'
+import Table from './1_Table'

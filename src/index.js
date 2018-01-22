@@ -10,7 +10,7 @@ import $ from 'actions'
 render(
 	<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
         <Route path="/" component={k.App}>
-            <IndexRoute component={k.Home}/>
+            <IndexRoute component={k.Buscador}/>
             <Route path="/variables" component={k.Variables}/>
             <Route path="/ejercicios" component={k.Ejercicios}/>
             <Route path="/respuestas" component={k.Respuestas}/>

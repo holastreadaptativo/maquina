@@ -80,8 +80,8 @@ export default class F2 extends Component {
 						Your browser does not support the HTML5 canvas.
 					</canvas>
 				</div>	
-				<div class="button hidden">
-					<button onClick={this.update}>Dibujar</button>
+				<div class="button">
+					<button onClick={this.props.add(this.refs.canvas)}>Agregar</button>
 				</div>	
 			</div>
 		)

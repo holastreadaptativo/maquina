@@ -22,3 +22,5 @@ export const data = database.ref('data')
 export const images = storage.ref('images')
 
 export function uid() { return auth.currentUser.uid }
+
+export * from './const'

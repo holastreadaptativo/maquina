@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 
 export class Descargas extends Component {
-    constructor(props) {
-		super(props); this.state = { clicked:false, radius:100, color:'red', x:-100, y:-100 }
+    constructor() {
+		super()
+		this.state = { clicked:false, radius:100, color:'red', x:-100, y:-100 }
 		this.setClicked = this.setClicked.bind(this)
-	}
-	setClicked() {
-		this.setState({ clicked:!this.state.clicked })
 	}
 	onMouseMove(e) {
 		const { radius, x, y } = this.state
@@ -14,6 +12,9 @@ export class Descargas extends Component {
 	}
 	changeRadius(r) {
 		this.setState({ radius:this.state.radius*r })
+	}
+	setClicked() {
+		this.setState({ clicked:!this.state.clicked })
 	}
 	render() {
 		const { radius, color, x, y } = this.state

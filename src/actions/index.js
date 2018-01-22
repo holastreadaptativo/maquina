@@ -58,5 +58,17 @@ export function signOut() {
     if (auth.currentUser) auth.signOut(); browserHistory.push('/')
 }
 
+export function random(s, e) {
+    return Math.floor(Math.random(0, 1) * (e - s) + s)
+}
+
+export function show(bool, tags) {
+    return `${bool ? tags : 'hidden'}`
+}
+
+export function focus(bool, active) {
+    return `${bool ? active : ''}`
+}
+
 export * from './variables'
 export * from './geometria'

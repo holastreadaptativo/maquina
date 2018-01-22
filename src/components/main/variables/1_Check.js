@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { show } from 'actions'
 
 export default class Check extends Component {
 	handlerSubmit(e) {
@@ -33,7 +34,7 @@ export default class Check extends Component {
 					</li>
 				</ul>
 				<div class="add">
-					<button class={`${checked[6] ? 'btn btn-success' : 'hidden'}`} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
+					<button class={show(checked[6], 'btn btn-success')} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
 				</div>
 			</form>
 		)
