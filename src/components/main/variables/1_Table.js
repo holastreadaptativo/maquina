@@ -31,9 +31,9 @@ export default class Table extends Component {
 					</thead>
 					<tbody>
 					{
-						this.props.variables.map(m => { return (
-							<tr key={m.id}>
-								<td>{m.count}</td>
+						this.props.variables.map((m, i) => { return (
+							<tr key={i}>
+								<td>{i+1}</td>
 								<td>
 									<input id={`var-${m.id}`} type="text" class="form-control vr" 
 									onChange={this.handlerUpdate.bind(this, 'var', m.id)} defaultValue={m.var}></input>

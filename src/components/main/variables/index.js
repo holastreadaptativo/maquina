@@ -18,8 +18,8 @@ export class Variables extends Component {
 				this.setState({ variables:variables, count:count })
 			})
 			if (count == 0) {
-				let key = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
-				variables.push({ id:key, var:'', type:'numero', val:'', count:++count, vt:'', res:'' })
+				let path = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+				variables.push({ id:path.key, var:'', type:'numero', val:'', count:++count, vt:'', res:'' })
 				this.setState({ variables:variables, count:count })
 			}
 			this.setState({ checked:checkAll(variables) })
