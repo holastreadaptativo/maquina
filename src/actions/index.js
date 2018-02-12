@@ -72,3 +72,4 @@ export function focus(bool, active) {
 
 export * from './variables'
 export * from './geometria'
+export * from './datos'

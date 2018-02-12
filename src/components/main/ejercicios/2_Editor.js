@@ -3,8 +3,9 @@ import SplitPane from 'react-split-pane'
 import $ from 'actions'
 
 export default class Editor extends Component {
-	constructor(props) {	
-		super(props); this.state = { b1:false, b2:false }
+	constructor() {	
+		super()
+		this.state = { b1:false, b2:false }
 	}
 	componentDidMount() {
 		let w = $('editor').clientWidth

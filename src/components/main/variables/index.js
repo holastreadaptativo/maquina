@@ -4,9 +4,10 @@ import { checkAll } from 'actions'
 import { data } from 'stores'
 
 export class Variables extends Component {
-	constructor(props) {
-		super(props); this.setClicked = this.setClicked.bind(this)
+	constructor() {
+		super()
 		this.state = { variables:[], count:0, clicked:false, advanced:false, checked:[false, false, false, false, false, false, false] }	
+		this.setClicked = this.setClicked.bind(this)
 	}
 	componentDidMount() {
 		data.child(`${this.props.code}`).once('value').then(snap => { this.setState({ advanced:snap.val().advanced }) })

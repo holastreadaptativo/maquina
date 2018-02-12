@@ -89,7 +89,7 @@ export class Ejercicios extends Component {
 							<div id="ex-functions" class="selection">	
 							{
 								this.state.functions.map((m, i) => { return (
-									<h4 key={m.id} id={m.id} draggable="true" onDragStart={this.drag}>FN_{i < 9 ? '0' : ''}{i + 1}</h4>
+									<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>FN_{i < 9 ? '0' : ''}{i + 1}</h4>
 								)})
 							}
 							</div>

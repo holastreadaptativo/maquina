@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { focus } from 'actions'
 
 export default class Design extends Component {
-	 constructor(props) {
-		super(props); this.state = { active:0, width:'960px' }
+	 constructor() {
+		super()
+		this.state = { active:0, width:'960px' }
 		this.setActive = this.setActive.bind(this)
 	}
     setActive(active) {
@@ -18,7 +19,7 @@ export default class Design extends Component {
 				<nav class="devices">
 				{
 					items.map((m, i) => { return (
-						<i class={focus(active == i, 'active')} onClick={() => this.setActive(i)}>{m}</i>
+						<i key={i} class={focus(active == i, 'active')} onClick={() => this.setActive(i)}>{m}</i>
 					)})
 				}
 				</nav>

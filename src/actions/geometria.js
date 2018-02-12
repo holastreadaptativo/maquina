@@ -13,8 +13,8 @@ export function generarPlanoCartesiano(canvas, state) {
     	ctx.moveTo(0, y); ctx.lineTo(state.width, y)
 	}	
 
-	ctx.strokeStyle = state.grid
-	ctx.lineWidth = 1
+	ctx.strokeStyle = state.gridColor
+	ctx.lineWidth = state.gridWidth
 
 	ctx.stroke()
 	ctx.closePath()

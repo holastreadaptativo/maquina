@@ -5,11 +5,12 @@ import $ from 'actions'
 
 export default class Functions extends Component {
 	constructor() {
-		super(); this.state = { active:5, setActive:this.setActive.bind(this), modal:false, fn:'' }
+		super()
+		this.state = { active:3, setActive:this.setActive.bind(this), modal:false, fn:'' }
 		this.handleModal = this.handleModal.bind(this)
 	}
 	componentDidMount() {
-		this.setState({ active:5 })
+		this.setState({ active:3 })
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -18,7 +19,7 @@ export default class Functions extends Component {
 		this.setState({ modal:!this.state.modal })
 	}
 	handleFunction(fn) {
-		this.setState({ fn:fn })
+		this.setState({ fn:fn, modal:!this.state.modal })
 	}
     setActive(active) {
         this.setState({ active:active })
@@ -29,7 +30,6 @@ export default class Functions extends Component {
 	}
 	render() {
         const { active, modal, setActive, fn } = this.state
-        let items = ['Plano Cartesiano', 'Ángulos']
 		return(
 			<div>
 				<div class="fn-accordion">
@@ -57,8 +57,14 @@ export default class Functions extends Component {
 					          	<a>Datos</a>
 					        </div>
 					        <div class="paragraph">
-					          	<h1>Datos</h1>
-					          	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dapibus vitae felis ac tempor. </p>
+					          	<h3>Datos</h3>
+					          	<ul>				          		
+					          	{
+					          		['Gráfico Datos'].map((m, i) => { return (
+					          			<li key={i} onClick={this.handleFunction.bind(this, m)} class="button">{m}</li>
+					          		)})
+					          	}
+					          	</ul>
 					        </div>
 					    </li>
 					    <li class={`tabs ${active == 4 ? 'active' : ''}`} onClick={() => setActive(4)}>
@@ -74,12 +80,12 @@ export default class Functions extends Component {
 					        <div class="social-links fn-geometria">
 					          	<a>Geometría</a>
 					        </div>
-					        <div class="paragraph" onClick={this.handleModal}>
+					        <div class="paragraph">
 					          	<h3>Geometría</h3>
 					          	<ul>				          		
 					          	{
-					          		items.map(i => { return (
-					          			<li key={i} onClick={this.handleFunction.bind(this, i)} class="button">{i}</li>
+					          		['Plano Cartesiano'].map((m, i) => { return (
+					          			<li key={i} onClick={this.handleFunction.bind(this, m)} class="button">{m}</li>
 					          		)})
 					          	}
 					          	</ul>
@@ -89,8 +95,8 @@ export default class Functions extends Component {
 			    </div>
 			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 				{
-					fn == items[0] ? <k.F1 add={(i) => this.addCanvas.bind(this, i)}/> : 
-					fn == items[1] ? <k.F2 add={(i) => this.addCanvas.bind(this, i)}/> : ''					
+					fn == 'Plano Cartesiano' ? <k.PlanoCartesiano add={(i) => this.addCanvas.bind(this, i)}/> : 
+					fn == 'Gráfico Datos' ? <k.GraficoDatos add={(i) => this.addCanvas.bind(this, i)}/> : ''					
 				}
 				</Modal>
 		    </div>
