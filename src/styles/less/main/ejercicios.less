@@ -43,12 +43,13 @@
 			{
 				background-color: white;
 				border: 1px solid black;
-				height: 330px;
+				min-height: 330px;
 				width: 100%;
 				margin: 0 auto;
 				transition: all .3s ease;
 				overflow: auto;
 				padding: 5px;
+				max-width: 100%;
 			}
 		}
 		.selection
@@ -253,7 +254,7 @@
 					width: 100%;
 					background-color: white;
 					min-height: 180px;
-					box-shadow: 0px 0px 20px #777;
+					border: 3px solid darken(@info-color, 20%);
 				}				
 			}
 		}

@@ -7,31 +7,31 @@ export default class GraficoDatos extends Component {
 	constructor() {
 		super()
 		this.state = { background:COLORS['background'], height:400, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'',
-			active:0, borderColor:'#006400', borderRadius:20, borderWidth:3, borderStyle:'solid', fontColor:COLORS['datos'], extra:'no', 
+			active:0, borderColor:'#006400', borderRadius:20, borderWidth:3, borderStyle:'solid', fontColor:COLORS['datos'], extra:'no', margin:'si', 
 			lineColor:'#006400', lineWidth:2, chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6', chartTags:'A, B, C', 
-			titleValue:'', titleSize:22, titleColor:'#006400'
-			
+			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:40			
 		}
 	}
 	componentDidUpdate() {
 		let canvas = this.refs.canvas
 		const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, height, width, fontColor, extra, lineColor, lineWidth,
-			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY } = this.state
+			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = this.state
 
-		canvas.width = width - 5
-		canvas.height = height - 15
+		canvas.width = width
+		canvas.height = height
 
 		let values = chartValues.split(','),
 			state = {
 			axis: { color: axisColor, scale: 'auto', title_x: axisTitleX, title_y: axisTitleY, width: axisWidth },
-            border: { color: borderColor, radius: borderRadius, width: borderWidth },
+            border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
             canvas: { color: background, ctx: canvas.getContext('2d'), height: height, width: width },
-            chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, margin: { x:70, y:90 },
+            chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, 
+            	margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 },
                 padding: { x:10, y:10 }, position: chartPosition, tags: chartTags.split(','), values: values },
             extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
             font: { align: 'center', color: fontColor, family: 'arial', size: 14 },
             line: { color: lineColor, value: 10, width: lineWidth },
-            title: { color: titleColor, size: titleSize, value: titleValue }
+            title: { color: titleColor, size: titleSize, value: titleValue, top:titleTop }
 		}
 
 		const { chart } = state
@@ -47,6 +47,9 @@ export default class GraficoDatos extends Component {
         data.cx = data.x0 + 2*chart.padding.x + data.width/data.len/2 - data.dx/2,
         data.cy = data.y0 - chart.padding.y - data.height/data.len/2 - data.dy/2,    
 
+   		data.ctx.translate(0, margin == 'si' ? 0 : 10)
+   		data.ctx.save()
+
 		datos.generarColumnas(data, state)
 		datos.generarEjes(canvas, state)
 		if (state.extra.projection) 
@@ -59,7 +62,7 @@ export default class GraficoDatos extends Component {
 	render() {
 		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, height, fontColor, fontFamily, width, axisColor, axisWidth,
 			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, 
-			extra } = this.state
+			extra, margin, titleTop } = this.state
 		let items = ['wallpaper','border_style','equalizer','call_made','title','text_fields', 'dehaze']
 		return (
 			<div class="modal-canvas modal-datos">
@@ -70,6 +73,7 @@ export default class GraficoDatos extends Component {
 						<Input id="width" default={width} prefix="width" postfix="px" update={this.setState.bind(this)} type="number"/>	
 						<Input id="height" default={height} prefix="height" postfix="px" update={this.setState.bind(this)} type="number"/>	
 						<Input id="background" default={background} update={this.setState.bind(this)} type="color"/>
+						<Select id="margin" default={margin} prefix="margin" update={this.setState.bind(this)} options={['si', 'no']}/>
 					</Item>
 					<Item id={1} active={active} title="Border">
 						<Input id="borderWidth" default={borderWidth} prefix="width" postfix="px" update={this.setState.bind(this)} type="number"/>	
@@ -93,6 +97,7 @@ export default class GraficoDatos extends Component {
 						<Input id="titleValue" default={titleValue} prefix="title" placeholder={'Título'} update={this.setState.bind(this)} type="text"/>
 						<Input id="titleSize" default={titleSize} prefix="size" postfix="px" update={this.setState.bind(this)} type="number"/>
 						<Input id="titleColor" default={titleColor} update={this.setState.bind(this)} type="color"/>
+						<Input id="titleTop" default={titleTop} prefix="top" postfix="px" update={this.setState.bind(this)} type="number"/>
 					</Item>
 					<Item id={5} active={active} title="Font">
 						<Select id="fontFamily" default={fontFamily} prefix="family" update={this.setState.bind(this)} options={['arial']}/>
@@ -113,7 +118,7 @@ export default class GraficoDatos extends Component {
 					</canvas>
 				</div>	
 				<div class="button">
-					<button onClick={this.props.add(this.refs.canvas)}>Agregar</button>
+					<button onClick={this.props.add(this.refs.canvas, this.state)}>Agregar</button>
 				</div>	
 			</div>
 		)

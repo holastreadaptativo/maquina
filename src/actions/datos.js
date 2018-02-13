@@ -26,7 +26,7 @@ export function generarEjes(canvas, state) {
 	ctx.rotate(Math.PI/2)
     ctx.fillStyle = title.color
 	ctx.font = title.size + 'px ' + font.family
-	ctx.fillText(title.value, width/2, 42) //INSERTAR TITULO
+	ctx.fillText(title.value, width/2, title.top) //INSERTAR TITULO
 
 	ctx.closePath()
 }

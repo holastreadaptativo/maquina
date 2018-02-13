@@ -79,7 +79,7 @@ export class Ejercicios extends Component {
 						</ul>
 						{ 
 							value == 0 ? <Overview code={code}/> :
-							value == 1 ? <Functions active={Math.floor(code / Math.pow(10, 11))}/> : 
+							value == 1 ? <Functions code={code} active={Math.floor(code / Math.pow(10, 11))}/> : 
 							value == 2 ? <Editor/> : '' 
 						}
 					</div>

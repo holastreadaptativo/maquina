@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import * as k from 'components'
+import { data } from 'stores'
 import $ from 'actions'
 
 export default class Functions extends Component {
@@ -24,9 +25,15 @@ export default class Functions extends Component {
     setActive(active) {
         this.setState({ active:active })
     }
-	addCanvas(canvas) {
-		new Promise((resolve) => resolve( $('ex-design').append(canvas) ) )
-		.then(() => { this.setState({ modal:false }) })
+	addCanvas(canvas, params) {
+		let container = document.createElement('div')
+		container.classList.add('col-md-12')
+		container.appendChild(canvas)
+		new Promise((resolve) => resolve( $('ex-design').append(container) ) )
+		.then(() => { 
+			data.child(`${this.props.code}/functions`).push({ function:this.state.fn, params:params, date:(new Date()).toLocaleString() })
+			this.setState({ modal:false }) 
+		})
 	}
 	render() {
         const { active, modal, setActive, fn } = this.state
@@ -95,8 +102,8 @@ export default class Functions extends Component {
 			    </div>
 			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 				{
-					fn == 'Plano Cartesiano' ? <k.PlanoCartesiano add={(i) => this.addCanvas.bind(this, i)}/> : 
-					fn == 'Gráfico Datos' ? <k.GraficoDatos add={(i) => this.addCanvas.bind(this, i)}/> : ''					
+					fn == 'Plano Cartesiano' ? <k.PlanoCartesiano add={(i, k) => this.addCanvas.bind(this, i, k)}/> : 
+					fn == 'Gráfico Datos' ? <k.GraficoDatos add={(i, k) => this.addCanvas.bind(this, i, k)}/> : ''					
 				}
 				</Modal>
 		    </div>
