@@ -7,7 +7,7 @@ export function setFormat(value) {
 			for (let j = 0; j < k.length; j++) {
 				k[j] = k[j].replace('.', '')
 			}
-			arr[i] = k.filter(n => n).join('..')
+			arr[i] = k.filter(n => n).join(' .. ')
 		}
 		aux = `[${arr.join(', ')}]`
 	}
@@ -17,7 +17,7 @@ export function setFormat(value) {
 			if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
 				arr[i] = `$${arr[i].trim()}`
 			}
-		aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ')
+		aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ').replace('*', ' * ').replace('^', ' ^ ')
 	}
 	return aux
 }
