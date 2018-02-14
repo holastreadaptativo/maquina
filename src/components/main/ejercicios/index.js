@@ -61,7 +61,7 @@ export class Ejercicios extends Component {
 					</h3>
 					<div class="row">
 						<div class="col-md-12 design">
-							<Design drop={this.drop.bind(this)} allowDrop={this.allowDrop}/>
+							<Design drop={this.drop} allowDrop={this.allowDrop}/>
 							<div id="ex-selected" class="selection selected hidden" onDrop={this.drop} onDragOver={this.allowDrop} 
 								data-text="Funcionalidades..."/>
 						</div>

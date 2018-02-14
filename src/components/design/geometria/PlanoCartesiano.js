@@ -4,11 +4,16 @@ import * as geometria from 'actions'
 import { COLORS } from 'stores'
 
 export default class PlanoCartesiano extends Component {
-	constructor() {
-		super()
-		this.state = { height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0,
-			borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2,
-			fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none'
+	constructor(props) {
+		super(props)
+		if (props.add) {
+			this.state = { height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0,
+				borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2,
+				fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none'
+			}
+		}
+		else {
+			this.state = props.params
 		}
 	}
 	componentDidUpdate() {
@@ -70,7 +75,9 @@ export default class PlanoCartesiano extends Component {
 					</canvas>
 				</div>	
 				<div class="button">
-					<button onClick={this.props.add(this.refs.canvas, this.state)}>Agregar</button>
+					<button onClick={ this.props.add ? 
+						this.props.add(this.refs.canvas, this.state) : this.props.update(this.refs.canvas, this.state)
+					}>Guardar</button>
 				</div>	
 			</div>
 		)
