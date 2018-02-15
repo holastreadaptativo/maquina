@@ -5,7 +5,6 @@ export default class Design extends Component {
 	 constructor() {
 		super()
 		this.state = { active:0, width:'960px' }
-		this.setActive = this.setActive.bind(this)
 	}
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
@@ -23,7 +22,7 @@ export default class Design extends Component {
 					)})
 				}
 				</nav>
-				<div id="ex-design" class="device canvas" style={{width:width}} onDrop={this.props.drop} onDragOver={this.props.allowDrop}/>
+				<div id="ex-design" class="device canvas" style={{width:width}}/>
 			</div>
 		)
 	}

@@ -12,7 +12,7 @@ export class Ejercicios extends Component {
 			if (!snap.hasChild('count')) {
 				data.child(this.props.code).update({ count:0 })
 			}
-		})
+		})		
 	}	
 	setClicked() {
 		this.setState({ clicked:!this.state.clicked })
@@ -22,7 +22,7 @@ export class Ejercicios extends Component {
 	}
 	render() {
 		const { value } = this.state
-		const { code } = this.props
+		const { code, variables, functions } = this.props
 		let items = [{icon:'spellcheck', text:'Ejercicio'}, {icon:'dashboard', text:'Funciones'}, {icon:'code', text:'Código'}]
 		return(
         	<div class="ejercicios">
@@ -41,7 +41,7 @@ export class Ejercicios extends Component {
 					</h3>
 					<div class="row">
 						<div class="col-md-12 design">
-							<Design/>
+							<Design code={code} variables={variables} functions={functions}/>
 						</div>
 					</div>
 
@@ -56,7 +56,7 @@ export class Ejercicios extends Component {
 							}
 						</ul>
 						{ 
-							value == 0 ? <Overview code={code}/> :
+							value == 0 ? <Overview code={code} variables={variables} functions={functions}/> :
 							value == 1 ? <Functions code={code} active={Math.floor(code / Math.pow(10, 11))}/> : 
 							value == 2 ? <Editor/> : '' 
 						}

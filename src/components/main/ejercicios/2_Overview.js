@@ -1,37 +1,16 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import $, { setFormat } from 'actions'
-import * as k from 'components'
+import { FUNCIONES } from 'components'
 import { data } from 'stores'
 
 export default class Overview extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], functions:[], modal:false, fn:'', hub:'', params:'', id:'', drag:'' }
+		this.state = { modal:false, fn:'', hub:'', params:'', id:'', drag:'' }
 		this.handleModal = this.handleModal.bind(this)
 		this.drag = this.drag.bind(this)
 		this.drop = this.drop.bind(this)
-	}
-	componentDidMount() {
-		const { code } = this.props
-		data.child(code).once('value').then(r => {
-			if (r.hasChild('variables'))
-			data.child(`${code}/variables`).orderByChild('var').on('value', snap => {
-				let variables = []
-				snap.forEach(v => {
-					variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
-					this.setState({ variables:variables })
-				})
-			})
-			if (r.hasChild('functions'))
-			data.child(`${code}/functions`).orderByChild('position').on('value', snap => {
-				let functions = []
-				snap.forEach(f => {
-					functions.push({ id:f.key, function:f.val().function, params:f.val().params, hub:f.val().hub, width:f.val().width })
-					this.setState({ functions:functions })
-				})
-			})
-		})
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -39,8 +18,29 @@ export default class Overview extends Component {
 	handleModal() {
 		this.setState({ modal:!this.state.modal })
 	}
-	handleFunction(fn, params, id) {
+	handleUpdate(fn, params, id) {
 		this.setState({ fn:fn, modal:!this.state.modal, params:params, id:id })
+	}
+	handleRemove(id) {
+		const { code } = this.props
+		if (confirm('¿Estas seguro de borrar la función?'))
+		data.child(`${code}/functions/${id}`).once('value').then(t => {
+			let i = t.val().position
+				data.child(`${code}/functions/`).once('value').then(snap => {
+	    		snap.forEach(fn => {
+	    			let f = fn.val().position
+	    			if (i < f) {
+	    				data.child(`${code}/functions/${fn.key}`).update({ position:f - 1 })
+	    			} else if (i == f) {
+	    				data.child(`${code}/functions/${fn.key}`).remove().then(() => {
+	    					data.child(code).once('value').then(c => {
+	    						data.child(this.props.code).update({ count:c.val().count - 1 })
+	    					})
+	    				})
+	    			}
+	    		})
+	    	})
+		})		
 	}
 	updateParams(canvas, params) {
 		data.child(`${this.props.code}/functions/${this.state.id}`).update({
@@ -90,7 +90,16 @@ export default class Overview extends Component {
 	    }
 	}
 	render() {
-        const { modal, fn, params, variables, functions } = this.state
+        const { modal, fn, params } = this.state
+        const { variables, functions } = this.props
+        
+        let FX = null
+        FUNCIONES.forEach(m => {
+        	m.fns.forEach(n => {
+    			if (n.id == fn) { 
+    				FX = n.component }
+    		})
+        })
         return (
 			<div class="overview">
 				<div class="col-md-3 resume">
@@ -120,22 +129,21 @@ export default class Overview extends Component {
 											<li>
 												<span>Ancho</span>&nbsp;
 												<select defaultValue={m.width} id={`select-${m.id}`} onChange={this.updateWidth.bind(this, m.id)}>
-													<option value="12">100%</option>
-													<option value="9">75%</option>
-													<option value="8">66.6%</option>
-													<option value="6">50%</option>
-													<option value="4">33.3%</option>
-													<option value="3">25%</option>
+												{
+													[ 12, 9, 8, 6, 4, 3 ].map((m, i) => { return (
+														<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
+													)})
+												}
 												</select>
 											</li>
 										</td>
-										<td style={{maxWidth:'60px'}} onClick={this.handleFunction.bind(this, m.function, m.params, m.id)}>
+										<td style={{maxWidth:'60px'}} onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}>
 											<li>
 												<span>Editar</span>&nbsp;
 												<span class="glyphicon glyphicon-pencil"/>
 											</li>
 										</td>
-										<td style={{maxWidth:'60px'}}>
+										<td style={{maxWidth:'60px'}} onClick={this.handleRemove.bind(this, m.id)}>
 											<li>
 												<span>Borrar</span>&nbsp;
 												<span class="glyphicon glyphicon-trash"/>
@@ -149,10 +157,7 @@ export default class Overview extends Component {
 					</table>
 				</div>
 			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-				{
-					fn == 'Plano Cartesiano' ? <k.PlanoCartesiano update={(i, k) => this.updateParams.bind(this, i, k)} params={params}/> : 
-					fn == 'Gráfico Datos' ? <k.GraficoDatos update={(i, k) => this.updateParams.bind(this, i, k)} params={params}/> : ''					
-				}
+					{ FX != null ? <FX update={(i, k) => this.updateParams.bind(this, i, k)} params={params}/> : '' }
 				</Modal>
 			</div>
 		)
