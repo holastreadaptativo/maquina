@@ -1,41 +1,21 @@
 import React, { Component } from 'react'
-import { render } from 'react-dom'
-import $ from 'actions'
+import { data } from 'stores'
 
 export class Ejercicios extends Component {
     constructor() {	
 		super()
-		this.state = { clicked:false, drag:'', functions:[], count:0, value:1 }
+		this.state = { clicked:false, drag:'', value:1 }
 		this.setClicked = this.setClicked.bind(this)
-		this.drag = this.drag.bind(this)
-		this.drop = this.drop.bind(this)
 	}
 	componentDidMount() {
-		let functions = []
-		for (let i = 0; i < 28; i++) { functions.push({ id:`fn-${i}` }) }
-		this.setState({ functions:functions })
+		data.child(this.props.code).once('value').then(snap => {
+			if (!snap.hasChild('count')) {
+				data.child(this.props.code).update({ count:0 })
+			}
+		})
 	}	
 	setClicked() {
 		this.setState({ clicked:!this.state.clicked })
-	}
-	allowDrop(e) {
-    	e.preventDefault()
-	}	
-	drag(e) {
-		this.setState({ drag:e.target.id })
-		e.dataTransfer.setData('text', $(e.target.id))
-	}
-	drop(e) {
-	    e.preventDefault()
-
-	    let copy = $(this.state.drag).cloneNode(true), count = this.state.count + 1
-	    copy.id = `fnx-${count}`; copy.draggable = false;
-
-	    if (!e.target.id.includes('fn')) {
-	   		$('ex-selected').appendChild( copy )
-	   		render( <span>{copy.innerText} <span class="glyphicon glyphicon-info-sign" onClick={() => alert(`abrir un modal ${copy.id}`)}/></span>, $(copy.id))
-	   		this.setState({ count:count })
-	    }
 	}
 	handleChange(value) {
 		this.setState({ value:value })
@@ -61,9 +41,7 @@ export class Ejercicios extends Component {
 					</h3>
 					<div class="row">
 						<div class="col-md-12 design">
-							<Design drop={this.drop} allowDrop={this.allowDrop}/>
-							<div id="ex-selected" class="selection selected hidden" onDrop={this.drop} onDragOver={this.allowDrop} 
-								data-text="Funcionalidades..."/>
+							<Design/>
 						</div>
 					</div>
 
@@ -82,19 +60,6 @@ export class Ejercicios extends Component {
 							value == 1 ? <Functions code={code} active={Math.floor(code / Math.pow(10, 11))}/> : 
 							value == 2 ? <Editor/> : '' 
 						}
-					</div>
-
-					<div class="row hidden">
-						<div class="col-md-12 fn">
-							<h5><b>Funcionalidades:</b></h5>
-							<div id="ex-functions" class="selection">	
-							{
-								this.state.functions.map((m, i) => { return (
-									<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>FN_{i < 9 ? '0' : ''}{i + 1}</h4>
-								)})
-							}
-							</div>
-						</div>	
 					</div>
         		</div>
         	</div>

@@ -73,3 +73,24 @@ export function focus(bool, active) {
 export * from './variables'
 export * from './geometria'
 export * from './datos'
+
+
+export function    allowDrop(e) {
+        e.preventDefault()
+    }   
+export function    drag(e) {
+        this.setState({ drag:e.target.id })
+        e.dataTransfer.setData('text', $(e.target.id))
+    }
+export function    drop(e) {
+        e.preventDefault()
+
+        let copy = $(this.state.drag).cloneNode(true), count = this.state.count + 1
+        copy.id = `fnx-${count}`; copy.draggable = false;
+
+        if (!e.target.id.includes('fn')) {
+            $('ex-selected').appendChild( copy )
+            render( <span>{copy.innerText} <span class="glyphicon glyphicon-info-sign" onClick={() => alert(`abrir un modal ${copy.id}`)}/></span>, $(copy.id))
+            this.setState({ count:count })
+        }
+    }
