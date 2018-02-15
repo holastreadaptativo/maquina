@@ -4,7 +4,7 @@ import { focus } from 'actions'
 
 export default class Header extends Component {
    render() {
-        const { active, setActive } = this.props
+        const { active, setActive, code } = this.props
         let items = [ 
             { path:'/', icon:'home', text:'Buscador' }, 
             { path:'/variables', icon:'th', text:'Variables' }, 
@@ -21,6 +21,9 @@ export default class Header extends Component {
                     <h5>Máquina de Ejercicios
                         <span class="glyphicon glyphicon-education"/>
                     </h5>
+                </div>
+                <div class="code">
+                    <h5>ID: {code}</h5>
                 </div>
                 <nav>
                     <ul>

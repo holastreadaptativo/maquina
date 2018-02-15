@@ -14,14 +14,8 @@ export default class Editor extends Component {
 	handleDrag(width) {
 		const { b1, b2, w2, w3, wx } = this.state, 
 			w = $('editor').clientWidth
-		let e1 = width, ex = w - width, 
-			e2 = !b2 ? (w - width)/2 : ex / wx * w2,
-			e3 = !b2 ? (w - width)/2 : ex / wx * w3
-			if (e3 <= 120) {
-				e2 = ex - 120; e3 = 120
-			} else if (e2 <= 120) {
-				e3 = ex - 120; e2 = 120
-			}
+		let e1 = width, ex = w - width, e2 = !b2 ? (w - width)/2 : ex / wx * w2, e3 = !b2 ? (w - width)/2 : ex / wx * w3
+			if (e3 <= 120) { e2 = ex - 120; e3 = 120 } else if (e2 <= 120) { e3 = ex - 120; e2 = 120 }
 
 		if(!b1) this.setState({ b1:true })
 		this.setState({ w1:e1, wx:ex, w2:e2, w3:e3 })
@@ -29,6 +23,7 @@ export default class Editor extends Component {
 	handleDrop(width) {
 		const { b1, b2, wx } = this.state
 		let w = $('editor').clientWidth
+		
 		if(!b1) this.setState({ w1:w/3, w2:width, w3:(2*w/3 - width) })
 		else this.setState({ w2:width, w3:(wx - width) })
 		if(!b2) this.setState({ b2:true })

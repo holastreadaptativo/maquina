@@ -43,12 +43,13 @@
 			{
 				background-color: white;
 				border: 1px solid black;
-				height: 330px;
+				min-height: 330px;
 				width: 100%;
 				margin: 0 auto;
 				transition: all .3s ease;
 				overflow: auto;
 				padding: 5px;
+				max-width: 100%;
 			}
 		}
 		.selection
@@ -210,6 +211,124 @@
 				{
 					border-bottom-color: @sec-color;
 				}
+			}
+		}
+		.overview
+		{
+			background: @bar-color; 
+			height: auto; 
+			width: 97%;
+			color: white;
+			padding: 20px 20px 30px;
+			overflow-y: auto;
+			.resume
+			{
+				h5
+				{
+					b
+					{
+						span
+						{
+							font-size: 11px;
+							text-transform: uppercase;
+						}
+					}
+					padding-bottom: 10px;
+				}
+				.subtitle
+				{
+					margin-bottom: 20px;
+				}
+				ul
+				{
+					border: 3px solid darken(@info-color, 20%);
+					h6
+					{
+						margin: 0px;
+						padding: 3px 10px; 
+						background-color: darken(@bar-color, 5%);
+						color: white;
+						border-top: 2px solid lighten(@bar-color, 5%);
+						border-bottom: 2px solid lighten(@bar-color, 5%);
+					}
+				}
+			}
+			.functions 
+			{	
+				.subtitle
+				{
+					margin-bottom: 20px;
+				}
+				.table
+				{
+					background-color: white;
+					border: 3px solid darken(@info-color, 20%);
+					tr
+					{
+						color: white;
+						font-size: 13px;
+					    &[draggable="true"]
+						{
+							cursor: move;
+						    cursor: grab;
+						    cursor: -moz-grab;
+						    cursor: -webkit-grab;
+							&:hover
+							{
+								background-color: @bar-color;
+							}
+						    &:active 
+						    { 
+							    cursor: grabbing;
+							    cursor: -moz-grabbing;
+							    cursor: -webkit-grabbing;
+							    background-color: darken(@sec-hover, 10%);
+							}
+						}
+						&.datos
+						{
+							background-color: @color-datos;							
+						}
+						&.geometria
+						{
+							background-color: @color-geometria;
+						}
+						td
+						{
+							text-align: left;
+							
+							li
+							{
+								cursor: pointer;
+								display: inline-block;
+								padding: 3px 5px;
+								margin: 0;
+								select
+								{
+									background: transparent;
+									cursor: pointer;
+									display: inline;
+									margin-left: 3px;
+								}
+								option
+								{
+									background-color: @bar-color;
+								}
+								span
+								{
+									display: inline;
+									margin-left: 3px;
+								}
+							}
+							h6
+							{
+								padding: 6px 3px;
+								display: inline-block;
+								margin: 0;
+							}
+						}
+					}
+				}				
 			}
 		}
 	}

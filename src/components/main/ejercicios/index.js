@@ -42,6 +42,7 @@ export class Ejercicios extends Component {
 	}
 	render() {
 		const { value } = this.state
+		const { code } = this.props
 		let items = [{icon:'spellcheck', text:'Ejercicio'}, {icon:'dashboard', text:'Funciones'}, {icon:'code', text:'Código'}]
 		return(
         	<div class="ejercicios">
@@ -60,7 +61,7 @@ export class Ejercicios extends Component {
 					</h3>
 					<div class="row">
 						<div class="col-md-12 design">
-							<Design drop={this.drop.bind(this)} allowDrop={this.allowDrop}/>
+							<Design drop={this.drop} allowDrop={this.allowDrop}/>
 							<div id="ex-selected" class="selection selected hidden" onDrop={this.drop} onDragOver={this.allowDrop} 
 								data-text="Funcionalidades..."/>
 						</div>
@@ -77,8 +78,8 @@ export class Ejercicios extends Component {
 							}
 						</ul>
 						{ 
-							value == 0 ? <div style={{background:'#1e1f40', height:'275px', width:'97%', color:'white', padding:'65px 10px'}}>Variables</div> :
-							value == 1 ? <Functions active={Math.floor(this.props.code / Math.pow(10, 11))}/> : 
+							value == 0 ? <Overview code={code}/> :
+							value == 1 ? <Functions code={code} active={Math.floor(code / Math.pow(10, 11))}/> : 
 							value == 2 ? <Editor/> : '' 
 						}
 					</div>
@@ -104,3 +105,4 @@ export class Ejercicios extends Component {
 import Design from './2_Design'
 import Functions from './2_Functions'
 import Editor from './2_Editor'
+import Overview from './2_Overview'
