@@ -11,6 +11,7 @@ export default class Design extends Component {
     }
 	render() {
 		const { active, width } = this.state
+		const { functions } = this.props
 		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']
 		return (
 			<div>
@@ -22,7 +23,15 @@ export default class Design extends Component {
 					)})
 				}
 				</nav>
-				<div id="ex-design" class="device canvas" style={{width:width}}/>
+				<div id="ex-design" class="device canvas" style={{width:width}}>
+				{
+					functions.map((m, i) => { return (
+						<div key={i} class={`col-md-${m.width} div-${m.hub}`} style={{ height:200, border:'3px solid white' }}>
+
+						</div>
+					)})
+				}
+				</div>
 			</div>
 		)
 	}

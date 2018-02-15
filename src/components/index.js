@@ -33,7 +33,8 @@ export class App extends Component {
 			data.child(`${code}/functions`).orderByChild('position').on('value', snap => {
 				let functions = []
 				snap.forEach(f => {
-					functions.push({ id:f.key, function:f.val().function, params:f.val().params, hub:f.val().hub, width:f.val().width })
+					functions.push({ id:f.key, function:f.val().function, params:f.val().params, hub:f.val().hub, 
+						width:f.val().width, position:f.val().position })
 					this.setState({ functions:functions })
 				})
 			})
