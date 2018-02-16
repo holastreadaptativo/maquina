@@ -5,13 +5,13 @@ export default class Design extends Component {
 	 constructor() {
 		super()
 		this.state = { active:0, width:'960px' }
-		this.setActive = this.setActive.bind(this)
 	}
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
     }
 	render() {
 		const { active, width } = this.state
+		const { functions } = this.props
 		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']
 		return (
 			<div>
@@ -23,7 +23,13 @@ export default class Design extends Component {
 					)})
 				}
 				</nav>
-				<div id="ex-design" class="device canvas" style={{width:width}} onDrop={this.props.drop} onDragOver={this.props.allowDrop}/>
+				<div id="ex-design" class="device canvas" style={{width:width}}>
+				{
+					functions.map((m, i) => { return (
+						<div key={i} class={`col-md-${m.width} col-sm-6 div-${m.hub}`} style={{ height:160, border:'3px solid white' }}/>
+					)})
+				}
+				</div>
 			</div>
 		)
 	}
