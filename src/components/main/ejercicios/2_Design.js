@@ -26,9 +26,7 @@ export default class Design extends Component {
 				<div id="ex-design" class="device canvas" style={{width:width}}>
 				{
 					functions.map((m, i) => { return (
-						<div key={i} class={`col-md-${m.width} div-${m.hub}`} style={{ height:200, border:'3px solid white' }}>
-
-						</div>
+						<div key={i} class={`col-md-${m.width} col-sm-6 div-${m.hub}`} style={{ height:160, border:'3px solid white' }}/>
 					)})
 				}
 				</div>

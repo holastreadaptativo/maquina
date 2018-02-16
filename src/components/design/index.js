@@ -1,8 +1,14 @@
 import * as geometria from './geometria'
 import * as datos from './datos'
+import * as general from './general'
 
 export const FUNCIONES = 
-[
+[	
+	{ 
+		name:'General', tag:'general', fns:[
+			{ id:'Insertar Texto', component:general.InsertarTexto }
+		]
+	},
 	{ 
 		name:'Numeración', tag:'numeracion', fns:[]
 	},

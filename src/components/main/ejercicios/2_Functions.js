@@ -7,7 +7,7 @@ import { data } from 'stores'
 export default class Functions extends Component {
 	constructor() {
 		super()
-		this.state = { active:4, setActive:this.setActive.bind(this), fn:'', modal:false, hub:'' }
+		this.state = { active:0, setActive:this.setActive.bind(this), fn:'', modal:false, hub:'' }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -21,11 +21,12 @@ export default class Functions extends Component {
     setActive(active) {
     	let hub = ''
     	switch (active) {
-    		case 0: { hub = 'numeracion'; break; }
-    		case 1: { hub = 'algebra'; break; }
-    		case 2: { hub = 'medicion'; break; }
-    		case 3: { hub = 'geometria'; break; }
-    		case 4: { hub = 'datos'; break; }
+    		case 0: { hub = 'general'; break; }
+    		case 1: { hub = 'numeracion'; break; }
+    		case 2: { hub = 'algebra'; break; }
+    		case 3: { hub = 'medicion'; break; }
+    		case 4: { hub = 'geometria'; break; }
+    		case 5: { hub = 'datos'; break; }
     	}
         this.setState({ active:active, hub:hub })
     }
