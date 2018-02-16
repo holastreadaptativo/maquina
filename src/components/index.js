@@ -55,9 +55,9 @@ export class App extends Component {
     	return (
       		<div class="react-app">
       			<Header {...this.state}/>
-
-      			{ React.cloneElement( this.props.children, {...this.state} )}
-
+      			{ 
+      				React.cloneElement( this.props.children, {...this.state} )
+      			}
       		</div>
     	)
   	}	
