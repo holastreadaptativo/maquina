@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { focus } from 'actions'
 
 export default class Design extends Component {
-	 constructor() {
+	constructor() {
 		super()
 		this.state = { active:0, width:'960px' }
 	}
