@@ -258,6 +258,24 @@
 		  		background: @color-datos;
 		  	}
 		}
+		&.fn-general 
+		{
+			a 
+		  	{
+		  		&:before, &:after 
+		    	{
+		      		content: '\f308';
+		    	}
+		    	&:after 
+		    	{
+		    		background: @color-general;
+		    	}
+		  	}
+		  	& + .paragraph ul li 
+		  	{
+		  		background: @color-general;
+		  	}
+		}
 	}
 }
 

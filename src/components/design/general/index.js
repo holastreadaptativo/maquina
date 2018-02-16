@@ -1,0 +1,1 @@
+export InsertarTexto from './InsertarTexto'
