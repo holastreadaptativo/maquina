@@ -5,7 +5,15 @@ import Functions from './Functions'
 export class Respuestas extends Component {
 	constructor() {
 		super()
-		this.state = { clicked:false, active:0, width:'960px', value:1, modal:false }
+		this.state = {
+			clicked:false,
+			active:0,
+			width:'960px',
+			value:1,
+			modal:false,
+			option: 0,
+			btnsResp: ['Input', 'ComboBox', 'Radio Button', 'Texto', 'Imagen']
+		}
 		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
 		this.handleModal = this.handleModal.bind(this)
@@ -23,34 +31,19 @@ export class Respuestas extends Component {
 		this.setState({ value:value })
 	}
 
-	onBtnRespClicked(el) {
-		switch (el) {
-			case 'Input':
-				console.log('es el input')
-				break;
-			case 'ComboBox':
-				console.log('es el combo')
-				break;
-			case 'Radio Button':
-				console.log('es el Radio Button')
-				break;
-			case 'Texto':
-				console.log('es el Texto')
-				break;
-			case 'Imagen':
-				console.log('es el Imagen')
-				break;
-		}
-	}
-
 	handleModal() {
 		this.setState({ modal:!this.state.modal })
+	}
+	setOption(option) {
+		this.setState({
+			option: option, 
+			modal:!this.state.modal,
+		})
 	}
 	
 	
 	render() {
-		const { active, width, value, modal } = this.state
-		let btnsResp = ['Input', 'ComboBox', 'Radio Button', 'Texto', 'Imagen'] 
+		const { active, width, value, modal, option, btnsResp } = this.state
         return(
         	<div class="main-container ejercicios respuestas">
         		<div class="container">
@@ -102,8 +95,8 @@ export class Respuestas extends Component {
 												<legend>Agregar</legend>
 												<div class="button-opt-resp">
 													{
-														btnsResp.map((el,index) => {
-															return <button onClick={this.handleModal} type="button" key={index} class="btn btn-default">{el}</button>
+														this.state.btnsResp.map((el,index) => {
+															return <button onClick={this.setOption.bind(this,el)} type="button" /*compArr={btnsResp}*/ key={index} class="btn btn-default">{el}</button>
 														})
 													}
 												</div>
@@ -120,7 +113,7 @@ export class Respuestas extends Component {
 							</div>	
         		</div>
 						<Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-							<Functions />
+							<Functions option={option}/>
 						</Modal>
         	</div>
         )
