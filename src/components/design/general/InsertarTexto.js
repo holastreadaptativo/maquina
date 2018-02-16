@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
-export default class InsertRTexto extends Component {
+export default class InsertTexto extends Component {
 	render() {
 		return (
-			<div></div>
+			<div>
+				HOLA MUNDO
+			</div>
 		)
 	}
 }

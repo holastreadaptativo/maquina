@@ -123,9 +123,16 @@ export default class Overview extends Component {
 							functions.map((m, i) => {
 								return (
 									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.hub} onDrop={this.drop} onDragOver={this.allowDrop} draggable="true" onDragStart={this.drag}>
-										<td id={`${m.id}-/${i}-/e`} style={{maxWidth:'20px'}}><h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6></td>
-										<td id={`${m.id}-/${i}-/o`}><h6 id={`${m.id}-/${i}-/u`}>{m.function}</h6></td>
-										<td style={{maxWidth:'80px'}}>
+										<td id={`${m.id}-/${i}-/e`} style={{maxWidth:'20px'}}>
+											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
+										</td>
+										<td id={`${m.id}-/${i}-/x`} style={{maxWidth:'30px'}}>
+											<h6 id={`${m.id}-/${i}-/y`}>{m.id.substring(3, 7)}</h6>
+										</td>
+										<td id={`${m.id}-/${i}-/o`}>
+											<h6 id={`${m.id}-/${i}-/u`}>{m.function}</h6>
+										</td>
+										<td style={{maxWidth:'55px'}}>
 											<li>
 												<span>Ancho</span>&nbsp;
 												<select defaultValue={m.width} id={`select-${m.id}`} onChange={this.updateWidth.bind(this, m.id)}>
@@ -137,15 +144,15 @@ export default class Overview extends Component {
 												</select>
 											</li>
 										</td>
-										<td style={{maxWidth:'60px'}} onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}>
+										<td style={{maxWidth:'20px'}} onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}>
 											<li>
-												<span>Editar</span>&nbsp;
+												<span class="hidden">Editar</span>&nbsp;
 												<span class="glyphicon glyphicon-pencil"/>
 											</li>
 										</td>
-										<td style={{maxWidth:'60px'}} onClick={this.handleRemove.bind(this, m.id)}>
+										<td style={{maxWidth:'20px'}} onClick={this.handleRemove.bind(this, m.id)}>
 											<li>
-												<span>Borrar</span>&nbsp;
+												<span class="hidden">Borrar</span>&nbsp;
 												<span class="glyphicon glyphicon-trash"/>
 											</li>
 										</td>
