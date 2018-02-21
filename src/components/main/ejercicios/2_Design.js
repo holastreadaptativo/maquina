@@ -5,14 +5,14 @@ import $, { focus } from 'actions'
 export default class Design extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, width:'960px' }
+		this.state = { active:0, width:960 }
 	}
 	componentDidMount() {
 		this.print()
 	}
 	componentDidUpdate() {
-		for (let i = 0; i < 60; i++)
-			setTimeout(() => this.print(), i * 5)
+		for (let i = 0; i < 10; i++)
+			setTimeout(() => this.print(), i * 30)
 	}
 	print() {
 		this.props.functions.forEach((m, i) => {
