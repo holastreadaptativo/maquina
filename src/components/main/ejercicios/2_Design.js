@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-//import { FUNCIONES } from 'components'
-import { focus } from 'actions'
+import { FUNCIONES } from 'components'
+import $, { focus } from 'actions'
 
 export default class Design extends Component {
 	constructor() {
@@ -8,10 +8,12 @@ export default class Design extends Component {
 		this.state = { active:0, width:'960px' }
 	}
 	componentDidUpdate() {
-		//this.props.functions.forEach(m => {
-		//	let i = FUNCIONES.findIndex(x => x.tag == m.tag)
-		//	let j = FUNCIONES[i].findIndex(x => x.name == m.function)
-		//}) 
+		this.props.functions.forEach((m, i) => {
+			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
+			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+			if (m.tag != 'general')
+				FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params)
+		}) 
 	}
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? 960 : active == 1 ? 768 : 320 })
@@ -50,8 +52,8 @@ export default class Design extends Component {
 								: ''
 							}
 							{
-								m.tag == 'datos' ? 
-								<canvas ref={`canvas${i}`} width="250px" height="140px" onClick={() => alert('coño-verga ' + i)}></canvas> : ''
+								m.tag != 'general' ? 
+								<canvas id={`canvas-${i}`} width="250px" height="140px" onClick={() => alert('coño-verga ' + i)}></canvas> : ''
 							}
 						</div>
 					)})
