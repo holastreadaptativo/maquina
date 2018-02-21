@@ -20,30 +20,32 @@ export class App extends Component {
 	  			})
 	  		}
 		})
-		data.child(code).once('value').then(r => {
+		data.child(code).on('value', r => {
 			if (r.hasChild('variables'))
-			data.child(`${code}/variables`).orderByChild('var').on('value', snap => {
-				let variables = []
-				snap.forEach(v => {
-					variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
-					this.setState({ variables:variables })
+				data.child(`${code}/variables`).orderByChild('var').once('value').then(snap => {
+					let variables = []
+					snap.forEach(v => {
+						variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
+						this.setState({ variables:variables })
+					})
 				})
-			})
+			else 
+				this.setState({ variables:[] })
 			if (r.hasChild('functions'))
-			data.child(`${code}/functions`).orderByChild('position').on('value', snap => {
-				let functions = []
-				snap.forEach(f => {
-					functions.push({ id:f.key, function:f.val().function, params:f.val().params, hub:f.val().hub, 
-						width:f.val().width, position:f.val().position })
-					this.setState({ functions:functions })
+				data.child(`${code}/functions`).orderByChild('position').once('value').then(snap => {
+					let functions = []
+					snap.forEach(f => {
+						functions.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
+							width:f.val().width, position:f.val().position })
+						this.setState({ functions:functions })
+					})
 				})
-			})
+			else 
+				this.setState({ functions:[] })
 		})
 	}
 	componentWillUnmount() {
-		const { code } = this.state
-		data.child(`${code}/variables`).off()
-		data.child(`${code}/functions`).off()
+		data.child(this.state.code).off()
 	}
 	setCode(code) {
 		this.setState({ code:code })

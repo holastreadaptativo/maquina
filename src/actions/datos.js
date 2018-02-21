@@ -1,4 +1,49 @@
-export function generarEjes(canvas, state) {
+export function graficoDatos(canvas, config) 
+{
+    const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, height, width, fontColor, extra, lineColor, lineWidth,
+        chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
+
+    canvas.width = width
+    canvas.height = height
+
+    let values = chartValues.split(','),
+        state = {
+        axis: { color: axisColor, scale: 'auto', title_x: axisTitleX, title_y: axisTitleY, width: axisWidth },
+        border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
+        canvas: { color: background, ctx: canvas.getContext('2d'), height: height, width: width },
+        chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, 
+            margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 },
+            padding: { x:10, y:10 }, position: chartPosition, tags: chartTags.split(','), values: values },
+        extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
+        font: { align: 'center', color: fontColor, family: 'arial', size: 14 },
+        line: { color: lineColor, value: 10, width: lineWidth },
+        title: { color: titleColor, size: titleSize, value: titleValue, top:titleTop }
+    }
+
+    const { chart } = state
+    const { x, y } = chart.margin
+
+    let data = {
+        ctx: canvas.getContext('2d'), height: height - 2*y, len: chart.length, 
+        max: Math.max(...chart.values), width: width - 2*(x + 10), x0: x, y0: height - y,
+        dx: Math.min(Math.floor((width - 2*(x + 10))/(3/2*chart.length)), 100),
+        dy: Math.min(Math.floor((height - 2*(y - 5))/(4/3*chart.length)), 60)
+    }
+
+    data.cx = data.x0 + 2*chart.padding.x + data.width/data.len/2 - data.dx/2,
+    data.cy = data.y0 - chart.padding.y - data.height/data.len/2 - data.dy/2,    
+
+    data.ctx.translate(0, margin == 'si' ? 0 : 10)
+    data.ctx.save()
+
+    generarColumnas(data, state)
+    generarEjes(canvas, state)
+    if (state.extra.projection) 
+        proyectarColumnas(data, state)
+    insertarTextos(data, state)
+}
+
+function generarEjes(canvas, state) {
 
 	let ctx = canvas.getContext('2d')
 
@@ -30,7 +75,7 @@ export function generarEjes(canvas, state) {
 
 	ctx.closePath()
 }
-export function generarColumnas(data, state) {
+function generarColumnas(data, state) {
 
     const { canvas, chart } = state
     const { dx, dy, height, len, max, width, x0, y0 } = data
@@ -68,7 +113,7 @@ export function generarColumnas(data, state) {
     ctx.stroke()
     ctx.closePath()
 }
-export function proyectarColumnas(data, state) {
+function proyectarColumnas(data, state) {
 
     const { chart, line } = state
     const { ctx, height, len, max, width, x0, y0 } = data
@@ -97,7 +142,7 @@ export function proyectarColumnas(data, state) {
     ctx.stroke()
     ctx.closePath()
 }
-export function insertarTextos(data, state) {
+function insertarTextos(data, state) {
 
     const { chart, font } = state
     const { ctx, dx, dy, height, len, max, width, x0, y0 } = data
