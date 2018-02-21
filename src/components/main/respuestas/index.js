@@ -37,13 +37,13 @@ export class Respuestas extends Component {
 	setOption(option) {
 		this.setState({
 			option: option, 
-			modal:!this.state.modal,
+			modal:!this.state.modal
 		})
 	}
 	
 	
 	render() {
-		const { active, width, value, modal, option, btnsResp } = this.state
+		const { active, width, value, modal, option } = this.state
         return(
         	<div class="main-container ejercicios respuestas">
         		<div class="container">
