@@ -20,7 +20,7 @@ export class Descargas extends Component {
 		const { radius, color, x, y } = this.state
         return(
         	<div class="descargas" onMouseMove={this.onMouseMove.bind(this)}>
-        		<div class="container">
+        		<div class="hidden">
 					<h3 class="hidden">Descargar archivos
 						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
 							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
@@ -39,7 +39,37 @@ export class Descargas extends Component {
 						<button class="b hidden" onClick={this.changeRadius.bind(this, 0.9)}><span class="glyphicon glyphicon-minus"/></button>
 					</div>
         		</div>
+        		<EditorConvertToHTML/>
         	</div>
         )
     }
+}
+
+import { EditorState, convertToRaw, ContentState } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import draftToHtml from 'draftjs-to-html'
+import htmlToDraft from 'html-to-draftjs'
+
+class EditorConvertToHTML extends Component {
+  state = {
+    editorState: EditorState.createEmpty()
+  }
+
+  onEditorStateChange: Function = (editorState) => {
+    this.setState({
+      editorState
+    })
+  }
+
+  render() {
+    const { editorState } = this.state;
+    return (
+      	<div>
+	        <Editor editorState={editorState} wrapperClassName="demo-wrapper" editorClassName="demo-editor"
+	          onEditorStateChange={this.onEditorStateChange}
+	        />
+        	<textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="hidden"/>
+      </div>
+    )
+  }
 }
