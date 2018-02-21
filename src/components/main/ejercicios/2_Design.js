@@ -12,7 +12,7 @@ export default class Design extends Component {
 	}
 	componentDidUpdate() {
 		for (let i = 0; i < 60; i++)
-			setTimeout(() => this.print(), i*5)
+			setTimeout(() => this.print(), i * 5)
 	}
 	print() {
 		this.props.functions.forEach((m, i) => {

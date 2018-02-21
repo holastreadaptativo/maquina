@@ -1,0 +1,196 @@
+{
+  "data" : {
+    "000000000000000" : {
+      "advanced" : false,
+      "count" : 2,
+      "functions" : {
+        "-L5t6yyWuVEU7FM737nN" : {
+          "date" : "21/2/2018 13:08:54",
+          "function" : "Insertar Texto",
+          "params" : {
+            "active" : 0,
+            "background" : "#ffffff",
+            "borderColor" : "#cccccc",
+            "borderRadius" : 20,
+            "borderStyle" : "solid",
+            "borderWidth" : 3,
+            "textValue" : "Insertar texto.."
+          },
+          "position" : 0,
+          "tag" : "general",
+          "width" : "12"
+        },
+        "-L5tNmyP-sDq5xgJ7xVG" : {
+          "date" : "21/2/2018 15:27:34",
+          "function" : "Gráfico Datos",
+          "params" : {
+            "active" : 0,
+            "axisColor" : "#549c02",
+            "axisTitleX" : "",
+            "axisTitleY" : "",
+            "axisWidth" : 2,
+            "background" : "#ffffff",
+            "borderColor" : "#006400",
+            "borderRadius" : 20,
+            "borderStyle" : "solid",
+            "borderWidth" : 3,
+            "chartColor" : "#549c02",
+            "chartPosition" : "horizontal",
+            "chartTags" : "A, B, C, D, E, F",
+            "chartValues" : "7, 5, 6, 10, 8, 4",
+            "extra" : "proyeccion",
+            "fontColor" : "#549c02",
+            "height" : 400,
+            "lineColor" : "#006400",
+            "lineWidth" : 2,
+            "margin" : "no",
+            "titleColor" : "#006400",
+            "titleSize" : 22,
+            "titleTop" : "30",
+            "titleValue" : "buena",
+            "width" : "520"
+          },
+          "position" : 1,
+          "tag" : "datos",
+          "width" : "12"
+        }
+      },
+      "jsvars" : "",
+      "variables" : {
+        "-L06Cjfpn-IhOgX6z_5h" : {
+          "res" : "",
+          "type" : "funcion",
+          "val" : "c",
+          "var" : "a",
+          "vt" : "3"
+        },
+        "-L06DDQxZnS2bbi8Mec0" : {
+          "res" : "",
+          "type" : "funcion",
+          "val" : "a + 2",
+          "var" : "b",
+          "vt" : "4"
+        },
+        "-L0F7ZC9lF8z00pcmk29" : {
+          "res" : "",
+          "type" : "funcion",
+          "val" : "-d",
+          "var" : "c",
+          "vt" : "3"
+        },
+        "-L0G0n773HI518DgCvkf" : {
+          "res" : "",
+          "type" : "numero",
+          "val" : "1,2,3",
+          "var" : "d",
+          "vt" : "5"
+        },
+        "-L0pU-xefY5h8qFQsJp8" : {
+          "res" : "",
+          "type" : "numero",
+          "val" : "2",
+          "var" : "e",
+          "vt" : "4"
+        },
+        "-L0pVCAaB-aK6dMjvzjv" : {
+          "res" : "",
+          "type" : "numero",
+          "val" : "1..5",
+          "var" : "f",
+          "vt" : "3"
+        },
+        "-L0pZyL21PuLZU-UOTob" : {
+          "type" : "funcion",
+          "val" : "a + 5*a^2",
+          "var" : "h",
+          "vt" : "5"
+        },
+        "-L592vKne94OHie7Cqtx" : {
+          "type" : "numero",
+          "val" : "8..20",
+          "var" : "x",
+          "vt" : "10"
+        },
+        "-L593ahkeA-4DeHfcqWj" : {
+          "res" : "y > x",
+          "type" : "funcion",
+          "val" : "x + 5",
+          "var" : "y",
+          "vt" : "15"
+        }
+      }
+    },
+    "123456789012345" : {
+      "advanced" : false,
+      "variables" : {
+        "-L-llSkvY5XIc-A0bUuC" : {
+          "type" : "numero",
+          "val" : "1..3, 5..101, 200..900",
+          "var" : "a",
+          "vt" : "2"
+        },
+        "-L-lncr8PnAULsAWAB2U" : {
+          "res" : "",
+          "type" : "funcion",
+          "val" : "a - 2*b+x/3",
+          "var" : "c",
+          "vt" : "1"
+        },
+        "-L-lpX5CYfZvraqL-WJc" : {
+          "type" : "texto",
+          "val" : "gato, perro",
+          "var" : "b",
+          "vt" : "1"
+        },
+        "-L-m73FXtGc9lPkPfaVk" : {
+          "res" : "d < a",
+          "type" : "numero",
+          "val" : "1",
+          "var" : "d",
+          "vt" : "1"
+        },
+        "-L-mMVE-OZqehakArzl3" : {
+          "res" : "e <= 100",
+          "type" : "funcion",
+          "val" : "a+b-c + 1",
+          "var" : "e",
+          "vt" : "2"
+        },
+        "-L05sxd3PkT-f9CS-2tA" : {
+          "res" : "f + e < 15",
+          "type" : "funcion",
+          "val" : "a",
+          "var" : "f",
+          "vt" : "3"
+        },
+        "-L05zMsS5NZpKs7C_ghy" : {
+          "res" : "",
+          "type" : "numero",
+          "val" : "1",
+          "var" : "g",
+          "vt" : "4"
+        },
+        "-L06Jt7EmPl7VQmNwb14" : {
+          "res" : "",
+          "type" : "numero",
+          "val" : "1, 2, 3",
+          "var" : "h",
+          "vt" : "2"
+        },
+        "-L1OBORFNznU3yrTSDin" : {
+          "type" : "numero",
+          "val" : "1",
+          "var" : "x",
+          "vt" : "1"
+        }
+      }
+    }
+  },
+  "users" : {
+    "Z5Tr88kSw2aLtCTPiqJ39idWqxG3" : {
+      "email" : "mgtapia@uc.cl",
+      "fn" : "Matías",
+      "ln" : "Tapia"
+    }
+  }
+}
