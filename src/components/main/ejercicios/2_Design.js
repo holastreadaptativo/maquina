@@ -7,13 +7,20 @@ export default class Design extends Component {
 		super()
 		this.state = { active:0, width:'960px' }
 	}
+	componentDidMount() {
+		this.print()
+	}
 	componentDidUpdate() {
+		for (let i = 0; i < 60; i++)
+			setTimeout(() => this.print(), i*5)
+	}
+	print() {
 		this.props.functions.forEach((m, i) => {
 			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 			if (m.tag != 'general')
 				FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params)
-		}) 
+		}) 		
 	}
     setActive(active) {
         this.setState({ active:active, width:active == 0 ? 960 : active == 1 ? 768 : 320 })
@@ -37,24 +44,10 @@ export default class Design extends Component {
 				{
 					functions.map((m, i) => { return (
 						<div key={i} class={`col-md-${phone ? 12 : tablet ? 6 : m.width} col-sm-6 div-${m.tag} tags`}>
-							{
-								m.tag == 'general' ? 
-									<div>
-										<br/><br/>
-										{m.function}
-										<br/>
-										<i>star</i>
-										<i>star</i>
-										<i>star</i>
-										<i>star</i>
-										<i>star</i>
-									</div>
-								: ''
-							}
-							{
-								m.tag != 'general' ? 
-								<canvas id={`canvas-${i}`} width="250px" height="140px" onClick={() => alert('coño-verga ' + i)}></canvas> : ''
-							}
+						{
+							m.tag != 'general' ? 
+							<canvas id={`canvas-${i}`} style={{background:m.params.background}}></canvas> : ''
+						}
 						</div>
 					)})
 				}
