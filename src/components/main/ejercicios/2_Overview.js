@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
+import $, { setFormat, show } from 'actions'
 import { Modal } from 'react-bootstrap'
-import $, { setFormat } from 'actions'
 import { FUNCIONES } from 'components'
 import { data } from 'stores'
 
 export default class Overview extends Component {
 	constructor() {
 		super()
-		this.state = { modal:false, fn:'', hub:'', params:'', id:'', drag:'' }
+		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'' }
 		this.handleModal = this.handleModal.bind(this)
 		this.drag = this.drag.bind(this)
 		this.drop = this.drop.bind(this)
@@ -29,7 +29,7 @@ export default class Overview extends Component {
 				data.child(`${code}/functions/`).once('value').then(snap => {
 	    		snap.forEach(fn => {
 	    			let f = fn.val().position
-	    			if (i < f) {
+	    			if (i < f && this.props.functions.length > 0) {
 	    				data.child(`${code}/functions/${fn.key}`).update({ position:f - 1 })
 	    			} else if (i == f) {
 	    				data.child(`${code}/functions/${fn.key}`).remove().then(() => {
@@ -92,12 +92,11 @@ export default class Overview extends Component {
 	render() {
         const { modal, fn, params } = this.state
         const { variables, functions } = this.props
-        
         let FX = null
         FUNCIONES.forEach(m => {
         	m.fns.forEach(n => {
-    			if (n.id == fn) { 
-    				FX = n.component }
+    			if (n.id == fn)
+    				FX = n.component 
     		})
         })
         return (
@@ -115,14 +114,14 @@ export default class Overview extends Component {
 					}
 					</ul>
 				</div>
-				<div class="col-md-9 functions">
+				<div class={show(functions.length, 'col-md-9 functions')}>
 					<h6 class="subtitle"><b>Funciones:</b></h6>
 					<table class="table">
 						<tbody>
 						{
 							functions.map((m, i) => {
 								return (
-									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.hub} onDrop={this.drop} onDragOver={this.allowDrop} draggable="true" onDragStart={this.drag}>
+									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={this.drop} onDragOver={this.allowDrop} draggable="true" onDragStart={this.drag}>
 										<td id={`${m.id}-/${i}-/e`} style={{maxWidth:'20px'}}>
 											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
 										</td>
