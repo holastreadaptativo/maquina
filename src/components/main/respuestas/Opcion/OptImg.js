@@ -4,15 +4,18 @@ class OptImg extends Component {
 
   handleAddClick(e) {
     e.preventDefault()
-    let img = new Image();
-    img.src = document.querySelector('#OptImgInput').value
-    img.className = 'img-responsive img-thumbnail'
-    let imgCont = document.createElement('DIV')
-    imgCont.className = 'col-sm-4'
-    imgCont.appendChild(img)
-    let mainCont = document.querySelector('#addOptImgs')
-    mainCont.appendChild(imgCont)
-    document.querySelector('#OptImgInput').value = ''
+    let imgSRC = document.querySelector('#OptImgInput').value
+    if (imgSRC != '') {
+      let img = new Image();
+      img.src = imgSRC
+      img.className = 'img-responsive img-thumbnail'
+      let imgCont = document.createElement('DIV')
+      imgCont.className = 'col-sm-4'
+      imgCont.appendChild(img)
+      let mainCont = document.querySelector('#addOptImgs')
+      mainCont.appendChild(imgCont)
+      document.querySelector('#OptImgInput').value = ''
+    }
   }
   
   render() {

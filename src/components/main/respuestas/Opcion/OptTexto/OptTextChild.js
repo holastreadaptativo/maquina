@@ -7,7 +7,7 @@ class OptTextChild extends Component {
     return(
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <p><span>Texto {index + 1} </span><span onClick={(e) => delText(index)} class="glyphicon glyphicon-trash" style={{cursor:'pointer'}}></span></p>
+          <p><span>Texto {index + 1} </span><span onClick={() => delText(index)} class="glyphicon glyphicon-trash" style={{cursor:'pointer'}}></span></p>
         </div>
         <div class="panel-body">
           <p>{text}</p>

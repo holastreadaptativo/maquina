@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+
+import MyEditor from './MyEditor'
 import OptTextChild from './OptTextChild'
+
 
 class OptTexto extends Component {
 
@@ -21,6 +24,7 @@ class OptTexto extends Component {
   
   handleAddClick(e) {
     e.preventDefault()
+    /*
     let text = document.querySelector('#OptTextInput').value
     if (text != '') {
       let textArr = this.state.textArr
@@ -30,6 +34,7 @@ class OptTexto extends Component {
       })
     }
     document.querySelector('#OptTextInput').value = ''
+    */
   }
 
   
@@ -44,7 +49,7 @@ class OptTexto extends Component {
         margin: '10px 0'
       }
     }
-    const { textArr, delText } = this.state
+    const { textArr } = this.state
     return(
       <div class="row" style={style.optText}>
         <div class="col-sm-12" style={style.vertMarginCont}>
@@ -53,8 +58,7 @@ class OptTexto extends Component {
           </div>
           <form class="">
             <div class="form-group">
-              <label>Insertar texto:</label>
-              <textarea  id="OptTextInput" class="form-control" rows="2" type="text"/>
+              <MyEditor />
             </div>
             <button onClick={(e) => this.handleAddClick(e)} class="btn btn-default">Agregar</button>
           </form>
@@ -74,5 +78,6 @@ class OptTexto extends Component {
   }
 
 }
+//<textarea  id="OptTextInput" class="form-control" rows="2" type="text"/>
 
 export default OptTexto;

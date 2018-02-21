@@ -132,6 +132,11 @@
 			}
 		}
 	}
+	.modal-global
+	{
+		margin: 0 auto 10px;
+		width: 98%;
+	}
 	&.modal-geometria
 	{
 		.modal-title, div.button button
@@ -246,6 +251,30 @@
 		form .input-group .input-group-addon, div.button button:hover, .modal-tabs li.active
 		{	
 			background-color: darken(@color-numeracion, 5%);
+			a
+			{
+				color:white
+			}
+		}
+	}
+	&.modal-general
+	{
+		.modal-title, div.button button
+		{
+			background-color: @color-general;
+			border-color: darken(@color-general, 5%);
+		}
+		h5, label
+		{
+			color: darken(@color-general, 5%);
+		}
+		.modal-tabs li a 
+		{ 
+			color: @color-general;
+		}
+		form .input-group .input-group-addon, div.button button:hover, .modal-tabs li.active
+		{	
+			background-color: darken(@color-general, 5%);
 			a
 			{
 				color:white
