@@ -5,7 +5,7 @@ export function graficoDatos(canvas, config)
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
 
     let maxWidth = canvas.parentElement.offsetWidth, responsive = config.width < maxWidth,
-        width = responsive ? config.width : maxWidth, height = responsive ? config.height : width
+        width = responsive ? config.width : maxWidth - 15, height = responsive ? config.height : width
 
     canvas.width = width
     canvas.height = height
