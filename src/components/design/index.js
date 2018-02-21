@@ -1,6 +1,7 @@
 import * as geometria from './geometria'
 import * as datos from './datos'
 import * as general from './general'
+import * as actions from 'actions'
 
 export const FUNCIONES = 
 [	
@@ -20,12 +21,12 @@ export const FUNCIONES =
 	},
 	{ 
 		name:'Geometría', tag:'geometria', fns:[
-			{ id:'Plano Cartesiano', component:geometria.PlanoCartesiano }
+			{ id:'Plano Cartesiano', component:geometria.PlanoCartesiano, action:actions.planoCartesiano }
 		]
 	},
 	{ 
 		name:'Datos', tag:'datos', fns:[
-			{ id:'Gráfico Datos', component:datos.GraficoDatos }
+			{ id:'Gráfico Datos', component:datos.GraficoDatos, action:actions.graficoDatos }
 		]
 	}
 ]
