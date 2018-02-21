@@ -17,12 +17,7 @@ export default class PlanoCartesiano extends Component {
 		}
 	}
 	componentDidUpdate() {
-		let canvas = this.refs.canvas
-		geometria.generarPlanoCartesiano(canvas, this.state)
-		geometria.generarCuadradosUnidos(canvas, this.state)
-		//geometria.generarPlanoCartesiano(canvas, this.state)
-		//geometria.dividirPlanoCartesiano(canvas, this.state)
-   		//geometria.reflejarCuadrado(canvas, this.state)  
+		geometria.planoCartesiano(this.refs.canvas, this.state)
 	}
 	handleActive(active) {
 		this.setState({ active:active })

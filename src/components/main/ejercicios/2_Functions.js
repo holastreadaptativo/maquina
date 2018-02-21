@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 import { data } from 'stores'
-//import $ from 'actions'
 
 export default class Functions extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, setActive:this.setActive.bind(this), fn:'', modal:false, hub:'' }
+		this.state = { active:0, setActive:this.setActive.bind(this), fn:'', modal:false, tag:'' }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -19,16 +18,7 @@ export default class Functions extends Component {
 		this.setState({ fn:fn, modal:!this.state.modal })
 	}
     setActive(active) {
-    	let hub = ''
-    	switch (active) {
-    		case 0: { hub = 'general'; break; }
-    		case 1: { hub = 'numeracion'; break; }
-    		case 2: { hub = 'algebra'; break; }
-    		case 3: { hub = 'medicion'; break; }
-    		case 4: { hub = 'geometria'; break; }
-    		case 5: { hub = 'datos'; break; }
-    	}
-        this.setState({ active:active, hub:hub })
+    	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
 	addCanvas(canvas, params) {
 		let container = document.createElement('div')
@@ -39,7 +29,7 @@ export default class Functions extends Component {
 			data.child(this.props.code).once('value').then(snap => {
 				let count = snap.val().count
 				data.child(`${this.props.code}/functions`).push({ 
-					function:this.state.fn, params:params, date:(new Date()).toLocaleString(), hub:this.state.hub, position:count, width:12
+					function:this.state.fn, params:params, date:(new Date()).toLocaleString(), tag:this.state.tag, position:count, width:12
 				}).then(() => {
 					data.child(this.props.code).update({ count:count+1 })
 				})
@@ -48,14 +38,11 @@ export default class Functions extends Component {
 		})
 	}
 	render() {
-        const { active, modal, setActive, fn, hub } = this.state
+        const { active, modal, setActive, fn } = this.state
        	let FX = null
-        FUNCIONES.forEach(m => {
-        	if (m.tag == hub)
-        		m.fns.forEach(n => {
-        			if (n.id == fn) { FX = n.component }
-        		})
-        })
+       	FUNCIONES[active].fns.forEach(m => { 
+       		if (m.id == fn) FX = m.component 
+       	})
 		return(
 			<div>
 				<div class="fn-accordion">

@@ -1,4 +1,12 @@
-export function generarPlanoCartesiano(canvas, state) {
+export function planoCartesiano(canvas, state) {
+		generarPlanoCartesiano(canvas, state)
+		generarCuadradosUnidos(canvas, state)
+		//geometria.generarPlanoCartesiano(canvas, this.state)
+		//geometria.dividirPlanoCartesiano(canvas, this.state)
+   		//geometria.reflejarCuadrado(canvas, this.state)  
+	}
+
+function generarPlanoCartesiano(canvas, state) {
 
 	canvas.width = state.width; canvas.height = state.height
 	let ctx = canvas.getContext('2d'), w = state.width/state.cols, h = state.height/state.rows
@@ -107,7 +115,7 @@ export function reflejarCuadrado(canvas, state) {
 	ctx.closePath()
 }
 
-export function generarCuadradosUnidos(canvas, state) {
+function generarCuadradosUnidos(canvas, state) {
 
 	let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
 	let w = state.width/state.cols, h = state.height/state.rows, headlen = w/3, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
