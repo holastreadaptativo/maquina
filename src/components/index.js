@@ -7,7 +7,7 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this), 
-			variables:[], functions:[], notification:null, alert:'success'
+			variables:[], functions:[], notification:null, alert:'success', setNotificaction:this.setNotificaction.bind(this)
 		}
 	}
 	componentWillMount() {
@@ -57,6 +57,9 @@ export class App extends Component {
 		data.child(this.state.code).off()
 		this.onCodeChange(code)
 		this.setState({ code:code })
+	}
+	setNotificaction(message, alert) {
+		this.setState({ message:message, alert:alert })
 	}
 	render() {
     	const { active, code, notification } = this.state     
