@@ -43,6 +43,7 @@ export default class Overview extends Component {
 		})		
 	}
 	updateFunction(params) {
+		$('btn-save').setAttribute('disabled', 'true')
 		data.child(`${this.props.code}/functions/${this.state.id}`).update({
 			params:params, date:(new Date()).toLocaleString()
 		}).then(() => { this.setState({ modal:false }) })
@@ -163,7 +164,10 @@ export default class Overview extends Component {
 					</table>
 				</div>
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-					{ FX != null ? <FX update={(x) => this.updateFunction.bind(this, x)} params={params}/> : '' }
+					{ 
+						FX != null ? 
+						<FX update={(x) => this.updateFunction.bind(this, x)} params={params}/> : '' 
+					}
 				</Modal>
 			</div>
 		)

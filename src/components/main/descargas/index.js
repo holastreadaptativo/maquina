@@ -54,20 +54,20 @@ class EditorConvertToHTML extends Component {
     editorState: EditorState.createEmpty()
   }
 
-  onEditorStateChange: Function = (editorState) => {
+  onEditorStateChange = (editorState) => {
     this.setState({
       editorState
     })
   }
 
   render() {
-    const { editorState } = this.state;
+		const { editorState } = this.state;
     return (
       	<div>
 	        <Editor editorState={editorState} wrapperClassName="demo-wrapper" editorClassName="demo-editor"
 	          onEditorStateChange={this.onEditorStateChange}
 	        />
-        	<textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="hidden"/>
+        	<textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-sm-6"/>
       </div>
     )
   }

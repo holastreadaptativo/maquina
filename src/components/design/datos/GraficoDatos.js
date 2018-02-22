@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Tabs, Input, Item, Select } from 'components'
+import { Tabs, Input, Item, Select, Save } from 'components'
 import * as datos from 'actions'
 import { COLORS } from 'stores'
 
 export default class GraficoDatos extends Component {
 	constructor(props) {
 		super(props)
-		if (props.add) {
+		if (props.push) {
 			this.state = { background:COLORS['background'], height:400, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'',
 				active:0, borderColor:'#006400', borderRadius:20, borderWidth:3, borderStyle:'solid', fontColor:COLORS['datos'], extra:'no', margin:'si', 
 				lineColor:'#006400', lineWidth:2, chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6', chartTags:'A, B, C', 
@@ -81,9 +81,7 @@ export default class GraficoDatos extends Component {
 						Your browser does not support the HTML5 canvas.
 					</canvas>
 				</div>
-				<div class="button">
-					<button onClick={ this.props.add ? this.props.add(this.state) : this.props.update(this.state)}>Guardar</button>
-				</div>
+				<Save {...this.props} params={this.state}/>
 			</div>
 		)
 	}
