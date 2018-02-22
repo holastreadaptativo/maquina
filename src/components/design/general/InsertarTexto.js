@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 //import { Tabs, Text, Item } from 'components'
 //import * as general from 'actions'
-import { save } from 'components'
+import { Save } from 'components'
 import EditorConvertToHTML from './EditorConvertToHTML'
 
 export default class InsertTexto extends Component {
