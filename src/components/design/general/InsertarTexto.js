@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 //import { Tabs, Text, Item } from 'components'
 //import * as general from 'actions'
+import { save } from 'components'
 import EditorConvertToHTML from './EditorConvertToHTML'
 
 export default class InsertTexto extends Component {
 	constructor(props) {
 		super(props)
-		if (props.add) {
+		if (props.push) {
 			this.state = { 
 				textCont: '' 
 			}
@@ -28,9 +29,7 @@ export default class InsertTexto extends Component {
 					<h4 class="modal-title" style={{margin: 'auto 0'}}>Insertar Texto</h4>
 					<EditorConvertToHTML {...this.state} textCont={this.state.textCont} contUpdate={(html) => this.onContUpdate(html)}/>
 				</div>
-				<div class="button">
-					<button onClick={ this.props.add ? this.props.add(this.state) : this.props.update(this.state)}>Guardar</button>
-				</div>
+				<Save {...this.props} params={this.state}/>
 			</div>
 		)
 	}

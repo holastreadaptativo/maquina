@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 import { data } from 'stores'
+import $ from 'actions'
 
 export default class Functions extends Component {
 	constructor() {
@@ -20,7 +21,8 @@ export default class Functions extends Component {
     setActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
-	addFunction(params) {
+	addFunction(params, btn) {
+		$('btn-save').setAttribute('disabled', 'true')
 		data.child(this.props.code).once('value').then(snap => {
 			let count = snap.val().count
 			data.child(`${this.props.code}/functions`).push({ 
@@ -63,8 +65,11 @@ export default class Functions extends Component {
 				    </ul>
 			    </div>
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-						{ FX != null ? <FX add={(x) => this.addFunction.bind(this, x)} code={this.props.code} /> : '' }
-					</Modal>
+					{ 
+						FX != null ? 
+						<FX add={(x) => this.addFunction.bind(this, x)} code={this.props.code} push/> : '' 
+					}
+				</Modal>
 		    </div>
 		)
 	}
