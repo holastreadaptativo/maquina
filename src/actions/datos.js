@@ -1,7 +1,11 @@
 export function graficoDatos(canvas, config) 
 {
-    const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, height, width, fontColor, extra, lineColor, lineWidth,
+
+    const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
+
+    let maxWidth = canvas.parentElement.offsetWidth, responsive = config.width < maxWidth,
+        width = responsive ? config.width : maxWidth - 15, height = responsive ? config.height : width
 
     canvas.width = width
     canvas.height = height

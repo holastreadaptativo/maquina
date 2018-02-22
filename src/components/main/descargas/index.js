@@ -39,12 +39,11 @@ export class Descargas extends Component {
 						<button class="b hidden" onClick={this.changeRadius.bind(this, 0.9)}><span class="glyphicon glyphicon-minus"/></button>
 					</div>
         		</div>
-        		<EditorConvertToHTML/>
         	</div>
         )
     }
 }
-
+/*
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
@@ -73,3 +72,4 @@ class EditorConvertToHTML extends Component {
     )
   }
 }
+*/
