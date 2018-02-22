@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import EditorConvertToHTML from './EditorConvertToHTML'
-
 
 class OptTexto extends Component {
 
@@ -21,7 +19,6 @@ class OptTexto extends Component {
           </div>
           <form class="">
             <div class="form-group">
-              <EditorConvertToHTML code={this.props.code} />
             </div>
           </form>
         </div>
