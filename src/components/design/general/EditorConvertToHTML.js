@@ -7,20 +7,35 @@ import { data } from 'stores'
 import * as insertText from 'actions'
 
 class EditorConvertToHTML extends Component {
-  state = {
-    editorState: EditorState.createEmpty()
+  constructor(props) {
+    super(props)
+    this.state = {
+      ...this.props,
+      editorState: EditorState.createEmpty()
+    }
+    if (props.textCont != '') {
+      const blocksFromHtml = htmlToDraft(props.textCont);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+      const editorState = EditorState.createWithContent(contentState);
+
+      this.state = {
+        ...this.props,
+        editorState
+      }
+    }
   }
+
+  componentDidUpdate() {
+		//let canvas = this.refs.canvas
+	}
 
   onEditorStateChange = (editorState) => {
     this.setState({
       editorState
     })
-  }
-
-  handleSendClick(ev, elem) {
-    ev.preventDefault()
-    console.log(this.props.code)
-    data.child(this.props.code + '/functions').push({text:elem})
+    let textCont = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+    this.props.contUpdate(textCont)
   }
 
   render() {
@@ -33,7 +48,6 @@ class EditorConvertToHTML extends Component {
       }
     }
     const { editorState } = this.state;
-    let htmlContent = draftToHtml(convertToRaw(editorState.getCurrentContent()))
     return (
       <div class="row">
         <div class="col-sm-12" style={{boder: '5px solid'}} >
@@ -44,10 +58,7 @@ class EditorConvertToHTML extends Component {
             onEditorStateChange={this.onEditorStateChange}
           />
         </div>
-        <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="hidden" />
-        <div class="col-sm-12" style={style.optText}>
-          <button onClick={(e) => this.handleSendClick(e, htmlContent)} class="btn btn-success">Enviar</button>
-        </div>
+        <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12" />
       </div>
     )
   }
