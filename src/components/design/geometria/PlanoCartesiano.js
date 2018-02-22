@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Tabs, Input, Item, Select } from 'components'
+import { Tabs, Input, Item, Select, Save } from 'components'
 import * as geometria from 'actions'
 import { COLORS } from 'stores'
 
 export default class PlanoCartesiano extends Component {
 	constructor(props) {
 		super(props)
-		if (props.add) {
+		if (props.push) {
 			this.state = { height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0,
 				borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2,
 				fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none'
@@ -69,9 +69,7 @@ export default class PlanoCartesiano extends Component {
 						Your browser does not support the HTML5 canvas.
 					</canvas>
 				</div>	
-				<div class="button">
-					<button onClick={ this.props.add ? this.props.add(this.state) : this.props.update(this.state)}>Guardar</button>
-				</div>
+				<Save {...this.props} params={this.state}/>
 			</div>
 		)
 	}
