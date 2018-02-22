@@ -57,6 +57,47 @@
 			text-transform: uppercase;
 		}
 	}
+	div.notifications
+	{
+		border-bottom: 2px solid transparent;
+		height: 45px;
+		left: @navw;
+		padding-top: 12px;
+		position: absolute;
+		text-align: center;
+		top: 45px;
+		width: ~'calc(100vw - @{navw})';
+		h5
+		{
+			font-weight: bold;
+			display: inline;
+		}
+		span
+		{
+			position: absolute;
+			right: @navw/2;
+			top: 15px;
+			cursor: pointer;
+		}
+		&.success
+		{
+			background: rgba(158, 207, 153, .9);
+			border-color: #2d7623;
+			color: #2d7623;
+		}
+		&.warning
+		{
+			background: rgba(249, 214, 122, .9);
+			border-color: #f08b00;
+			color: #f08b00;
+		}
+		&.danger
+		{
+			background: rgba(207, 158, 153, .9);
+			border-color: #762d23;
+			color: #762d23;
+		}
+	}
 	nav
 	{
 		background-color: @nav-bg-color;

@@ -5,8 +5,8 @@ import { DEFAULT } from 'stores'
 import { data } from 'stores'
 
 export class App extends Component {
-  	constructor(props) {
-		super(props)
+  	constructor() {
+		super()
 		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this), 
 			variables:[], functions:[] 
 		}
@@ -20,7 +20,21 @@ export class App extends Component {
 	  			})
 	  		}
 		})
-		data.child(code).on('value', r => {
+		this.onCodeChange(code)
+	}
+	componentWillUnmount() {
+		data.child(this.state.code).off()
+	}
+	setCode(code) {
+		data.child(this.state.code).off()
+		this.onCodeChange(code)
+		this.setState({ code:code })
+	}
+    setActive(active) {
+        this.setState({ active:active })
+    }
+    onCodeChange(code) {
+    	data.child(code).on('value', r => {
 			if (r.hasChild('variables'))
 				data.child(`${code}/variables`).orderByChild('var').once('value').then(snap => {
 					let variables = []
@@ -44,15 +58,6 @@ export class App extends Component {
 			else 
 				this.setState({ functions:[] })
 		})
-	}
-	componentWillUnmount() {
-		data.child(this.state.code).off()
-	}
-	setCode(code) {
-		this.setState({ code:code })
-	}
-    setActive(active) {
-        this.setState({ active:active })
     }
 	render() {
     	return (

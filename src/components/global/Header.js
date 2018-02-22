@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { focus, show } from 'actions'
 import { Link } from 'react-router'
-import { focus } from 'actions'
+import { DEFAULT } from 'stores'
 
 export default class Header extends Component {
    render() {
@@ -16,14 +17,22 @@ export default class Header extends Component {
         ]
         return(
             <header class="main-header">
-                <div class="logo">A</div>
-                <div class="title">
-                    <h5>Máquina de Ejercicios
-                        <span class="glyphicon glyphicon-education"/>
-                    </h5>
+                <div class="container-fluid">
+                    <div class="logo">A</div>
+                    <div class="title">
+                        <h5>Máquina de Ejercicios
+                            <span class="glyphicon glyphicon-education"/>
+                        </h5>
+                    </div>
+                    <div class="code">
+                        <h5>ID: {code}</h5>
+                    </div>
                 </div>
-                <div class="code">
-                    <h5>ID: {code}</h5>
+                <div class={show(!(active == 0 && code == DEFAULT), 'notifications success')}>
+                    <div class="container">
+                        <h5>ALLES IST GUT</h5>
+                        <span class="glyphicon glyphicon-remove"/>
+                    </div>
                 </div>
                 <nav>
                     <ul>
