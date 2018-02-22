@@ -113,7 +113,7 @@ export class Respuestas extends Component {
 							</div>	
         		</div>
 						<Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-							<Functions option={option}/>
+							<Functions code={this.props.code} option={option}/>
 						</Modal>
         	</div>
         )

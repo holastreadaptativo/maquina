@@ -1,44 +1,8 @@
 import React, { Component } from 'react'
-
-import MyEditor from './MyEditor'
-import OptTextChild from './OptTextChild'
+import EditorConvertToHTML from './EditorConvertToHTML'
 
 
 class OptTexto extends Component {
-
-  constructor() {
-    super()
-    let textArr = []
-    this.state = {
-      textArr: textArr
-    }
-  }
-
-  delText(id) {
-    let newTextArr = this.state.textArr
-    newTextArr.splice(id,1)
-    this.setState({
-      textArr: newTextArr
-    })
-  }
-  
-  handleAddClick(e) {
-    e.preventDefault()
-    /*
-    let text = document.querySelector('#OptTextInput').value
-    if (text != '') {
-      let textArr = this.state.textArr
-      textArr.push(text)
-      this.setState({
-        textArr: textArr
-      })
-    }
-    document.querySelector('#OptTextInput').value = ''
-    */
-  }
-
-  
-  
 
   render() {
     let style = {
@@ -49,7 +13,6 @@ class OptTexto extends Component {
         margin: '10px 0'
       }
     }
-    const { textArr } = this.state
     return(
       <div class="row" style={style.optText}>
         <div class="col-sm-12" style={style.vertMarginCont}>
@@ -58,20 +21,9 @@ class OptTexto extends Component {
           </div>
           <form class="">
             <div class="form-group">
-              <MyEditor />
+              <EditorConvertToHTML code={this.props.code} />
             </div>
-            <button onClick={(e) => this.handleAddClick(e)} class="btn btn-default">Agregar</button>
           </form>
-        </div>
-        <div id="addTextCont" class="col-sm-12" style={style.vertMarginCont}>
-          {
-            textArr.map( (text,index) => {
-              return <OptTextChild key={index} index={index} text={text} delText={(id) => this.delText(id)} />
-            })
-          }
-        </div>
-        <div class="col-sm-12" style={style.optText}>
-          <button onClick={(e) => e.preventDefault()} class="btn btn-success">Enviar</button>
         </div>
       </div>
     )

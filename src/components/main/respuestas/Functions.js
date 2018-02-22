@@ -27,7 +27,7 @@ class Functions extends Component {
             option == 'Input' ? <OptInput /> : 
             option == 'ComboBox' ? <OptComboBox /> : 
             option == 'Radio Button' ? <OptRadioBtn /> : 
-            option == 'Texto' ? <OptTexto /> : 
+            option == 'Texto' ? <OptTexto code={this.props.code} /> : 
             option == 'Imagen' ? <OptImg /> :
             <h1>Error</h1>
           }
