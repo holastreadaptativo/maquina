@@ -54,8 +54,8 @@ export class Versiones extends Component {
 							<div id="options" class="combinaciones">
 								<h5>Versiones:</h5>
 								{
-									this.state.versions.map(m => { return (
-										<h4 id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
+									this.state.versions.map((m, i) => { return (
+										<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
 									)})
 								}
 							</div>
@@ -64,8 +64,8 @@ export class Versiones extends Component {
 							<div id="selection" class="seleccion" onDrop={this.drop} onDragOver={this.allowDrop}>
 								<h5>Selección:</h5>
 								{
-									this.state.selection.map(m => { return (
-										<h4 id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
+									this.state.selection.map((m, i) => { return (
+										<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
 									)})
 								}
 							</div>

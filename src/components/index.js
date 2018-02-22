@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { auth, users, uid } from 'stores'
+import { auth, users, uid, data, DEFAULT } from 'stores'
 import { Header } from 'components'
-import { DEFAULT } from 'stores'
-import { data } from 'stores'
+import { focus } from 'actions'
 
 export class App extends Component {
   	constructor() {
 		super()
 		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this), 
-			variables:[], functions:[] 
+			variables:[], functions:[], notification:null, alert:'success'
 		}
 	}
 	componentWillMount() {
@@ -25,14 +24,6 @@ export class App extends Component {
 	componentWillUnmount() {
 		data.child(this.state.code).off()
 	}
-	setCode(code) {
-		data.child(this.state.code).off()
-		this.onCodeChange(code)
-		this.setState({ code:code })
-	}
-    setActive(active) {
-        this.setState({ active:active })
-    }
     onCodeChange(code) {
     	data.child(code).on('value', r => {
 			if (r.hasChild('variables'))
@@ -59,13 +50,24 @@ export class App extends Component {
 				this.setState({ functions:[] })
 		})
     }
+    setActive(active) {
+    	this.setState({ active:active })
+    }
+	setCode(code) {
+		data.child(this.state.code).off()
+		this.onCodeChange(code)
+		this.setState({ code:code })
+	}
 	render() {
-    	return (
+    	const { active, code, notification } = this.state     
+        return (
       		<div class="react-app">
       			<Header {...this.state}/>
+      			<div class={focus(!(active == 0 && code == DEFAULT) && notification, 'react-notification')}>
       			{ 
       				React.cloneElement( this.props.children, {...this.state} )
       			}
+      			</div>
       		</div>
     	)
   	}	
