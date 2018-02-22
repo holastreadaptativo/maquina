@@ -6,7 +6,7 @@ import { data } from 'stores'
 export class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], count:0, clicked:false, advanced:false, checked:[false, false, false, false, false, false, false] }	
+		this.state = { variables:[], count:0, clicked:false, advanced:false, checked:[[], []] }	
 		this.setClicked = this.setClicked.bind(this)
 	}
 	componentDidMount() {
@@ -65,7 +65,7 @@ export class Variables extends Component {
 						{
 							!advanced ? 
 							<div class="col-sm-9">
-								<Table code={code} variables={variables} checkAll={this.checkAll.bind(this)}/>
+								<Table code={code} checked={checked} variables={variables} checkAll={this.checkAll.bind(this)}/>
 								<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
 							</div>
 							:

@@ -9,7 +9,7 @@ export default class Check extends Component {
 		browserHistory.push('/ejercicios')
 	}
 	render() {
-		const { checked } = this.props
+		const checked = this.props.checked[0]
 		return (
 			<form>
 				<ul class="checklist">

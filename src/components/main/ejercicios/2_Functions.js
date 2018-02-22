@@ -21,7 +21,7 @@ export default class Functions extends Component {
     setActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
-	addFunction(params, btn) {
+	addFunction(params) {
 		$('btn-save').setAttribute('disabled', 'true')
 		data.child(this.props.code).once('value').then(snap => {
 			let count = snap.val().count
