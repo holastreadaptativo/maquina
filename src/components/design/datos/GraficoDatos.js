@@ -76,16 +76,14 @@ export default class GraficoDatos extends Component {
 					</Item>
 				</div>
 				<div class="canvas">
-					<canvas ref="canvas" id="canvas" style={{ background:background, width:`${width}px`, height:`${height}px`, 
+					<canvas ref="canvas" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 					border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
 						Your browser does not support the HTML5 canvas.
 					</canvas>
-				</div>	
+				</div>
 				<div class="button">
-					<button onClick={ this.props.add ? 
-						this.props.add(this.refs.canvas, this.state) : this.props.update(this.refs.canvas, this.state)
-					}>Guardar</button>
-				</div>	
+					<button onClick={ this.props.add ? this.props.add(this.state) : this.props.update(this.state)}>Guardar</button>
+				</div>
 			</div>
 		)
 	}

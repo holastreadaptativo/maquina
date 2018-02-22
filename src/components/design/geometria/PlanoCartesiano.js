@@ -70,10 +70,8 @@ export default class PlanoCartesiano extends Component {
 					</canvas>
 				</div>	
 				<div class="button">
-					<button onClick={ this.props.add ? 
-						this.props.add(this.refs.canvas, this.state) : this.props.update(this.refs.canvas, this.state)
-					}>Guardar</button>
-				</div>	
+					<button onClick={ this.props.add ? this.props.add(this.state) : this.props.update(this.state)}>Guardar</button>
+				</div>
 			</div>
 		)
 	}
