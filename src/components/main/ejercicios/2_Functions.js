@@ -63,8 +63,8 @@ export default class Functions extends Component {
 				    </ul>
 			    </div>
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-					{ FX != null ? <FX add={(x) => this.addFunction.bind(this, x)}/> : '' }
-				</Modal>
+						{ FX != null ? <FX add={(x) => this.addFunction.bind(this, x)} code={this.props.code} /> : '' }
+					</Modal>
 		    </div>
 		)
 	}
