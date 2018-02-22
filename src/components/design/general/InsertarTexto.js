@@ -7,8 +7,7 @@ export default class InsertTexto extends Component {
 	constructor(props) {
 		super(props)
 		if (props.add) {
-			this.state = { active:0, background:COLORS['background'], borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid',
-				textValue:'Insertar texto..' 
+			this.state = { active:0, background:COLORS['background'], borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', textValue:'Insertar texto..' 
 			}
 		}
 		else {
