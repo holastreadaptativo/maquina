@@ -42,7 +42,7 @@ export default class Overview extends Component {
 	    	})
 		})		
 	}
-	updateParams(canvas, params) {
+	updateFunction(params) {
 		data.child(`${this.props.code}/functions/${this.state.id}`).update({
 			params:params, date:(new Date()).toLocaleString()
 		}).then(() => { this.setState({ modal:false }) })
@@ -162,8 +162,8 @@ export default class Overview extends Component {
 						</tbody>
 					</table>
 				</div>
-			    <Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-					{ FX != null ? <FX update={(i, k) => this.updateParams.bind(this, i, k)} params={params}/> : '' }
+			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
+					{ FX != null ? <FX update={(x) => this.updateFunction.bind(this, x)} params={params}/> : '' }
 				</Modal>
 			</div>
 		)

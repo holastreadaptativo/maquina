@@ -20,28 +20,22 @@ export default class Functions extends Component {
     setActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
-	addCanvas(canvas, params) {
-		let container = document.createElement('div')
-		container.classList.add('col-md-12')
-		container.appendChild(canvas)
-		new Promise((resolve) => resolve( /*$('ex-design').append(container)*/ ) )
-		.then(() => { 
-			data.child(this.props.code).once('value').then(snap => {
-				let count = snap.val().count
-				data.child(`${this.props.code}/functions`).push({ 
-					function:this.state.fn, params:params, date:(new Date()).toLocaleString(), tag:this.state.tag, position:count, width:12
-				}).then(() => {
-					data.child(this.props.code).update({ count:count+1 })
-				})
-			})			
-			this.setState({ modal:false }) 
-		})
+	addFunction(params) {
+		data.child(this.props.code).once('value').then(snap => {
+			let count = snap.val().count
+			data.child(`${this.props.code}/functions`).push({ 
+				function:this.state.fn, params:params, date:(new Date()).toLocaleString(), tag:this.state.tag, position:count, width:12
+			}).then(() => {
+				data.child(this.props.code).update({ count:count+1 })
+			})
+		})			
+		this.setState({ modal:false }) 
 	}
 	render() {
         const { active, modal, setActive, fn } = this.state
        	let FX = null
        	FUNCIONES[active].fns.forEach(m => { 
-       		if (m.id == fn) FX = m.component 
+       		if (m.id == fn) FX = m.component
        	})
 		return(
 			<div>
@@ -69,7 +63,7 @@ export default class Functions extends Component {
 				    </ul>
 			    </div>
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-					{ FX != null ? <FX add={(x, y) => this.addCanvas.bind(this, x, y)}/> : '' }
+					{ FX != null ? <FX add={(x) => this.addFunction.bind(this, x)}/> : '' }
 				</Modal>
 		    </div>
 		)
