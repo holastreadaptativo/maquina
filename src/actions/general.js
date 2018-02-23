@@ -1,7 +1,3 @@
-export function general() {
-  insertarTexto(state)
-}
-
-function insertarTexto(state) {
-  console.log('action general fn insertartexto')
+export function insertarTexto(div, state) {
+  div.innerHTML = state.textCont
 }

@@ -18,8 +18,7 @@ export default class Design extends Component {
 		this.props.functions.forEach((m, i) => {
 			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-			if (m.tag != 'general')
-				FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params)
+			FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params)
 		}) 		
 	}
     setActive(active) {
@@ -46,7 +45,8 @@ export default class Design extends Component {
 						<div key={i} class={`col-md-${phone ? 12 : tablet ? 6 : m.width} col-sm-6 div-${m.tag} tags`}>
 						{
 							m.tag != 'general' ? 
-							<canvas id={`canvas-${i}`} style={{background:m.params.background}}></canvas> : ''
+							<canvas id={`canvas-${i}`} style={{background:m.params.background}}></canvas> :
+							<div id={`canvas-${i}`}></div>
 						}
 						</div>
 					)})

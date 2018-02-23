@@ -7,7 +7,7 @@ export const FUNCIONES =
 [	
 	{ 
 		name:'General', tag:'general', fns:[
-			{ id:'Insertar Texto', component:general.InsertarTexto }
+			{ id:'Insertar Texto', component:general.InsertarTexto, action:actions.insertarTexto }
 		]
 	},
 	{ 

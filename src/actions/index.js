@@ -2,6 +2,11 @@ import { render } from 'react-dom'
 import { browserHistory } from 'react-router'
 import { auth, auth2, uid, users } from 'stores'
 
+export * from './variables'
+export * from './geometria'
+export * from './datos'
+export * from './general'
+
 export default function $(id) { return document.getElementById(id) }
 
 export function print(component, id) { render(component, $(id)) }
@@ -69,11 +74,6 @@ export function show(bool, tags) {
 export function focus(bool, active) {
     return `${bool ? active : ''}`
 }
-
-export * from './variables'
-export * from './geometria'
-export * from './datos'
-
 
 export function    allowDrop(e) {
         e.preventDefault()
