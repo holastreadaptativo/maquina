@@ -21,7 +21,9 @@ export class Variables extends Component {
 				this.setState({ variables:variables })
 			})
 			if (variables.length == 0) {
-				data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+				let key = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' }).key
+				variables.push({ id:key, var:'', val:'', type:'numero', vt:'', res:'' })
+				this.setState({ variables:variables })
 			}
 			this.setState({ checked:checkAll(variables) })
 		})	

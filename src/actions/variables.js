@@ -23,11 +23,10 @@ export function setFormat(value) {
 }
 
 export function checkAll(variables) {
-	console.log(variables[0].var)
 	let aux = [variables.length > 0 && variables[0].var != '' && variables[0].val != '', true, true, true, true, true, true], vars = []
 
 	if (variables.length > 0 && (variables[0].var == '' || variables[0].var == 'undefined'))
-		return [[false, false, false, false, false, false, false], 0]
+		return [[false, false, false, false, false, false, false], []]
 
 	for (let i = 0; i < variables.length; i++) {
 		let val = variables[i].val, res = variables[i].res, type = variables[i].type; vars[i] = true
