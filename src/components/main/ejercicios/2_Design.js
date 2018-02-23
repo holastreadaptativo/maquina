@@ -11,7 +11,6 @@ export default class Design extends Component {
 		this.print()
 	}
 	componentDidUpdate() {
-		//for (let i = 0, j = 30; i < 300/j; i++) //i * j
 		setTimeout(() => this.print(), 300)
 	}
 	print() {
@@ -41,15 +40,18 @@ export default class Design extends Component {
 				</nav>
 				<div ref="frame" id="ex-design" class="device canvas" style={{width:width+'px'}}>
 				{
-					functions.map((m, i) => { return (
-						<div key={i} class={`col-md-${phone ? 12 : tablet ? 6 : m.width} col-sm-6 div-${m.tag} tags`}>
-						{
-							m.tag != 'general' ? 
-							<canvas id={`canvas-${i}`} style={{background:m.params.background}}></canvas> :
-							<div id={`canvas-${i}`}></div>
-						}
-						</div>
-					)})
+					functions.map((m, i) => { 
+						let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
+						return (
+							<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
+							{
+								m.tag != 'general' ? 
+								<canvas id={`canvas-${i}`} style={{background:m.params.background}}></canvas> :
+								<div id={`canvas-${i}`} class="general"></div>
+							}
+							</div>
+						)
+					})
 				}
 				</div>
 			</div>

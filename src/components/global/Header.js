@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { DEFAULT, NAVBAR } from 'stores'
-import { focus, show } from 'actions'
 import { Link } from 'react-router'
+import { Alert } from 'components'
+import { focus } from 'actions'
+import { NAVBAR } from 'stores'
 
 export default class Header extends Component {
    render() {
-        const { active, alert, code, notification, setActive } = this.props     
+        const { active, code, setActive } = this.props     
         return(
             <header class="main-header">
                 <div class="container-fluid">
@@ -17,12 +18,6 @@ export default class Header extends Component {
                     </div>
                     <div class="code">
                         <h5>ID: {code}</h5>
-                    </div>
-                </div>
-                <div class={show(!(active == 0 && code == DEFAULT) && notification, `notification ${alert}`)}>
-                    <div class="container">
-                        <h5>{notification}</h5>
-                        <span class="glyphicon glyphicon-remove"/>
                     </div>
                 </div>
                 <nav>
@@ -39,6 +34,7 @@ export default class Header extends Component {
                     }
                     </ul>
                 </nav>
+                <Alert {...this.props}/>
             </header>
         )
     }

@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { auth, users, uid, data, DEFAULT } from 'stores'
 import { Header } from 'components'
-import { focus } from 'actions'
 
 export class App extends Component {
   	constructor() {
 		super()
 		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this), 
-			variables:[], functions:[], notification:null, alert:'success', setNotification:this.setNotification.bind(this)
+			variables:[], functions:[], notification:null, alert:'danger', setNotification:this.setNotification.bind(this)
 		}
 	}
 	componentWillMount() {
@@ -61,16 +60,13 @@ export class App extends Component {
 	setNotification(message, alert) {
 		this.setState({ notification:message, alert:alert })
 	}
-	render() {
-    	const { active, code, notification } = this.state     
+	render() {  
         return (
       		<div class="react-app">
       			<Header {...this.state}/>
-      			<div class={focus(!(active == 0 && code == DEFAULT) && notification, 'react-notification')}>
       			{ 
       				React.cloneElement( this.props.children, {...this.state} )
       			}
-      			</div>
       		</div>
     	)
   	}	

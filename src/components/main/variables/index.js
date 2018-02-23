@@ -41,7 +41,7 @@ export class Variables extends Component {
 	}
 	checkAll() {
 		this.setState({ checked:checkAll(this.state.variables) })
-		//this.props.setNotification(!this.state.checked[0][6] ? 'Mensaje de alerta' : null, 'danger')
+		this.props.setNotification(!this.state.checked[0][6] ? 'Error en el ingreso de variables' : null, 'danger')
 	}
 	render() {
 		const { variables, checked, advanced } = this.state
