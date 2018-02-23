@@ -40,7 +40,7 @@ export default class Overview extends Component {
 	    			}
 	    		})
 	    	})
-		})		
+		})	
 	}
 	updateFunction(params) {
 		$('btn-save').setAttribute('disabled', 'true')

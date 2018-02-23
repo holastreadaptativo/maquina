@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import $, { focus } from 'actions'
 import { data } from 'stores'
-import $ from 'actions'
 
 export default class Table extends Component {
 	handlerCreate(e) {
 		e.preventDefault()
-		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero' }).then(() => { this.props.checkAll() })
+		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+		.then(() => { this.props.checkAll() })
 	}
 	handlerUpdate(input, id) {
 		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
@@ -15,6 +16,7 @@ export default class Table extends Component {
 		data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 	}
 	render() {
+		let error = this.props.checked[1]
 		return (
 			<form>
 				<table class="table table-condensed table-hover">
@@ -32,7 +34,7 @@ export default class Table extends Component {
 					<tbody>
 					{
 						this.props.variables.map((m, i) => { return (
-							<tr key={i}>
+							<tr key={i} class={focus(!error[i], 'error')}>
 								<td>{i+1}</td>
 								<td>
 									<input id={`var-${m.id}`} type="text" class="form-control vr" 
