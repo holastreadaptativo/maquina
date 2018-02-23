@@ -20,13 +20,11 @@ export class Variables extends Component {
 				variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
 				this.setState({ variables:variables })
 			})
+			if (variables.length == 0) {
+				data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+			}
 			this.setState({ checked:checkAll(variables) })
 		})	
-	}
-	componentDidMount() {
-		if (this.state.variables.length == 0) {
-			data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
-		}		
 	}
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
