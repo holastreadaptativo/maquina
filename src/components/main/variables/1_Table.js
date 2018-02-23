@@ -13,7 +13,12 @@ export default class Table extends Component {
 		.then(() => { this.props.checkAll() })
 	}
 	handlerRemove(id) {
-		data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
+		if (this.props.variables.length > 1)
+			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
+		else {
+			$(`var-${id}`).value = $(`val-${id}`).value = $(`res-${id}`).value = $(`vt-${id}`).value = ''
+			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
+		}
 	}
 	render() {
 		let error = this.props.checked[1]
