@@ -6,24 +6,27 @@ import { data } from 'stores'
 export class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], count:0, clicked:false, advanced:false, checked:[[], []] }	
+		this.state = { variables:[], clicked:false, advanced:false, checked:[[], []] }	
 		this.setClicked = this.setClicked.bind(this)
 	}
-	componentDidMount() {
-		data.child(`${this.props.code}`).once('value').then(snap => { this.setState({ advanced:snap.val().advanced }) })
-		data.child(`${this.props.code}/variables`).orderByChild('var').on('value', snap => {
-			let variables = [], count = 0
+	componentWillMount() {
+		data.child(`${this.props.code}`).once('value').then(snap => { 
+			if (snap.hasChild('advanced'))
+				this.setState({ advanced:snap.val().advanced }) 
+		})
+		data.child(`${this.props.code}/variables`).on('value', snap => {
+			let variables = []
 			snap.forEach(v => {
-				variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, count:++count, vt:v.val().vt, res:v.val().res })
-				this.setState({ variables:variables, count:count })
+				variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
+				this.setState({ variables:variables })
 			})
-			if (count == 0) {
-				let path = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
-				variables.push({ id:path.key, var:'', type:'numero', val:'', count:++count, vt:'', res:'' })
-				this.setState({ variables:variables, count:count })
-			}
 			this.setState({ checked:checkAll(variables) })
 		})	
+	}
+	componentDidMount() {
+		if (this.state.variables.length == 0) {
+			data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+		}		
 	}
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
@@ -38,7 +41,7 @@ export class Variables extends Component {
 	}
 	checkAll() {
 		this.setState({ checked:checkAll(this.state.variables) })
-		//this.props.setNotification(!this.state.checked[0][6] ? 'Aweonao' : null, 'danger')
+		//this.props.setNotification(!this.state.checked[0][6] ? 'Mensaje de alerta' : null, 'danger')
 	}
 	render() {
 		const { variables, checked, advanced } = this.state

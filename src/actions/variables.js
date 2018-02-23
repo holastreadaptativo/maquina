@@ -45,7 +45,7 @@ export function checkAll(variables) {
 					else {
 						let ref = val.split(','), number = true
 						for (let j = 0; j < ref.length; j++) {
-							if (!Number.isInteger(parseInt(ref[j].trim()))) { number = false; break }
+							if (!Number.isInteger(parseInt(ref[j]))) { number = false; break }
 						}
 						if ((type == 'numero' && number == true) || (type == 'texto' && number == false)) {}
 						else aux[1] = vars[i] = false
@@ -58,7 +58,7 @@ export function checkAll(variables) {
 					if (arr[k].charCodeAt(0) >= 97 && arr[k].charCodeAt(0) <= 122) {
 						let ok = false
 						for (let j = 0; j < variables.length; j++) {
-							if (arr[k].trim() == variables[j].var) {
+							if (arr[k] == variables[j].var) {
 								ok = true; break
 							}
 						} if (!ok) {
@@ -70,7 +70,7 @@ export function checkAll(variables) {
 			if (res && res.trim() != '' && !res.includes(variables[i].var)) {
 				aux[3] = vars[i] = false
 			}
-			if (variables[i].vt.trim() == '') {
+			if (variables[i].vt == 'undefined' || variables[i].vt.trim() == '') {
 				aux[4] = vars[i] = false
 			}
 			for (let j = i + 1; j < variables.length; j++) {

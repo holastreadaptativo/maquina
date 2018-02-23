@@ -5,7 +5,8 @@ import { data } from 'stores'
 export default class Table extends Component {
 	handlerCreate(e) {
 		e.preventDefault()
-		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero' }).then(() => { this.props.checkAll() })
+		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
+		.then(() => { this.props.checkAll() })
 	}
 	handlerUpdate(input, id) {
 		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
