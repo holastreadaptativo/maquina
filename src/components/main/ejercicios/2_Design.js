@@ -11,8 +11,8 @@ export default class Design extends Component {
 		this.print()
 	}
 	componentDidUpdate() {
-		for (let i = 0; i < 10; i++)
-			setTimeout(() => this.print(), i * 30)
+		//for (let i = 0, j = 30; i < 300/j; i++) //i * j
+		setTimeout(() => this.print(), 300)
 	}
 	print() {
 		this.props.functions.forEach((m, i) => {
