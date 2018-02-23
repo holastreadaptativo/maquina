@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { data } from 'stores'
 
 export class Ejercicios extends Component {
-    constructor() {	
-		super()
-		this.state = { clicked:false, drag:'', value:1 }
+    constructor(props) {	
+		super(props)
+		this.state = { clicked:false, drag:'', value:props.functions.length > 0 ? 0 : 1 }
 		this.setClicked = this.setClicked.bind(this)
 	}
 	componentDidMount() {

@@ -1,6 +1,5 @@
 export function graficoDatos(canvas, config) 
 {
-
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
 

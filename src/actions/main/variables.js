@@ -84,3 +84,11 @@ export function checkAll(variables) {
 	}
 	return [aux, vars]
 }
+
+export function replaceVT(input, variables) {
+	let aux = input.toString()
+	for (let i = 0; i < variables.length; i++) {
+		aux = aux.replace(`$${variables[i].var}`, `${variables[i].vt}`)
+	}
+	return aux
+}

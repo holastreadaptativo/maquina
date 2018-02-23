@@ -14,10 +14,11 @@ export default class Design extends Component {
 		setTimeout(() => this.print(), 300)
 	}
 	print() {
-		this.props.functions.forEach((m, i) => {
+		const { functions, variables } = this.props
+		functions.forEach((m, i) => {
 			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-			FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params)
+			FUNCIONES[j].fns[k].action($(`canvas-${i}`), m.params, variables)
 		}) 		
 	}
     setActive(active) {
@@ -25,7 +26,6 @@ export default class Design extends Component {
     }
 	render() {
 		const { active, width } = this.state
-		const { functions } = this.props
 		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']
 		let tablet = width <= 768, phone = width <= 320
 		return (
@@ -40,7 +40,7 @@ export default class Design extends Component {
 				</nav>
 				<div ref="frame" id="ex-design" class="device canvas" style={{width:width+'px'}}>
 				{
-					functions.map((m, i) => { 
+					this.props.functions.map((m, i) => { 
 						let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
 						return (
 							<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
