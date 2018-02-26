@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Continue } from 'components'
 import { data } from 'stores'
 
 export class Ejercicios extends Component {
@@ -19,7 +20,7 @@ export class Ejercicios extends Component {
 	}
 	handleChange(value) {
 		this.setState({ value:value })
-	}
+	}	
 	render() {
 		const { value } = this.state
 		const { code, variables, functions } = this.props
@@ -44,7 +45,6 @@ export class Ejercicios extends Component {
 							<Design code={code} variables={variables} functions={functions}/>
 						</div>
 					</div>
-
 					<div class="row">
 						<ul class="selector">
 							{
@@ -61,6 +61,7 @@ export class Ejercicios extends Component {
 							value == 2 ? <Editor code={code}/> : '' 
 						}
 					</div>
+					<Continue {...this.props} condition={this.props.functions.length > 0}/>
         		</div>
         	</div>
         )

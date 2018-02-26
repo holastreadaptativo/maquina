@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { Continue } from 'components'
 import { checkAll } from 'actions'
 import { data } from 'stores'
 
@@ -75,6 +76,9 @@ export class Variables extends Component {
 							:
 							<Advan code={code}/>
 						}
+					</div>
+					<div style={{ margin:'-25px 20px 0' }}>
+						<Continue {...this.props} condition={this.state.checked[0][6]}/>
 					</div>
 				</div>
 			</div>

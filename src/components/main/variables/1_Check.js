@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
-import { show } from 'actions'
 
 export default class Check extends Component {
-	handlerSubmit(e) {
-		e.preventDefault()
-		this.props.setActive(2)
-		browserHistory.push('/ejercicios')
-	}
 	render() {
 		const checked = this.props.checked[0]
 		return (
@@ -33,9 +26,6 @@ export default class Check extends Component {
 						<span class={`glyphicon glyphicon-${checked[5] ? 'ok' : 'remove'}`}/>Ingresar variables distintas, no repetir la letra
 					</li>
 				</ul>
-				<div class="add">
-					<button class={show(checked[6], 'btn btn-success')} onClick={this.handlerSubmit.bind(this)}>Continuar</button>
-				</div>
 			</form>
 		)
 	}

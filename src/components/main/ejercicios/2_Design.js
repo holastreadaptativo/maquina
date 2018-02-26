@@ -17,6 +17,9 @@ export default class Design extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', ::this.print )
 	}
+    setActive(active) {
+        this.setState({ active:active, width:active == 0 ? 960 : active == 1 ? 768 : 320 })
+    }
 	print() {
 		const { functions, variables } = this.props
 		functions.forEach((m, i) => {
@@ -27,9 +30,6 @@ export default class Design extends Component {
 			})
 		}) 		
 	}
-    setActive(active) {
-        this.setState({ active:active, width:active == 0 ? 960 : active == 1 ? 768 : 320 })
-    }
 	render() {
 		const { active, width } = this.state
 		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']

@@ -14,6 +14,7 @@ export default class Resume extends Component {
 						<h6 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h6>
 					)})
 				}
+				<h6 class="code"/>
 				<h6 class={show(!advanced)}><b>Variables:</b></h6>
 				<ul class={show(!advanced)}> 
 				{

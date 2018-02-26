@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
+import { Continue } from 'components'
 import Functions from './Functions'
 
 export class Respuestas extends Component {
@@ -40,8 +41,6 @@ export class Respuestas extends Component {
 			modal:!this.state.modal
 		})
 	}
-	
-	
 	render() {
 		const { active, width, value, modal, option } = this.state
         return(
@@ -111,6 +110,7 @@ export class Respuestas extends Component {
 									</div>
 								</div>
 							</div>	
+							<Continue {...this.props} condition={this.props.functions.length > 0}/>
         		</div>
 						<Modal show={modal} onHide={this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 							<Functions code={this.props.code} option={option}/>
