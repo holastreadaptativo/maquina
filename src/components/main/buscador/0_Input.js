@@ -4,7 +4,7 @@ import $, { random, focus } from 'actions'
 import { DEFAULT } from 'stores'
 
 export default class Input extends Component {
-	checkCode(e) {
+	onChange(e) {
 		let n = e.target.value, l = n.length, 
 			m = parseInt(n.substring(l - 1, l))
 
@@ -42,9 +42,9 @@ export default class Input extends Component {
 				<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
 					<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
-						onChange={this.checkCode.bind(this)} maxLength="15"></input>
+						onChange={::this.onChange} maxLength="15"></input>
 					<span class="input-group-btn">
-						<button class="btn btn-default" onClick={this.handleSubmit.bind(this)}>Buscar</button>
+						<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>
 					</span>
 				</div>
 				<div>

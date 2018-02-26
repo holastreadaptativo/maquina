@@ -10,8 +10,8 @@ export class Buscador extends Component {
 		return (
 			<div class="buscador">
 				<form>
-					<Input {...this.state} {...this.props} setState={this.setState.bind(this)}/>
-					<Table {...this.state} {...this.props} setState={this.setState.bind(this)}/>
+					<Input {...this.state} {...this.props} setState={::this.setState}/>
+					<Table {...this.state} {...this.props} setState={::this.setState}/>
 				</form>
 			</div>
 		)

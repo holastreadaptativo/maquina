@@ -6,7 +6,6 @@ export class Ejercicios extends Component {
     constructor(props) {	
 		super(props)
 		this.state = { clicked:false, drag:'', value:props.functions.length > 0 ? 0 : 1 }
-		this.setClicked = this.setClicked.bind(this)
 	}
 	componentDidMount() {
 		data.child(this.props.code).once('value').then(snap => {
@@ -15,7 +14,7 @@ export class Ejercicios extends Component {
 			}
 		})		
 	}	
-	setClicked() {
+	handleClick() {
 		this.setState({ clicked:!this.state.clicked })
 	}
 	handleChange(value) {
@@ -29,7 +28,7 @@ export class Ejercicios extends Component {
         	<div class="ejercicios">
         		<div class="container">
 					<h3>Crear ejercicio
-						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
+						<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
 							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
 								<ul>
 									<li><a>-</a></li>
@@ -40,11 +39,7 @@ export class Ejercicios extends Component {
 							<div class="info">Información sobre el funcionamiento de esta sección y la creación de ejercicios</div>
 						</span>
 					</h3>
-					<div class="row">
-						<div class="col-md-12 design">
-							<Design code={code} variables={variables} functions={functions}/>
-						</div>
-					</div>
+					<Design code={code} variables={variables} functions={functions}/>
 					<div class="row">
 						<ul class="selector">
 							{
@@ -55,11 +50,9 @@ export class Ejercicios extends Component {
 								)})
 							}
 						</ul>
-						{ 
-							value == 0 ? <Overview code={code} variables={variables} functions={functions}/> :
-							value == 1 ? <Functions code={code} variables={variables} active={Math.floor(code / Math.pow(10, 11))}/> : 
-							value == 2 ? <Editor code={code}/> : '' 
-						}
+						<Overview code={code} variables={variables} functions={functions} condition={value == 0}/>
+						<Functions code={code} variables={variables} condition={value == 1} active={0}/>
+						<Editor code={code} condition={value == 2}/>
 					</div>
 					<Continue {...this.props} condition={this.props.functions.length > 0}/>
         		</div>

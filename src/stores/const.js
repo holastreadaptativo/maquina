@@ -18,3 +18,4 @@ export const NAVBAR = [
 			            { path:'/descargas', icon:'download-alt', text:'Descargas' },
 			            { path:'/configuracion', icon:'cog', text:'Configuración' }
         			]
+export const CODE = [ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]

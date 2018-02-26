@@ -20,7 +20,7 @@ export default class Advanced extends Component {
 	render() {
 		const { js, length } = this.state
 		return (
-			<div class="col-md-9">
+			<div class={show(this.props.advanced, 'col-md-9')}>
 				<textarea id="js-mode" class="js" placeholder="Ingresar código JS..." onChange={this.updateContent.bind(this)} defaultValue={js}/>
 				<h6 class={show(length > 0)}>{length}</h6>
 			</div>

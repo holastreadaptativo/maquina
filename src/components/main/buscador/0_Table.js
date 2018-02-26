@@ -42,7 +42,7 @@ export default class Table extends Component {
 					</tbody>
 				</table>
 				<section>
-					<button class={show(selected, 'btn btn-default clean')} onClick={this.handleClear.bind(this)}>Limpiar</button>
+					<button class={show(selected, 'btn btn-default clean')} onClick={::this.handleClear}>Limpiar</button>
 				</section>
 			</div>
 		)

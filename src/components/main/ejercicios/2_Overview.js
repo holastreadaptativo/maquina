@@ -8,9 +8,6 @@ export default class Overview extends Component {
 	constructor() {
 		super()
 		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'' }
-		this.handleModal = this.handleModal.bind(this)
-		this.drag = this.drag.bind(this)
-		this.drop = this.drop.bind(this)
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -101,7 +98,7 @@ export default class Overview extends Component {
     		})
         })
         return (
-			<div class="overview">
+			<div class={show(this.props.condition, 'overview')}>
 				<div class="col-sm-3 resume">
 					<h5><b>Resumen</b></h5>
 					<h6 class="subtitle"><b>Variables:</b></h6>
@@ -122,7 +119,8 @@ export default class Overview extends Component {
 						{
 							functions.map((m, i) => {
 								return (
-									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={this.drop} onDragOver={this.allowDrop} draggable="true" onDragStart={this.drag}>
+									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
+									draggable="true" onDragStart={::this.drag}>
 										<td id={`${m.id}-/${i}-/e`} style={{maxWidth:'20px'}}>
 											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
 										</td>

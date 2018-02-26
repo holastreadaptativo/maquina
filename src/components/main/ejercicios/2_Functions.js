@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
+import $, { show } from 'actions'
 import { data } from 'stores'
-import $ from 'actions'
 
 export default class Functions extends Component {
 	constructor() {
@@ -37,10 +37,11 @@ export default class Functions extends Component {
         const { active, modal, setActive, fn } = this.state
        	let FX = null
        	FUNCIONES[active].fns.forEach(m => { 
-       		if (m.id == fn) FX = m.component
+       		if (m.id == fn) 
+       			FX = m.component
        	})
 		return(
-			<div>
+			<div class={show(this.props.condition)}>
 				<div class="fn-accordion">
 					<ul class="accordion">
 					{

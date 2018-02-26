@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SplitPane from 'react-split-pane'
-import $ from 'actions'
+import $, { show } from 'actions'
 
 export default class Editor extends Component {
 	constructor() {	
@@ -34,7 +34,7 @@ export default class Editor extends Component {
 	render() {
 		const { w1, w2, w } = this.state
 		return (
-			<div id="editor" class="editor">
+			<div id="editor"  class={show(this.props.condition, 'editor')}>
 				 <SplitPane defaultSize="33%" minSize={120} maxSize={w-w2-120} split="vertical" class="resizable main" 
 				 onChange={this.handleDrag.bind(this)}>
 		            <div class="editor-html">

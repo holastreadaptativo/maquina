@@ -15,25 +15,23 @@ export class Respuestas extends Component {
 			option: 0,
 			btnsResp: ['Input', 'ComboBox', 'Radio Button', 'Texto', 'Imagen']
 		}
-		this.setClicked = this.setClicked.bind(this)
 		this.setActive = this.setActive.bind(this)
 		this.handleModal = this.handleModal.bind(this)
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
 	}
-	setClicked() {
+	handleClick() {
 		this.setState({ clicked:!this.state.clicked })
-	}
-	setActive(active) {
-			this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
 	}
 	handleChange(value) {
 		this.setState({ value:value })
 	}
-
 	handleModal() {
 		this.setState({ modal:!this.state.modal })
+	}
+	setActive(active) {
+			this.setState({ active:active, width:active == 0 ? '960px' : active == 1 ? '768px' : '320px' })
 	}
 	setOption(option) {
 		this.setState({
@@ -47,7 +45,7 @@ export class Respuestas extends Component {
         	<div class="main-container ejercicios respuestas">
         		<div class="container">
 							<h3>Crear respuestas
-								<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
+								<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
 									<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
 										<ul>
 											<li><a>-</a></li>

@@ -35,30 +35,32 @@ export default class Design extends Component {
 		let items = ['desktop_windows', 'tablet_mac', 'phone_iphone']
 		let tablet = width <= 768, phone = width <= 320
 		return (
-			<div>
-				<h5><b>Diseño</b></h5>
-				<nav class="devices">
-				{
-					items.map((m, i) => { return (
-						<i key={i} class={focus(active == i, 'active')} onClick={() => this.setActive(i)}>{m}</i>
-					)})
-				}
-				</nav>
-				<div ref="frame" id="ex-design" class="device canvas" style={{width:width+'px'}}>
-				{
-					this.props.functions.map((m, i) => { 
-						let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
-						return (
-							<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
-							{
-								m.tag != 'general' ? 
-								<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
-								<div id={`container-${i}`} class="general"></div>
-							}
-							</div>
-						)
-					})
-				}
+			<div class="row">
+				<div class="col-md-12 design">
+					<h5><b>Diseño</b></h5>
+						<nav class="devices">
+						{
+							items.map((m, i) => { return (
+								<i key={i} class={focus(active == i, 'active')} onClick={() => this.setActive(i)}>{m}</i>
+							)})
+						}
+						</nav>
+						<div ref="frame" id="ex-design" class="device canvas" style={{width:width+'px'}}>
+						{
+							this.props.functions.map((m, i) => { 
+								let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
+								return (
+									<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
+									{
+										m.tag != 'general' ? 
+										<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
+										<div id={`container-${i}`} class="general"></div>
+									}
+									</div>
+								)
+							})
+						}
+						</div>
 				</div>
 			</div>
 		)

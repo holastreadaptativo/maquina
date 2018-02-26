@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import { checkAll, show, focus } from 'actions'
 import { Continue } from 'components'
-import { checkAll } from 'actions'
 import { data } from 'stores'
 
 export class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], clicked:false, advanced:false, checked:[[], []] }	
-		this.setClicked = this.setClicked.bind(this)
+		this.state = { variables:[], clicked:false, advanced:false, checked:[[], []] }
 	}
 	componentWillMount() {
 		data.child(`${this.props.code}`).once('value').then(snap => { 
@@ -32,12 +31,12 @@ export class Variables extends Component {
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
 	}
-	setClicked() {
+	handleClick() {
 		this.setState({ clicked:!this.state.clicked })
 	}
 	setAdvanced() {
 		let advanced = !this.state.advanced
-		data.child(`${this.props.code}`).update({ advanced:advanced })
+		data.child(this.props.code).update({ advanced:advanced })
 		this.setState({ advanced:advanced })
 	}
 	checkAll() {
@@ -51,10 +50,10 @@ export class Variables extends Component {
 			<div class="variables">
 				<div class="container">
 					<h3>Ingresar variables
-						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
-							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
+						<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
+							<div class={`options ${focus(this.state.clicked, 'clicked')}`}>
 								<ul>
-									<li onClick={this.setAdvanced.bind(this)}><a>{!advanced ? 'Modo avanzado' : 'Modo normal' }</a></li>
+									<li onClick={::this.setAdvanced}><a>{!advanced ? 'Modo avanzado' : 'Modo normal' }</a></li>
 									<li onClick={() => { this.props.setActive(0); browserHistory.push('/') }}><a>Cambiar código</a></li>
 									<li><a>Crear variables</a></li>
 								</ul>
@@ -63,19 +62,15 @@ export class Variables extends Component {
 						<span class="glyphicon glyphicon-info-sign">
 							<div class="info">Información sobre el funcionamiento de esta sección y el uso de variables</div>
 						</span>
-						{ advanced ? <span class="mode">Modo Avanzado</span> : '' }
+						<span class={show(advanced, 'mode')}>Modo Avanzado</span>
 					</h3>
 					<div class="row">
 						<Resume code={code} advanced={advanced} variables={variables}/>
-						{
-							!advanced ? 
-							<div class="col-sm-9">
-								<Table code={code} checked={checked} variables={variables} checkAll={this.checkAll.bind(this)}/>
-								<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
-							</div>
-							:
-							<Advan code={code}/>
-						}
+						<div class={show(!advanced, 'col-sm-9')}>
+							<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
+							<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
+						</div>
+						<Advan code={code} advanced={advanced}/>
 					</div>
 					<div style={{ margin:'-25px 20px 0' }}>
 						<Continue {...this.props} condition={this.state.checked[0][6]}/>

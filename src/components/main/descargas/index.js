@@ -4,7 +4,6 @@ export class Descargas extends Component {
     constructor() {
 		super()
 		this.state = { clicked:false, radius:100, color:'red', x:-100, y:-100 }
-		this.setClicked = this.setClicked.bind(this)
 	}
 	onMouseMove(e) {
 		const { radius, x, y } = this.state
@@ -13,16 +12,16 @@ export class Descargas extends Component {
 	changeRadius(r) {
 		this.setState({ radius:this.state.radius*r })
 	}
-	setClicked() {
+	handleClick() {
 		this.setState({ clicked:!this.state.clicked })
 	}
 	render() {
 		const { radius, color, x, y } = this.state
         return(
-        	<div class="descargas" onMouseMove={this.onMouseMove.bind(this)}>
+        	<div class="descargas" onMouseMove={::this.onMouseMove}>
         		<div class="hidden">
 					<h3 class="hidden">Descargar archivos
-						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
+						<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
 							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
 								<ul>
 									<li><a>-</a></li>

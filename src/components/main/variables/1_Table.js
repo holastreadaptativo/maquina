@@ -3,16 +3,16 @@ import $, { focus } from 'actions'
 import { data } from 'stores'
 
 export default class Table extends Component {
-	handlerCreate(e) {
+	handleCreate(e) {
 		e.preventDefault()
 		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
 		.then(() => { this.props.checkAll() })
 	}
-	handlerUpdate(input, id) {
+	handleUpdate(input, id) {
 		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
 		.then(() => { this.props.checkAll() })
 	}
-	handlerRemove(id) {
+	handleRemove(id) {
 		if (this.props.variables.length > 1)
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		else {
@@ -43,11 +43,11 @@ export default class Table extends Component {
 								<td>{i+1}</td>
 								<td>
 									<input id={`var-${m.id}`} type="text" class="form-control vr" 
-									onChange={this.handlerUpdate.bind(this, 'var', m.id)} defaultValue={m.var}></input>
+									onChange={this.handleUpdate.bind(this, 'var', m.id)} defaultValue={m.var}></input>
 								</td>
 								<td>
 									<select id={`type-${m.id}`} class="form-control" defaultValue={m.type} 
-									onChange={this.handlerUpdate.bind(this, 'type', m.id)}>
+									onChange={this.handleUpdate.bind(this, 'type', m.id)}>
 										<option value="numero">Número</option>
 										<option value="funcion">Función</option>
 										<option value="texto">Texto</option>
@@ -55,18 +55,18 @@ export default class Table extends Component {
 								</td>
 								<td>
 									<input id={`val-${m.id}`} type="text" class="form-control" 
-									onChange={this.handlerUpdate.bind(this, 'val', m.id)} defaultValue={m.val}></input>
+									onChange={this.handleUpdate.bind(this, 'val', m.id)} defaultValue={m.val}></input>
 								</td>
 								<td>
 									<input id={`res-${m.id}`} type="text" class="form-control" 
-									onChange={this.handlerUpdate.bind(this, 'res', m.id)} defaultValue={m.res}></input>
+									onChange={this.handleUpdate.bind(this, 'res', m.id)} defaultValue={m.res}></input>
 								</td>
 								<td>
 									<input id={`vt-${m.id}`} type="text" class="form-control vt" 
-									onChange={this.handlerUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
+									onChange={this.handleUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
 								</td>
 								<td>
-									<span class="glyphicon glyphicon-remove" onClick={this.handlerRemove.bind(this, m.id)} title="Eliminar"/>
+									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m.id)} title="Eliminar"/>
 								</td>
 							</tr>
 						)})
@@ -74,7 +74,7 @@ export default class Table extends Component {
 					</tbody>
 				</table>
 				<div class="add">		
-					<button class="btn btn-default" onClick={this.handlerCreate.bind(this)}>Agregar</button>
+					<button class="btn btn-default" onClick={this.handleCreate.bind(this)}>Agregar</button>
 				</div>
 			</form>
 		)
