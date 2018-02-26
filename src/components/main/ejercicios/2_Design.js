@@ -9,9 +9,13 @@ export default class Design extends Component {
 	}
 	componentDidMount() {
 		this.print()
+		this.setState({ resize:window.addEventListener('resize', () => this.print()) })
 	}
 	componentDidUpdate() {
 		setTimeout(() => this.print(), 300)
+	}
+	componenWillUnount() {
+		window.removeEventListener(this.state.resize)
 	}
 	print() {
 		const { functions, variables } = this.props
