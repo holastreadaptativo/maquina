@@ -109,7 +109,7 @@ export default class Overview extends Component {
 					{
 						variables.map((m, i) => { 
 							if (m.var != '' && m.val != '') return (
-								<h6 key={i}>${m.var.toLowerCase()} = {setFormat(m.val)};</h6>
+								<h6 key={i}>{`$${m.var.toLowerCase()} = ${setFormat(m.val)}; (vt = ${m.vt})`}</h6>
 							)
 						})
 					}
