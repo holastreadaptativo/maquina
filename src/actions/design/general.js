@@ -1,6 +1,7 @@
 import { replaceVT } from 'actions'
 
-export function insertarTexto(container, state, variables) {
-  	container.innerHTML = replaceVT(state.textCont, variables)
+export function insertarTexto(config) {
+	const { container, params, variables } = config
+  	container.innerHTML = replaceVT(params.textCont, variables)
 }
 

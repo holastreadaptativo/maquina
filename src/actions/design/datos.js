@@ -1,21 +1,22 @@
 import { replaceVT } from 'actions'
 
-export function graficoDatos(canvas, config, variables) 
+export function graficoDatos(config) 
 {
+    const { container, params, variables } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
-        chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
+        chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = params
 
-    let maxWidth = canvas.parentElement.offsetWidth, responsive = config.width < maxWidth,
-        width = responsive ? config.width : maxWidth - 15, height = responsive ? config.height : width
+    let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
+        width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
 
-    canvas.width = width
-    canvas.height = height
+    container.width = width
+    container.height = height
 
     let values = replaceVT(chartValues, variables).split(',')
     let state = {
         axis: { color: axisColor, scale: 'auto', title_x: axisTitleX, title_y: axisTitleY, width: axisWidth },
         border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
-        canvas: { color: background, ctx: canvas.getContext('2d'), height: height, width: width },
+        canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, 
             margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 },
             padding: { x:10, y:10 }, position: chartPosition, tags: chartTags.split(','), values: values },
@@ -29,7 +30,7 @@ export function graficoDatos(canvas, config, variables)
     const { x, y } = chart.margin
 
     let data = {
-        ctx: canvas.getContext('2d'), height: height - 2*y, len: chart.length, 
+        ctx: container.getContext('2d'), height: height - 2*y, len: chart.length, 
         max: Math.max(...chart.values), width: width - 2*(x + 10), x0: x, y0: height - y,
         dx: Math.min(Math.floor((width - 2*(x + 10))/(3/2*chart.length)), 100),
         dy: Math.min(Math.floor((height - 2*(y - 5))/(4/3*chart.length)), 60)
@@ -42,7 +43,7 @@ export function graficoDatos(canvas, config, variables)
     data.ctx.save()
 
     generarColumnas(data, state)
-    generarEjes(canvas, state)
+    generarEjes(container, state)
     if (state.extra.projection) 
         proyectarColumnas(data, state)
     insertarTextos(data, state)

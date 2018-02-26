@@ -17,7 +17,7 @@ export default class PlanoCartesiano extends Component {
 		}
 	}
 	componentDidUpdate() {
-		geometria.planoCartesiano(this.refs.canvas, this.state)
+		geometria.planoCartesiano({ container:this.refs.canvas, params:this.state, variables:this.props.variables })
 	}
 	handleActive(active) {
 		this.setState({ active:active })

@@ -1,6 +1,7 @@
-export function planoCartesiano(canvas, state) {
-		generarPlanoCartesiano(canvas, state)
-		generarCuadradosUnidos(canvas, state)
+export function planoCartesiano(config) {
+		const { container, params } = config
+		generarPlanoCartesiano(container, params)
+		generarCuadradosUnidos(container, params)
 		//geometria.generarPlanoCartesiano(canvas, this.state)
 		//geometria.dividirPlanoCartesiano(canvas, this.state)
    		//geometria.reflejarCuadrado(canvas, this.state)  
