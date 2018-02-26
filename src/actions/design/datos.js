@@ -1,4 +1,6 @@
-export function graficoDatos(canvas, config) 
+import { replaceVT } from 'actions'
+
+export function graficoDatos(canvas, config, variables) 
 {
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = config
@@ -9,8 +11,8 @@ export function graficoDatos(canvas, config)
     canvas.width = width
     canvas.height = height
 
-    let values = chartValues.split(','),
-        state = {
+    let values = replaceVT(chartValues, variables).split(',')
+    let state = {
         axis: { color: axisColor, scale: 'auto', title_x: axisTitleX, title_y: axisTitleY, width: axisWidth },
         border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
         canvas: { color: background, ctx: canvas.getContext('2d'), height: height, width: width },

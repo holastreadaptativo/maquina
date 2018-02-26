@@ -102,7 +102,7 @@ export default class Overview extends Component {
         })
         return (
 			<div class="overview">
-				<div class="col-md-3 resume">
+				<div class="col-sm-3 resume">
 					<h5><b>Resumen</b></h5>
 					<h6 class="subtitle"><b>Variables:</b></h6>
 					<ul> 
@@ -115,7 +115,7 @@ export default class Overview extends Component {
 					}
 					</ul>
 				</div>
-				<div class={show(functions.length, 'col-md-9 functions')}>
+				<div class={show(functions.length, 'col-sm-9 functions')}>
 					<h6 class="subtitle"><b>Funciones:</b></h6>
 					<table class="table">
 						<tbody>
@@ -166,7 +166,7 @@ export default class Overview extends Component {
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 					{ 
 						FX != null ? 
-						<FX update={(x) => this.updateFunction.bind(this, x)} params={params}/> : '' 
+						<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params}/> : '' 
 					}
 				</Modal>
 			</div>

@@ -67,7 +67,7 @@ export default class Functions extends Component {
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
 					{ 
 						FX != null ? 
-						<FX add={(x) => this.addFunction.bind(this, x)} code={this.props.code} push/> : '' 
+						<FX add={(x) => this.addFunction.bind(this, x)} variables={this.props.variables} push/> : '' 
 					}
 				</Modal>
 		    </div>

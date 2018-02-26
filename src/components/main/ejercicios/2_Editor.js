@@ -29,18 +29,7 @@ export default class Editor extends Component {
 		if(!b2) this.setState({ b2:true })
 	}	
 	handleChange(id) {
-		let text = $(id).value, aux = ''
-		if (text.includes('<')) {
-			for (let i = 0; i < text.length; i++) {
-				let char = text.charAt(i)
-				if (char == '<') { 
-					aux += char.fontcolor('bb0000')
-				} else {
-					aux += char.fontcolor('000000')
-				}
-			}
-			$(id).innerHTML = aux
-		}
+		return id
 	}
 	render() {
 		const { w1, w2, w } = this.state
