@@ -3,7 +3,7 @@ import SplitPane from 'react-split-pane'
 
 export default class Configuracion extends Component {
     render() {
-        let margin = 10
+        let margin = 20
         return(
         	<div class="config">
         		<div class="slider-control-container">

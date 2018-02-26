@@ -10,7 +10,7 @@ export default class Input extends Component {
 			<div class="input-group">
 				<span class="input-group-addon">{this.props.type != 'color' ? this.props.prefix : 'color'}</span>
 				<input ref="input" type={this.props.type} class={`form-control ${this.props.class}`} defaultValue={this.props.default} 
-				onChange={this.update.bind(this)} placeholder={this.props.placeholder}/>
+				onChange={::this.update} placeholder={this.props.placeholder}/>
 				<span class={show(this.props.postfix, 'input-group-addon')}>{this.props.postfix}</span>
 			</div>
 		)

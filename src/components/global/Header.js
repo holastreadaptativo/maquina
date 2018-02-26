@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
+import { NAVBAR, DEFAULT } from 'stores'
 import { Link } from 'react-router'
 import { Alert } from 'components'
 import { focus } from 'actions'
-import { NAVBAR } from 'stores'
 
 export default class Header extends Component {
    render() {
@@ -17,7 +17,7 @@ export default class Header extends Component {
                         </h5>
                     </div>
                     <div class="code">
-                        <h5>ID: {code}</h5>
+                        <h5>{code != DEFAULT ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
                     </div>
                 </div>
                 <nav>
