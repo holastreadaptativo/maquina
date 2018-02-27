@@ -49,7 +49,7 @@ class EditorConvertToHTML extends Component {
             onEditorStateChange={this.onEditorStateChange}
           />
         </div>
-        <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12" />
+        <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden" />
       </div>
     )
   }

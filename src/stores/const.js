@@ -19,3 +19,5 @@ export const NAVBAR = [
 			            { path:'/configuracion', icon:'cog', text:'Configuración' }
         			]
 export const CODE = [ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
+
+export const SIZES = [ 12, 9, 8, 6, 4, 3 ]

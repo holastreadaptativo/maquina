@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import $, { setFormat, show } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
-import { data } from 'stores'
+import { data, SIZES } from 'stores'
 
 export default class Overview extends Component {
 	constructor() {
@@ -135,7 +135,7 @@ export default class Overview extends Component {
 												<span>Ancho</span>&nbsp;
 												<select defaultValue={m.width} id={`select-${m.id}`} onChange={this.updateWidth.bind(this, m.id)}>
 												{
-													[ 12, 9, 8, 6, 4, 3 ].map((m, i) => { return (
+													SIZES.map((m, i) => { return (
 														<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
 													)})
 												}
@@ -161,11 +161,8 @@ export default class Overview extends Component {
 						</tbody>
 					</table>
 				</div>
-			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="modal" bsSize="large">
-					{ 
-						FX != null ? 
-						<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params}/> : '' 
-					}
+			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="react-modal" bsSize="large">
+					<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params}/>
 				</Modal>
 			</div>
 		)

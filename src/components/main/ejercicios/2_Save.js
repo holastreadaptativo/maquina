@@ -5,9 +5,7 @@ export default class Save extends Component {
 		const { add, update, params, push } = this.props
 		let onSave = push ? add : update
         return (
-			<div class="button">
-				<button id="btn-save" onClick={onSave(params)}>Guardar</button>
-			</div>
+			<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
 		)
 	}
 }

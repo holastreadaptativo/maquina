@@ -19,7 +19,7 @@ export function graficoDatos(config)
         canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, 
             margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 },
-            padding: { x:10, y:10 }, position: chartPosition, tags: chartTags.split(','), values: values },
+            padding: { x:10, y:10 }, position: chartPosition, tags: replaceVT(chartTags, variables).split(','), values: values },
         extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
         font: { align: 'center', color: fontColor, family: 'arial', size: 14 },
         line: { color: lineColor, value: 10, width: lineWidth },
