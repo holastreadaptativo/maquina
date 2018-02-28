@@ -6,7 +6,7 @@ export default class Resume extends Component {
 	render() {
 		const { advanced, code, variables } = this.props
 		return (
-			<div class="col-sm-3 resume">
+			<div class="resume col-xs-3">
 				<h5><b>Resumen</b></h5>
 				<h6><b>Ejercicio:</b></h6>
 				{

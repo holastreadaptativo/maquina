@@ -50,7 +50,7 @@ export class Variables extends Component {
 				<div class="container">
 					<div class="row">
 						<Resume code={code} advanced={advanced} variables={variables}/>
-						<div class={show(!advanced, 'col-sm-9')}>
+						<div class={show(!advanced, 'editor col-xs-9')}>
 							<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
 							<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
 						</div>
