@@ -123,6 +123,24 @@
 		.btn-success
 		{
 			margin-top: -10px;
+			background: @nav-bg-color;
+			border-color: @nav-bg-hover;
+			&:hover
+			{
+				background: @nav-bg-hover;
+			}
 		}
+	}
+	&.slim
+	{
+		background-color: @gray-color;
+		width: ~'calc(100vw - 315px)';
+		.ejercicios 
+		{
+			.row
+			{
+				width: ~'calc(100vw - 395px)';
+			}	
+		}	
 	}
 }

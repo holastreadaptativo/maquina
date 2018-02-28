@@ -10,14 +10,16 @@ export const COLORS = {
 						grid:'#dddddd' 
 					}
 export const NAVBAR = [ 
-			            { path:'/', icon:'home', text:'Buscador' }, 
-			            { path:'/variables', icon:'th', text:'Variables' }, 
-			            { path:'/ejercicios', icon:'edit', text:'Ejercicios' }, 
-			            { path:'/respuestas', icon:'list-alt', text:'Respuestas' }, 
-			            { path:'/versiones', icon:'duplicate', text:'Versiones' }, 
-			            { path:'/descargas', icon:'download-alt', text:'Descargas' },
-			            { path:'/configuracion', icon:'cog', text:'Configuración' }
+			            { path:'/', icon:'home', text:'Buscador', title:'Buscador', nav:[] }, 
+			            { path:'/variables', icon:'th', text:'Variables', title:'Ingresar variables', nav:[] }, 
+			            { path:'/ejercicios', icon:'edit', text:'Ejercicios', title:'Crear ejercicio', nav:['details', 'layers'] }, 
+			            { path:'/respuestas', icon:'list-alt', text:'Respuestas', title:'Crear respuestas', nav:[] }, 
+			            { path:'/versiones', icon:'duplicate', text:'Versiones', title:'Generar versiones', nav:[] }, 
+			            { path:'/descargas', icon:'download-alt', text:'Descargas', title:'Descargar ejercicio', nav:[] },
+			            { path:'/configuracion', icon:'cog', text:'Configuración', title:'Configuración', nav:[] }
         			]
 export const CODE = [ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
 
 export const SIZES = [ 12, 9, 8, 6, 4, 3 ]
+
+export const DEVICES = [ 'desktop_windows', 'tablet_mac', 'phone_iphone' ]

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import $, { setFormat, show } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 import { data, SIZES } from 'stores'
+import $, { focus } from 'actions'
 
 export default class Overview extends Component {
 	constructor() {
@@ -98,22 +98,11 @@ export default class Overview extends Component {
     		})
         })
         return (
-			<div class={show(this.props.condition, 'overview')}>
-				<div class="col-sm-3 resume">
-					<h5><b>Resumen</b></h5>
-					<h6 class="subtitle"><b>Variables:</b></h6>
-					<ul> 
-					{
-						variables.map((m, i) => { 
-							if (m.var != '' && m.val != '') return (
-								<h6 key={i}>{`$${m.var.toLowerCase()} = ${setFormat(m.val)}; (vt = ${m.vt})`}</h6>
-							)
-						})
-					}
-					</ul>
-				</div>
-				<div class={show(functions.length, 'col-sm-9 functions')}>
-					<h6 class="subtitle"><b>Funciones:</b></h6>
+        	<aside class={focus(this.props.condition, 'active')}>
+				<div class="overview">	
+					<div class="title">
+						<h3>Ejercicio</h3>
+					</div>
 					<table class="table">
 						<tbody>
 						{
@@ -121,16 +110,13 @@ export default class Overview extends Component {
 								return (
 									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
 									draggable="true" onDragStart={::this.drag}>
-										<td id={`${m.id}-/${i}-/e`} style={{maxWidth:'20px'}}>
+										<td id={`${m.id}-/${i}-/e`}>
 											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
 										</td>
-										<td id={`${m.id}-/${i}-/x`} style={{maxWidth:'30px'}}>
-											<h6 id={`${m.id}-/${i}-/y`}>{m.id.substring(3, 7)}</h6>
-										</td>
 										<td id={`${m.id}-/${i}-/o`}>
-											<h6 id={`${m.id}-/${i}-/u`}>{m.function}</h6>
+											<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
 										</td>
-										<td style={{maxWidth:'55px'}}>
+										<td style={{maxWidth:'55px'}} class="hidden">
 											<li>
 												<span>Ancho</span>&nbsp;
 												<select defaultValue={m.width} id={`select-${m.id}`} onChange={this.updateWidth.bind(this, m.id)}>
@@ -142,16 +128,11 @@ export default class Overview extends Component {
 												</select>
 											</li>
 										</td>
-										<td style={{maxWidth:'20px'}} onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}>
+										<td style={{maxWidth:'65px'}}>
 											<li>
-												<span class="hidden">Editar</span>&nbsp;
-												<span class="glyphicon glyphicon-pencil"/>
-											</li>
-										</td>
-										<td style={{maxWidth:'20px'}} onClick={this.handleRemove.bind(this, m.id)}>
-											<li>
-												<span class="hidden">Borrar</span>&nbsp;
-												<span class="glyphicon glyphicon-trash"/>
+												<span class="glyphicon glyphicon-pencil" 
+													onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}/>
+												<span class="glyphicon glyphicon-trash" onClick={this.handleRemove.bind(this, m.id)}/>
 											</li>
 										</td>
 									</tr>
@@ -164,7 +145,25 @@ export default class Overview extends Component {
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="react-modal" bsSize="large">
 					<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params} onHide={::this.handleModal}/>
 				</Modal>
-			</div>
+			</aside>
 		)
 	}
 }
+
+/*
+
+<div class="col-sm-3">
+	<h5><b>Resumen</b></h5>
+	<h6 class="subtitle"><b>Variables:</b></h6>
+	<ul> 
+	{
+		variables.map((m, i) => { 
+			if (m.var != '' && m.val != '') return (
+				<h6 key={i}>{`$${m.var.toLowerCase()} = ${setFormat(m.val)}; (vt = ${m.vt})`}</h6>
+			)
+		})
+	}
+	</ul>
+</div>
+
+*/

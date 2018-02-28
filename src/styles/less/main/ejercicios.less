@@ -2,13 +2,12 @@
 {
 	.row
 	{
+		width: 100%;
+		transition: all .3s ease;
 		.design
 		{
-			background-color: darken(@info-color, 1%);
-			border: 1px solid #ddd;
-			border-radius: 5px;
-			padding: 10px 25px 20px;
-			margin-top: 20px;
+			padding: 10px 0px 20px;
+			margin-top: 0px;
 			width: 97%;
 			h5, h6.code
 			{
@@ -23,26 +22,26 @@
 				position: absolute;
 				top: 15px;
 				right: ~'calc(50% - 55px)';
-				border-bottom: 1px solid #ccc;
+				border-bottom: 2px solid #ccc;
 				padding-bottom: 3px;
 				i
 				{
 					margin: 2px;
 					padding: 8px;
-					border-bottom: 1px solid #ccc;
+					border-bottom: 2px solid #ccc;
 					padding-bottom: 8px;
 					transition: all .3s ease;
 					cursor: pointer;
 					&.active
 					{
-						border-bottom: 1px solid @sec-color;
+						border-color: @sec-color;
 					}
 				}
 			}
 			.device
 			{
 				background-color: white;
-				border: 1px solid black;
+				border: 2px solid #ddd;
 				min-height: 330px;
 				width: 100%;
 				margin: 0 auto;
@@ -50,33 +49,8 @@
 				overflow: auto;
 				padding: 5px;
 				max-width: 100%;
-				.div-datos
-				{
-					//background-color: @color-datos;
-				}
-				.div-geometria
-				{
-					//background-color: @color-geometria;
-				}
-				.div-algebra
-				{
-					//background-color: @color-algebra;
-				}
-				.div-numeracion
-				{
-					//background-color: @color-numeracion;
-				}
-				.div-medicion
-				{
-					//background-color: @color-medicion;
-				}
-				.div-general
-				{
-					//background-color: @color-general;
-				}
 				.tags
 				{
-					//min-height: 160px; 
 					border: 3px solid white;
 					padding: 0;
 					margin: 0;
@@ -253,127 +227,152 @@
 				}
 			}
 		}
-		.overview
+	}
+	aside
+	{
+		background: @main-color;
+		width: 300px;
+		position: fixed;
+		top: 45px;
+		right: -300px;
+		height: ~'calc(100vh - 45px)';
+		transition: right .3s ease;
+		.title
 		{
-			background: @bar-color; 
-			height: auto; 
-			width: 97%;
+			background: @main-hover;
 			color: white;
-			padding: 20px 20px 30px;
-			overflow-y: auto;
-			.resume
+			height: 35px;
+			padding: 10px 10px;
+			margin-bottom: 20px;
+			h3 
 			{
-				h5
+				font-size: 15px;
+				margin: 0;
+			}
+		}
+		.functions
+		{
+			width: inherit;		
+			li
+			{
+				color: white;
+				list-style: none;
+				form
 				{
-					b
+					h5
 					{
-						span
+						text-transform: uppercase;
+						padding-left: 10px;
+						font-size: 12px;
+						font-weight: bold;
+						background: @main-hover;
+						width: auto;
+						.glyphicon
 						{
-							font-size: 11px;
-							text-transform: uppercase;
+							color: white;
+							font-size: 13px;
+							float: right;	
+							margin-right: 10px;
 						}
 					}
-					padding-bottom: 10px;
-				}
-				.subtitle
-				{
-					margin-bottom: 20px;
-				}
-				ul
-				{
-					border: 3px solid darken(@info-color, 20%);
-					h6
+					ul .button
 					{
-						margin: 0px;
-						padding: 3px 10px; 
-						background-color: darken(@bar-color, 5%);
-						color: white;
-						border-top: 2px solid lighten(@bar-color, 5%);
-						border-bottom: 2px solid lighten(@bar-color, 5%);
+						padding: 0 10px;
+						font-size: 13px;
+						cursor: pointer;
 					}
 				}
-			}
-			.functions 
-			{	
-				.subtitle
+				&.active h5
 				{
-					margin-bottom: 20px;
+					background: @sec-hover;
 				}
-				.table
+			}
+		}
+		.overview
+		{
+			overflow: hidden;
+			width: inherit;
+			.table
+			{
+				width: inherit;
+				tr
 				{
-					background-color: white;
-					border: 3px solid darken(@info-color, 20%);
-					tr
+					background-color: @main-hover;
+					color: white;
+					font-size: 13px;
+					border: 1px solid  @color;
+					border-left-width: 2px;
+					border-right-width: 2px;
+				    &[draggable="true"]
 					{
-						color: white;
-						font-size: 13px;
-					    &[draggable="true"]
+						cursor: move;
+					    cursor: grab;
+					    cursor: -moz-grab;
+					    cursor: -webkit-grab;
+						&:hover
 						{
-							cursor: move;
-						    cursor: grab;
-						    cursor: -moz-grab;
-						    cursor: -webkit-grab;
-							&:hover
+							background-color: @bar-color;
+						}
+					    &:active 
+					    { 
+						    cursor: grabbing;
+						    cursor: -moz-grabbing;
+						    cursor: -webkit-grabbing;
+						    background-color: darken(@sec-hover, 10%);
+						}
+					}
+					&.datos
+					{
+						border-color: @color-datos;							
+					}
+					&.geometria
+					{
+						border-color: @color-geometria;
+					}
+					&.general
+					{
+						border-color: @color-general;
+					}
+					td
+					{
+						text-align: left;
+						border: none;						
+						li
+						{
+							display: inline-block;
+							padding: 3px 5px;
+							margin: 0;
+							select
+							{
+								background: transparent;
+								cursor: pointer;
+								display: inline;
+								margin-left: 3px;
+							}
+							option
 							{
 								background-color: @bar-color;
 							}
-						    &:active 
-						    { 
-							    cursor: grabbing;
-							    cursor: -moz-grabbing;
-							    cursor: -webkit-grabbing;
-							    background-color: darken(@sec-hover, 10%);
-							}
-						}
-						&.datos
-						{
-							background-color: @color-datos;							
-						}
-						&.geometria
-						{
-							background-color: @color-geometria;
-						}
-						&.general
-						{
-							background-color: @color-general;
-						}
-						td
-						{
-							text-align: left;
-							
-							li
+							span
 							{
 								cursor: pointer;
-								display: inline-block;
-								padding: 3px 5px;
-								margin: 0;
-								select
-								{
-									background: transparent;
-									cursor: pointer;
-									display: inline;
-									margin-left: 3px;
-								}
-								option
-								{
-									background-color: @bar-color;
-								}
-								span
-								{
-									display: inline;
-									margin-left: 3px;
-								}
-							}
-							h6
-							{
-								padding: 6px 3px;
-								display: inline-block;
-								margin: 0;
+								display: inline;
+								padding-left: 15px;
 							}
 						}
+						h6
+						{
+							padding: 6px 3px;
+							display: inline-block;
+							margin: 0;
+						}
 					}
-				}				
+				}
 			}
+		}
+		&.active
+		{
+			right: 0;
 		}
 	}
 }

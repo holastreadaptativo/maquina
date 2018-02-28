@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Save } from 'components'
-import { SIZES } from 'stores'
+import { SIZES, DEVICES } from 'stores'
 
 export default class Modal extends Component {
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
+		const { add, update, params, push } = this.props.store
+		let onSave = push ? add : update
         return(
         	<div class="react-functions">
 				<div class="react-config">
@@ -21,45 +22,29 @@ export default class Modal extends Component {
 						</canvas>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={this.props.store.onHide}/>
-					<Save {...this.props.store} params={this.props.params}/>
+					<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
 				</div>
 				<div class="react-header">
 					<h5>{this.props.title}</h5>
 				</div>
-				<div class="react-footer">	
+				<div class="react-footer">
 					<h6>Devices:</h6>
-					<h6>
-						<i>desktop_windows</i>
-						<select defaultValue={12}>
-						{
-							SIZES.map((m, i) => { return (
-								<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-							)})
-						}	
-						</select>
-					</h6>
-					<h6>
-						<i>tablet_mac</i>
-						<select defaultValue={12}>
-						{
-							SIZES.map((m, i) => { return (
-								<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-							)})
-						}	
-						</select>
-					</h6>
-					<h6>
-						<i>phone_iphone</i>
-						<select defaultValue={12}>
-						{
-							SIZES.map((m, i) => { return (
-								<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-							)})
-						}	
-						</select>
-					</h6>
-				</div>
+					{
+						DEVICES.map((n, j) => { return (
+							<h6 key={j}>
+								<i>{n}</i>
+								<select defaultValue={12}>
+								{
+									SIZES.map((m, i) => { return (
+										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
+									)})
+								}	
+								</select>
+							</h6>
+						)})
+					}
+					</div>			
 			</div>
 		)
 	}
-}			
+}

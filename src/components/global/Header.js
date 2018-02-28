@@ -6,18 +6,26 @@ import { focus } from 'actions'
 
 export default class Header extends Component {
    render() {
-        const { active, code, setActive } = this.props     
+        const { active, setActive, code, option, setOption } = this.props     
         return(
             <header class="main-header">
                 <div class="container-fluid">
                     <div class="logo">A</div>
                     <div class="title">
-                        <h5>Máquina de Ejercicios
+                        <h5>Adaptativamente
                             <span class="glyphicon glyphicon-education"/>
+                            <b>{NAVBAR[active].title}</b>
                         </h5>
                     </div>
                     <div class="code">
-                        <h5>{code != DEFAULT ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
+                        <h5>
+                        {
+                            NAVBAR[active].nav.map((m, i) => { return (
+                                <i key={i} onClick={() => setOption(option != i ? i : null)}>{m}</i>
+                            )})
+                        }
+                        </h5>
+                        <h5 class="hidden">{code != DEFAULT ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
                     </div>
                 </div>
                 <nav>

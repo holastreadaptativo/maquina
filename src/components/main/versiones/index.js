@@ -37,18 +37,6 @@ export class Versiones extends Component {
         return(
         	<div class="versiones">
         		<div class="container">
-					<h3>Generar versiones
-						<span class="glyphicon glyphicon-option-vertical" onClick={this.setClicked}>
-							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
-								<ul>
-									<li><a>-</a></li>
-								</ul>
-							</div>
-						</span>
-						<span class="glyphicon glyphicon-info-sign">
-							<div class="info">Información sobre el funcionamiento de esta sección y la generación de versiones</div>
-						</span>
-					</h3>
 					<div class="row">
 						<div class="col-md-3">
 							<div id="options" class="combinaciones">

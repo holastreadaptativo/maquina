@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
-import { checkAll, show, focus } from 'actions'
+import { checkAll, show } from 'actions'
 import { Continue } from 'components'
 import { data } from 'stores'
 
@@ -49,21 +48,6 @@ export class Variables extends Component {
 		return (
 			<div class="variables">
 				<div class="container">
-					<h3>Ingresar variables
-						<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
-							<div class={`options ${focus(this.state.clicked, 'clicked')}`}>
-								<ul>
-									<li onClick={::this.setAdvanced}><a>{!advanced ? 'Modo avanzado' : 'Modo normal' }</a></li>
-									<li onClick={() => { this.props.setActive(0); browserHistory.push('/') }}><a>Cambiar código</a></li>
-									<li><a>Crear variables</a></li>
-								</ul>
-							</div>
-						</span>
-						<span class="glyphicon glyphicon-info-sign">
-							<div class="info">Información sobre el funcionamiento de esta sección y el uso de variables</div>
-						</span>
-						<span class={show(advanced, 'mode')}>Modo Avanzado</span>
-					</h3>
 					<div class="row">
 						<Resume code={code} advanced={advanced} variables={variables}/>
 						<div class={show(!advanced, 'col-sm-9')}>

@@ -44,21 +44,9 @@ export class Respuestas extends Component {
         return(
         	<div class="main-container ejercicios respuestas">
         		<div class="container">
-							<h3>Crear respuestas
-								<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
-									<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
-										<ul>
-											<li><a>-</a></li>
-										</ul>
-									</div>
-								</span>
-								<span class="glyphicon glyphicon-info-sign">
-									<div class="info">Información sobre el funcionamiento de esta sección y la creación de respuestas</div>
-								</span>
-							</h3>
 							<div class="row">
 								<div class="col-md-12 design">
-									<h5><b>Diseño</b></h5>
+									<h5><b>&nbsp;</b></h5>
 									<nav class="devices">
 										<i class={`${active == 0 ? 'active' : ''}`} onClick={() => this.setActive(0)}>desktop_windows</i>
 										<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>

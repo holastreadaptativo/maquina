@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { auth, users, uid, data, DEFAULT } from 'stores'
 import { Header } from 'components'
+import { focus } from 'actions'
 
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { fn:'', ln:'', code:DEFAULT, setCode:this.setCode.bind(this), active:0, setActive:this.setActive.bind(this), 
-			variables:[], functions:[], notification:null, alert:'danger', setNotification:this.setNotification.bind(this)
+		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT, setCode:(::this.setCode), 
+			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[]			
 		}
 	}
 	componentWillMount() {
@@ -50,7 +51,7 @@ export class App extends Component {
 		})
     }
     setActive(active) {
-    	this.setState({ active:active })
+    	this.setState({ active:active, option:null })
     }
 	setCode(code) {
 		data.child(this.state.code).off()
@@ -60,9 +61,12 @@ export class App extends Component {
 	setNotification(message, alert) {
 		this.setState({ notification:message, alert:alert })
 	}
+	setOption(option) {
+		this.setState({ option:option })
+	}
 	render() {  
         return (
-      		<div class="react-app">
+      		<div class={`react-app ${focus(this.state.option != null, 'slim')}`}>
       			<Header {...this.state}/>
       			{ 
       				React.cloneElement( this.props.children, {...this.state} )

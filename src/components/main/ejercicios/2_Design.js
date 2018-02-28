@@ -5,7 +5,7 @@ import $, { focus } from 'actions'
 export default class Design extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, width:960 }
+		this.state = { active:0, width:1200 }
 	}
 	componentDidMount() {
 		this.print()
@@ -18,7 +18,7 @@ export default class Design extends Component {
 		window.removeEventListener('resize', ::this.print )
 	}
     setActive(active) {
-        this.setState({ active:active, width:active == 0 ? 960 : active == 1 ? 768 : 320 })
+        this.setState({ active:active, width:active == 0 ? 1200 : active == 1 ? 768 : 320 })
     }
 	print() {
 		const { functions, variables } = this.props
@@ -37,7 +37,7 @@ export default class Design extends Component {
 		return (
 			<div class="row">
 				<div class="col-md-12 design">
-					<h5><b>Diseño</b></h5>
+					<h5><b>&nbsp;</b></h5>
 						<nav class="devices">
 						{
 							items.map((m, i) => { return (
