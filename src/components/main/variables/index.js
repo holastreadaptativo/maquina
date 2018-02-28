@@ -56,9 +56,7 @@ export class Variables extends Component {
 						</div>
 						<Advan code={code} advanced={advanced}/>
 					</div>
-					<div style={{ margin:'-25px 20px 0' }}>
-						<Continue {...this.props} condition={this.state.checked[0][6]}/>
-					</div>
+					<Continue {...this.props} condition={this.state.checked[0][6]}/>
 				</div>
 			</div>
 		)
