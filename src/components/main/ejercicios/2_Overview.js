@@ -116,9 +116,8 @@ export default class Overview extends Component {
 										<td id={`${m.id}-/${i}-/o`}>
 											<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
 										</td>
-										<td style={{maxWidth:'55px'}} class="hidden">
+										<td>
 											<li>
-												<span>Ancho</span>&nbsp;
 												<select defaultValue={m.width} id={`select-${m.id}`} onChange={this.updateWidth.bind(this, m.id)}>
 												{
 													SIZES.map((m, i) => { return (
@@ -128,7 +127,7 @@ export default class Overview extends Component {
 												</select>
 											</li>
 										</td>
-										<td style={{maxWidth:'65px'}}>
+										<td>
 											<li>
 												<span class="glyphicon glyphicon-pencil" 
 													onClick={this.handleUpdate.bind(this, m.function, m.params, m.id)}/>
