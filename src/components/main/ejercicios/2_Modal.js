@@ -4,7 +4,7 @@ import { SIZES, DEVICES } from 'stores'
 export default class Modal extends Component {
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, params, push } = this.props.store
+		const { add, update, push } = this.props.store
 		let onSave = push ? add : update
         return(
         	<div class="react-functions">
@@ -22,7 +22,7 @@ export default class Modal extends Component {
 						</canvas>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={this.props.store.onHide}/>
-					<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
+					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</div>
 				<div class="react-header">
 					<h5>{this.props.title}</h5>

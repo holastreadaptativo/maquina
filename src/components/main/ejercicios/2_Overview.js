@@ -143,7 +143,10 @@ export default class Overview extends Component {
 					</table>
 				</div>
 			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="react-modal" bsSize="large">
-					<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params} onHide={::this.handleModal}/>
+				{
+					FX != null ? 
+					<FX update={(x) => this.updateFunction.bind(this, x)} variables={variables} params={params} onHide={::this.handleModal}/> : ''
+				}						
 				</Modal>
 			</aside>
 		)

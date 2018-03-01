@@ -14,7 +14,7 @@ export default class Continue extends Component {
     	return (
     		<div class={show(this.props.condition, 'row')}>
 				<div class="continue">						
-					<div class="react-submit">
+					<div class="react-continue">
 						<button class={'btn btn-success'} onClick={::this.handlerSubmit}>Continuar</button>
 					</div>
 				</div>
