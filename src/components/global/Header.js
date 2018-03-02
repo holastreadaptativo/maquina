@@ -24,7 +24,7 @@ export default class Header extends Component {
                             )})
                         }
                         </h5>
-                        <h5 class="hidden">{code != DEFAULT ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
+                        <h5 class="hidden">{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
                     </div>
                 </div>
                 <nav>
@@ -51,7 +51,7 @@ class Alert extends Component {
     render() {
         const { active, alert, code, notification, setActive } = this.props
         return (            
-            <div class={show(!(active == 0 && code == DEFAULT) && active != 1 && notification, `notification ${alert}`)}>
+            <div class={show(!(active == 0 && code == DEFAULT.CODE) && active != 1 && notification, `notification ${alert}`)}>
                 <div class="container">
                     <h5>{notification}
                         <b class={show(alert == 'danger')}> 

@@ -1,23 +1,7 @@
-export function setFormat(value) {
-	let aux = value.toLowerCase(), arr = []
-	if (aux.includes('..')) {
-		arr = aux.split(',')
-		for (let i = 0; i < arr.length; i++) {
-			let k = arr[i].split('..')
-			for (let j = 0; j < k.length; j++) {
-				k[j] = k[j].replace('.', '')
-			}
-			arr[i] = k.filter(n => n).join(' .. ')
-		}
-		aux = `[${arr.join(', ')}]`
-	}
-	else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/') || aux.length == 1) {
-		arr = aux.split('')
-		for (let i = 0; i < arr.length; i++)
-			if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
-				arr[i] = `$${arr[i].trim()}`
-			}
-		aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ').replace('*', ' * ').replace('^', ' ^ ')
+export function replaceVT(input, variables) {
+	let aux = input.toString()
+	for (let i = 0; i < variables.length; i++) {
+		aux = aux.replace(`$${variables[i].var}`, `${variables[i].vt}`)
 	}
 	return aux
 }
@@ -85,10 +69,26 @@ export function checkAll(variables) {
 	return [aux, vars]
 }
 
-export function replaceVT(input, variables) {
-	let aux = input.toString()
-	for (let i = 0; i < variables.length; i++) {
-		aux = aux.replace(`$${variables[i].var}`, `${variables[i].vt}`)
+export function setFormat(value) {
+	let aux = value.toLowerCase(), arr = []
+	if (aux.includes('..')) {
+		arr = aux.split(',')
+		for (let i = 0; i < arr.length; i++) {
+			let k = arr[i].split('..')
+			for (let j = 0; j < k.length; j++) {
+				k[j] = k[j].replace('.', '')
+			}
+			arr[i] = k.filter(n => n).join(' .. ')
+		}
+		aux = `[${arr.join(', ')}]`
+	}
+	else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/') || aux.length == 1) {
+		arr = aux.split('')
+		for (let i = 0; i < arr.length; i++)
+			if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
+				arr[i] = `$${arr[i].trim()}`
+			}
+		aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ').replace('*', ' * ').replace('^', ' ^ ')
 	}
 	return aux
 }

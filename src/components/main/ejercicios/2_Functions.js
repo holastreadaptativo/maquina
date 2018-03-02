@@ -21,7 +21,7 @@ export default class Functions extends Component {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
 	handleCreate(params) {
-		ejercicios('ADD', { code:this.props.code, params:params, ...this.state })	
+		ejercicios('ADD', { ...this.props, ...this.state, params:params })	
 		this.setState({ modal:false }) 
 	}
 	getComponent() {

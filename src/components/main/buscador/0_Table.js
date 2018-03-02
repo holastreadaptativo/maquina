@@ -10,7 +10,7 @@ export default class Table extends Component {
 	}
 	handleClear(e) {
 		e.preventDefault()
-		this.props.setState({ code:DEFAULT, search:[] })
+		this.props.setState({ code:DEFAULT.CODE, search:[] })
 		$('search-code').value = ''
 	}
 	render() {

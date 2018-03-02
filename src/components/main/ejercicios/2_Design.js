@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { ejercicios, focus } from 'actions'
-import { DEVICES } from 'stores'
+import { DEFAULT, DEVICES } from 'stores'
 
 export default class Design extends Component {
 	constructor() {
 		super()
-		this.state = { device:DEVICES[0].size }
+		this.state = { device:DEFAULT.DEVICE }
 	}
 	componentDidMount() {	
 		this.print()	

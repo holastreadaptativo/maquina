@@ -14,8 +14,8 @@ export default class Input extends Component {
 		this.props.setState({ length:n.length, temp:n })
 
 		if (n.length == 0) {
-			this.props.setState({ code:DEFAULT, selected:false })
-			this.props.setCode(DEFAULT)
+			this.props.setState({ code:DEFAULT.CODE, selected:false })
+			this.props.setCode(DEFAULT.CODE)
 		}
 	}
 	handleSubmit(e) {
@@ -30,7 +30,7 @@ export default class Input extends Component {
 			for (let i = 0; i < random(0, 20) + 1; i++)
 				search.push({ id:i + 1 })
 
-		this.props.setState({ code:code, search:search, selected:code != DEFAULT && code.length > 2 })
+		this.props.setState({ code:code, search:search, selected:code != DEFAULT.CODE && code.length > 2 })
 		this.props.setCode(code)
 	}
 	render() {

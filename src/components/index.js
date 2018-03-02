@@ -6,7 +6,7 @@ import { focus } from 'actions'
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT, setCode:(::this.setCode), 
+		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode), 
 			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[]			
 		}
 	}

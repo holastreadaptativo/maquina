@@ -30,7 +30,7 @@ export default class Overview extends Component {
 	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
 
 	    if (drag.length > 1)
-	    	ejercicios('MOVE', { code:this.props.code, i:i, f:f })	    
+	    	ejercicios('MOVE', { ...this.props, i:i, f:f })	    
 	}
 	handleWidth(e) {
 		data.child(`${this.props.code}/functions/${e.target.id}`).update({ 
@@ -38,12 +38,12 @@ export default class Overview extends Component {
 		})
 	}
 	handleUpdate(params) {
-		ejercicios('UPDATE', { code:this.props.code, params:params, id:this.state.id })
+		ejercicios('UPDATE', { ...this.props, params:params, id:this.state.id })
 		this.setState({ modal:false })
 	}
 	handleRemove(id) {
 		if (confirm('¿Estas seguro de borrar la función?'))
-			ejercicios('REMOVE', { code:this.props.code, id:id, ...this.props })
+			ejercicios('REMOVE', { ...this.props, id:id })
 	}
 	getComponent() {
 		let FX = null
