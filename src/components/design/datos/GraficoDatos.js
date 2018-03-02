@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Item, Select, Modal } from 'components'
+import { Input, Item, Select, Editor } from 'components'
 import * as datos from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'
@@ -25,7 +25,7 @@ export default class GraficoDatos extends Component {
 			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, 
 			extra, margin, titleTop } = this.state
 		return (
-			<Modal title="Gráfico Datos" params={this.state} store={this.props}>
+			<Editor title="Gráfico Datos" params={this.state} store={this.props}>
 				<Item id={0} active={active} title="Canvas" setActive={::this.handleActive}>
 					<Input id="height" default={height} prefix="height" postfix="px" update={::this.setState} type="number"/>	
 					<Input id="width" default={width} prefix="width" postfix="px" update={::this.setState} type="number"/>	
@@ -67,7 +67,7 @@ export default class GraficoDatos extends Component {
 					<Input id="lineColor" default={lineColor} update={::this.setState} type="color"/>
 					<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>	
 				</Item>
-			</Modal>
+			</Editor>
 		)
 	}
 }

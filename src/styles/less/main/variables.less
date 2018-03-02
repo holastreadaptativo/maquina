@@ -1,92 +1,84 @@
 .react-app .variables
 {
-	h3, h5
+	.resume
 	{
-		text-align: left;
-	}
-	.row
-	{
-		width: 100%;
-		.resume
+		background-color: @info-color;
+		border: 2px solid #ddd;
+		border-right: none;
+		color: #444;
+		padding: 10px 15px;
+		margin-top: 20px;
+		width: 250px;
+		h5, h6.code
 		{
-			background-color: @info-color;
-			border: 2px solid #ddd;
-			border-right: none;
-			color: #444;
-			padding: 10px 15px;
-			margin-top: 20px;
-			width: 250px;
-			h5, h6.code
-			{
-				margin-bottom: 20px;
-			}
+			margin-bottom: 20px;
 		}
-		.editor
+	}
+	.editor
+	{
+		background: white;
+		border: 2px solid #ddd;
+		margin-top: 20px;
+		width: ~'calc(100% - 250px)';
+		form
 		{
-			background: white;
-			border: 2px solid #ddd;
-			margin-top: 20px;
-			width: ~'calc(100% - 250px)';
-			form
+			padding: 20px;
+			table
 			{
-				padding: 20px;
-				table
+				text-align: left;
+				thead tr
 				{
-					text-align: left;
-					thead tr
-					{
-						font-size: 13px;
-					}
-					tbody tr.error
-					{
-						background: @sec-hover;
-						color: white;
-					}
-				}
-				div.add
-				{
-					text-align: right;
-					.btn-success
-					{
-						margin-top: -10px;
-					}
-				}
-				input.form-control.vt
-				{
-					width: 50px;
-				}
-				input.form-control.vr
-				{
-					width: 100px;
-				}
-				ul.checklist
-				{
-					list-style: none;
-					color: #222;
 					font-size: 13px;
-					margin-top: -20px;
-					span
+				}
+				tbody tr.error
+				{
+					background: @sec-hover;
+					color: white;
+				}
+			}
+			div.add
+			{
+				text-align: right;
+				.btn-success
+				{
+					margin-top: -10px;
+				}
+			}
+			input.form-control.vt
+			{
+				width: 50px;
+			}
+			input.form-control.vr
+			{
+				width: 100px;
+			}
+			ul.checklist
+			{
+				list-style: none;
+				color: #222;
+				font-size: 13px;
+				margin-top: -20px;
+				span
+				{
+					margin-left: 5px;
+					margin-right: 10px;
+					&.glyphicon-ok
 					{
-						margin-left: 5px;
-						margin-right: 10px;
-						&.glyphicon-ok
-						{
-							color: green;
-						}
-						&.glyphicon-remove
-						{
-							color: red;
-						}
+						color: green;
 					}
-					li.title
+					&.glyphicon-remove
 					{
-						margin-bottom: 5px;
+						color: red;
 					}
+				}
+				li.title
+				{
+					margin-bottom: 5px;
 				}
 			}
 		}
 	}
-	.row div .js
+	.js
 	{
 		background-color: @white;
 		border: 1px solid black;

@@ -1,3 +1,14 @@
+export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows' },
+							{ name:'TABLET', size:768, icon:'tablet_mac' },
+							{ name:'PHONE', size:320, icon:'phone_iphone' }
+ 						]
+
+export const DEFAULT2 = 	{
+							CODE:'000000000000000',
+							DEVICE:DEVICES[0]
+						}
+
+
 export const DEFAULT = '000000000000000';
 export const COLORS = { 
 						geometria:'#00aaad', 
@@ -9,17 +20,17 @@ export const COLORS = {
 						border:'#cccccc', 
 						grid:'#dddddd' 
 					}
-export const NAVBAR = [ 
-			            { path:'/', icon:'home', text:'Buscador', title:'Buscador', nav:[] }, 
-			            { path:'/variables', icon:'th', text:'Variables', title:'Ingresar variables', nav:[] }, 
-			            { path:'/ejercicios', icon:'edit', text:'Ejercicios', title:'Crear ejercicio', nav:['details', 'layers'] }, 
-			            { path:'/respuestas', icon:'list-alt', text:'Respuestas', title:'Crear respuestas', nav:['layers'] }, 
-			            { path:'/versiones', icon:'duplicate', text:'Versiones', title:'Generar versiones', nav:[] }, 
-			            { path:'/descargas', icon:'download-alt', text:'Descargas', title:'Descargar ejercicio', nav:[] },
-			            { path:'/configuracion', icon:'cog', text:'Configuración', title:'Configuración', nav:[] }
-        			]
+export const NAVBAR = 	[ 
+				            { path:'/', icon:'home', text:'Buscador', title:'Buscador', nav:[] }, 
+				            { path:'/variables', icon:'th', text:'Variables', title:'Ingresar variables', nav:[] }, 
+				            { path:'/ejercicios', icon:'edit', text:'Ejercicios', title:'Crear ejercicio', nav:['details', 'layers'] }, 
+				            { path:'/respuestas', icon:'list-alt', text:'Respuestas', title:'Crear respuestas', nav:['layers'] }, 
+				            { path:'/explicacion', icon:'tasks', text:'Explicación', title:'Crear glosa', nav:[] }, 
+				            { path:'/versiones', icon:'duplicate', text:'Versiones', title:'Generar versiones', nav:[] }, 
+				            { path:'/descargas', icon:'download-alt', text:'Descargas', title:'Descargar ejercicio', nav:[] },
+				            { path:'/configuracion', icon:'cog', text:'Configuración', title:'Configuración', nav:[] }
+        				]
+
 export const CODE = [ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
 
 export const SIZES = [ 12, 9, 8, 6, 4, 3 ]
-
-export const DEVICES = [ 'desktop_windows', 'tablet_mac', 'phone_iphone' ]

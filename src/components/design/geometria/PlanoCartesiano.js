@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Item, Select, Modal } from 'components'
+import { Input, Item, Select, Editor } from 'components'
 import * as geometria from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'
@@ -23,7 +23,7 @@ export default class PlanoCartesiano extends Component {
 		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, cols, height, fontColor, fontFamily, 
 			gridColor, gridWidth, rows, width, axisColor, axisWidth, axisDisplay } = this.state
 		return (
-			<Modal title="Plano Cartesiano" params={this.state} store={this.props}>
+			<Editor title="Plano Cartesiano" params={this.state} store={this.props}>
 				<Item id={0} active={active} title="Canvas" setActive={::this.handleActive}>
 					<Input id="width" default={width} prefix="width" postfix="px" update={::this.setState} type="number"/>	
 					<Input id="height" default={height} prefix="height" postfix="px" update={::this.setState} type="number"/>	
@@ -55,7 +55,7 @@ export default class PlanoCartesiano extends Component {
 				<Item id={5} active={active} title="Images" setActive={::this.handleActive}>
 					<Select id="imageDisplay" default={'none'} prefix="display" update={::this.setState} options={['none','block']}/>
 				</Item>
-			</Modal>
+			</Editor>
 		)
 	}
 }

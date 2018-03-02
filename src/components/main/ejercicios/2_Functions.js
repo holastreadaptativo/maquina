@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
+import { ejercicios, focus } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
-import $, { focus } from 'actions'
-import { data } from 'stores'
 
 export default class Functions extends Component {
 	constructor() {
@@ -18,29 +17,25 @@ export default class Functions extends Component {
 	handleFunction(fn) {
 		this.setState({ fn:fn, modal:!this.state.modal })
 	}
-    setActive(active) {
+    handleActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
-	addFunction(params) {
-		$('btn-save').setAttribute('disabled', 'true')
-		data.child(this.props.code).once('value').then(snap => {
-			let count = snap.val().count
-			data.child(`${this.props.code}/functions`).push({ 
-				function:this.state.fn, params:params, date:(new Date()).toLocaleString(), tag:this.state.tag, position:count, width:12
-			}).then(() => {
-				data.child(this.props.code).update({ count:count+1 })
-			})
-		})			
+	handleCreate(params) {
+		ejercicios('ADD', { code:this.props.code, params:params, ...this.state })	
 		this.setState({ modal:false }) 
 	}
-	render() {
-        const { active, modal, fn } = this.state
-       	let FX = null
-       	FUNCIONES[active].fns.forEach(m => { 
-       		if (m.id == fn) 
+	getComponent() {
+		let FX = null
+		FUNCIONES[this.state.active].fns.forEach(m => { 
+       		if (m.id == this.state.fn) 
        			FX = m.component
        	})
-		return(
+       	return FX ? 
+       		<FX add={(x) => this.handleCreate.bind(this, x)} variables={this.props.variables} 
+       			onHide={::this.handleModal} push/> : '' 
+	}
+	render() {
+        return(
 			<aside class={focus(this.props.condition, 'active')}>
 				<div class="functions">
 					<ul class="accordion">
@@ -49,10 +44,10 @@ export default class Functions extends Component {
 						</div>
 						{
 							FUNCIONES.map((m, i) => { return (
-								<li key={i} class={`tabs ${active == i ? 'active' : ''}`} onClick={() => this.setActive(i)}>
+								<li key={i} class={`tabs ${this.state.active == i ? 'active' : ''}`} onClick={() => this.handleActive(i)}>
 							        <form>
 							          	<h5>{m.name}
-							          		<span class={`glyphicon glyphicon-chevron-${active == i ? 'up' : 'down'}`}/>
+							          		<span class={`glyphicon glyphicon-chevron-${this.state.active == i ? 'up' : 'down'}`}/>
 							          	</h5>
 							          	<ul>				          		
 							          	{
@@ -67,11 +62,8 @@ export default class Functions extends Component {
 						}
 				    </ul>
 			    </div>
-			    <Modal show={modal} onHide={::this.handleModal} aria-labelledby="contained-modal-title-lg" bsClass="react-modal" bsSize="large">
-				{ 
-					FX != null ?
-					<FX add={(x) => this.addFunction.bind(this, x)} variables={this.props.variables} onHide={::this.handleModal} push/> : '' 
-				}
+			    <Modal show={this.state.modal} onHide={::this.handleModal} bsClass="react-modal">
+					{ this.getComponent() }	
 				</Modal>
 		    </aside>
 		)

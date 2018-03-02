@@ -3,9 +3,8 @@ import { browserHistory } from 'react-router'
 import $ from 'actions'
 
 export function signIn(e) { e.preventDefault(); auth.signOut()    
-  let email = $('signin-email').value, pass = $('signin-pass').value
-    if (email.length < 4) { alert('Por favor ingrese su email.'); return }
-    else if (pass.length < 4) { alert('Por favor ingrese su contraseña.'); return }
+    let email = $('signin-email').value, pass = $('signin-pass').value
+    if (!check(email, 'email') || !check(pass, 'contraseña')) return
 
     auth.signInWithEmailAndPassword(email, pass).then(() => { 
         users.child(uid()).once('value').then(() => { browserHistory.push('/') })
@@ -33,4 +32,7 @@ export function sendEmailVerification() {
 }
 export function signOut() {
     if (auth.currentUser) auth.signOut(); browserHistory.push('/')
+}
+export function check(input, name) {
+    if (input.length < 4) { alert(`Por favor ingrese su ${name}.`) } return input.length >= 4
 }

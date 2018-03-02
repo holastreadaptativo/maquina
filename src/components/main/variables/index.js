@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { checkAll, show } from 'actions'
-import { Continue } from 'components'
+import { Section } from 'components'
 import { data } from 'stores'
 
 export class Variables extends Component {
@@ -46,19 +46,16 @@ export class Variables extends Component {
 		const { variables, checked, advanced } = this.state
 		const { code } = this.props
 		return (
-			<div class="variables">
-				<div class="container">
-					<div class="row">
-						<Resume code={code} advanced={advanced} variables={variables}/>
-						<div class={show(!advanced, 'editor col-xs-9')}>
-							<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
-							<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
-						</div>
-						<Advan code={code} advanced={advanced}/>
+			<Section style="variables" condition={checked[0][6]}>
+				<div class="row">
+					<Resume code={code} advanced={advanced} variables={variables}/>
+					<div class={show(!advanced, 'editor col-xs-9')}>
+						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
+						<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
 					</div>
-					<Continue {...this.props} condition={this.state.checked[0][6]}/>
+					<Advan code={code} advanced={advanced}/>
 				</div>
-			</div>
+			</Section>
 		)
 	}
 }

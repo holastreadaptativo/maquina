@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export class Descargas extends Component {
     constructor() {
 		super()
-		this.state = { clicked:false, radius:100, color:'red', x:-100, y:-100 }
+		this.state = { radius:100, color:'red', x:-100, y:-100 }
 	}
 	onMouseMove(e) {
 		const { radius, x, y } = this.state
@@ -12,26 +12,11 @@ export class Descargas extends Component {
 	changeRadius(r) {
 		this.setState({ radius:this.state.radius*r })
 	}
-	handleClick() {
-		this.setState({ clicked:!this.state.clicked })
-	}
 	render() {
 		const { radius, color, x, y } = this.state
-        return(
+		return(
         	<div class="descargas" onMouseMove={::this.onMouseMove}>
         		<div class="hidden">
-					<h3 class="hidden">Descargar archivos
-						<span class="glyphicon glyphicon-option-vertical" onClick={::this.handleClick}>
-							<div class={`options ${this.state.clicked ? 'clicked' : ''}`}>
-								<ul>
-									<li><a>-</a></li>
-								</ul>
-							</div>
-						</span>
-						<span class="glyphicon glyphicon-info-sign">
-							<div class="info">Información sobre el funcionamiento de esta sección y la descarga de archivos</div>
-						</span>
-					</h3>
 					<div>
 						<div id="circle-css" style={{ height:`${radius}px`, width:`${radius}px`, backgroundColor:color, top:`${y}px`, left:`${x}px` }}></div>
 						<button class="hidden" onClick={this.changeRadius.bind(this, 1.1)}><span class="glyphicon glyphicon-plus"/></button>
@@ -42,33 +27,3 @@ export class Descargas extends Component {
         )
     }
 }
-/*
-import { EditorState, convertToRaw, ContentState } from 'draft-js'
-import { Editor } from 'react-draft-wysiwyg'
-import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
-
-class EditorConvertToHTML extends Component {
-  state = {
-    editorState: EditorState.createEmpty()
-  }
-
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState
-    })
-  }
-
-  render() {
-		const { editorState } = this.state;
-    return (
-      	<div>
-	        <Editor editorState={editorState} wrapperClassName="demo-wrapper" editorClassName="demo-editor"
-	          onEditorStateChange={this.onEditorStateChange}
-	        />
-        	<textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-sm-6"/>
-      </div>
-    )
-  }
-}
-*/

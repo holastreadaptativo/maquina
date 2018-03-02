@@ -1,59 +1,50 @@
 import React, { Component } from 'react'
-import SplitPane from 'react-split-pane'
-import $, { show } from 'actions'
+import { SIZES, DEVICES } from 'stores'
 
-export default class Editor extends Component {
-	constructor() {	
-		super()
-		this.state = { b1:false, b2:false }
-	}
-	componentDidMount() {
-		let w = $('editor').clientWidth
-		this.setState({ w1:w/3, wx:2*w/3, w2:w/3, w3:w/3, w:w })
-	}	
-	handleDrag(width) {
-		const { b1, b2, w2, w3, wx } = this.state, 
-			w = $('editor').clientWidth
-		let e1 = width, ex = w - width, e2 = !b2 ? (w - width)/2 : ex / wx * w2, e3 = !b2 ? (w - width)/2 : ex / wx * w3
-			if (e3 <= 120) { e2 = ex - 120; e3 = 120 } else if (e2 <= 120) { e3 = ex - 120; e2 = 120 }
-
-		if(!b1) this.setState({ b1:true })
-		this.setState({ w1:e1, wx:ex, w2:e2, w3:e3 })
-	}
-	handleDrop(width) {
-		const { b1, b2, wx } = this.state
-		let w = $('editor').clientWidth
-		
-		if(!b1) this.setState({ w1:w/3, w2:width, w3:(2*w/3 - width) })
-		else this.setState({ w2:width, w3:(wx - width) })
-		if(!b2) this.setState({ b2:true })
-	}	
-	handleChange(id) {
-		return id
-	}
+export default class Modal extends Component {
 	render() {
-		const { w1, w2, w } = this.state
-		return (
-			<div id="editor"  class={show(this.props.condition, 'editor')}>
-				 <SplitPane defaultSize="33%" minSize={120} maxSize={w-w2-120} split="vertical" class="resizable main" 
-				 onChange={this.handleDrag.bind(this)}>
-		            <div class="editor-html">
-		            	<h5><span class="glyphicon glyphicon-cog"/>HTML<span class="glyphicon glyphicon-menu-down"/></h5>
-						<textarea id="editor-html" onChange={this.handleChange.bind(this, 'editor-html')} class="editable"/>
+		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
+		const { add, update, push } = this.props.store
+		let onSave = push ? add : update
+        return(
+        	<div class="react-functions">
+				<div class="react-config">
+					<div class="title">
+						<h3>Configuración</h3>
 					</div>
-		            <SplitPane defaultSize="50%" minSize={120} maxSize={w-w1-120} split="vertical" class="resizable" 
-		            onChange={this.handleDrop.bind(this)}>
-			            <div class="editor-css">
-							<h5><span class="glyphicon glyphicon-cog"/>CSS<span class="glyphicon glyphicon-menu-down"/></h5>
-							<textarea id="editor-css" onChange={this.handleChange.bind(this, 'editor-css')} class="editable"/>
-						</div>
-			            <div class="editor-js">
-							<h5><span class="glyphicon glyphicon-cog"/>JS<span class="glyphicon glyphicon-menu-down"/></h5>
-							<textarea id="editor-js" onChange={this.handleChange.bind(this, 'editor-js')} class="editable"/>
-						</div>
-			        </SplitPane>
-		        </SplitPane>
-			</div> : ''
+					{this.props.children}
+			    </div>
+			    <div class="react-container">				
+					<div class="canvas">
+						<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
+						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
+							Your browser does not support the HTML5 canvas.
+						</canvas>
+					</div>
+					<span class="react-close glyphicon glyphicon-remove" onClick={this.props.store.onHide}/>
+					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
+				</div>
+				<div class="react-header">
+					<h5>{this.props.title}</h5>
+				</div>
+				<div class="react-footer">
+					<h6>Devices:</h6>
+					{
+						DEVICES.map((n, j) => { return (
+							<h6 key={j}>
+								<i>{n.icon}</i>
+								<select defaultValue={12}>
+								{
+									SIZES.map((m, i) => { return (
+										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
+									)})
+								}	
+								</select>
+							</h6>
+						)})
+					}
+					</div>			
+			</div>
 		)
 	}
 }

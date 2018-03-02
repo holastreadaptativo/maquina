@@ -14,6 +14,7 @@ render(
             <Route path="/variables" component={k.Variables}/>
             <Route path="/ejercicios" component={k.Ejercicios}/>
             <Route path="/respuestas" component={k.Respuestas}/>
+            <Route path="/explicacion" component={k.Glosa}/>
             <Route path="/versiones" component={k.Versiones}/>
             <Route path="/descargas" component={k.Descargas}/>
             <Route path="/configuracion" component={k.Config}/>

@@ -6,14 +6,12 @@ export * from './global'
 
 export default function $(id) { return document.getElementById(id) }
 
-export function print(component, id) { render(component, $(id)) }
+export function show(bool, tags) {
+    return `${bool ? tags : 'hidden'}`
+}
 
-export function display(show) { return { display:show ? 'initial' : 'none' } }
-
-export function errorAlert(e) { if (e) alert(e.message) }
-
-export function check(input, name) {
-	if (input.length < 4) { alert(`Por favor ingrese su ${name}.`) } return input.length >= 4
+export function focus(bool, active) {
+    return `${bool ? active : ''}`
 }
 
 export function money(amount) {
@@ -31,22 +29,7 @@ export function random(s, e) {
     return Math.floor(Math.random(0, 1) * (e - s) + s)
 }
 
-export function show(bool, tags) {
-    return `${bool ? tags : 'hidden'}`
-}
-
-export function focus(bool, active) {
-    return `${bool ? active : ''}`
-}
-
-export function allowDrop(e) {
-    e.preventDefault()
-}   
-export function drag(e) {
-    this.setState({ drag:e.target.id })
-    e.dataTransfer.setData('text', $(e.target.id))
-}
-export function drop(e) {
+export function clone(e) {
     e.preventDefault()
 
     let copy = $(this.state.drag).cloneNode(true), count = this.state.count + 1

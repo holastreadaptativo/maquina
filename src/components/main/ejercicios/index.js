@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Continue } from 'components'
+import { Section } from 'components'
 import { data } from 'stores'
 
 export class Ejercicios extends Component {
@@ -13,14 +13,11 @@ export class Ejercicios extends Component {
 	render() {
 		const { code, option, variables, functions } = this.props
 		return(
-        	<div class="ejercicios">
-        		<div class="container">
-					<Design code={code} variables={variables} functions={functions}/>
-					<Overview code={code} variables={variables} functions={functions} condition={option == 0}/>
-					<Functions code={code} variables={variables} condition={option == 1}/>
-					<Continue {...this.props} condition={this.props.functions.length}/>
-        		</div>
-        	</div>
+			<Section style="ejercicios" condition={functions.length}>
+        		<Design code={code} variables={variables} functions={functions}/>
+				<Overview code={code} variables={variables} functions={functions} condition={option == 0}/>
+				<Functions code={code} variables={variables} condition={option == 1}/>
+        	</Section>
         )
     }
 }
@@ -28,4 +25,4 @@ export class Ejercicios extends Component {
 import Design from './2_Design'
 import Functions from './2_Functions'
 import Overview from './2_Overview'
-export Modal from './2_Modal'
+export Editor from './2_Editor'

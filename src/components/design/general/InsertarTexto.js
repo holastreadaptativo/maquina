@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal } from 'components'
+import { Editor } from 'components'
 import EditorConvertToHTML from './EditorConvertToHTML'
 
 export default class InsertTexto extends Component {
@@ -12,11 +12,11 @@ export default class InsertTexto extends Component {
 	}
 	render() {
 		return (
-			<Modal title="Insertar Texto" params={this.state} store={this.props}>
+			<Editor title="Insertar Texto" params={this.state} store={this.props}>
 				<div class="col-sm-12">
 					<EditorConvertToHTML {...this.state} textCont={this.state.textCont} contUpdate={(html) => this.onContUpdate(html)}/>
 				</div>
-			</Modal>
+			</Editor>
 		)
 	}
 }
