@@ -41,9 +41,9 @@ export default class Overview extends Component {
 		ejercicios('UPDATE', { code:this.props.code, params:params, id:this.state.id })
 		this.setState({ modal:false })
 	}
-	handleRemove(e) {
+	handleRemove(id) {
 		if (confirm('¿Estas seguro de borrar la función?'))
-			ejercicios('REMOVE', { code:this.props.code, id:e.target.id, ...this.props })
+			ejercicios('REMOVE', { code:this.props.code, id:id, ...this.props })
 	}
 	getComponent() {
 		let FX = null
@@ -89,7 +89,7 @@ export default class Overview extends Component {
 											<li>
 												<span class="glyphicon glyphicon-pencil" 
 													onClick={this.handleEditor.bind(this, m.function, m.params, m.id)}/>
-												<span class="glyphicon glyphicon-trash" onClick={::this.handleRemove}/>
+												<span class="glyphicon glyphicon-trash" onClick={this.handleRemove.bind(this, m.id)}/>
 											</li>
 										</td>
 									</tr>
