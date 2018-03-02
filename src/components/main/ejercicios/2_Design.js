@@ -17,7 +17,7 @@ export default class Design extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', ::this.print )
 	}
-    setDevice(device) {
+    handleDevice(device) {
         this.setState({ device:device })
     }
 	print() {
@@ -32,11 +32,11 @@ export default class Design extends Component {
 					<nav class="devices">
 					{
 						DEVICES.map((m, i) => { return (
-							<i key={i} class={focus(device == m.size, 'active')} onClick={() => this.setDevice(m.size)}>{m.icon}</i>
+							<i key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}>{m.icon}</i>
 						)})
 					}
 					</nav>
-					<div class="device canvas" style={{width:device+'px'}}>
+					<div class="device canvas" style={{ width:device+'px' }}>
 					{
 						this.props.functions.map((m, i) => { 
 							let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width

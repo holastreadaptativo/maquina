@@ -5,7 +5,7 @@ export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows' }
 
 export const DEFAULT = 	{
 							CODE:'000000000000000',
-							DEVICE:DEVICES[0]
+							DEVICE:DEVICES[0].size
 						}
 
 export const NAVBAR = 	[ 
