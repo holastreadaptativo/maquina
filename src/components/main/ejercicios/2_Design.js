@@ -6,16 +6,17 @@ export default class Design extends Component {
 	constructor() {
 		super()
 		this.state = { device:DEFAULT.DEVICE }
+		this.print = this.print.bind(this)
 	}
 	componentDidMount() {	
 		this.print()	
-		window.addEventListener('resize', ::this.print )
+		window.addEventListener('resize', this.print )
 	}
 	componentDidUpdate() {
 		setTimeout(() => this.print(), 300)
 	}
 	componentWillUnmount() {
-		window.removeEventListener('resize', ::this.print )
+		window.removeEventListener('resize', this.print )
 	}
     handleDevice(device) {
         this.setState({ device:device })
