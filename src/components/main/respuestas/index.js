@@ -28,10 +28,9 @@ export class Respuestas extends Component {
 	render() {
 		const { active, width, modal, option } = this.state
         return(
-        	<Section style="ejercicios" condition={true}>
+        	<Section style="ejercicios" condition={true} {...this.props}>
         		<div class="row">
 					<div class="col-md-12 design">
-						<h5><b>&nbsp;</b></h5>
 						<nav class="devices">
 							<i class={`${active == 0 ? 'active' : ''}`} onClick={() => this.setActive(0)}>desktop_windows</i>
 							<i class={`${active == 1 ? 'active' : ''}`} onClick={() => this.setActive(1)}>tablet_mac</i>

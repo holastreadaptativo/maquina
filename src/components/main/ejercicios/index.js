@@ -11,12 +11,12 @@ export class Ejercicios extends Component {
 		})		
 	}	
 	render() {
-		const { code, option, variables, functions } = this.props
+		const { option, functions } = this.props
 		return(
-			<Section style="ejercicios" condition={functions.length}>
-        		<Design code={code} variables={variables} functions={functions}/>
-				<Overview code={code} variables={variables} functions={functions} condition={option == 0}/>
-				<Functions code={code} variables={variables} condition={option == 1}/>
+			<Section style="ejercicios" condition={functions.length} {...this.props}>
+				<Overview condition={option == 0} {...this.props}/>
+				<Functions condition={option == 1} {...this.props}/>
+        		<Design {...this.props}/>
         	</Section>
         )
     }
