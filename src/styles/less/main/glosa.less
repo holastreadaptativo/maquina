@@ -1,0 +1,60 @@
+.react-app .glosa
+{
+	margin-top: 20px;
+	.feedback
+	{
+		@width: 960px;
+		@height: 500px;
+		@border: 10px;
+		@margin: 60px;
+		@color: @main-hover;
+		height: @height;
+		margin: 0 auto;
+		width: @width;
+		section
+		{
+			width: @width - 2*@border;
+			height: @height - 2*@border - @margin;
+			overflow-y: auto;
+			overflow-x: hidden;
+			border: @border solid @color;
+			border-radius: 15px;
+			h1
+			{
+				text-align: center;
+				text-transform: uppercase;
+				font-size: 50px;
+				margin-top: 170px;
+			}
+		}
+		footer
+		{
+			background: @color;
+			width: @width - 2*@border - 85px;
+			height: @margin;
+			border-bottom-left-radius: 15px;
+			margin-left: @border;
+			margin-top: -@border/2;
+		}
+		div.img
+		{
+			position: absolute;
+			height: 150px;
+			width: 150px;
+			background: white;
+			margin-top: -90px - @border/2;
+			border: @border/2 solid @color;
+			border-radius: 15px;
+		}
+		div.triangle
+		{
+			position: absolute;
+			width: 0;   
+			height: 0; 
+			margin-left: @width - @border - 85px;
+			border-bottom: @margin solid transparent;
+			border-left: 70px solid @color;
+			margin-top: -@border/2;
+		}
+	}
+}

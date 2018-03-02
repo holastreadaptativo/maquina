@@ -6,6 +6,7 @@ export function graficoDatos(config)
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = params
 
+    if (!container) return
     let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
         width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
 
