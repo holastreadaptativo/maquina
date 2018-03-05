@@ -78,5 +78,5 @@ export class App extends Component {
 
 export * from './design'
 export * from './global'
-export * from './main'
 export * from './tools'
+export * from './main'
