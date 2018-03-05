@@ -29,24 +29,58 @@ export class Versiones extends Component {
 		   	$(e.target.id).appendChild($(this.state.drag))
 	}
 	genVersion() {
-		let vars = []
-		this.props.variables.forEach(m => {
-			if (m.type == 'numero') {
-				if (m.val.includes(',')) {
-					let x = m.val.split(',')
-					vars.push({ var:m.var, val:x[Math.floor(Math.random(0, 1) * 3)] })
+		const { variables } = this.props
+		let vars = [], aux = variables.slice(0), stop = Math.pow(variables.length, 2)
+
+		while (aux.length && stop) {
+			let m = aux.shift()
+				console.log(stop)
+			stop--
+			
+			switch (m.type) {
+				case 'numero': {
+					if (m.val.includes(',')) {
+						let x = m.val.split(',')
+						vars.push({ var:m.var, val:x[Math.floor(Math.random(0, 1) * x.length)] })
+					}
+					else if (m.val.includes('..')) {
+						let x = m.val.split('..'), y = Number(x[0]), z = Number(x[1])					
+						vars.push({ var:m.var, val:y + Math.floor(Math.random(0, 1) * (z - y)) })
+					}
+					else
+					{
+						vars.push({ var:m.var, val:Number(m.val) })
+					}
+					this.setState({ vars:vars })
+					break
 				}
-				else if (m.val.includes('..')) {
-					let x = m.val.split('..'), a = Number(x[0]), b = Number(x[1])					
-					vars.push({ var:m.var, val:a + Math.floor(Math.random(0, 1) * (b - a)) })
+				case 'funcion': {
+					let xy = m.val
+					vars.forEach(n => {
+						xy = xy.replace(n.var, n.val)
+					})
+					if (!xy.match(/[a-zA-Z]/))
+						vars.push({ var:m.var, val:Number(eval(xy)) })
+					else {
+						m.val = xy
+						aux.push(m)
+					}
+					this.setState({ vars:vars })
+					break
 				}
-				else
-				{
-					vars.push({ var:m.var, val:Number(m.val) })
+				case 'texto': {
+					if (m.val.includes(',')) {
+						let x = m.val.split(',')
+						vars.push({ var:m.var, val:x[Math.floor(Math.random(0, 1) * x.length)] })
+					}
+					else
+					{
+						vars.push({ var:m.var, val:Number(m.val) })
+					}
+					this.setState({ vars:vars })
 				}
-				this.setState({ vars:vars })
 			}
-		})
+		} 
 	}
 	render() {
         return(
@@ -55,7 +89,7 @@ export class Versiones extends Component {
         			<div class="preview" onClick={::this.genVersion}>		
     				{
     					this.state.vars.map((m, i) => { return (
-    						<li key={i}>{m.var}: {m.val}</li>
+    						<li key={i}>{m.var} => {m.val}</li>
     					)})
     				}
         			</div>
