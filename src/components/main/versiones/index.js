@@ -5,7 +5,7 @@ import $ from 'actions'
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { drag:'', versions:[], selection:[] }
+		this.state = { drag:'', versions:[], selection:[], vars:[] }
 	}
 	componentDidMount() {
 		let versions = []
@@ -16,22 +16,57 @@ export class Versiones extends Component {
 
 		this.setState({ selection:versions.slice(0, 10) , versions:versions.slice(10, versions.length) })
 	}
-	allowDrop(ev) {
-    	ev.preventDefault()
+	allowDrop(e) {
+    	e.preventDefault()
 	}	
-	drag(ev) {
-		this.setState({ drag:ev.target.id })
-		ev.dataTransfer.setData('text', $(ev.target.id))
+	drag(e) {
+		this.setState({ drag:e.target.id })
+		e.dataTransfer.setData('text', $(e.target.id))
 	}
-	drop(ev) {
-	    ev.preventDefault()
-	    if (!ev.target.id.includes('version'))
-		   	$(ev.target.id).appendChild($(this.state.drag))
+	drop(e) {
+	    e.preventDefault()
+	    if (!e.target.id.includes('version'))
+		   	$(e.target.id).appendChild($(this.state.drag))
+	}
+	genVersion() {
+		let vars = []
+		this.props.variables.forEach(m => {
+			if (m.type == 'numero') {
+				if (m.val.includes(',')) {
+					let x = m.val.split(',')
+					vars.push({ var:m.var, val:x[Math.floor(Math.random(0, 1) * 3)] })
+				}
+				else if (m.val.includes('..')) {
+					let x = m.val.split('..'), a = Number(x[0]), b = Number(x[1])					
+					vars.push({ var:m.var, val:a + Math.floor(Math.random(0, 1) * (b - a)) })
+				}
+				else
+				{
+					vars.push({ var:m.var, val:Number(m.val) })
+				}
+				this.setState({ vars:vars })
+			}
+		})
 	}
 	render() {
         return(
-        	<Section style="versiones" condition={false} {...this.props}>
+        	<Section style="versiones" condition={true} {...this.props}>
         		<div class="row">
+        			<div class="preview" onClick={::this.genVersion}>		
+    				{
+    					this.state.vars.map((m, i) => { return (
+    						<li key={i}>{m.var}: {m.val}</li>
+    					)})
+    				}
+        			</div>
+        		</div>
+        	</Section>
+        )
+    }
+}
+
+/*{JSON.stringify(this.props.variables)}
+<div class="row">
 					<div class="col-md-3">
 						<div id="options" class="combinaciones">
 							<h5>Versiones:</h5>
@@ -58,7 +93,4 @@ export class Versiones extends Component {
 						</div>
 					</div>	
 				</div>
-        	</Section>
-        )
-    }
-}
+*/
