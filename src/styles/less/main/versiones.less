@@ -9,7 +9,80 @@
 		height: 430px; 
 		overflow-y: auto;
 	}
-
+	.generate
+	{
+		form
+		{
+			margin-top: 10px;
+			h5
+			{
+				color: white;
+				text-transform: uppercase;
+				padding-left: 10px;
+				font-size: 12px;
+				font-weight: bold;
+				cursor: pointer;
+				background: @main-hover;
+				width: auto;
+				.glyphicon
+				{
+					color: white;
+					font-size: 13px;
+					float: right;	
+					margin-right: 10px;
+				}
+				&.active
+				{
+					background: @sec-hover;
+				}
+			}
+			span
+			{
+				background: transparent;
+				color: white;
+				border: none;
+				height: 20px;
+				font-size: 13px;					
+				padding: 5px 0;
+				text-align: left;
+				padding-left: 10px;
+				&.prefix
+				{
+					width: 80px;
+				}
+				&.postfix
+				{
+					width: 30px;
+					padding-right: 10px;
+				}
+			}
+			input, select
+			{
+				height: 20px;
+				font-size: 13px;
+				width: 180px;
+				&[type="color"]
+				{
+					width: 180px;
+					padding: 0 10px;
+				}
+			}
+			select
+			{
+				padding: 0 10px;
+				border-radius: 0;
+			}
+			button
+			{
+				background: @sec-hover;
+				color: white;
+				border-radius: 0;
+				padding: 5px 20px;
+				margin-top: 10px;
+				margin-left: 10px;
+			}
+		}
+	}
 
 
 
