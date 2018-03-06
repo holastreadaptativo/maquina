@@ -7,7 +7,7 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode), 
-			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[]			
+			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], versions:[]	
 		}
 	}
 	componentWillMount() {
@@ -48,6 +48,20 @@ export class App extends Component {
 				})
 			else 
 				this.setState({ functions:[] })
+			if (r.hasChild('versions')) 
+				data.child(`${code}/versions`).on('value', snap => {
+					let versions = []
+					snap.forEach(v => {
+						let vars = []
+						data.child(`${code}/versions/${v.key}`).once('value').then(w => {
+							w.forEach(x => { vars.push( x.val() ) })
+						})		
+						versions.push(vars)
+						this.setState({ versions:versions })
+					})
+				})
+			else
+				this.setState({ versions:[] })
 		})
     }
     setActive(active) {

@@ -113,6 +113,33 @@
 			margin-left: 25px;
 		}
 	}
+	aside
+	{
+		background: @main-color;
+		width: 300px;
+		position: fixed;
+		top: 45px;
+		right: -300px;
+		height: ~'calc(100vh - 45px)';
+		transition: right .3s ease;	
+		&.active
+		{
+			right: 0;
+		}
+		.title
+		{
+			background: @main-hover;
+			color: white;
+			height: 35px;
+			padding: 10px 10px;
+			margin-bottom: 20px;
+			h3 
+			{
+				font-size: 15px;
+				margin: 0;
+			}
+		}
+	}
 	.react-notification
 	{
 		padding-top: 45px;

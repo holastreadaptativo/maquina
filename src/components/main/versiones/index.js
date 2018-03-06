@@ -1,53 +1,34 @@
 import React, { Component } from 'react'
 import { Section } from 'components'
-import { versiones } from 'actions'
-import { data } from 'stores'
 //import $ from 'actions'
 
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { matrix:[], fns:[], limit:100 }
-	}
-	componentDidMount() {
-		let fns = []
-		this.props.variables.forEach(m => {
-			if (m.type == 'funcion') {
-				fns.push(m)
-				this.setState({ fns:fns })
-			}
-		})
-	}
-	generar() {
-		let matrix = versiones('GEN', { ...this.props, fns:this.state.fns })
-		matrix = matrix.sort(() => (0.5 - Math.random()) ).slice(0, this.state.limit)
-		data.child(`${this.props.code}/versions`).set({ ...matrix })
-		this.setState({ matrix:matrix })
+		this.state = { }
 	}
 	sort(m) {
 		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
 	}
 	render() {
-		const { limit, matrix } = this.state
+		const { option, variables, versions } = this.props
         return(
-        	<Section style="versiones" condition={true} {...this.props}>
+        	<Section style="versiones" condition={false} {...this.props}>
         		<div class="row">
         			<div class="preview">		
-	        			<h4>versiones: {limit}/{matrix.length}</h4>
-	        			<button onClick={::this.generar}>Generar</button>
 	        			<table class="table">
 	        				<thead>
 	        					<tr>
 	        						<th>#</th>
 	        						{
-	        							this.props.variables.map((m, i) => <th key={i}>{m.var}</th> )
+	        							variables.map((m, i) => <th key={i}>{m.var}</th> )
 	        						}
 	        					</tr>
 	        				</thead>
 	        				<tbody>
 	        				{
-	        					matrix.map((m, i) => 
-	        						<tr key={i}><td style={{maxWidth:'15px'}}>{i + 1}</td>
+	        					versions.map((m, i) => 
+	        						<tr key={i}><td>{i + 1}</td>
         							{
         								this.sort(m).map((n, j) => <td key={j}>{n.val}</td> )
         							}
@@ -56,12 +37,19 @@ export class Versiones extends Component {
 	        				}
 	        				</tbody>
 	        			</table>
+	        			<Generate {...this.props} condition={option == 0}/>
         			</div>
         		</div>
         	</Section>
         )
     }
 }
+
+import Generate from './5_Generate'
+
+/*
+
+	        			*/
 
 /*{JSON.stringify(this.props.variables)}
 
