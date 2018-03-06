@@ -20,7 +20,7 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/explicacion', title:'Crear glosa', text:'Explicación', icon:'tasks', nav:[] }, 
 				            { 
-				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:[] }, 
+				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['layers'] }, 
 				            { 
 				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:[] },
 				            { 

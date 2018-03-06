@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Section } from 'components'
 import { versiones } from 'actions'
-//import { data } from 'stores'
+import { data } from 'stores'
 //import $ from 'actions'
 
 export class Versiones extends Component {
@@ -20,7 +20,12 @@ export class Versiones extends Component {
 	}
 	generar() {
 		let matrix = versiones('GEN', { ...this.props, fns:this.state.fns })
+		matrix = matrix.sort(() => (0.5 - Math.random()) ).slice(0, this.state.limit)
+		data.child(`${this.props.code}/versions`).set({ ...matrix })
 		this.setState({ matrix:matrix })
+	}
+	sort(m) {
+		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
 	}
 	render() {
 		const { limit, matrix } = this.state
@@ -34,15 +39,17 @@ export class Versiones extends Component {
 	        				<thead>
 	        					<tr>
 	        						<th>#</th>
-	        						{this.props.variables.map((m, i) => <th key={i}>{m.var}</th> )}
+	        						{
+	        							this.props.variables.map((m, i) => <th key={i}>{m.var}</th> )
+	        						}
 	        					</tr>
 	        				</thead>
 	        				<tbody>
 	        				{
-	        					matrix.sort(() => (0.5 - Math.random()) ).slice(0, limit).map((m, i) => 
+	        					matrix.map((m, i) => 
 	        						<tr key={i}><td style={{maxWidth:'15px'}}>{i + 1}</td>
         							{
-        								m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) ).map((n, j) => <td key={j}>{n.val}</td> )
+        								this.sort(m).map((n, j) => <td key={j}>{n.val}</td> )
         							}
 	        						</tr>
 	        					)
