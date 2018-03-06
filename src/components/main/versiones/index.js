@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Section } from 'components'
+import { versiones } from 'actions'
+//import { data } from 'stores'
 //import $ from 'actions'
 
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { matrix:[], fns:[] }
-		this.recursion = this.recursion.bind(this)
-		this.evalf = this.evalf.bind(this)
+		this.state = { matrix:[], fns:[], limit:100 }
 	}
 	componentDidMount() {
 		let fns = []
@@ -18,98 +18,37 @@ export class Versiones extends Component {
 			}
 		})
 	}
-	genVersiones() {
-		const { variables } = this.props
-		let aux = variables.slice(0), vars = []
-
-		while (aux.length) {
-			let m = aux.shift()	
-			switch (m.type) {
-				case 'numero': {
-					if (m.val.includes(',')) {
-						let x = m.val.split(','), y = []
-						x.forEach(m => { y.push(Number(m)) })
-						vars.push({ var:m.var, val:y })
-					}
-					else if (m.val.includes('..')) {
-						let x = m.val.split('..'), y = []	
-						for (let i = Number(x[0]); i <= Number(x[1]); i++) {
-							y.push(Number(i))
-						}
-						vars.push({ var:m.var, val:y })
-					}
-					else
-					{
-						vars.push({ var:m.var, val:[Number(m.val)] })
-					}
-					break
-				}
-				case 'texto': {
-					if (m.val.includes(',')) {
-						let x = m.val.split(','), y = []
-						x.forEach(m => { y.push(m.trim()) })
-						vars.push({ var:m.var, val:y })
-					}
-					else
-					{
-						vars.push({ var:m.var, val:[m.val] })
-					}
-				}
-			}
-		}
-		this.recursion(vars, [], [])
-	}
-	recursion(vars, matrix, n) {
-		let values = vars[0].val, size = vars.length
-		for (let i = 0; i < values.length; i++) {
-			let item = { var:vars[0].var, val:values[i] }
-			if (size > 1)
-				this.recursion(vars.slice(1, size), matrix, [...n, item])
-			else if (size == 1) {	
-				matrix.push(this.evalf( [...n, item] ))
-				this.setState({ matrix:matrix })	
-			}
-		}
-	}
-	evalf(elem) {
-		const { fns } = this.state
-		let aux = fns.slice(0), stop = Math.pow(aux.length, 2), copy = elem.slice(0)
-
-		while (aux.length && stop) 
-		{
-			stop--
-			let m = aux.shift(), xy = m.val
-			copy.forEach(n => {
-				xy = xy.replace(n.var, n.val)
-			})
-			if (!xy.match(/[a-zA-Z]/))
-				copy.push({ var:m.var, val:Number(eval(xy)) })
-			else {
-				m.val = xy
-				aux.push(m)
-			}
-		}
-		return copy
+	generar() {
+		let matrix = versiones('GEN', { ...this.props, fns:this.state.fns })
+		this.setState({ matrix:matrix })
 	}
 	render() {
-		let v = 50
+		const { limit, matrix } = this.state
         return(
         	<Section style="versiones" condition={true} {...this.props}>
         		<div class="row">
-        			<div class="preview" onClick={::this.genVersiones}>		
-        			<h3>versiones: {v}/{this.state.matrix.length}</h3>
-        			{
-    					this.state.matrix.sort(() => { return 0.5 - Math.random() }).slice(0, v).map((m, i) => { return (
-    						<ul key={i}>
-    						<a>{i+1} = </a>
-    						{
-    							m.map((n, j) => { return (
-    								<a key={j}>{n.var}.{n.val}&nbsp;</a>
-    							)})
-    						}
-    						</ul>
-    					)})
-    				}
+        			<div class="preview">		
+	        			<h4>versiones: {limit}/{matrix.length}</h4>
+	        			<button onClick={::this.generar}>Generar</button>
+	        			<table class="table">
+	        				<thead>
+	        					<tr>
+	        						<th>#</th>
+	        						{this.props.variables.map((m, i) => <th key={i}>{m.var}</th> )}
+	        					</tr>
+	        				</thead>
+	        				<tbody>
+	        				{
+	        					matrix.sort(() => (0.5 - Math.random()) ).slice(0, limit).map((m, i) => 
+	        						<tr key={i}><td style={{maxWidth:'15px'}}>{i + 1}</td>
+        							{
+        								m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) ).map((n, j) => <td key={j}>{n.val}</td> )
+        							}
+	        						</tr>
+	        					)
+	        				}
+	        				</tbody>
+	        			</table>
         			</div>
         		</div>
         	</Section>
@@ -118,8 +57,6 @@ export class Versiones extends Component {
 }
 
 /*{JSON.stringify(this.props.variables)}
-
-
 
 	allowDrop(e) {
     	e.preventDefault()
@@ -134,8 +71,6 @@ export class Versiones extends Component {
 		   	$(e.target.id).appendChild($(this.state.drag))
 	})})
     				}
-
-
 
 <div class="row">
 	<div class="col-md-3">
