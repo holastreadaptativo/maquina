@@ -8,18 +8,26 @@ export const DEFAULT = 	{
 							DEVICE:DEVICES[0].size
 						}
 
-export const NAVBAR = 	[ 
-				            { path:'/', icon:'home', text:'Buscador', title:'Buscador', nav:[] }, 
-				            { path:'/variables', icon:'th', text:'Variables', title:'Ingresar variables', nav:[] }, 
-				            { path:'/ejercicios', icon:'edit', text:'Ejercicios', title:'Crear ejercicio', nav:['details', 'layers'] }, 
-				            { path:'/respuestas', icon:'list-alt', text:'Respuestas', title:'Crear respuestas', nav:['details', 'layers'] }, 
-				            { path:'/explicacion', icon:'tasks', text:'Explicación', title:'Crear glosa', nav:[] }, 
-				            { path:'/versiones', icon:'duplicate', text:'Versiones', title:'Generar versiones', nav:[] }, 
-				            { path:'/descargas', icon:'download-alt', text:'Descargas', title:'Descargar ejercicio', nav:[] },
-				            { path:'/configuracion', icon:'cog', text:'Configuración', title:'Configuración', nav:[] }
+export const ROUTES = 	[ 
+				            { 
+				            	path:'/', title:'Buscador', text:'Buscador', icon:'home', nav:[] }, 
+				            { 
+				            	path:'/variables', title:'Ingresar variables', text:'Variables', icon:'th', nav:[] }, 
+				            { 
+				            	path:'/ejercicios', title:'Crear ejercicio', text:'Ejercicios', icon:'edit', nav:['details', 'layers'] }, 
+				            { 
+				            	path:'/respuestas', title:'Crear respuestas', text:'Respuestas', icon:'list-alt', nav:['details','layers'] }, 
+				            { 
+				            	path:'/explicacion', title:'Crear glosa', text:'Explicación', icon:'tasks', nav:[] }, 
+				            { 
+				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['layers'] }, 
+				            { 
+				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:[] },
+				            { 
+				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }
         				]
 
-export const COLORS = 	{ 
+export const COLORS = 	{
 							geometria:'#00aaad', 
 							algebra:'#91518f', 
 							medicion:'#175389', 

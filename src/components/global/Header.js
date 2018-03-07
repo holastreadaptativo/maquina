@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NAVBAR, DEFAULT } from 'stores'
+import { ROUTES, DEFAULT } from 'stores'
 import { focus, show } from 'actions'
 import { Link } from 'react-router'
 
@@ -13,13 +13,13 @@ export default class Header extends Component {
                     <div class="title">
                         <h5>Adaptativamente
                             <span class="glyphicon glyphicon-education"/>
-                            <b>{NAVBAR[active].title}</b>
+                            <b>{ROUTES[active].title}</b>
                         </h5>
                     </div>
                     <div class="code">
                         <h5>
                         {
-                            NAVBAR[active].nav.map((m, i) => { return (
+                            ROUTES[active].nav.map((m, i) => { return (
                                 <i key={i} onClick={() => setOption(option != i ? i : null)}>{m}</i>
                             )})
                         }
@@ -30,7 +30,7 @@ export default class Header extends Component {
                 <nav>
                     <ul>
                     {
-                        NAVBAR.map((m, i) => { return (
+                        ROUTES.map((m, i) => { return (
                             <Link key={i} to={m.path} onClick={() => setActive(i)}>
                                 <li class={focus(active == i, 'active')}>
                                     <span class={`glyphicon glyphicon-${m.icon}`}/>

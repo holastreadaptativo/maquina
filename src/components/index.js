@@ -7,7 +7,7 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode), 
-			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: []		
+			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: [], versions:[]	
 		}
 	}
 	componentWillMount() {
@@ -60,6 +60,20 @@ export class App extends Component {
 			})
 			else 
 				this.setState({ answers:[] })
+			if (r.hasChild('versions')) 
+				data.child(`${code}/versions/gen`).once('value').then(snap => {
+					let versions = []
+					snap.forEach(v => {
+						let vars = []
+						data.child(`${code}/versions/gen/${v.key}`).orderByChild('var').once('value').then(w => {
+							w.forEach(x => { vars.push( x.val() ) })
+						})		
+						versions.push(vars)
+						this.setState({ versions:versions })
+					})
+				})
+			else
+				this.setState({ versions:[] })
 		})
     }
     setActive(active) {
@@ -90,5 +104,5 @@ export class App extends Component {
 
 export * from './design'
 export * from './global'
-export * from './main'
 export * from './tools'
+export * from './main'

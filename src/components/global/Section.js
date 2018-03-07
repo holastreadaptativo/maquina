@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { NAVBAR } from 'stores'
+import { ROUTES } from 'stores'
 import { show } from 'actions'
 
 export default class Section extends Component {
@@ -8,7 +8,7 @@ export default class Section extends Component {
 		e.preventDefault()
 		let i = this.props.active + 1
 		this.props.setActive(i)
-		browserHistory.push(NAVBAR[i].path)
+		browserHistory.push(ROUTES[i].path)
 	}
 	render() {
 		return(

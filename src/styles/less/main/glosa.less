@@ -4,10 +4,10 @@
 	.feedback
 	{
 		@width: 960px;
-		@height: 500px;
-		@border: 10px;
+		@height: 480px;
+		@border: 2px;
 		@margin: 60px;
-		@color: @main-hover;
+		@color: #ddd;
 		height: @height;
 		margin: 0 auto;
 		width: @width;
@@ -18,7 +18,7 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 			border: @border solid @color;
-			border-radius: 15px;
+			//border-radius: 15px;
 			h1
 			{
 				text-align: center;
@@ -29,7 +29,7 @@
 		}
 		footer
 		{
-			background: @color;
+			background: lighten(@color, 5%);
 			width: @width - 2*@border - 85px;
 			height: @margin;
 			border-bottom-left-radius: 15px;
@@ -43,7 +43,7 @@
 			width: 150px;
 			background: white;
 			margin-top: -90px - @border/2;
-			border: @border/2 solid @color;
+			border: @border solid @color;
 			border-radius: 15px;
 		}
 		div.triangle
@@ -53,7 +53,7 @@
 			height: 0; 
 			margin-left: @width - @border - 85px;
 			border-bottom: @margin solid transparent;
-			border-left: 70px solid @color;
+			border-left: 70px solid lighten(@color, 5%);
 			margin-top: -@border/2;
 		}
 	}

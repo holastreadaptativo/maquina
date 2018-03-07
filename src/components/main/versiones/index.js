@@ -1,72 +1,107 @@
 import React, { Component } from 'react'
-import $ from 'actions'
+import { Section } from 'components'
+import { data } from 'stores'
+//import $ from 'actions'
 
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { clicked:false, drag:'', versions:[], selection:[] }
-		this.setClicked = this.setClicked.bind(this)
-		this.drag = this.drag.bind(this)
-		this.drop = this.drop.bind(this)
+		this.state = { total:0, limit:100, selected:20 }
 	}
-	componentDidMount() {
-		let versions = []
-		for (let i = 0; i < 25; i++) {
-			versions.push({ id:`version-${i}`, count:i })
-		} 
-		versions.sort(function(){return 0.5 - Math.random()})
-
-		this.setState({ selection:versions.slice(0, 10) , versions:versions.slice(10, versions.length) })
+	componentWillMount() {
+		data.child(`${this.props.code}/versions`).on('value', v => {
+			this.setState({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+		})
 	}
-	setClicked() {
-		this.setState({ clicked:!this.state.clicked })
+	handleChange(e) {
+		this.setState({ [e.target.id]:e.target.value })
 	}
-	allowDrop(ev) {
-    	ev.preventDefault()
-	}	
-	drag(ev) {
-		this.setState({ drag:ev.target.id })
-		ev.dataTransfer.setData('text', $(ev.target.id))
-	}
-	drop(ev) {
-	    ev.preventDefault()
-	    if (!ev.target.id.includes('version'))
-		   	$(ev.target.id).appendChild($(this.state.drag))
+	sort(m) {
+		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
 	}
 	render() {
+		const { option, variables, versions } = this.props
+		const { selected } = this.state
         return(
-        	<div class="versiones">
-        		<div class="container">
-					<div class="row">
-						<div class="col-md-3">
-							<div id="options" class="combinaciones">
-								<h5>Versiones:</h5>
-								{
-									this.state.versions.map((m, i) => { return (
-										<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
-									)})
-								}
-							</div>
-						</div>	
-						<div class="col-md-3">
-							<div id="selection" class="seleccion" onDrop={this.drop} onDragOver={this.allowDrop}>
-								<h5>Selección:</h5>
-								{
-									this.state.selection.map((m, i) => { return (
-										<h4 key={i} id={m.id} draggable="true" onDragStart={this.drag}>Version {m.count + 1}</h4>
-									)})
-								}
-							</div>
-						</div>	
-						<div class="col-md-6">
-							<div class="preview">
-								<h5>Vista previa:</h5>
-							</div>
-						</div>	
-					</div>
-
+        	<Section style="versiones" condition={false} {...this.props}>
+        		<div class="row">
+        			<div class="preview">		
+	        			<table class="table">
+	        				<thead>
+	        					<tr>
+	        						<th>#</th>
+	        						{
+	        							variables.map((m, i) => <th key={i}>{m.var}</th> )
+	        						}
+	        					</tr>
+	        				</thead>
+	        				<tbody>
+	        				{
+	        					versions.slice(0, selected).map((m, i) => 
+	        						<tr key={i}><td>{i + 1}</td>
+        							{
+        								this.sort(m).map((n, j) => <td key={j}>{n.val}</td> )
+        							}
+	        						</tr>
+	        					)
+	        				}
+	        				</tbody>
+	        			</table>
+	        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={::this.handleChange}/>
+        			</div>
         		</div>
-        	</div>
+        	</Section>
         )
     }
 }
+
+import Generate from './5_Generate'
+
+/*
+
+	        			*/
+
+/*{JSON.stringify(this.props.variables)}
+
+	allowDrop(e) {
+    	e.preventDefault()
+	}	
+	drag(e) {
+		this.setState({ drag:e.target.id })
+		e.dataTransfer.setData('text', $(e.target.id))
+	}
+	drop(e) {
+	    e.preventDefault()
+	    if (!e.target.id.includes('version'))
+		   	$(e.target.id).appendChild($(this.state.drag))
+	})})
+    				}
+
+<div class="row">
+	<div class="col-md-3">
+		<div id="options" class="combinaciones">
+			<h5>Versiones:</h5>
+			{
+				this.state.versions.map((m, i) => { return (
+					<h4 key={i} id={m.id} draggable="true" onDragStart={::this.drag}>Version {m.count + 1}</h4>
+				)})
+			}
+		</div>
+	</div>	
+	<div class="col-md-3">
+		<div id="selection" class="seleccion" onDrop={::this.drop} onDragOver={this.allowDrop}>
+			<h5>Selección:</h5>
+			{
+				this.state.selection.map((m, i) => { return (
+					<h4 key={i} id={m.id} draggable="true" onDragStart={::this.drag}>Version {m.count + 1}</h4>
+				)})
+			}
+		</div>
+	</div>	
+	<div class="col-md-6">
+		<div class="preview">
+			<h5>Vista previa:</h5>
+		</div>
+	</div>	
+</div>
+*/
