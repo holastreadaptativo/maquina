@@ -7,7 +7,7 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode), 
-			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[]			
+			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: []		
 		}
 	}
 	componentWillMount() {
@@ -48,6 +48,18 @@ export class App extends Component {
 				})
 			else 
 				this.setState({ functions:[] })
+			if (r.hasChild('answers'))
+			data.child(`${code}/answers`).orderByChild('position').once('value').then(snap => {
+				let answers = []
+				snap.forEach(f => {
+					if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
+					answers.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
+						width:f.val().width, position:f.val().position })
+					this.setState({ answers:answers })
+				})
+			})
+			else 
+				this.setState({ answers:[] })
 		})
     }
     setActive(active) {

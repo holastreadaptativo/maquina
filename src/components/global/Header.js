@@ -9,7 +9,7 @@ export default class Header extends Component {
         return(
             <header class="main-header">
                 <div class="container-fluid">
-                    <div class="logo">A</div>
+                    <div class="logo"><img src="images/media/adaptativamente-icon.png" /></div>
                     <div class="title">
                         <h5>Adaptativamente
                             <span class="glyphicon glyphicon-education"/>

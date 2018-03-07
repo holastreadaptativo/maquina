@@ -53,14 +53,12 @@ export class Variables extends Component {
 						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
 						<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
 					</div>
-					<Advan code={code} advanced={advanced}/>
 				</div>
 			</Section>
 		)
 	}
 }
 
-import Advan from './1_Advan'
 import Check from './1_Check'
 import Resume from './1_Resume'
 import Table from './1_Table'
