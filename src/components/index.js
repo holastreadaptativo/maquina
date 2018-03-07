@@ -49,11 +49,11 @@ export class App extends Component {
 			else 
 				this.setState({ functions:[] })
 			if (r.hasChild('versions')) 
-				data.child(`${code}/versions`).on('value', snap => {
+				data.child(`${code}/versions/gen`).once('value').then(snap => {
 					let versions = []
 					snap.forEach(v => {
 						let vars = []
-						data.child(`${code}/versions/${v.key}`).once('value').then(w => {
+						data.child(`${code}/versions/gen/${v.key}`).orderByChild('var').once('value').then(w => {
 							w.forEach(x => { vars.push( x.val() ) })
 						})		
 						versions.push(vars)

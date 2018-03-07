@@ -1,17 +1,27 @@
 import React, { Component } from 'react'
 import { Section } from 'components'
+import { data } from 'stores'
 //import $ from 'actions'
 
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { }
+		this.state = { total:0, limit:100, selected:20 }
+	}
+	componentWillMount() {
+		data.child(`${this.props.code}/versions`).on('value', v => {
+			this.setState({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+		})
+	}
+	handleChange(e) {
+		this.setState({ [e.target.id]:e.target.value })
 	}
 	sort(m) {
 		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
 	}
 	render() {
 		const { option, variables, versions } = this.props
+		const { selected } = this.state
         return(
         	<Section style="versiones" condition={false} {...this.props}>
         		<div class="row">
@@ -27,7 +37,7 @@ export class Versiones extends Component {
 	        				</thead>
 	        				<tbody>
 	        				{
-	        					versions.map((m, i) => 
+	        					versions.slice(0, selected).map((m, i) => 
 	        						<tr key={i}><td>{i + 1}</td>
         							{
         								this.sort(m).map((n, j) => <td key={j}>{n.val}</td> )
@@ -37,7 +47,7 @@ export class Versiones extends Component {
 	        				}
 	        				</tbody>
 	        			</table>
-	        			<Generate {...this.props} condition={option == 0}/>
+	        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={::this.handleChange}/>
         			</div>
         		</div>
         	</Section>
