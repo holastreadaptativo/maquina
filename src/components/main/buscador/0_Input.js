@@ -49,13 +49,17 @@ export default class Input extends Component {
 
 		this.props.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
 	}
+	handleKeyPress(e) {
+		if (e.charCode == 13)
+			this.handleSubmit(e)
+	}
 	render() {
 		const { selected, length, temp } = this.props
 		let items = ['Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio']
 		return (
 			<div>
 				<h3 class={focus(selected, 'selected')}>Buscar por código</h3>
-				<div class="input-group">
+				<div class="input-group" onKeyPress={::this.handleKeyPress}>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
 					<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
 						onChange={::this.onChange} maxLength="15"></input>

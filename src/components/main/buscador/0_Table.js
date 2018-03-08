@@ -23,7 +23,6 @@ export default class Table extends Component {
 							<th>#</th>
 							<th>Código del Ejercicio</th>
 							<th>Versiones</th>
-							<th>Intentos</th>
 							<th>Generados</th>
 							<th>Estado</th>
 						</tr>
@@ -35,8 +34,7 @@ export default class Table extends Component {
 							<tr key={i} onClick={() => this.setCode(m.id)}>
 								<td>{i + 1}</td>
 								<td>{ m.id }</td>
-								<td>{ m.versions }</td>
-								<td>{ m.limit }</td>
+								<td>{ m.versions }/{ m.limit }</td>
 								<td>{ m.total }</td>
 								<td>-</td>
 							</tr>
