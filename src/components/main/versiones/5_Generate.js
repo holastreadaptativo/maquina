@@ -26,6 +26,8 @@ export default class Generate extends Component {
 		data.child(`${this.props.code}/versions`).set({ 
 			gen:{...matrix}, limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
 		})
+
+		let versions = matrix.slice(0, selected)
 	}
 	render() {
 		const { total, limit, selected, onChange } = this.props
