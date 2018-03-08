@@ -6,7 +6,7 @@ import { data } from 'stores'
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { total:0, limit:100, selected:20 }
+		this.state = { total:0, limit:100, selected:20, vars:[] }
 	}
 	componentWillMount() {
 		data.child(`${this.props.code}/versions`).on('value', v => {
@@ -15,6 +15,9 @@ export class Versiones extends Component {
 	}
 	handleChange(e) {
 		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
+	}
+	handleSelect(m, i) {
+		alert(`${i}_${m.id}: ${JSON.stringify(m.vars)}`)
 	}
 	sort(m) {
 		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
@@ -25,10 +28,10 @@ export class Versiones extends Component {
         	<Section style="versiones" condition={false} {...this.props}>
         		<div class="row">  			
     				<div class="col-xs-3 seleccion">
-						<h5>Selección:</h5>
+						<h5><b>Selección</b></h5>
 						{
 							versions.map((m, i) => 
-								<h4 key={i} id={i}>Version {m.id + 1}</h4>
+								<h4 key={i} id={m.id} onClick={() => this.handleSelect(m, i)}>Versión {m.id + 1}</h4>
 							)
 						}
 					</div>
