@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import $, { show, random } from 'actions'
+import $, { show } from 'actions'
 import { DEFAULT } from 'stores'
 
 export default class Table extends Component {
@@ -23,6 +23,8 @@ export default class Table extends Component {
 							<th>#</th>
 							<th>Código del Ejercicio</th>
 							<th>Versiones</th>
+							<th>Intentos</th>
+							<th>Generados</th>
 							<th>Estado</th>
 						</tr>
 					</thead>
@@ -30,10 +32,12 @@ export default class Table extends Component {
 					{
 						search.map((m, i) => { 
 							return (
-							<tr key={i} onClick={() => this.setCode(m)}>
-								<td>{i}</td>
-								<td id={`${i}-code`}>{ m }</td>
-								<td>{ random(5, 20) }</td>
+							<tr key={i} onClick={() => this.setCode(m.id)}>
+								<td>{i + 1}</td>
+								<td>{ m.id }</td>
+								<td>{ m.versions }</td>
+								<td>{ m.limit }</td>
+								<td>{ m.total }</td>
 								<td>-</td>
 							</tr>
 						)})

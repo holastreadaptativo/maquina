@@ -22,7 +22,14 @@ export default class Input extends Component {
 			data.once('value').then(snap => {
 				snap.forEach(c => {
 					if (c.key.toString().includes(n)) {
-						search.push(c.key)
+						let t = 0, l = 0, v = 0
+						if (c.hasChild('versions')) {
+							let m = c.val().versions
+							v = m.selected
+							t = m.total
+							l = m.limit
+						}
+						search.push({ id:c.key, total:t, limit:l, versions:v })
 						this.props.setState({ search:search })
 					}
 				})
@@ -36,6 +43,7 @@ export default class Input extends Component {
 		if (code.length == 15) {
 			this.props.setActive(1)
 			browserHistory.push('/variables')
+			this.props.setNotification(null, this.props.alert)
 			this.props.setCode(code)
 		}					
 

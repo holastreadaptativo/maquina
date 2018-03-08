@@ -49,9 +49,9 @@ export default class Header extends Component {
 
 class Alert extends Component {
     render() {
-        const { active, alert, code, notification, setActive } = this.props
+        const { active, alert, notification, setActive } = this.props
         return (            
-            <div class={show(!(active == 0 && code == DEFAULT.CODE) && active != 1 && notification, `notification ${alert}`)}>
+            <div class={show(active > 1 && notification, `notification ${alert}`)}>
                 <div class="container">
                     <h5>{notification}
                         <b class={show(alert == 'danger')}> 
