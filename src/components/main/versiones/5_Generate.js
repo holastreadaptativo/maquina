@@ -5,7 +5,7 @@ import { data } from 'stores'
 export default class Generate extends Component {
 	constructor() {
 		super()
-		this.state = { fns:[] }
+		this.state = { fns:[], rank:[] }
 	}
 	componentWillMount() {
 		let fns = []
@@ -19,15 +19,27 @@ export default class Generate extends Component {
 	generate(e) {
 		e.preventDefault()
 		const { fns } = this.state
-		const { limit, selected } = this.props
+		const { code, limit, selected } = this.props
 
 		let matrix = versiones('GEN', { ...this.props, fns:fns }), total = matrix.length
 		matrix = matrix.sort(() => (0.5 - Math.random()) ).slice(0, limit)
-		data.child(`${this.props.code}/versions`).set({ 
-			gen:{...matrix}, limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
+		let versions = matrix.slice(0, selected), box = []
+		for (let i = 0; i < selected; i++) {
+			box[i] = []
+			for (let j = 0; j < selected; j++) {
+				let sum = 0
+				for (let k = 0; k < versions[i].length; k++) {
+					let a = versions[i][k].val, b = versions[j][k].val, c = versions[i][k].rank
+					if (i != j && c != 0)		
+						if (c > 0) sum += Math.abs((a - b)/c)
+						else sum += 1
+				}
+				box[i][j] = Number(sum.toFixed(3))
+			}
+		}
+		data.child(`${code}/versions`).set({ 
+			gen:{...matrix}, box:box, limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
 		})
-
-		let versions = matrix.slice(0, selected)
 	}
 	render() {
 		const { total, limit, selected, onChange } = this.props
