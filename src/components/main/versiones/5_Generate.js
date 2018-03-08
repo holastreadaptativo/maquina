@@ -23,6 +23,7 @@ export default class Generate extends Component {
 
 		let matrix = versiones('GEN', { ...this.props, fns:fns }), total = matrix.length
 		matrix = matrix.sort(() => (0.5 - Math.random()) ).slice(0, limit)
+
 		let versions = matrix.slice(0, selected), box = []
 		for (let i = 0; i < selected; i++) {
 			box[i] = []
@@ -34,9 +35,10 @@ export default class Generate extends Component {
 						if (c > 0) sum += Math.abs((a - b)/c)
 						else sum += 1
 				}
-				box[i][j] = Number(sum.toFixed(3))
+				box[i][j] = Number(sum.toFixed(5))
 			}
 		}
+
 		data.child(`${code}/versions`).set({ 
 			gen:{...matrix}, box:box, limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
 		})
@@ -60,11 +62,11 @@ export default class Generate extends Component {
 							</div>	
 							<div class="input-group">
 								<span class="input-group-addon prefix">intentos</span>
-								<input id="limit" defaultValue={limit} onChange={onChange} max={total} type="number"/>
+								<input id="gen-limit" defaultValue={limit} onChange={onChange} max={total} type="number"/>
 							</div>		
 							<div class="input-group">
 								<span class="input-group-addon prefix">selección</span>
-								<input id="selected" defaultValue={selected} onChange={onChange} max={limit} type="number"/>
+								<input id="gen-selected" defaultValue={selected} onChange={onChange} max={limit} type="number"/>
 							</div>						
 						</div>
 						<button class="btn" onClick={::this.generate}>Generar</button>
