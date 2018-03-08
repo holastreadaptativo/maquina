@@ -66,13 +66,13 @@ export default class Overview extends Component {
 						{
 							this.props.functions.map((m, i) => {
 								return (
-									<tr key={i} id={`${m.id}-${i}a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
+									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
 									draggable="true" onDragStart={::this.drag}>
-										<td id={`${m.id}-${i}e`}>
-											<h6 id={`${m.id}-${i}i`}>{i+1}</h6>
+										<td id={`${m.id}-/${i}-/e`}>
+											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
 										</td>
-										<td id={`${m.id}-${i}o`}>
-											<h6 id={`${m.id}-${i}u`}>{m.function}-{m.id.substring(4, 7)}</h6>
+										<td id={`${m.id}-/${i}-/o`}>
+											<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
 										</td>
 										<td>
 											<li>
