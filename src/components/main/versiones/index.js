@@ -14,7 +14,8 @@ export class Versiones extends Component {
 		})
 	}
 	handleChange(e) {
-		this.setState({ [e.target.id]:e.target.value })
+		let update = { [e.target.id.split('-')[1]]:e.target.value }
+		this.setState(update)
 	}
 	sort(m) {
 		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
@@ -47,7 +48,7 @@ export class Versiones extends Component {
 	        				}
 	        				</tbody>
 	        			</table>
-	        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={::this.handleChange}/>
+	        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
         			</div>
         		</div>
         	</Section>

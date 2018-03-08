@@ -11,18 +11,20 @@ export function versiones(action, state) {
 						if (m.val.includes(',')) {
 							let x = m.val.split(','), y = []
 							x.forEach(m => { y.push(Number(m)) })
-							vars.push({ var:m.var, val:y })
+							let max = Math.max(...y), min = Math.min(...y)
+							vars.push({ var:m.var, val:y, rank:max - min })
 						}
 						else if (m.val.includes('..')) {
 							let x = m.val.split('..'), y = []	
 							for (let i = Number(x[0]); i <= Number(x[1]); i++) {
 								y.push(Number(i))
 							}
-							vars.push({ var:m.var, val:y })
+							let max = Math.max(...y), min = Math.min(...y)
+							vars.push({ var:m.var, val:y, rank:max - min })
 						}
 						else
 						{
-							vars.push({ var:m.var, val:[Number(m.val)] })
+							vars.push({ var:m.var, val:[Number(m.val)], rank:0 })
 						}
 						break
 					}
@@ -30,11 +32,11 @@ export function versiones(action, state) {
 						if (m.val.includes(',')) {
 							let x = m.val.split(','), y = []
 							x.forEach(m => { y.push(m.trim()) })
-							vars.push({ var:m.var, val:y })
+							vars.push({ var:m.var, val:y, rank:-1 })
 						}
 						else
 						{
-							vars.push({ var:m.var, val:[m.val] })
+							vars.push({ var:m.var, val:[m.val], rank:-1 })
 						}
 					}
 				}
@@ -48,7 +50,7 @@ export function versiones(action, state) {
 function concat(vars, matrix, fns, arr) {
 	let values = vars[0].val, size = vars.length
 	for (let i = 0; i < values.length; i++) {
-		let item = { var:vars[0].var, val:values[i] }
+		let item = { var:vars[0].var, val:values[i], rank:vars[0].rank }
 		if (size > 1)
 			concat(vars.slice(1, size), matrix, fns, [...arr, item])
 		else if (size == 1) 
@@ -66,7 +68,7 @@ function evalfn(elem, fns) {
 			xy = xy.replace(n.var, n.val)
 		})
 		if (!xy.match(/[a-zA-Z]/))
-			copy.push({ var:m.var, val:Number(eval(xy)) })
+			copy.push({ var:m.var, val:Number(eval(xy)), rank:0 })
 		else {
 			m.val = xy
 			aux.push(m)
