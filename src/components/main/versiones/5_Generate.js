@@ -40,7 +40,8 @@ export default class Generate extends Component {
 		}
 
 		data.child(`${code}/versions`).set({ 
-			gen:{...matrix}, box:box, limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
+			bup:{...matrix.slice(selected)}, gen:versions, box:box,
+			limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
 		})
 	}
 	render() {

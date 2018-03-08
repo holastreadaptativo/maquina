@@ -14,20 +14,38 @@ export class Versiones extends Component {
 		})
 	}
 	handleChange(e) {
-		let update = { [e.target.id.split('-')[1]]:e.target.value }
-		this.setState(update)
+		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
 	}
 	sort(m) {
 		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
 	}
 	render() {
-		const { option, variables, versions } = this.props
-		const { selected } = this.state
+		const { option, versions } = this.props
         return(
         	<Section style="versiones" condition={false} {...this.props}>
-        		<div class="row">
-        			<div class="preview">		
-	        			<table class="table">
+        		<div class="row">  			
+    				<div class="col-xs-3 seleccion">
+						<h5>Selección:</h5>
+						{
+							versions.map((m, i) => 
+								<h4 key={i} id={i}>Version {m.id + 1}</h4>
+							)
+						}
+					</div>
+        			<div class="col-xs-9 preview">	
+
+        			</div>
+        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
+        		</div>
+        	</Section>
+        )
+    }
+}
+
+import Generate from './5_Generate'
+
+/*
+<table class="table">
 	        				<thead>
 	        					<tr>
 	        						<th>#</th>
@@ -48,18 +66,6 @@ export class Versiones extends Component {
 	        				}
 	        				</tbody>
 	        			</table>
-	        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
-        			</div>
-        		</div>
-        	</Section>
-        )
-    }
-}
-
-import Generate from './5_Generate'
-
-/*
-
 	        			*/
 
 /*{JSON.stringify(this.props.variables)}

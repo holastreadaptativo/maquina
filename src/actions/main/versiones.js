@@ -2,7 +2,7 @@ export function versiones(action, state) {
 	switch(action) {
 		case 'GEN': {
 			const { fns, variables } = state
-			let aux = variables.slice(0), vars = [], matrix = []
+			let aux = variables.slice(0), vars = [], matrix = [], num = 0
 
 			while (aux.length) {
 				let m = aux.shift()	
@@ -41,18 +41,19 @@ export function versiones(action, state) {
 					}
 				}
 			}
-			concat(vars, matrix, fns, [])
+			concat(vars, matrix, fns, [], num)
+			matrix.forEach((m, i) => { m.id = i })
 			return matrix
 		}
 	}
 }
 
-function concat(vars, matrix, fns, arr) {
+function concat(vars, matrix, fns, arr, num) {
 	let values = vars[0].val, size = vars.length
 	for (let i = 0; i < values.length; i++) {
 		let item = { var:vars[0].var, val:values[i], rank:vars[0].rank }
 		if (size > 1)
-			concat(vars.slice(1, size), matrix, fns, [...arr, item])
+			concat(vars.slice(1, size), matrix, fns, [...arr, item], num)
 		else if (size == 1) 
 			matrix.push(evalfn( [...arr, item], fns ))
 	}

@@ -17,7 +17,7 @@ export default class Input extends Component {
 			this.props.setState({ code:DEFAULT.CODE, selected:false, search:[] })
 			this.props.setCode(DEFAULT.CODE)
 		}
-		else {
+		else if (n.length > 2) {
 			let search = []
 			data.once('value').then(snap => {
 				snap.forEach(c => {
@@ -35,6 +35,8 @@ export default class Input extends Component {
 				})
 			})
 		}
+		else
+			this.props.setState({ selected:false })
 	}
 	handleSubmit(e) {
 		e.preventDefault()
@@ -67,6 +69,7 @@ export default class Input extends Component {
 						<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>
 					</span>
 				</div>
+				<div class="color-line"/>
 				<div>
 					<h6 class="search-count">{length}/15 
 						{length == 15 ? <span class="glyphicon glyphicon-ok"/> : ''}

@@ -65,11 +65,11 @@ export class App extends Component {
 					let versions = []
 					snap.forEach(v => {
 						let vars = []
-						data.child(`${code}/versions/gen/${v.key}`).orderByChild('var').once('value').then(w => {
-							w.forEach(x => { vars.push( x.val() ) })
-						})		
-						versions.push(vars)
-						this.setState({ versions:versions })
+						data.child(`${code}/versions/gen/${v.key}`).orderByChild('var').once('value').then(w => {	
+							w.forEach(x => { if (x.key != 'id') vars.push( x.val() ) })
+							versions.push({ id:w.val().id, vars:vars })
+							this.setState({ versions:versions })
+						})					
 					})
 				})
 			else

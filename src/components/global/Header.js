@@ -27,6 +27,7 @@ export default class Header extends Component {
                         <h5 class="hidden">{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
                     </div>
                 </div>
+                <div class="color-line"/>
                 <nav>
                     <ul>
                     {

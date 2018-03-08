@@ -1,14 +1,5 @@
 .react-app .versiones
 {
-	.preview
-	{
-		background-color: @info-color;
-		border: 2px solid #ddd;
-		padding: 10px 15px;
-		margin-top: 20px;
-		height: 430px; 
-		overflow-y: auto;
-	}
 	.generate
 	{
 		form
@@ -93,18 +84,14 @@
 			}
 		}
 	}
-
-
-
-	.combinaciones, .seleccion
+	.seleccion
 	{
 		background-color: @info-color;
-		border: 1px solid #ddd;
-		border-radius: 5px;
+		border: 2px solid #ddd;
+		color: #444;
 		padding: 10px 15px;
 		margin-top: 20px;
-		overflow-y: auto;
-		height: 400px; 
+		width: 250px;
 		h4
 		{
 			cursor: move;
@@ -112,12 +99,13 @@
 		    cursor: -moz-grab;
 		    cursor: -webkit-grab;
 		    background-color: darken(@sec-color, 8%);
-		    font-size: 13px;
+		    font-size: 12px;
 		    border-radius: 20px;
 		    padding: 5px 10px;
 		    font-weight: bold;
 		    color: white;
 		    transition: all .3s ease;
+		    margin: 0 0 7px;
 			&:hover
 			{
 				background-color: @sec-hover;
@@ -130,5 +118,14 @@
 			    background-color: darken(@sec-hover, 10%);
 			}
 		}
+	}
+	.preview
+	{
+		background: white;
+		border: 2px solid #ddd;
+		border-left: none;
+		margin-top: 20px;
+		width: ~'calc(100% - 250px)';
+		min-height: 500px;
 	}
 }
