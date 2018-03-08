@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import $, { random, show } from 'actions'
+import $, { show, random } from 'actions'
 import { DEFAULT } from 'stores'
 
 export default class Table extends Component {
-	setCode(id) {
-		this.props.setCode($(`${id}-code`).innerText)
+	setCode(code) {
+		this.props.setCode(code)
 		browserHistory.push('/variables')
 	}
 	handleClear(e) {
@@ -29,11 +29,10 @@ export default class Table extends Component {
 					<tbody>
 					{
 						search.map((m, i) => { 
-							let aux = '' + m.id; while (aux.length < 15) aux += random(0, 10)
 							return (
-							<tr key={i} onClick={this.setCode.bind(this, m.id)}>
-								<td>{m.id}</td>
-								<td id={`${m.id}-code`}>{ aux }</td>
+							<tr key={i} onClick={() => this.setCode(m)}>
+								<td>{i}</td>
+								<td id={`${i}-code`}>{ m }</td>
 								<td>{ random(5, 20) }</td>
 								<td>-</td>
 							</tr>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import $, { random, focus } from 'actions'
-import { DEFAULT } from 'stores'
+import { data, DEFAULT } from 'stores'
+import $, { focus } from 'actions'
 
 export default class Input extends Component {
 	onChange(e) {
@@ -14,24 +14,32 @@ export default class Input extends Component {
 		this.props.setState({ length:n.length, temp:n })
 
 		if (n.length == 0) {
-			this.props.setState({ code:DEFAULT.CODE, selected:false })
+			this.props.setState({ code:DEFAULT.CODE, selected:false, search:[] })
 			this.props.setCode(DEFAULT.CODE)
+		}
+		else {
+			let search = []
+			data.once('value').then(snap => {
+				snap.forEach(c => {
+					if (c.key.toString().includes(n)) {
+						search.push(c.key)
+						this.props.setState({ search:search })
+					}
+				})
+			})
 		}
 	}
 	handleSubmit(e) {
 		e.preventDefault()
-		let code = $('search-code').value, search = []
+		let code = $('search-code').value
 		
 		if (code.length == 15) {
 			this.props.setActive(1)
 			browserHistory.push('/variables')
-		}
-		else 
-			for (let i = 0; i < random(0, 20) + 1; i++)
-				search.push({ id:i + 1 })
+			this.props.setCode(code)
+		}					
 
-		this.props.setState({ code:code, search:search, selected:code != DEFAULT.CODE && code.length > 2 })
-		this.props.setCode(code)
+		this.props.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
 	}
 	render() {
 		const { selected, length, temp } = this.props
