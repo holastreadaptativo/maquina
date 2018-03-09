@@ -22,7 +22,7 @@ export default class Design extends Component {
         this.setState({ device:device })
     }
 	print() {
-		respuestas('GET', this.props)
+		respuestas('GET', { ...this.props, vt:true })
 	}
 	render() {
 		const { device } = this.state

@@ -5,12 +5,12 @@ import $ from 'actions'
 export function respuestas(action, state) {
 	switch(action) {
 		case 'GET': {
-			const { answers, variables } = state
+			const { answers, variables, versions, vt } = state
 			answers && answers.forEach((m, i) => {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
-					container:$(`container-${i}`), params:m.params, variables:variables
+					container:$(`container-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
 				})
 			}) 	
 			break;

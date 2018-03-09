@@ -1,7 +1,10 @@
-import { replaceVT } from 'actions'
+import { replace } from 'actions'
 
 export function insertarTexto(config) {
-	const { container, params, variables } = config
-	if (container)
-  	container.innerHTML = replaceVT(params.textCont, variables)
+	const { container, params, variables, versions, vt } = config
+
+	if (container) {
+		let vars = vt ? variables : versions
+  		container.innerHTML = replace(params.textCont, vars, vt)
+	}
 }

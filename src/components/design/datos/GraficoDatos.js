@@ -15,7 +15,7 @@ export default class GraficoDatos extends Component {
 		} : props.params
 	}
 	componentDidUpdate() {
-		datos.graficoDatos({ container:$('container'), params:this.state, variables:this.props.variables })
+		datos.graficoDatos({ container:$('container'), params:this.state, variables:this.props.variables, versions:[], vt:true })
 	}
 	handleActive(active) {
 		this.setState({ active:active })

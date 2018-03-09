@@ -1,8 +1,8 @@
-import { replaceVT } from 'actions'
+import { replace } from 'actions'
 
 export function graficoDatos(config) 
 {
-    const { container, params, variables } = config
+    const { container, params, variables, versions, vt } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop } = params
 
@@ -13,14 +13,15 @@ export function graficoDatos(config)
     container.width = width
     container.height = height
 
-    let values = replaceVT(chartValues, variables).split(',')
+    let vars = vt ? variables : versions
+    let values = replace(chartValues, vars, vt).split(',')
     let state = {
         axis: { color: axisColor, scale: 'auto', title_x: axisTitleX, title_y: axisTitleY, width: axisWidth },
         border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
         canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: borderColor, width: 2 }, color: chartColor.split(','), length: values.length, 
-            margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 },
-            padding: { x:10, y:10 }, position: chartPosition, tags: replaceVT(chartTags, variables).split(','), values: values },
+            margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 }, padding: { x:10, y:10 }, position: chartPosition, 
+            values: values, tags: replace(chartTags, vars, vt).split(',') },
         extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
         font: { align: 'center', color: fontColor, family: 'arial', size: 14 },
         line: { color: lineColor, value: 10, width: lineWidth },
@@ -37,8 +38,8 @@ export function graficoDatos(config)
         dy: Math.min(Math.floor((height - 2*(y - 5))/(4/3*chart.length)), 60)
     }
 
-    data.cx = data.x0 + 2*chart.padding.x + data.width/data.len/2 - data.dx/2,
-    data.cy = data.y0 - chart.padding.y - data.height/data.len/2 - data.dy/2,    
+    data.cx = data.x0 + 2*chart.padding.x + data.width/data.len/2 - data.dx/2
+    data.cy = data.y0 - chart.padding.y - data.height/data.len/2 - data.dy/2    
 
     data.ctx.translate(0, margin == 'si' ? 0 : 10)
     data.ctx.save()
@@ -52,35 +53,35 @@ export function graficoDatos(config)
 
 function generarEjes(canvas, state) {
 
-	let ctx = canvas.getContext('2d')
+    let ctx = canvas.getContext('2d')
 
-	const { axis, chart, font, title } = state
-	const { height, width } = state.canvas
-	const { x, y } = chart.margin 
-	const { padding } = chart
+    const { axis, chart, font, title } = state
+    const { height, width } = state.canvas
+    const { x, y } = chart.margin 
+    const { padding } = chart
 
-	ctx.beginPath()
-	ctx.moveTo(x, y - 2*padding.y)
-	ctx.lineTo(x, height - y) //EJE VERTICAL
-	ctx.lineTo(width - x + 2*padding.x, height - y) //EJE HORIZONTAL
+    ctx.beginPath()
+    ctx.moveTo(x, y - 2*padding.y)
+    ctx.lineTo(x, height - y) //EJE VERTICAL
+    ctx.lineTo(width - x + 2*padding.x, height - y) //EJE HORIZONTAL
 
-	ctx.lineWidth = axis.width
-	ctx.strokeStyle = axis.color
-	ctx.stroke()
+    ctx.lineWidth = axis.width
+    ctx.strokeStyle = axis.color
+    ctx.stroke()
 
-	ctx.textAlign = font.align
-	ctx.font = font.size + 'px ' + font.family
-	ctx.fillText(axis.title_x, width/2, height - x/2 + font.size - 20) //INSERTAR TITULO X
+    ctx.textAlign = font.align
+    ctx.font = font.size + 'px ' + font.family
+    ctx.fillText(axis.title_x, width/2, height - x/2 + font.size - 20) //INSERTAR TITULO X
 
-	ctx.rotate(3*Math.PI/2)
-	ctx.fillText(axis.title_y, - height/2, y/2 - font.size) //INSERTAR TITULO Y
+    ctx.rotate(3*Math.PI/2)
+    ctx.fillText(axis.title_y, - height/2, y/2 - font.size) //INSERTAR TITULO Y
 
-	ctx.rotate(Math.PI/2)
+    ctx.rotate(Math.PI/2)
     ctx.fillStyle = title.color
-	ctx.font = title.size + 'px ' + font.family
-	ctx.fillText(title.value, width/2, title.top) //INSERTAR TITULO
+    ctx.font = title.size + 'px ' + font.family
+    ctx.fillText(title.value, width/2, title.top) //INSERTAR TITULO
 
-	ctx.closePath()
+    ctx.closePath()
 }
 function generarColumnas(data, state) {
 
