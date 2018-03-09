@@ -25,4 +25,4 @@ export class Ejercicios extends Component {
 import Design from './2_Design'
 import Functions from './2_Functions'
 import Overview from './2_Overview'
-export Editor from './2_Editor'
+export TEditor from './2_Editor'
