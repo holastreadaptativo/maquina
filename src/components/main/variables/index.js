@@ -9,10 +9,6 @@ export class Variables extends Component {
 		this.state = { variables:[], clicked:false, advanced:false, checked:[[], []] }
 	}
 	componentWillMount() {
-		//data.child(`${this.props.code}`).once('value').then(snap => { 
-		//	if (snap.hasChild('advanced'))
-		//		this.setState({ advanced:snap.val().advanced }) 
-		//})
 		data.child(`${this.props.code}/variables`).on('value', snap => {
 			let variables = []
 			snap.forEach(v => {

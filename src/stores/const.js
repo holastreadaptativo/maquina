@@ -18,7 +18,7 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/respuestas', title:'Crear respuestas', text:'Respuestas', icon:'list-alt', nav:['details','layers'] }, 
 				            { 
-				            	path:'/explicacion', title:'Crear glosa', text:'Explicación', icon:'tasks', nav:[] }, 
+				            	path:'/glosa', title:'Crear glosa', text:'Glosa', icon:'tasks', nav:[] }, 
 				            { 
 				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['layers'] }, 
 				            { 
