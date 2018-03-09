@@ -113,6 +113,19 @@
 				margin-top: 42px;
 			}
 		}
+		.react-container-respuestas
+		{
+			width: ~'calc(100vw - 2*@{margin} - @{config})';
+			height: ~'auto';
+			background: white;
+			position: absolute;
+			top: 0;
+			left: @config;
+			.canvas
+			{
+				margin-top: 42px;
+			}
+		}
 		.react-header
 		{
 			position: absolute;
@@ -158,6 +171,22 @@
 		position: absolute;
 		bottom: 10px;
 		right: 10px;
+		background: @main-color;
+		color: white;
+		width: 150px;
+		height: 40px;
+		transition: all .3s ease;
+		&:hover
+		{
+			background: @main-hover;
+			color: white;
+		}
+	}
+	.react-submit-respuesta
+	{
+		position: absolute;
+		bottom: 0px;
+		right: 30px;
 		background: @main-color;
 		color: white;
 		width: 150px;

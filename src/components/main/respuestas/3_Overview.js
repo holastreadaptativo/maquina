@@ -51,7 +51,7 @@ export default class Overview extends Component {
 				})
        	return FX ? 
        		<FX update={(x) => this.handleUpdate.bind(this, x)} variables={this.props.variables} 
-       			params={this.state.params} onHide={::this.handleModal}/> : '' 
+       			params={this.state.params} onHide={::this.handleModal} code={this.props.code} answers={this.props.answers}/> : '' 
 	}
 	render() {
         return (

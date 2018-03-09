@@ -25,3 +25,4 @@ export class Respuestas extends Component {
 import Design from './3_Design'
 import Functions from './3_Functions'
 import Overview from './3_Overview'
+export Editor from './3_Editor'
