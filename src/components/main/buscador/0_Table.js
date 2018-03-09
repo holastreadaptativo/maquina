@@ -29,8 +29,7 @@ export default class Table extends Component {
 					</thead>
 					<tbody>
 					{
-						search.map((m, i) => { 
-							return (
+						search.map((m, i) => 
 							<tr key={i} onClick={() => this.setCode(m.id)}>
 								<td>{i + 1}</td>
 								<td>{ m.id }</td>
@@ -38,7 +37,7 @@ export default class Table extends Component {
 								<td>{ m.total }</td>
 								<td>-</td>
 							</tr>
-						)})
+						)
 					}
 					</tbody>
 				</table>

@@ -32,9 +32,9 @@ export default class Design extends Component {
 				<div class="col-md-12 design">
 					<nav class="devices">
 					{
-						DEVICES.map((m, i) => { return (
+						DEVICES.map((m, i) =>
 							<i key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}>{m.icon}</i>
-						)})
+						)
 					}
 					</nav>
 					<div class="device canvas" style={{ width:device+'px' }}>

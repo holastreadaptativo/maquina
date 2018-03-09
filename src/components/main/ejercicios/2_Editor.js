@@ -30,18 +30,18 @@ export default class Modal extends Component {
 				<div class="react-footer">
 					<h6>Devices:</h6>
 					{
-						DEVICES.map((n, j) => { return (
+						DEVICES.map((n, j) => 
 							<h6 key={j}>
 								<i>{n.icon}</i>
 								<select defaultValue={12}>
 								{
-									SIZES.map((m, i) => { return (
+									SIZES.map((m, i) =>
 										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-									)})
+									)
 								}	
 								</select>
 							</h6>
-						)})
+						)
 					}
 					</div>			
 			</div>

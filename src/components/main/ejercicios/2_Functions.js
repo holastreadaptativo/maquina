@@ -43,7 +43,7 @@ export default class Functions extends Component {
 							<h3>Funciones</h3>
 						</div>
 						{
-							FUNCIONES.map((m, i) => { return (
+							FUNCIONES.map((m, i) =>
 								<li key={i} class={`tabs ${this.state.active == i ? 'active' : ''}`} onClick={() => this.handleActive(i)}>
 							        <form>
 							          	<h5>{m.name}
@@ -58,7 +58,7 @@ export default class Functions extends Component {
 							          	</ul>
 							        </form>
 							    </li>
-							)})
+							)
 						}
 				    </ul>
 			    </div>

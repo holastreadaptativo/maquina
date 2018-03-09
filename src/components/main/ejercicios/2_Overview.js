@@ -64,37 +64,35 @@ export default class Overview extends Component {
 					<table class="table">
 						<tbody>
 						{
-							this.props.functions.map((m, i) => {
-								return (
-									<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
-									draggable="true" onDragStart={::this.drag}>
-										<td id={`${m.id}-/${i}-/e`}>
-											<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
-										</td>
-										<td id={`${m.id}-/${i}-/o`}>
-											<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
-										</td>
-										<td>
-											<li>
-												<select defaultValue={m.width} id={m.id} onChange={::this.handleWidth}>
-												{
-													SIZES.map((m, i) => { return (
-														<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-													)})
-												}
-												</select>
-											</li>
-										</td>
-										<td>
-											<li>
-												<span class="glyphicon glyphicon-pencil" 
-													onClick={this.handleEditor.bind(this, m.function, m.params, m.id)}/>
-												<span class="glyphicon glyphicon-trash" onClick={this.handleRemove.bind(this, m.id)}/>
-											</li>
-										</td>
-									</tr>
-								)
-							})
+							this.props.functions.map((m, i) => 
+								<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
+								draggable="true" onDragStart={::this.drag}>
+									<td id={`${m.id}-/${i}-/e`}>
+										<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
+									</td>
+									<td id={`${m.id}-/${i}-/o`}>
+										<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
+									</td>
+									<td>
+										<li>
+											<select defaultValue={m.width} id={m.id} onChange={::this.handleWidth}>
+											{
+												SIZES.map((m, i) => { return (
+													<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
+												)})
+											}
+											</select>
+										</li>
+									</td>
+									<td>
+										<li>
+											<span class="glyphicon glyphicon-pencil" 
+												onClick={this.handleEditor.bind(this, m.function, m.params, m.id)}/>
+											<span class="glyphicon glyphicon-trash" onClick={this.handleRemove.bind(this, m.id)}/>
+										</li>
+									</td>
+								</tr>
+							)
 						}
 						</tbody>
 					</table>

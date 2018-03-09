@@ -11,7 +11,7 @@ export class Respuestas extends Component {
 		})		
 	}	
 	render() {
-		const { option, /*functions,*/ answers } = this.props
+		const { option, answers } = this.props
 		return(
 			<Section style="ejercicios" condition={answers.length} {...this.props}>
 				<Design {...this.props}/>

@@ -38,7 +38,7 @@ export default class Table extends Component {
 					</thead>
 					<tbody>
 					{
-						this.props.variables.map((m, i) => { return (
+						this.props.variables.map((m, i) =>
 							<tr key={i} class={focus(!error[i], 'error')}>
 								<td>{i+1}</td>
 								<td>
@@ -69,7 +69,7 @@ export default class Table extends Component {
 									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m.id)} title="Eliminar"/>
 								</td>
 							</tr>
-						)})
+						)
 					}
 					</tbody>
 				</table>
