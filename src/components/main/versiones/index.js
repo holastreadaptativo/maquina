@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
+import { ejercicios } from 'actions'
 import { Section } from 'components'
 import { data } from 'stores'
 
@@ -32,72 +32,19 @@ export class Versiones extends Component {
 		window.removeEventListener('resize', this.print )
 	}
 	handleChange(e) {
-		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
-	}
-	handleSelect(m, i) {
-		this.setState({ vars:m.vars, active:i })
-	}
-	handleRemove(m, i) {
-		const { code } = this.props
-
-		if (confirm('¿Quieres eliminar esta versión?')) {
-			let ref = data.child(`${code}/versions`)
-			ref.child('gen').once('value').then(snap => {
-				snap.forEach(v => {
-					if (v.val().id == m.id) {
-						ref.child(`gen/${v.key}`).remove().then(() => {
-							ref.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
-								w.forEach(x => { 
-									ref.child('gen').push( x.val() )
-									ref.child(`bup/${x.key}`).remove()
-								})
-							})	
-						})
-					}					
-				})
-			})
-			this.setState({ active:i-1 })
-		}		
+		this.props.setState({ [e.target.id.split('-')[1]]:e.target.value })
 	}
 	print() {
 		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false })
 	}
 	render() {
-		const { functions, option, versions } = this.props
-		const { active, vt } = this.state
+		const { answers, functions, option, versions } = this.props
         return(
-        	<Section style="versiones" condition={false} {...this.props}>
+        	<Section style="versiones" condition={true} {...this.props}>
         		<div class="row">  			
-    				<div class="col-xs-3 seleccion">
-						<h5><b>Selección</b></h5>
-						<h4 class={focus(active == -1, 'active')} onClick={() => this.handleSelect(vt, -1)}>
-							Versión VT
-						</h4>
-						{
-							versions.map((m, i) => 
-								<h4 key={i} id={m.id} class={focus(active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
-									Versión {m.id + 1}
-									<span class="glyphicon glyphicon-remove close" onClick={() => this.handleRemove(m, i)}/>
-								</h4>
-							)
-						}
-					</div>
-        			<div class="col-xs-9 preview">	
-						<div class="design">
-						{	
-							functions.map((m, i) => 
-								<div key={i} class={`col-md-${m.width} col-sm-6 div-${m.tag} tags`}>
-								{
-									m.tag != 'general' ? 
-									<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
-									<div id={`container-${i}`} class="general"></div>
-								}
-								</div>
-							)
-						}
-						</div>					
-        			</div>
         			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
+    				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
+        			<Preview answers={answers} functions={functions}/>
         		</div>
         	</Section>
         )
@@ -105,3 +52,5 @@ export class Versiones extends Component {
 }
 
 import Generate from './5_Generate'
+import Preview from './5_Preview'
+import Select from './5_Select'
