@@ -88,34 +88,52 @@
 	{
 		background-color: @info-color;
 		border: 2px solid #ddd;
+		border-right-width: 1px;
 		color: #444;
 		padding: 10px 15px;
 		margin-top: 20px;
 		width: 250px;
 		h4
 		{
-			cursor: move;
-		    cursor: grab;
-		    cursor: -moz-grab;
-		    cursor: -webkit-grab;
-		    background-color: darken(@sec-color, 8%);
+			//cursor: move;
+		    //cursor: grab;
+		    //cursor: -moz-grab;
+		    //cursor: -webkit-grab;
+		    cursor: pointer;
+		    border: 1px solid @main-color;
 		    font-size: 12px;
-		    border-radius: 20px;
+		    //border-radius: 20px;
 		    padding: 5px 10px;
 		    font-weight: bold;
-		    color: white;
 		    transition: all .3s ease;
 		    margin: 0 0 7px;
 			&:hover
 			{
-				background-color: @sec-hover;
+		    	background-color: darken(@info-color, 7%);
 			}
 		    &:active 
 		    { 
-			    cursor: grabbing;
-			    cursor: -moz-grabbing;
-			    cursor: -webkit-grabbing;
-			    background-color: darken(@sec-hover, 10%);
+			    //cursor: grabbing;
+			    //cursor: -moz-grabbing;
+			    //cursor: -webkit-grabbing;
+			    background-color: darken(@info-color, 20%);
+			}
+			.close
+			{
+				font-size: 12px;
+				color: white !important;
+				display: none;
+			}
+			&.active
+			{
+				background-color: @sec-hover;
+				border-color: @sec-hover;
+				cursor: default;
+		    	color: white;
+				.close
+				{
+					display: initial;
+				}
 			}
 		}
 		h5
@@ -127,7 +145,7 @@
 	{
 		background: white;
 		border: 2px solid #ddd;
-		border-left: none;
+		border-left-width: 1px;
 		margin-top: 20px;
 		width: ~'calc(100% - 250px)';
 		min-height: 330px;

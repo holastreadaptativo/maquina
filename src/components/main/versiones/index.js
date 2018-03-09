@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import { ejercicios, focus } from 'actions'
 import { Section } from 'components'
-import { ejercicios } from 'actions'
 import { data } from 'stores'
 
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { total:0, limit:100, selected:20, vars:[], active:0 }
+		this.state = { total:0, limit:100, selected:20, vars:[], active:-1, vt:[] }
+		this.print = this.print.bind(this)
 	}
 	componentWillMount() {
 		data.child(`${this.props.code}/versions`).on('value', v => {
@@ -18,31 +19,66 @@ export class Versiones extends Component {
 			let vars = []
 			snap.forEach(v => {
 				vars.push({ var:v.val().var, val:v.val().vt })
+				this.setState({ vars:vars, vt:{ id:'vt', vars:vars } })
 			})
-			ejercicios('GET', { functions:this.props.functions, versions:vars, vt:false })
+			this.print()
 		})
+		window.addEventListener('resize', this.print )
+	}
+	componentDidUpdate() {
+		setTimeout(() => this.print(), 100)
+	}
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.print )
 	}
 	handleChange(e) {
 		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
 	}
-	handleSelect(m) {
-		const { functions } = this.props
-		this.setState({ active:1 })
-		ejercicios('GET', { functions:functions, versions:m.vars, vt:false })
+	handleSelect(m, i) {
+		this.setState({ vars:m.vars, active:i })
 	}
-	sort(m) {
-		return m.sort((a, b) => (a.var.charCodeAt(0) - b.var.charCodeAt(0)) )
+	handleRemove(m, i) {
+		const { code } = this.props
+
+		if (confirm('¿Quieres eliminar esta versión?')) {
+			let ref = data.child(`${code}/versions`)
+			ref.child('gen').once('value').then(snap => {
+				snap.forEach(v => {
+					if (v.val().id == m.id) {
+						ref.child(`gen/${v.key}`).remove().then(() => {
+							ref.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
+								w.forEach(x => { 
+									ref.child('gen').push( x.val() )
+									ref.child(`bup/${x.key}`).remove()
+								})
+							})	
+						})
+					}					
+				})
+			})
+			this.setState({ active:i-1 })
+		}		
+	}
+	print() {
+		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false })
 	}
 	render() {
 		const { functions, option, versions } = this.props
+		const { active, vt } = this.state
         return(
         	<Section style="versiones" condition={false} {...this.props}>
         		<div class="row">  			
     				<div class="col-xs-3 seleccion">
 						<h5><b>Selección</b></h5>
+						<h4 class={focus(active == -1, 'active')} onClick={() => this.handleSelect(vt, -1)}>
+							Versión VT
+						</h4>
 						{
 							versions.map((m, i) => 
-								<h4 key={i} id={m.id} onClick={() => this.handleSelect(m)}>Versión {m.id + 1}</h4>
+								<h4 key={i} id={m.id} class={focus(active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
+									Versión {m.id + 1}
+									<span class="glyphicon glyphicon-remove close" onClick={() => this.handleRemove(m, i)}/>
+								</h4>
 							)
 						}
 					</div>

@@ -9,9 +9,9 @@ export default class GraficoDatos extends Component {
 		super(props)
 		this.state = props.push ? { 
 			background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'',
-			active:0, borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], extra:'no', margin:'si', 
+			active:0, borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], extra:'no', margin:'no', 
 			lineColor:'#006400', lineWidth:2, chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
-			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:40			
+			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35			
 		} : props.params
 	}
 	componentDidUpdate() {
