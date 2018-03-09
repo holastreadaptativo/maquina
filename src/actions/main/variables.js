@@ -1,11 +1,9 @@
 export function replace(input, variables, vt) {
-	if (vt) {
-		let aux = input.toString()
-		for (let i = 0; i < variables.length; i++) {
-			aux = aux.replace(`$${variables[i].var}`, `${variables[i].vt}`)
-		}
-		return aux
+	let aux = input.toString()
+	for (let i = 0; i < variables.length; i++) {
+		aux = aux.replace(`$${variables[i].var}`, `${vt ? variables[i].vt : variables[i].val}`)
 	}
+	return aux
 }
 
 export function checkAll(variables) {

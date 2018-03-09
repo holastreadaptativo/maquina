@@ -10,7 +10,7 @@ export function respuestas(action, state) {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
-					container:$(`container-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
+					container:$(`content-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
 				})
 			}) 	
 			break;

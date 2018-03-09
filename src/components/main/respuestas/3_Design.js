@@ -45,8 +45,8 @@ export default class Design extends Component {
 								<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
-									<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
-									<div id={`container-${i}`} class="general"></div>
+									<canvas id={`content-${i}`} style={{background:m.params.background}}></canvas> :
+									<div id={`content-${i}`} class="general"></div>
 								}
 								</div>
 							)
