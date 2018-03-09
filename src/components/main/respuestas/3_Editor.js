@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 //import { SIZES, DEVICES } from 'stores'
-import { data } from 'stores'
-import { respuestas, focus } from 'actions'
+//import { data } from 'stores'
+//import { respuestas, focus } from 'actions'
 import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
 import TextEditor from './TextEditor/TextEditor'
 
@@ -9,19 +9,19 @@ export default class Modal extends Component {
 
 	constructor(props) {
 		super(props)
-		let b = props
-		//let a = data.child(b)
-		console.log(b)
-		let feedback = props.store.answers.feedback
-		let feedBackState = feedback ? feedback : ''
-		this.state = {
-			...this.props,
-			feedBackState
-		}
+		// let b = props
+		// //let a = data.child(b)
+		// let feedback = props.store.answers.feedback
+		// let feedBackState = feedback ? feedback : ''
+		// this.state = {
+		// 	...this.props,
+		// 	feedBackState
+		// }
 	}
 
 	componentWillUnmount() {
-		respuestas('UPDATE', {...this.state})
+		//let code = this.store.code
+		//respuestas('UPDATE', {this.store.code})
 	}
 
 
