@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
+import { ejercicios, respuestas, focus } from 'actions'
 import { DEFAULT, DEVICES } from 'stores'
 
 export default class Design extends Component {
@@ -22,11 +22,15 @@ export default class Design extends Component {
         this.setState({ device:device })
     }
 	print() {
-		ejercicios('GET', { ...this.props, vt:true })
+		if (this.props.design)
+			ejercicios('GET', { ...this.props, vt:true })
+		else
+			respuestas('GET', { ...this.props, vt:true })
 	}
 	render() {
 		const { device } = this.state
-		let tablet = device <= 768, phone = device <= 320
+		const { answers, functions, design } = this.props
+		let tablet = device <= 768, phone = device <= 320, aux = design ? functions : answers
 		return (
 			<div class="row">
 				<div class="col-md-12 design">
@@ -39,7 +43,7 @@ export default class Design extends Component {
 					</nav>
 					<div class="device canvas" style={{ width:device+'px' }}>
 					{
-						this.props.functions.map((m, i) => { 
+						aux.map((m, i) => { 
 							let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
 							return (
 								<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>

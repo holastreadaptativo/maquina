@@ -16,7 +16,7 @@ export class Ejercicios extends Component {
 			<Section style="ejercicios" condition={functions.length} {...this.props}>
 				<Overview condition={option == 0} {...this.props}/>
 				<Functions condition={option == 1} {...this.props}/>
-        		<Design {...this.props}/>
+        		<Design {...this.props} design={true}/>
         	</Section>
         )
     }
