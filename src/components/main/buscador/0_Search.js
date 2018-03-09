@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import { data, DEFAULT } from 'stores'
 import $, { focus } from 'actions'
 
-export default class Input extends Component {
+export default class Search extends Component {
 	onChange(e) {
 		let n = e.target.value, l = n.length, 
 			m = parseInt(n.substring(l - 1, l))

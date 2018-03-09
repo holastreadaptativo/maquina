@@ -10,7 +10,7 @@ export class Buscador extends Component {
 		return (
 			<div class="buscador">
 				<form>
-					<Input {...this.state} {...this.props} setState={::this.setState}/>
+					<Search {...this.state} {...this.props} setState={::this.setState}/>
 					<Table {...this.state} {...this.props} setState={::this.setState}/>
 				</form>
 			</div>
@@ -18,5 +18,5 @@ export class Buscador extends Component {
 	}
 }
 
-import Input from './0_Input'
+import Search from './0_Search'
 import Table from './0_Table'
