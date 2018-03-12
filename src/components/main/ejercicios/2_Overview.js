@@ -51,7 +51,7 @@ export default class Overview extends Component {
 			m.fns.forEach(n => { if (n.id == this.state.fn) FX = n.component })
         })
        	return FX ? 
-       		<FX update={(x) => this.handleUpdate.bind(this, x)} {...this.props} 
+       		<FX update={(x) => this.handleUpdate.bind(this, x)} id={this.state.id} {...this.props}
        			params={this.state.params} onHide={::this.handleModal}/> : ''
 	}
 	render() {
