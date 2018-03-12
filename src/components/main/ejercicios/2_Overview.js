@@ -61,7 +61,7 @@ export default class Overview extends Component {
         	<aside class={focus(this.props.condition, 'active')}>
 				<div class="overview">	
 					<div class="title">
-						<h3>{ this.props.design ? 'Ejercicio' : 'Respuestas' }</h3>
+						<h3>{design ? 'Ejercicio' : 'Respuestas'}</h3>
 					</div>
 					<table class="table">
 						<tbody>

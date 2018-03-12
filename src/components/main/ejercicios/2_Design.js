@@ -5,8 +5,7 @@ import { DEFAULT, DEVICES } from 'stores'
 export default class Design extends Component {
 	constructor(props) {
 		super(props)
-		const { answers, design, functions } = props
-		this.state = { device:DEFAULT.DEVICE, functions:design ? functions : answers, action:design ? ejercicios : respuestas }
+		this.state = { device:DEFAULT.DEVICE, action:props.design ? ejercicios : respuestas }
 		this.print = this.print.bind(this)
 	}
 	componentDidMount() {	
@@ -28,7 +27,7 @@ export default class Design extends Component {
 	render() {
 		const { device } = this.state
 		const { answers, design, functions } = this.props
-		let tablet = device <= 768, phone = device <= 320, container = design ? 'container' : 'content', aux = design ? functions : answers
+		let tablet = device <= 768, phone = device <= 320, aux = design ? functions : answers, container = design ? 'container' : 'content'
 		return (
 			<div class="row">
 				<div class="col-md-12 design">

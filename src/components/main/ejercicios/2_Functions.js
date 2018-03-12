@@ -6,8 +6,7 @@ import { FUNCIONES } from 'components'
 export default class Functions extends Component {
 	constructor(props) {
 		super(props)
-		const { answers, design, functions } = props
-		this.state = { active:0, fn:'', modal:false, tag:'', functions:design ? functions : answers, action:design ? ejercicios : respuestas }
+		this.state = { active:0, fn:'', modal:false, tag:'', action:props.design ? ejercicios : respuestas }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })

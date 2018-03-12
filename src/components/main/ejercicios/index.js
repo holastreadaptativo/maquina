@@ -22,7 +22,6 @@ export class Ejercicios extends Component {
     }
 }
 
-export TEditor from './2_Editor'
 export Overview from './2_Overview'
 export Functions from './2_Functions'
 export Design from './2_Design'
