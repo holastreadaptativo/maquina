@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 //import { data } from 'stores'
 //import { respuestas, focus } from 'actions'
 import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
-import TextEditor from './TextEditor/TextEditor'
+import { TextEditor } from 'components'
 
-export default class Modal extends Component {
+export default class Editor extends Component {
 
 	constructor(props) {
 		super(props)

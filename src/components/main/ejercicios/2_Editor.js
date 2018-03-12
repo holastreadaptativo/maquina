@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { SIZES, DEVICES } from 'stores'
 
-export default class Modal extends Component {
+export default class Editor extends Component {
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
 		const { add, update, push } = this.props.store
