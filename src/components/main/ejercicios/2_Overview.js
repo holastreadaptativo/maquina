@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
+import { ejercicios, respuestas, focus } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 import { data, SIZES } from 'stores'
 
 export default class Overview extends Component {
-	constructor() {
-		super()
-		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'' }
+	constructor(props) {
+		super(props)
+		const { answers, design, functions } = props
+		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'', step:design ? 'functions' : 'answers',
+			functions:design ? functions : answers, action:design ? ejercicios : respuestas }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -16,7 +18,7 @@ export default class Overview extends Component {
 		this.setState({ modal:!this.state.modal })
 	}
 	handleEditor(fn, params, id) {
-		this.setState({ fn:fn, modal:!this.state.modal, params:params, id:id })
+		this.setState({ modal:!this.state.modal, fn:fn, params:params, id:id })
 	}
 	allowDrop(e) {
     	e.preventDefault()
@@ -30,20 +32,18 @@ export default class Overview extends Component {
 	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
 
 	    if (drag.length > 1)
-	    	ejercicios('MOVE', { ...this.props, i:i, f:f })	    
+	    	this.state.action('MOVE', { ...this.props, i:i, f:f })
 	}
 	handleWidth(e) {
-		data.child(`${this.props.code}/functions/${e.target.id}`).update({ 
-			width:e.target.value
-		})
+		data.child(`${this.props.code}/${this.state.step}/${e.target.id}`).update({ width:e.target.value })
 	}
 	handleUpdate(params) {
-		ejercicios('UPDATE', { ...this.props, params:params, id:this.state.id })
+		this.state.action('UPDATE', { ...this.props, params:params, id:this.state.id })
 		this.setState({ modal:false })
 	}
 	handleRemove(id) {
 		if (confirm('¿Estas seguro de borrar la función?'))
-			ejercicios('REMOVE', { ...this.props, id:id })
+			this.state.action('REMOVE', { ...this.props, id:id })
 	}
 	getComponent() {
 		let FX = null
@@ -51,20 +51,22 @@ export default class Overview extends Component {
 			m.fns.forEach(n => { if (n.id == this.state.fn) FX = n.component })
         })
        	return FX ? 
-       		<FX update={(x) => this.handleUpdate.bind(this, x)} variables={this.props.variables} 
-       			params={this.state.params} onHide={::this.handleModal}/> : '' 
+       		<FX update={(x) => this.handleUpdate.bind(this, x)} {...this.props} 
+       			params={this.state.params} onHide={::this.handleModal}/> : ''
 	}
 	render() {
-        return (
+		const { answers, design, functions } = this.props
+		let aux = design ? functions : answers
+		return (
         	<aside class={focus(this.props.condition, 'active')}>
 				<div class="overview">	
 					<div class="title">
-						<h3>Ejercicio</h3>
+						<h3>{ this.props.design ? 'Ejercicio' : 'Respuestas' }</h3>
 					</div>
 					<table class="table">
 						<tbody>
 						{
-							this.props.functions.map((m, i) => 
+							aux.map((m, i) => 
 								<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
 								draggable="true" onDragStart={::this.drag}>
 									<td id={`${m.id}-/${i}-/e`}>

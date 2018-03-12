@@ -3,9 +3,10 @@ import { ejercicios, respuestas, focus } from 'actions'
 import { DEFAULT, DEVICES } from 'stores'
 
 export default class Design extends Component {
-	constructor() {
-		super()
-		this.state = { device:DEFAULT.DEVICE }
+	constructor(props) {
+		super(props)
+		const { answers, design, functions } = props
+		this.state = { device:DEFAULT.DEVICE, functions:design ? functions : answers, action:design ? ejercicios : respuestas }
 		this.print = this.print.bind(this)
 	}
 	componentDidMount() {	
@@ -22,15 +23,12 @@ export default class Design extends Component {
         this.setState({ device:device })
     }
 	print() {
-		if (this.props.design)
-			ejercicios('GET', { ...this.props, vt:true })
-		else
-			respuestas('GET', { ...this.props, vt:true })
+		this.state.action('GET', { ...this.props, vt:true })
 	}
 	render() {
 		const { device } = this.state
-		const { answers, functions, design } = this.props
-		let tablet = device <= 768, phone = device <= 320, aux = design ? functions : answers
+		const { answers, design, functions } = this.props
+		let tablet = device <= 768, phone = device <= 320, container = design ? 'container' : 'content', aux = design ? functions : answers
 		return (
 			<div class="row">
 				<div class="col-md-12 design">
@@ -49,8 +47,8 @@ export default class Design extends Component {
 								<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
-									<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
-									<div id={`container-${i}`} class="general"></div>
+									<canvas id={`${container}-${i}`} style={{background:m.params.background}}></canvas> :
+									<div id={`${container}-${i}`} class="general"></div>
 								}
 								</div>
 							)

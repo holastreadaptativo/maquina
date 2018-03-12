@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
+import { ejercicios, respuestas, focus } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 
 export default class Functions extends Component {
-	constructor() {
-		super()
-		this.state = { active:0, fn:'', modal:false, tag:'' }
+	constructor(props) {
+		super(props)
+		const { answers, design, functions } = props
+		this.state = { active:0, fn:'', modal:false, tag:'', functions:design ? functions : answers, action:design ? ejercicios : respuestas }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -15,13 +16,13 @@ export default class Functions extends Component {
 		this.setState({ modal:!this.state.modal })
 	}
 	handleFunction(fn) {
-		this.setState({ fn:fn, modal:!this.state.modal })
+		this.setState({ modal:!this.state.modal, fn:fn })
 	}
     handleActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
 	handleCreate(params) {
-		ejercicios('ADD', { ...this.props, ...this.state, params:params })	
+		this.state.action('ADD', { ...this.props, ...this.state, params:params })
 		this.setState({ modal:false }) 
 	}
 	getComponent() {
@@ -31,8 +32,8 @@ export default class Functions extends Component {
        			FX = m.component
        	})
        	return FX ? 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} variables={this.props.variables} 
-       			onHide={::this.handleModal} push/> : '' 
+       		<FX add={(x) => this.handleCreate.bind(this, x)} 
+       			onHide={::this.handleModal} push {...this.props}/> : '' 
 	}
 	render() {
         return(
