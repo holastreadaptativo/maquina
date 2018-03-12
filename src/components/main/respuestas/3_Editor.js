@@ -1,79 +1,20 @@
 import React, { Component } from 'react'
-//import { SIZES, DEVICES } from 'stores'
-//import { data } from 'stores'
-//import { respuestas, focus } from 'actions'
-import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
-import { TextEditor } from 'components'
-
-export default class Editor extends Component {
-
-	render() {
-		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push } = this.props.store
-		let onSave = push ? add : update
-		return(
-			<div class="react-functions">
-				<Tab.Container id="left-tabs-example" defaultActiveKey="first">
-					<div class="react-config">
-						<div class="title">
-							<h3>Configuración</h3>
-						</div>
-						<div>
-							<Row className="clearfix">
-								<Col sm={12}>
-									<Nav bsStyle="pills" stacked>
-										<NavItem style={{color: '#ffffff', fontWeight: 'bold',borderRadius: '5px', margin:'0 10px',width: '40%', display: 'inline-block', backgroundColor: '#262F3D'}} eventKey="first">Respuesta</NavItem>
-										<NavItem style={{color: '#ffffff', fontWeight: 'bold',borderRadius: '5px', margin:'0 10px',width: '40%', display: 'inline-block', backgroundColor: '#262F3D'}} eventKey="second">FeedBack</NavItem>
-									</Nav>
-								</Col>
-								<Col sm={12}>
-									<Tab.Content animation>
-										<Tab.Pane eventKey="first">
-											{this.props.children}
-										</Tab.Pane>
-										<Tab.Pane eventKey="second" style={{color: '#ffffff', fontWeight: 'normal', padding: '20px'}}>
-											Insertar el feedback de esta respuesta el editor de texto, no necesita hacer clic para guardar, la misma guarda el contenido automáticamente.
-										</Tab.Pane>
-									</Tab.Content>
-								</Col>
-							</Row>							
-						</div>
-						<div class="react-container-respuestas">
-							<Row className="clearfix">
-								<Col sm={12}>
-									<Tab.Content animation>
-										<Tab.Pane eventKey="first">
-											<div class="text-center">
-											<span class="react-close glyphicon glyphicon-remove" onClick={this.props.store.onHide}/>
-												<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
-												border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
-													Your browser does not support the HTML5 canvas.
-												</canvas>
-												<button id="btn-save" class="react-submit-respuesta" onClick={onSave(this.props.params)}>Guardar</button>
-											</div>
-										</Tab.Pane>
-										<Tab.Pane eventKey="second">
-											<TextEditor {...this.props}/>
-										</Tab.Pane>
-									</Tab.Content>
-								</Col>
-							</Row>							
-						</div>
-					</div>
-				</Tab.Container>
-			</div>
-		)
-	}
-}
-
-/*
-import React, { Component } from 'react'
 import { SIZES, DEVICES } from 'stores'
+import { TextEditor } from 'components'
+import { focus, show } from 'actions'
 
 export default class Editor extends Component {
+	constructor() {
+		super()
+		this.state = { active:0 }
+	}
+	setActive(active) {
+		this.setState({ active:active })
+	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push } = this.props.store
+		const { add, update, push, onHide } = this.props.store
+		const { active } = this.state
 		let onSave = push ? add : update
         return(
         	<div class="react-functions">
@@ -81,16 +22,26 @@ export default class Editor extends Component {
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
+					<nav class="react-nav">
+					{
+						['función', 'feedback'].map((m, i) => 
+							<li class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
+						)
+					}
+					</nav>
 					{this.props.children}
 			    </div>
-			    <div class="react-container">				
-					<div class="canvas">
+			    <div class="react-container">			
+					<div class={show(active == 0, 'canvas')}>
 						<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
 							Your browser does not support the HTML5 canvas.
 						</canvas>
 					</div>
-					<span class="react-close glyphicon glyphicon-remove" onClick={this.props.store.onHide}/>
+					<div class={show(active == 1, 'text-editor')}>
+						<TextEditor {...this.props}/>
+					</div>
+					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</div>
 				<div class="react-header">
@@ -117,4 +68,3 @@ export default class Editor extends Component {
 		)
 	}
 }
-*/
