@@ -1,5 +1,6 @@
 {
   "projects": {
-    "maquina-d0d32": ""
+    "maquina-d0d32": "",
+    "default": "maquina-d0d32"
   }
 }

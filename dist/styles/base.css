@@ -1,0 +1,22 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+#app
+{
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    margin: 0;
+}
+#app p.app
+{
+	padding-top: 35vh; 
+	text-align: center;	
+	margin: 0;
+} 
+#app img.app
+{
+	margin: 0;
+	width: auto;
+}
