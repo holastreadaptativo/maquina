@@ -1,40 +1,50 @@
 import React, { Component } from 'react'
-import { EditorState, convertToRaw/*, ContentState*/ } from 'draft-js'
+import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
-//import htmlToDraft from 'html-to-draftjs'
-//import { data } from 'stores'
-//import * as insertText from 'actions'
+import htmlToDraft from 'html-to-draftjs'
+import { data } from 'stores'
 
 class TextEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      ...this.props,
+      code: this.props.store.code,
+      id: this.props.store.id,
       editorState: EditorState.createEmpty()
     }
-    // if (props.textCont != '') {
-    //   const blocksFromHtml = htmlToDraft(props.textCont);
-    //   const { contentBlocks, entityMap } = blocksFromHtml;
-    //   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-    //   const editorState = EditorState.createWithContent(contentState);
-    //   this.state = {
-    //     ...this.props,
-    //     editorState
-    //   }
-    // }
   }
-
-  // componentDidUpdate() {
-	// 	//let canvas = this.refs.canvas
-	// }
-
+  
+  componentWillMount() {
+    data.child(`${this.state.code}/answers/${this.state.id}`).once('value').then(snap => {
+      if(snap.hasChild('feedback') != '') {
+        let textCont = snap.val().feedback
+        const blocksFromHtml = htmlToDraft(textCont);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        this.state = {
+          code: this.state.code,
+          id: this.state.id,
+          editorState
+        }
+      }
+    })
+  }
+    
+  componentWillUnmount() {
+    let textCont = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+    data.child(`${this.state.code}/answers/${this.state.id}`).update({
+      feedback:textCont, date:(new Date()).toLocaleString()
+    })
+  }
+  
   onEditorStateChange = (editorState) => {
     this.setState({
+      code: this.state.code,
+      id: this.state.id,
       editorState
     })
-    // let textCont = draftToHtml(convertToRaw(editorState.getCurrentContent()))
-    // this.props.contUpdate(textCont)
   }
 
   render() {

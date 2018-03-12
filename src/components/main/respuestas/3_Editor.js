@@ -7,24 +7,6 @@ import { TextEditor } from 'components'
 
 export default class Editor extends Component {
 
-	constructor(props) {
-		super(props)
-		// let b = props
-		// //let a = data.child(b)
-		// let feedback = props.store.answers.feedback
-		// let feedBackState = feedback ? feedback : ''
-		// this.state = {
-		// 	...this.props,
-		// 	feedBackState
-		// }
-	}
-
-	componentWillUnmount() {
-		//let code = this.store.code
-		//respuestas('UPDATE', {this.store.code})
-	}
-
-
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
 		const { add, update, push } = this.props.store
@@ -71,7 +53,7 @@ export default class Editor extends Component {
 											</div>
 										</Tab.Pane>
 										<Tab.Pane eventKey="second">
-											<TextEditor {...this.state}/>
+											<TextEditor {...this.props}/>
 										</Tab.Pane>
 									</Tab.Content>
 								</Col>
