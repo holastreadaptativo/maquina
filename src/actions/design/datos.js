@@ -221,7 +221,7 @@ function insertarTextos(data, state) {
 }
 
 function dataOnTop(data, state) {
-    const { chart, font, scale, canvas } = state
+    const { chart, font, scale } = state
     const { ctx, dx, dy, height, len, max, width, x0, y0 } = data
 
     chart.dataTag ? ctx.fillStyle = font.color : ctx.fillStyle = 'transparent'
