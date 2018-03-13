@@ -114,13 +114,16 @@ function generarColumnas(data, state) {
             ctx.closePath()
 
             ctx.beginPath()
-            ctx.fillStyle = chart.color[0]
+            ctx.fillStyle = font.color
             for (let i = scale.min; i <= limit; i += scale.interval) {
                 let dy = height/limit * i, y = y0 - dy //TAMAÑO DE LA COLUMNA
                 ctx.fillText(i, x0 - 7, y + 5) //INSERTAR TEXTO
             }
+            ctx.closePath()
         }
 
+        ctx.beginPath()
+        ctx.fillStyle = chart.color[0]
         for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
             let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
             ctx.fillRect(x, y, dx, dy) //DIBUJAR COLUMNA      

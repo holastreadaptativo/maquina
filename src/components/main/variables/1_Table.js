@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import $, { focus } from 'actions'
+import $, { focus, show } from 'actions'
 import { data } from 'stores'
 
 export default class Table extends Component {
+	constructor() {
+		super()
+		this.state = { backup:null }
+	}
 	handleCreate(e) {
 		e.preventDefault()
 		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
@@ -12,13 +16,22 @@ export default class Table extends Component {
 		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
 		.then(() => { this.props.checkAll() })
 	}
-	handleRemove(id) {
+	handleRemove(item) {
+		let id = item.id
 		if (this.props.variables.length > 1)
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		else {
 			$(`var-${id}`).value = $(`val-${id}`).value = $(`res-${id}`).value = $(`vt-${id}`).value = ''
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		}
+		this.setState({ backup:item })
+	}
+	handleRestore() {
+		const { backup } = this.state
+		data.child(`${this.props.code}/variables/${backup.id}`).update({ 
+			var:backup.var, val:backup.val, type:backup.type, vt:backup.vt, res:backup.res 
+		})
+		this.setState({ backup:null })
 	}
 	render() {
 		let error = this.props.checked[1]
@@ -66,14 +79,15 @@ export default class Table extends Component {
 									onChange={this.handleUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
 								</td>
 								<td>
-									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m.id)} title="Eliminar"/>
+									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m)} title="Eliminar"/>
 								</td>
 							</tr>
 						)
 					}
 					</tbody>
 				</table>
-				<div class="add">		
+				<div class="add">
+					<i class={show(this.state.backup, 'btn-restore')} onClick={::this.handleRestore}>restore</i>
 					<button class="btn btn-default" onClick={this.handleCreate.bind(this)}>Agregar</button>
 				</div>
 			</form>

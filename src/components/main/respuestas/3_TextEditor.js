@@ -14,7 +14,6 @@ class TextEditor extends Component {
       editorState: EditorState.createEmpty()
     }
   }
-  
   componentWillMount() {
     data.child(`${this.state.code}/answers/${this.state.id}`).once('value').then(snap => {
       if(snap.hasChild('feedback') != '') {
@@ -30,15 +29,13 @@ class TextEditor extends Component {
         }
       }
     })
-  }
-    
+  }    
   componentWillUnmount() {
     let textCont = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
     data.child(`${this.state.code}/answers/${this.state.id}`).update({
       feedback:textCont, date:(new Date()).toLocaleString()
     })
   }
-  
   onEditorStateChange = (editorState) => {
     this.setState({
       code: this.state.code,
@@ -46,21 +43,17 @@ class TextEditor extends Component {
       editorState
     })
   }
-
   render() {
     const { editorState } = this.state;
     return (
       <div class="row">
         <div class="col-sm-12">
-          <h3 class="text-center">FeedBack del Ejercicio</h3>
-          <div class="col-sm-12">
-            <Editor
+          <Editor
               editorState={editorState}
               wrapperClassName="demo-wrapper"
               editorClassName="demo-editor"
               onEditorStateChange={this.onEditorStateChange}
             />
-          </div>
         </div>
         <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden" />
       </div>
