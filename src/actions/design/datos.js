@@ -163,10 +163,10 @@ function generarColumnas(data, state) {
 
             ctx.beginPath()
             ctx.fillStyle = font.color
-            for (let i = scale.min; i <= limit; i += scale.interval) {
-                let dx = width/limit * i, x = x0 - dx //TAMAÑO DE LA COLUMNA
-                //ctx.fillText(i, x + 7, y0 - 5) //INSERTAR TEXTO
-            }
+            // for (let i = scale.min; i <= limit; i += scale.interval) {
+            //     let dx = width/limit * i, x = x0 - dx //TAMAÑO DE LA COLUMNA
+            //     //ctx.fillText(i, x + 7, y0 - 5) //INSERTAR TEXTO
+            // }
             ctx.closePath()
         }
 
