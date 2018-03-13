@@ -148,6 +148,28 @@ function generarColumnas(data, state) {
     } 
     else 
     {
+        if (scale.interval > 0) {
+            ctx.textAlign = 'right'
+            ctx.font = 14 + 'px ' + font.family
+
+            if (scale.width > 0)
+            for (let i = scale.min; i <= limit; i += scale.interval) { 
+                let dx = width/limit * i, x = x0 + dx //TAMAÑO DE LA COLUMNA
+                ctx.moveTo(x, chart.margin.y - 2*chart.padding.y)
+                ctx.lineTo(x, y0)
+            }
+            ctx.stroke()
+            ctx.closePath()
+
+            ctx.beginPath()
+            ctx.fillStyle = font.color
+            for (let i = scale.min; i <= limit; i += scale.interval) {
+                let dx = width/limit * i, x = x0 - dx //TAMAÑO DE LA COLUMNA
+                //ctx.fillText(i, x + 7, y0 - 5) //INSERTAR TEXTO
+            }
+            ctx.closePath()
+        }
+
         ctx.fillStyle = chart.color[0]
         for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
             let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
@@ -195,7 +217,7 @@ function proyectarColumnas(data, state) {
     ctx.closePath()
 }
 function limitarColumnas(data, state) {
-    const { chart, line, scale } = state
+    const { chart, line, scale, canvas } = state
     const { ctx, height, len, max, width, x0, y0 } = data
     const limit = Math.max(scale.max, max)
 
@@ -205,18 +227,18 @@ function limitarColumnas(data, state) {
         ctx.beginPath()
         if (chart.position == 'vertical') 
         {
-            for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
+            for (let i = 0, x = data.cx; i < max; i++, x += width/len) {
                 let dy = height/limit * limitVal[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
                 ctx.moveTo(x0, y) 
-                ctx.lineTo(x, y) //PROYECCION COLUMNA
+                ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y) //PROYECCION COLUMNA
             }
         }
         else
         {
-            for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
+            for (let i = 0, y = data.cy; i < max; i++, y -= height/len) {
                 let dx = width/limit * limitVal[i], x = x0 //TAMAÑO DE LA COLUMNA
                 ctx.moveTo(x + dx, y0) 
-                ctx.lineTo(x + dx, y) //PROYECCION COLUMNA
+                ctx.lineTo(x + dx,  chart.margin.y - 2*chart.padding.y + canvas.height/110) //PROYECCION COLUMNA
             }
         }
     
