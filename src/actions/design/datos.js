@@ -5,7 +5,7 @@ export function graficoDatos(config)
     const { container, params, variables, versions, vt } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth, chartBorder,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop, fontSize,
-        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth } = params
+        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag } = params
 
     if (!container) return
     let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
@@ -21,8 +21,8 @@ export function graficoDatos(config)
         border: { color: borderColor, radius: borderRadius, width: borderWidth, margin:margin },
         canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: chartBorder, width: 2 }, color: chartColor.split(','), length: values.length, 
-            margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 }, padding: { x:10, y:10 }, position: chartPosition, 
-            values: values, tags: replace(chartTags, vars, vt).split(',') },
+                margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 }, padding: { x:10, y:10 }, position: chartPosition, 
+                values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag == 'si' ? true : false },
         extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
         font: { align: 'center', color: fontColor, family: 'arial', size: fontSize },
         line: { color: lineColor, value: 10, width: lineWidth },
@@ -51,6 +51,7 @@ export function graficoDatos(config)
     if (state.extra.projection) 
         proyectarColumnas(data, state)
     insertarTextos(data, state)
+    dataOnTop(data, state)
 }
 
 function generarEjes(canvas, state) {
@@ -149,14 +150,15 @@ function generarColumnas(data, state) {
 }
 function proyectarColumnas(data, state) {
 
-    const { chart, line } = state
+    const { chart, line, scale } = state
     const { ctx, height, len, max, width, x0, y0 } = data
+    const limit = Math.max(scale.max, max)
    
     ctx.beginPath()
     if (chart.position == 'vertical') 
     {
         for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
-            let dy = height/max * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
             ctx.moveTo(x0, y) 
             ctx.lineTo(x, y) //PROYECCION COLUMNA
         }
@@ -164,7 +166,7 @@ function proyectarColumnas(data, state) {
     else
     {
         for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
-            let dx = width/max * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
+            let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
             ctx.moveTo(x + dx, y0) 
             ctx.lineTo(x + dx, y) //PROYECCION COLUMNA
         }
@@ -201,16 +203,53 @@ function insertarTextos(data, state) {
     else 
     {
         ctx.textAlign = font.align
-        for (let i = 0; i < 0; i++) {
-            let dx = width/max * chart.values[i], x = x0 + dx //TAMAÑO DE LA COLUMNA
-            ctx.fillText(chart.values[i], x, y0 + 24) //INSERTAR TEXTO
+        for (let i = 0; i <= max; i++) {
+            let dx = width/max * i, x = x0 + dx //TAMAÑO DE LA COLUMNA
+            ctx.fillText(i, x, y0 + 24) //INSERTAR TEXTO
         }
 
         ctx.textAlign = 'right'
         for (let i = 0, y = data.cy; i < len; i++, y-= height/len) {
-            ctx.fillText(chart.tags.length > i ? chart.tags[i] : '', x0 - 5, y + dy/2 + 5) //INSERTAR TEXTO
+            ctx.fillText(chart.tags.length > i ? chart.tags[i] : '', x0 - 5, y + dy/2 + 5) //INSERTAR TEXTO 
         }
     }
 
     ctx.closePath()
+}
+
+function dataOnTop(data, state) {
+    const { chart, font, scale, canvas } = state
+    const { ctx, dx, dy, height, len, max, width, x0, y0 } = data
+
+    chart.dataTag ? ctx.fillStyle = font.color : ctx.fillStyle = 'transparent'
+    
+    ctx.save()
+    ctx.beginPath()
+    let fontSize = 14
+    ctx.font = fontSize + 'px ' + font.family
+    //ctx.fillStyle = font.color
+    const limit = Math.max(scale.max, max)
+    ctx.textAlign = font.align
+
+    if (chart.position == 'vertical') {
+        for (let i = 0, x = data.cx + dx/2; i < len; i++, x += width/len) {
+            let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÑO DE LA COLUMNA
+            ctx.fillText(chart.values[i], x, y - 10) //INSERTAR TEXTO
+        }
+    } else {
+        for (let i = 0, y = data.cy + dy/2 + fontSize/2; i < len; i++, y -= height/len) {
+            let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÑO DE LA COLUMNA
+            ctx.fillText(chart.values[i], x + 15, y) //INSERTAR TEXTO
+        }
+    }
+    
+
+    //console.log(chart.values)
+
+    ctx.closePath()
+
+    ctx.restore()
+    ctx.save()
+    
+
 }
