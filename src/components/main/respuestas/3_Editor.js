@@ -25,7 +25,7 @@ export default class Editor extends Component {
 					<nav class={show(!design, 'react-nav')}>
 					{
 						['función', 'feedback'].map((m, i) => 
-							<li class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
+							<li key={i} class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
 						)
 					}
 					</nav>

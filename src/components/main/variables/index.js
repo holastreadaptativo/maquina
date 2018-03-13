@@ -40,14 +40,14 @@ export class Variables extends Component {
 	}
 	render() {
 		const { variables, checked, advanced } = this.state
-		const { code } = this.props
+		const { code, setActive } = this.props
 		return (
 			<Section style="variables" condition={checked[0][6]} {...this.props}>
 				<div class="row">
 					<Resume code={code} advanced={advanced} variables={variables}/>
 					<div class={show(!advanced, 'editor col-xs-9')}>
 						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
-						<Check checked={checked} variables={variables} setActive={this.props.setActive}/>
+						<Check checked={checked} variables={variables} setActive={setActive}/>
 					</div>
 				</div>
 			</Section>

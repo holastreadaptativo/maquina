@@ -3,6 +3,10 @@ import $, { focus } from 'actions'
 import { data } from 'stores'
 
 export default class Table extends Component {
+	constructor() {
+		super()
+		this.state = { deleted:null }
+	}
 	handleCreate(e) {
 		e.preventDefault()
 		data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' })
@@ -12,13 +16,15 @@ export default class Table extends Component {
 		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
 		.then(() => { this.props.checkAll() })
 	}
-	handleRemove(id) {
+	handleRemove(item) {
+		let id = item.id
 		if (this.props.variables.length > 1)
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		else {
 			$(`var-${id}`).value = $(`val-${id}`).value = $(`res-${id}`).value = $(`vt-${id}`).value = ''
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		}
+		this.setState({ deleted:item })
 	}
 	render() {
 		let error = this.props.checked[1]
@@ -66,7 +72,7 @@ export default class Table extends Component {
 									onChange={this.handleUpdate.bind(this, 'vt', m.id)} defaultValue={m.vt}></input>
 								</td>
 								<td>
-									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m.id)} title="Eliminar"/>
+									<span class="glyphicon glyphicon-remove" onClick={this.handleRemove.bind(this, m)} title="Eliminar"/>
 								</td>
 							</tr>
 						)

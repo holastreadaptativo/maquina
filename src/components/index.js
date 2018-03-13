@@ -33,6 +33,11 @@ export class App extends Component {
 						variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
 						this.setState({ variables:variables })
 					})
+					if (variables.length == 0) {
+						let key = data.child(`${code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' }).key
+						variables.push({ id:key, var:'', val:'', type:'numero', vt:'', res:'' })
+						this.setState({ variables:variables })
+					}
 				})
 			else 
 				this.setState({ variables:[] })

@@ -10,17 +10,24 @@ export function versiones(action, state) {
 					case 'numero': {
 						if (m.val.includes(',')) {
 							let x = m.val.split(','), y = []
-							x.forEach(m => { y.push(Number(m)) })
-							let max = Math.max(...y), min = Math.min(...y)
-							vars.push({ var:m.var, val:y, rank:max - min })
+							if (m.val.includes('..')) {
+								x.forEach(n => { 
+									let z = n.split('..')
+									for (let i = Number(z[0]); i <= Number(z[1]); i++) {
+										y.push(Number(i))
+									}
+								})
+							}
+							else
+								x.forEach(n => { y.push(Number(n)) })
+							vars.push({ var:m.var, val:y, rank:y.length })						
 						}
 						else if (m.val.includes('..')) {
 							let x = m.val.split('..'), y = []	
 							for (let i = Number(x[0]); i <= Number(x[1]); i++) {
 								y.push(Number(i))
 							}
-							let max = Math.max(...y), min = Math.min(...y)
-							vars.push({ var:m.var, val:y, rank:max - min })
+							vars.push({ var:m.var, val:y, rank:y.length })
 						}
 						else
 						{

@@ -11,7 +11,8 @@ export class Versiones extends Component {
 	}
 	componentWillMount() {
 		data.child(`${this.props.code}/versions`).on('value', v => {
-			this.setState({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+			if (v.hasChild('total'))
+				this.setState({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
 		})
 	}
 	componentDidMount() {
