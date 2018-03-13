@@ -101,13 +101,15 @@ export function setFormat(value) {
 		}
 		aux = `[${arr.join(', ')}]`
 	}
-	else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/') || aux.length == 1) {
-		arr = aux.split('')
-		for (let i = 0; i < arr.length; i++)
-			if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
-				arr[i] = `$${arr[i].trim()}`
+	else if (aux.includes('+') || aux.includes('-') || aux.includes('*') || aux.includes('/') || aux.includes('(') || aux.includes(')')) {
+		if (!aux.includes('Math')) {
+			for (let i = 0; i < arr.length; i++) {
+				if (arr[i].charCodeAt(0) >= 97 && arr[i].charCodeAt(0) <= 122) {
+					arr[i] = `$${arr[i].trim()}`
+				}
 			}
-		aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ').replace('*', ' * ').replace('^', ' ^ ')
+			aux = arr.filter(n => n).join('').split('+').join(' + ').split('-').join(' - ').replace('*', ' * ').replace('^', ' ^ ')
+		}		
 	}
 	return aux
 }
