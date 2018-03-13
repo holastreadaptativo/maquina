@@ -5,7 +5,7 @@ export function graficoDatos(config)
     const { container, params, variables, versions, vt } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth, chartBorder,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop, fontSize,
-        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag } = params
+        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withAxis, limitVal } = params
 
     if (!container) return
     let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
@@ -22,10 +22,10 @@ export function graficoDatos(config)
         canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: chartBorder, width: 2 }, color: chartColor.split(','), length: values.length, 
                 margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 }, padding: { x:10, y:10 }, position: chartPosition, 
-                values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag == 'si' ? true : false },
+                values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag == 'si' ? true : false, withAxis: withAxis == 'si' ? true : false },
         extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
         font: { align: 'center', color: fontColor, family: 'arial', size: fontSize },
-        line: { color: lineColor, value: 10, width: lineWidth },
+        line: { color: lineColor, value: 10, width: lineWidth, limitVal },
         scale: { max:Number(scaleMax), min:Number(scaleMin), interval:Number(scaleInterval), color:scaleColor, width:scaleWidth }, 
         title: { color: titleColor, size: titleSize, value: titleValue, top:titleTop }
     }
@@ -50,6 +50,8 @@ export function graficoDatos(config)
     generarEjes(container, state)
     if (state.extra.projection) 
         proyectarColumnas(data, state)
+    if (state.extra.limit) 
+        limitarColumnas(data, state)
     insertarTextos(data, state)
     dataOnTop(data, state)
 }
@@ -67,6 +69,17 @@ function generarEjes(canvas, state) {
     ctx.moveTo(x, y - 2*padding.y)
     ctx.lineTo(x, height - y) //EJE VERTICAL
     ctx.lineTo(width - x + 2*padding.x, height - y) //EJE HORIZONTAL
+    
+    if (chart.withAxis) {
+        //EJE VERTICAL
+        ctx.moveTo(x + width/110, y - 2*padding.y + width/110)
+        ctx.lineTo(x, y - 2*padding.y)
+        ctx.lineTo(x - width/110, y - 2*padding.y + width/110)
+        //EJE HORIZONTAL
+        ctx.moveTo(width - x + 2*padding.x - width/110, height - y - width/110) 
+        ctx.lineTo(width - x + 2*padding.x, height - y)
+        ctx.lineTo(width - x + 2*padding.x - width/110, height - y + width/110)
+    }
 
     ctx.lineWidth = axis.width
     ctx.strokeStyle = axis.color
@@ -180,6 +193,40 @@ function proyectarColumnas(data, state) {
     ctx.lineWidth = line.width
     ctx.stroke()
     ctx.closePath()
+}
+function limitarColumnas(data, state) {
+    const { chart, line, scale } = state
+    const { ctx, height, len, max, width, x0, y0 } = data
+    const limit = Math.max(scale.max, max)
+
+    let limitVal = line.limitVal
+    if (limitVal) {
+        limitVal = limitVal.split(',')
+        ctx.beginPath()
+        if (chart.position == 'vertical') 
+        {
+            for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
+                let dy = height/limit * limitVal[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+                ctx.moveTo(x0, y) 
+                ctx.lineTo(x, y) //PROYECCION COLUMNA
+            }
+        }
+        else
+        {
+            for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
+                let dx = width/limit * limitVal[i], x = x0 //TAMAÑO DE LA COLUMNA
+                ctx.moveTo(x + dx, y0) 
+                ctx.lineTo(x + dx, y) //PROYECCION COLUMNA
+            }
+        }
+    
+        ctx.strokeStyle = line.color
+        ctx.setLineDash([5, 1])
+        ctx.lineWidth = line.width
+        ctx.stroke()
+        ctx.closePath()
+    }
+
 }
 function insertarTextos(data, state) {
 

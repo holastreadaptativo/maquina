@@ -10,9 +10,9 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'', active:0,
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			extra:'no', dataTag: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
+			extra:'no', dataTag: 'no', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
 			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, scaleMin:0, scaleInterval:1, 
-			scaleColor:COLORS['grid'], scaleWidth:1, fontSize:14
+			scaleColor:COLORS['grid'], scaleWidth:1, fontSize:14, limitVal: ''
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -24,7 +24,7 @@ export default class GraficoDatos extends Component {
 	render() {
 		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, height, fontColor, fontFamily, width, axisColor, axisWidth,
 			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, 
-			extra, dataTag, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize } = this.state
+			extra, dataTag, withAxis, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal } = this.state
 			let k = 0
 		return (
 			<Editor title="Gráfico Datos" params={this.state} store={this.props}>
@@ -47,6 +47,7 @@ export default class GraficoDatos extends Component {
 					<Input id="chartValues" default={chartValues} prefix="values" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
 					<Input id="chartTags" default={chartTags} prefix="tags" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
 					<Select id="dataTag" default={dataTag} prefix="Data Tags" update={::this.setState} options={['no', 'si']}/>
+					<Select id="withAxis" default={withAxis} prefix="Ejes" update={::this.setState} options={['no', 'si']}/>
 				</Item>
 				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
 					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>
@@ -75,6 +76,11 @@ export default class GraficoDatos extends Component {
 				</Item>
 				<Item id={k++} active={active} title="Lines" setActive={::this.handleActive}>
 					<Select id="extra" default={extra} prefix="lines" update={::this.setState} options={['no', 'proyeccion', 'limite']}/>
+					{
+						extra == 'limite' && (
+							<Input id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text" placeholder="$a,1,$b,2"/>
+						)
+					}
 					<Input id="lineColor" default={lineColor} update={::this.setState} type="color"/>
 					<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>	
 				</Item>
