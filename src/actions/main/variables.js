@@ -15,17 +15,18 @@ export function checkAll(variables) {
 	for (let i = 0; i < variables.length; i++) {
 		let val = variables[i].val, res = variables[i].res, type = variables[i].type; vars[i] = true
 		if (val.length == 1) {
-			if (val.charCodeAt(0) >= 97 && val.charCodeAt(0) <= 122 && type == 'funcion') {}
-			else if (Number.isInteger(parseInt(val)) && type == 'numero') {} else aux[1] = vars[i] = false
+			let a = val.charCodeAt(0) >= 97 && val.charCodeAt(0) <= 122 && type == 'funcion', 
+				b = Number.isInteger(parseInt(val)) && type == 'numero'
+			if (!a && !b) aux[1] = vars[i] = false
 		} else {
 			if (val == '' || val.length == 0) {
 				aux[1] = vars[i] = false
-			} else if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/')) {
+			} else if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
 				if (type == 'numero' || type == 'texto') aux[1] = vars[i] = false
-			} else if (val.includes('..')) {
-				if (type == 'funcion' || type == 'texto') aux[1] = vars[i] = false
+			} else if (val.includes('..') && (type == 'funcion' || type == 'texto')) {
+				aux[1] = vars[i] = false
 			} else if (val.includes(',')) {
-				if (type == 'funcion') aux[1] = vars[i] = false
+				if (type == 'funcion' && !val.includes('Math')) aux[1] = vars[i] = false
 				else {
 					let ref = val.split(','), number = true
 					for (let j = 0; j < ref.length; j++) {
@@ -34,15 +35,22 @@ export function checkAll(variables) {
 					if ((type == 'numero' && number == true) || (type == 'texto' && number == false)) {}
 					else aux[1] = vars[i] = false
 				}
+			} else if (type == 'numero' && !val.includes('..') && !val.includes(',') && !Number.isInteger(parseInt(val))) {
+				aux[1] = vars[i] = false
 			}
+
 		}
-		if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.length == 1) {
-			let arr = val.split('')
+		if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
+			let value = val.split('')
+			value.forEach((m, i) => {
+				value[i] = m.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
+			})
+			let arr = value.join('').split('@')
 			for (let k = 0; k < arr.length; k++) {
-				if (arr[k].charCodeAt(0) >= 97 && arr[k].charCodeAt(0) <= 122) {
+				if (arr[k].trim() != '') {
 					let ok = false
 					for (let j = 0; j < variables.length; j++) {
-						if (arr[k] == variables[j].var) {
+						if (arr[k].trim() == variables[j].var || arr[k].includes('Math') || Number.isInteger(parseInt(arr[k]))) {
 							ok = true; break
 						}
 					} if (!ok) {
@@ -50,6 +58,17 @@ export function checkAll(variables) {
 					}
 				}
 			}	
+		}
+		else if (type == 'funcion')
+		{	
+			let ok = false
+			for (let j = 0; j < variables.length; j++) {
+				if (val.trim() == variables[j].var) {
+					ok = true; break
+				}
+			} if (!ok) {
+				aux[2] = vars[i] = false;
+			}
 		}
 		if (res && res.trim() != '' && !res.includes(variables[i].var)) {
 			aux[3] = vars[i] = false
@@ -70,7 +89,7 @@ export function checkAll(variables) {
 }
 
 export function setFormat(value) {
-	let aux = value.toLowerCase(), arr = []
+	let aux = value.trim(), arr = []
 	if (aux.includes('..')) {
 		arr = aux.split(',')
 		for (let i = 0; i < arr.length; i++) {
