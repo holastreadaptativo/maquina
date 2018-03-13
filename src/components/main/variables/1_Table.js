@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import $, { focus } from 'actions'
+import $, { focus, show } from 'actions'
 import { data } from 'stores'
 
 export default class Table extends Component {
 	constructor() {
 		super()
-		this.state = { deleted:null }
+		this.state = { backup:null }
 	}
 	handleCreate(e) {
 		e.preventDefault()
@@ -24,7 +24,14 @@ export default class Table extends Component {
 			$(`var-${id}`).value = $(`val-${id}`).value = $(`res-${id}`).value = $(`vt-${id}`).value = ''
 			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
 		}
-		this.setState({ deleted:item })
+		this.setState({ backup:item })
+	}
+	handleRestore() {
+		const { backup } = this.state
+		data.child(`${this.props.code}/variables/${backup.id}`).update({ 
+			var:backup.var, val:backup.val, type:backup.type, vt:backup.vt, res:backup.res 
+		})
+		this.setState({ backup:null })
 	}
 	render() {
 		let error = this.props.checked[1]
@@ -79,7 +86,8 @@ export default class Table extends Component {
 					}
 					</tbody>
 				</table>
-				<div class="add">		
+				<div class="add">
+					<i class={show(this.state.backup, 'btn-restore')} onClick={::this.handleRestore}>restore</i>
 					<button class="btn btn-default" onClick={this.handleCreate.bind(this)}>Agregar</button>
 				</div>
 			</form>
