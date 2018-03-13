@@ -13,7 +13,7 @@ export default class Table extends Component {
 		.then(() => { this.props.checkAll() })
 	}
 	handleUpdate(input, id) {
-		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.toLowerCase().trim() })
+		data.child(`${this.props.code}/variables/${id}`).update({ [input]:$(`${input}-${id}`).value.trim() })
 		.then(() => { this.props.checkAll() })
 	}
 	handleRemove(item) {

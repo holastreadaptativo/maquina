@@ -21,7 +21,7 @@ export default class Resume extends Component {
 					{
 						variables.map(m => { 
 							if (m.var != '' && m.val != '') return (
-								<h6 key={m.id}>${m.var.toLowerCase()} = {setFormat(m.val)};</h6>
+								<h6 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h6>
 							)
 						})
 					}
