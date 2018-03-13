@@ -13,7 +13,7 @@ export default class Editor extends Component {
 	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push, onHide } = this.props.store
+		const { add, update, push, onHide, design } = this.props.store
 		const { active } = this.state
 		let onSave = push ? add : update
         return(
@@ -22,7 +22,7 @@ export default class Editor extends Component {
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
-					<nav class="react-nav">
+					<nav class={show(!design, 'react-nav')}>
 					{
 						['función', 'feedback'].map((m, i) => 
 							<li class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
