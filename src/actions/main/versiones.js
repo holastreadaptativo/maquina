@@ -84,3 +84,46 @@ function evalfn(elem, fns) {
 	}
 	return copy
 }
+
+/*
+while (aux.length && stop) 
+{
+	stop--
+	let m = aux.shift(), fn = m.val, xy = []
+	for (let i = 0, k = 0; i < fn.length; i++) {
+		if (fn[i].match(/[*+(),]/)) {
+			xy.push(fn.substring(k, i))
+			xy.push(fn[i])
+			k = i + 1
+		} else if (i + 1 == fn.length) {
+			xy.push(fn.substring(k, fn.length))
+		}
+	}
+	for (let i = 0; i < xy.length; i++) {
+		for (let j = 0; j < copy.length; j++) {
+			if (xy[i].toString().trim() == copy[j].var) {
+				xy[i] = copy[j].val
+			}
+		}
+	}
+	let value = false
+	try
+	{
+		console.log(xy.join(''))
+		console.log(eval(xy.join('')))
+		console.log(Number(eval(xy.join(''))))
+		value = Number(eval(xy.join('')))
+		if (Number.isInteger(value)) {
+			copy.push({ var:m.var, val:value, rank:0 })
+			console.log(JSON.stringify(copy))
+		}			
+	}
+	finally
+	{
+		if (!value) {
+			m.val = xy.join('')
+			aux.push(m)
+		}
+	}		
+}
+*/
