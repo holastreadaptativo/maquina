@@ -20,13 +20,14 @@ export function money(amount) {
     })
 }
 
-export function dateReverse(date) {
-	let reverse = date.split('-')
-	return reverse[2] + '-' + reverse[1] + '-' + reverse[0]
-}
-
 export function random(s, e) {
     return Math.floor(Math.random(0, 1) * (e - s) + s)
+}
+
+export function shuffle(a, b = 10) {
+    for (let i = 0; i < b; i++)
+        a = a.sort(() => (.5 - Math.random()))
+    return a
 }
 
 export function clone(e) {
@@ -40,4 +41,9 @@ export function clone(e) {
         render( <span>{copy.innerText} <span class="glyphicon glyphicon-info-sign" onClick={() => alert(`abrir un modal ${copy.id}`)}/></span>, $(copy.id))
         this.setState({ count:count })
     }
+}
+
+export function dateReverse(date) {
+    let reverse = date.split('-')
+    return reverse[2] + '-' + reverse[1] + '-' + reverse[0]
 }

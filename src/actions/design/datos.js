@@ -25,7 +25,7 @@ export function graficoDatos(config)
                 values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag == 'si' ? true : false, withAxis: withAxis == 'si' ? true : false },
         extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
         font: { align: 'center', color: fontColor, family: 'arial', size: fontSize },
-        line: { color: lineColor, value: 10, width: lineWidth, limitVal },
+        line: { color: lineColor, value: 10, width: lineWidth, limitVal:replace(limitVal, vars, vt).split(',') },
         scale: { max:Number(scaleMax), min:Number(scaleMin), interval:Number(scaleInterval), color:scaleColor, width:scaleWidth }, 
         title: { color: titleColor, size: titleSize, value: titleValue, top:titleTop }
     }
@@ -221,14 +221,14 @@ function limitarColumnas(data, state) {
     const { ctx, height, len, max, width, x0, y0 } = data
     const limit = Math.max(scale.max, max)
 
-    let limitVal = line.limitVal
-    if (limitVal) {
-        limitVal = limitVal.split(',')
+    let values = line.limitVal
+    if (values.length) 
+    {
         ctx.beginPath()
         if (chart.position == 'vertical') 
         {
             for (let i = 0, x = data.cx; i < max; i++, x += width/len) {
-                let dy = height/limit * limitVal[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+                let dy = height/limit * values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
                 ctx.moveTo(x0, y) 
                 ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y) //PROYECCION COLUMNA
             }
@@ -236,12 +236,11 @@ function limitarColumnas(data, state) {
         else
         {
             for (let i = 0, y = data.cy; i < max; i++, y -= height/len) {
-                let dx = width/limit * limitVal[i], x = x0 //TAMAÑO DE LA COLUMNA
+                let dx = width/limit * values[i], x = x0 //TAMAÑO DE LA COLUMNA
                 ctx.moveTo(x + dx, y0) 
                 ctx.lineTo(x + dx,  chart.margin.y - 2*chart.padding.y + canvas.height/110) //PROYECCION COLUMNA
             }
         }
-    
         ctx.strokeStyle = line.color
         ctx.setLineDash([5, 1])
         ctx.lineWidth = line.width

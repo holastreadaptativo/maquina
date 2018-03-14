@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { focus, versiones } from 'actions'
+import { focus, versiones, shuffle } from 'actions'
 import { data } from 'stores'
 
 export default class Generate extends Component {
@@ -16,13 +16,16 @@ export default class Generate extends Component {
 			}
 		})
 	}
+	handleChange(e) {
+		this.props.setState({ [e.target.id.split('-')[1]]:e.target.value })
+	}
 	generate(e) {
 		e.preventDefault()
 		const { fns } = this.state
 		const { code, limit, selected } = this.props
 
 		let matrix = versiones('GEN', { ...this.props, fns:fns }), total = matrix.length
-		matrix = matrix.sort(() => (0.5 - Math.random()) ).slice(0, limit)
+		matrix = shuffle(matrix).slice(0, limit)
 
 		let versions = matrix.slice(0, selected), box = []
 		for (let i = 0; i < selected; i++) {

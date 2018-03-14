@@ -6,7 +6,7 @@ import { data } from 'stores'
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { total:0, limit:100, selected:20, vars:[], active:-1, vt:[] }
+		this.state = { total:0, limit:128, selected:32, vars:[], active:-1, vt:[] }
 		this.print = this.print.bind(this)
 	}
 	componentWillMount() {
@@ -33,7 +33,7 @@ export class Versiones extends Component {
 		window.removeEventListener('resize', this.print )
 	}
 	handleChange(e) {
-		this.props.setState({ [e.target.id.split('-')[1]]:e.target.value })
+		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
 	}
 	print() {
 		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false })
@@ -42,7 +42,7 @@ export class Versiones extends Component {
 		const { answers, functions, option, versions } = this.props
         return(
         	<Section style="versiones" condition={true} {...this.props}>
-        		<div class="row">  			
+        		<div class="row">
         			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
     				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
         			<Preview answers={answers} functions={functions}/>

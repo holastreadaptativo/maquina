@@ -46,7 +46,7 @@ export default class GraficoDatos extends Component {
 					<Input id="chartBorder" default={chartBorder} prefix="border" update={::this.setState} type="color"/>
 					<Input id="chartValues" default={chartValues} prefix="values" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
 					<Input id="chartTags" default={chartTags} prefix="tags" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
-					<Select id="dataTag" default={dataTag} prefix="Data Tags" update={::this.setState} options={['no', 'si']}/>
+					<Select id="dataTag" default={dataTag} prefix="datatag" update={::this.setState} options={['no', 'si']}/>
 					<Select id="withAxis" default={withAxis} prefix="Ejes" update={::this.setState} options={['no', 'si']}/>
 				</Item>
 				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
