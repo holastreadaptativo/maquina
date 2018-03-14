@@ -14,8 +14,31 @@ export class Descargas extends Component {
 	}
 	render() {
 		const { radius, color, x, y } = this.state
+		let variables = [{var:'a', val:6}, {var:'a1', val:5}, {var:'a2', val:4}, {var:'e', val:3}]
+		let fn = 'a * a1 + Math.pow(e, a2 + 1) + 30'
+		let xy = []
+		for (let i = 0, k = 0; i < fn.length; i++) {
+			if (fn[i].match(/[*+(),]/)) {
+				xy.push(fn.substring(k, i))
+				xy.push(fn[i])
+				k = i + 1
+			} else if (i + 1 == fn.length) {
+				xy.push(fn.substring(k, fn.length))
+			}
+		}
+		for (let i = 0; i < xy.length; i++) {
+			for (let j = 0; j < variables.length; j++) {
+				if (xy[i].toString().trim() == variables[j].var) {
+					xy[i] = variables[j].val
+				}
+			}
+		}
 		return(
         	<div class="descargas" onMouseMove={::this.onMouseMove}>
+        		{ JSON.stringify(variables) }<br/>
+        		{ fn }<br/>
+        		{ JSON.stringify(xy.join('')) }<br/>
+        		{ eval(xy.join('')) }<br/>
         		<div class="hidden">
 					<div>
 						<div id="circle-css" style={{ height:`${radius}px`, width:`${radius}px`, backgroundColor:color, top:`${y}px`, left:`${x}px` }}></div>
