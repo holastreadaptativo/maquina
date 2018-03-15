@@ -47,13 +47,13 @@ export default class GraficoDatos extends Component {
 					<Input id="chartValues" default={chartValues} prefix="values" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
 					<Input id="chartTags" default={chartTags} prefix="tags" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
 					<Select id="dataTag" default={dataTag} prefix="Data Tags" update={::this.setState} options={['no', 'si']}/>
-					<Select id="withAxis" default={withAxis} prefix="Ejes" update={::this.setState} options={['no', 'si']}/>
 				</Item>
 				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
 					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>
 					<Input id="axisWidth" default={axisWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
 					<Input id="axisTitleX" default={axisTitleX} prefix="title x" placeholder={'Eje X'} update={::this.setState} type="text"/>
 					<Input id="axisTitleY" default={axisTitleY} prefix="title y" placeholder={'Eje Y'} update={::this.setState} type="text"/>
+					<Select id="withAxis" default={withAxis} prefix="arrows" update={::this.setState} options={['no', 'si']}/>
 				</Item>
 				<Item id={k++} active={active} title="Scale" setActive={::this.handleActive}>
 					<Input id="scaleMax" default={scaleMax} prefix="max" update={::this.setState} type="number"/>

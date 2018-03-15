@@ -16,8 +16,8 @@ export default class Editor extends Component {
 		const { add, update, push, onHide, design } = this.props.store
 		const { active } = this.state
 		let onSave = push ? add : update
-        return(
-        	<div class="react-functions">
+		return(
+			<div class="react-functions">
 				<div class="react-config">
 					<div class="title">
 						<h3>Configuración</h3>
@@ -30,8 +30,8 @@ export default class Editor extends Component {
 					}
 					</nav>
 					{this.props.children}
-			    </div>
-			    <div class="react-container">			
+				</div>
+				<div class="react-container">			
 					<div class={show(active == 0, 'canvas')}>
 						<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
@@ -63,7 +63,7 @@ export default class Editor extends Component {
 							</h6>
 						)
 					}
-					</div>			
+				</div>			
 			</div>
 		)
 	}
