@@ -53,7 +53,7 @@ export function graficoDatos(config)
     if (state.extra.limit) 
         limitarColumnas(data, state)
     insertarTextos(data, state)
-    dataOnTop(data, state)
+    insertarValores(data, state)
 }
 
 function generarEjes(canvas, state) {
@@ -287,8 +287,7 @@ function insertarTextos(data, state) {
 
     ctx.closePath()
 }
-
-function dataOnTop(data, state) {
+function insertarValores(data, state) {
     const { chart, font, scale } = state
     const { ctx, dx, dy, height, len, max, width, x0, y0 } = data
 
@@ -298,7 +297,6 @@ function dataOnTop(data, state) {
     ctx.beginPath()
     let fontSize = 14
     ctx.font = fontSize + 'px ' + font.family
-    //ctx.fillStyle = font.color
     const limit = Math.max(scale.max, max)
     ctx.textAlign = font.align
 
@@ -314,13 +312,7 @@ function dataOnTop(data, state) {
         }
     }
     
-
-    //console.log(chart.values)
-
     ctx.closePath()
-
     ctx.restore()
     ctx.save()
-    
-
 }

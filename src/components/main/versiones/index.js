@@ -42,7 +42,6 @@ export class Versiones extends Component {
 		let f = stringify(functions), v = stringify(vt), doc = '', name=`${code}_${vt.id}`
 		doc += '<!doctype html><html lang="es"><head><meta charset="utf-8"><title>versión '+vt.id+'</title>'
 		doc += '<script src="app.js"></script><link rel="stylesheet" type="text/css" href="app.css">'
-		//doc += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> </head>'
 		doc += '<body id="'+name+'" data-content="'+f+'" data-version="'+v+'">'
 		doc += '<div id="content" class="design"><h1>HELLO WORLD</h1></div></body></html>'
 
