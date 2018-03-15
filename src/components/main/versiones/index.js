@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ejercicios } from 'actions'
+import $, { ejercicios, stringify } from 'actions'
 import { Section } from 'components'
 import { data } from 'stores'
 
@@ -35,6 +35,23 @@ export class Versiones extends Component {
 	handleChange(e) {
 		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
 	}
+	download() {
+		const { vt } = this.state
+		const { code, functions } = this.props
+
+		let f = stringify(functions), v = stringify(vt), doc = '', name=`${code}_${vt.id}`
+		doc += '<!doctype html><html lang="es"><head><meta charset="utf-8"><title>versión '+vt.id+'</title>'
+		doc += '<script src="app.js"></script><link rel="stylesheet" type="text/css" href="app.css">'
+		//doc += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> </head>'
+		doc += '<body id="'+name+'" data-content="'+f+'" data-version="'+v+'">'
+		doc += '<div id="content" class="design"><h1>HELLO WORLD</h1></div></body></html>'
+
+	    if (window.webkitURL != null) {
+	    	let file = new Blob([doc], {type:'text/plain'})
+		   	$('download').href = window.webkitURL.createObjectURL(file)
+		   	$('download').download = `${name}.html`
+	    }
+	}
 	print() {
 		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false })
 	}
@@ -46,6 +63,9 @@ export class Versiones extends Component {
         			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
     				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
         			<Preview answers={answers} functions={functions}/>
+        			<a id="download" onClick={::this.download}>
+						<button class="btn">Descargar</button>
+					</a>
         		</div>
         	</Section>
         )

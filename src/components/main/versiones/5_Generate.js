@@ -41,7 +41,6 @@ export default class Generate extends Component {
 				box[i][j] = Number(sum.toFixed(5))
 			}
 		}
-
 		data.child(`${code}/versions`).set({ 
 			bup:{...matrix.slice(selected)}, gen:versions, box:box,
 			limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total

@@ -43,7 +43,8 @@ export function checkAll(variables) {
 		if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
 			let value = val.split('')
 			value.forEach((m, i) => {
-				value[i] = m.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
+				value[i] = m.replace(/[*+()-/,]/g, '@')
+				//.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
 			})
 			let arr = value.join('').split('@')
 			for (let k = 0; k < arr.length; k++) {
