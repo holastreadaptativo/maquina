@@ -1,8 +1,11 @@
+import { shuffle, random } from 'actions'
+
+var num = 0, max = Math.pow(2, 13)
 export function versiones(action, state) {
 	switch(action) {
 		case 'GEN': {
 			const { fns, variables } = state
-			let aux = variables.slice(0), vars = [], matrix = [], num = 0
+			let aux = variables.slice(0), vars = [], matrix = []; num = 1
 
 			while (aux.length) {
 				let m = aux.shift()	
@@ -20,14 +23,14 @@ export function versiones(action, state) {
 							}
 							else
 								x.forEach(n => { y.push(Number(n)) })
-							vars.push({ var:m.var, val:y, rank:y.length })						
+							vars.push({ var:m.var, val:y, rank:Number(y.length) })						
 						}
 						else if (m.val.includes('..')) {
 							let x = m.val.split('..'), y = []	
 							for (let i = Number(x[0]); i <= Number(x[1]); i++) {
 								y.push(Number(i))
 							}
-							vars.push({ var:m.var, val:y, rank:y.length })
+							vars.push({ var:m.var, val:y, rank:Number(y.length) })
 						}
 						else
 						{
@@ -48,19 +51,36 @@ export function versiones(action, state) {
 					}
 				}
 			}
-			concat(vars, matrix, fns, [], num)
+
+			vars.forEach((m, i) => {
+				vars[i].val = shuffle(m.val)
+				if (m.rank > 0) num *= m.rank
+			})
+
+			if (num < max)
+				concat(vars, matrix, fns, [])				
+			else {
+				for (let i = 0; i < max; i++) {
+					let arr = []
+					for (let j = 0; j < vars.length; j++) {
+						let k = vars[j].val[random(0, vars[j].rank)]
+						arr.push({ var:vars[j].var, val:k, rank:vars[j].rank })
+					}
+					matrix.push(evalfn( arr, fns ))
+				}
+			}
 			matrix.forEach((m, i) => { m.id = i })
 			return matrix
 		}
 	}
 }
 
-function concat(vars, matrix, fns, arr, num) {
+function concat(vars, matrix, fns, arr) {
 	let values = vars[0].val, size = vars.length
 	for (let i = 0; i < values.length; i++) {
 		let item = { var:vars[0].var, val:values[i], rank:vars[0].rank }
 		if (size > 1)
-			concat(vars.slice(1, size), matrix, fns, [...arr, item], num)
+			concat(vars.slice(1, size), matrix, fns, [...arr, item])
 		else if (size == 1) 
 			matrix.push(evalfn( [...arr, item], fns ))
 	}

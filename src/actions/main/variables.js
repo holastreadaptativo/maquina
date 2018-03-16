@@ -1,9 +1,6 @@
-export function replace(input, variables, vt) {
-	let aux = input.toString()
-	for (let i = 0; i < variables.length; i++) {
-		aux = aux.replace(`$${variables[i].var}`, `${vt ? variables[i].vt : variables[i].val}`)
-	}
-	return aux
+export function replace(input, vars, vt) {
+	vars.forEach(m => { input = input.toString().replace(`$${m.var}`, `${vt ? m.vt : m.val}`) })
+	return input
 }
 
 export function checkAll(variables) {
@@ -43,7 +40,8 @@ export function checkAll(variables) {
 		if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
 			let value = val.split('')
 			value.forEach((m, i) => {
-				value[i] = m.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
+				value[i] = m.replace(/[*+()-/,]/g, '@')
+				//.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
 			})
 			let arr = value.join('').split('@')
 			for (let k = 0; k < arr.length; k++) {

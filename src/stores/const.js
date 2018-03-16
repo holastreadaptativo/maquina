@@ -21,8 +21,8 @@ export const ROUTES = 	[
 				            	path:'/glosa', title:'Crear glosa', text:'Glosa', icon:'tasks', nav:[] }, 
 				            { 
 				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['layers'] }, 
-				            { 
-				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:[] },
+				            /*{ 
+				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:[] },*/
 				            { 
 				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }
         				]

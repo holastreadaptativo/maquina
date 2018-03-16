@@ -18,7 +18,7 @@ export class Descargas extends Component {
 		let fn = 'a * a1 + Math.pow(e, a2 + 1) + 30'
 		let xy = []
 		for (let i = 0, k = 0; i < fn.length; i++) {
-			if (fn[i].match(/[*+(),]/)) {
+			if (fn[i].match(/[*+()-,]/)) {
 				xy.push(fn.substring(k, i))
 				xy.push(fn[i])
 				k = i + 1

@@ -20,13 +20,18 @@ export function money(amount) {
     })
 }
 
-export function dateReverse(date) {
-	let reverse = date.split('-')
-	return reverse[2] + '-' + reverse[1] + '-' + reverse[0]
+export function random(from, to) {
+    return Math.floor(Math.random(0, 1) * (to - from) + from)
 }
 
-export function random(s, e) {
-    return Math.floor(Math.random(0, 1) * (e - s) + s)
+export function shuffle(array, times = 10) {
+    for (let i = 0; i < times; i++)
+        array = array.sort(() => (.5 - Math.random()))
+    return array
+}
+
+export function stringify(json) {
+    return JSON.stringify(json).replace(/[\"]/g,'\'')
 }
 
 export function clone(e) {
