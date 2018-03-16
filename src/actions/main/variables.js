@@ -41,7 +41,6 @@ export function checkAll(variables) {
 			let value = val.split('')
 			value.forEach((m, i) => {
 				value[i] = m.replace(/[*+()-/,]/g, '@')
-				//.replace('+', '@').replace('-', '@').replace('*', '@').replace('/', '@').replace('(', '@').replace(')', '@').replace(',', '@')
 			})
 			let arr = value.join('').split('@')
 			for (let k = 0; k < arr.length; k++) {
