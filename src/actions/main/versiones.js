@@ -93,7 +93,7 @@ function evalfn(elem, fns) {
 		stop--
 		let m = aux.shift(), xy = m.val
 		copy.forEach(n => {
-			xy = xy.replace(new RegExp(n.var, 'g'), n.val)
+			xy = xy.replace(n.var, n.val)
 		})
 		if (!xy.match(/[a-zA-Z]/))
 			copy.push({ var:m.var, val:Number(eval(xy)), rank:0 })
