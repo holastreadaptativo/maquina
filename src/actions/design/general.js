@@ -8,3 +8,7 @@ export function insertarTexto(config) {
   		container.innerHTML = replace(params.textCont, vars, vt)
 	}
 }
+
+export function respRadioBtn() {
+	console.log('holaaaa')
+}
