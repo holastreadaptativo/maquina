@@ -1,21 +1,30 @@
 import React, { Component } from 'react'
-import { SIZES, DEVICES } from 'stores'
+import { data, SIZES, DEVICES } from 'stores'
 import { TextEditor } from 'components'
 import { focus, show } from 'actions'
 
 export default class Editor extends Component {
-	constructor() {
-		super()
-		this.state = { active:0 }
+	constructor(props) {
+		super(props)
+		this.state = { active:0, step:props.store.design ? 'functions' : 'answers', md:12, sm:12, xs:12 }
+	}
+	componentDidMount() {
+		if (!this.props.store.push)
+		data.child(`${this.props.code}/${this.state.step}/${this.props.store.id}/width`).once('value').then(snap => {
+			this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
+		})
 	}
 	setActive(active) {
 		this.setState({ active:active })
 	}
+	handleWidth(e) {
+		this.setState({ [e.target.id]:e.target.value })
+	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
 		const { add, update, push, onHide, design } = this.props.store
-		const { active } = this.state
-		let onSave = push ? add : update
+		const { active, md, sm, xs } = this.state
+		let onSave = push ? add : update, devices = [md, sm, xs]
         return(
         	<div class="react-functions">
 				<div class="react-config">
@@ -53,7 +62,7 @@ export default class Editor extends Component {
 						DEVICES.map((n, j) => 
 							<h6 key={j}>
 								<i>{n.icon}</i>
-								<select defaultValue={12}>
+								<select id={n.col} defaultValue={devices[j]} onChange={::this.handleWidth}>
 								{
 									SIZES.map((m, i) =>
 										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>

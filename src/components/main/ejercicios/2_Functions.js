@@ -31,7 +31,7 @@ export default class Functions extends Component {
        			FX = m.component
        	})
        	return FX ? 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} 
+       		<FX add={(x) => this.handleCreate.bind(this, x)}
        			onHide={::this.handleModal} push {...this.props}/> : '' 
 	}
 	render() {

@@ -1,6 +1,6 @@
-export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows' },
-							{ name:'TABLET', size:768, icon:'tablet_mac' },
-							{ name:'PHONE', size:320, icon:'phone_iphone' }
+export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows', col:'md' },
+							{ name:'TABLET', size:768, icon:'tablet_mac', col:'sm' },
+							{ name:'PHONE', size:320, icon:'phone_iphone', col:'xs' }
  						]
 
 export const DEFAULT = 	{

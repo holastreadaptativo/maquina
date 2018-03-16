@@ -248,7 +248,6 @@ function limitarColumnas(data, state) {
         ctx.stroke()
         ctx.closePath()
     }
-
 }
 function insertarTextos(data, state) {
 
