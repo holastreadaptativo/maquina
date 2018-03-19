@@ -8,17 +8,27 @@ export default class Editor extends Component {
 		super(props)
 		this.state = { active:0, step:props.store.design ? 'functions' : 'answers', md:12, sm:12, xs:12 }
 	}
-	componentDidMount() {
-		if (!this.props.store.push)
-		data.child(`${this.props.code}/${this.state.step}/${this.props.store.id}/width`).once('value').then(snap => {
+	componentWillMount() {
+		const { store } = this.props
+		if (!store.push)
+		data.child(`${store.code}/${this.state.step}/${store.id}/width`).on('value', snap => {
 			this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
 		})
+	}
+	componentWillUnmount() {
+		const { store } = this.props
+		const { md, sm, xs } = this.state
+		data.child(`${store.code}/${this.state.step}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	setActive(active) {
 		this.setState({ active:active })
 	}
 	handleWidth(e) {
-		this.setState({ [e.target.id]:e.target.value })
+		const { store } = this.props
+		if (store.push)
+			store.setWidth({ [e.target.id]:e.target.value })
+		else
+			this.setState({ [e.target.id]:e.target.value })
 	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params

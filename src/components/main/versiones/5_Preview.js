@@ -8,7 +8,7 @@ export default class Preview extends Component {
 				<div class="design">
 				{	
 					functions.map((m, i) => 
-						<div key={i} class={`col-md-${m.width} col-sm-6 div-${m.tag} tags`}>
+						<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 						{
 							m.tag != 'general' ? 
 							<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :

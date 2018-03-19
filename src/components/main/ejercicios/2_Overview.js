@@ -35,7 +35,7 @@ export default class Overview extends Component {
 	    	this.state.action('MOVE', { ...this.props, i:i, f:f })
 	}
 	handleWidth(e) {
-		data.child(`${this.props.code}/${this.state.step}/${e.target.id}`).update({ width:e.target.value })
+		data.child(`${this.props.code}/${this.state.step}/${e.target.id}/width`).update({ md:e.target.value })
 	}
 	handleUpdate(params) {
 		this.state.action('UPDATE', { ...this.props, params:params, id:this.state.id })
@@ -77,7 +77,7 @@ export default class Overview extends Component {
 									</td>
 									<td>
 										<li>
-											<select defaultValue={m.width} id={m.id} onChange={::this.handleWidth}>
+											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
 											{
 												SIZES.map((m, i) => { return (
 													<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>

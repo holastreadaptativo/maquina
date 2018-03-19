@@ -16,12 +16,12 @@ export function ejercicios(action, state) {
 			break;
 		}
 		case 'ADD': {
-			const { code, params, fn, tag } = state
+			const { code, params, fn, tag, md, sm, xs } = state
 			$('btn-save').setAttribute('disabled', 'true')
 			data.child(code).once('value').then(snap => {
 				let count = snap.val().count
 				data.child(`${code}/functions`).push({ 
-					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:12
+					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
 					data.child(code).update({ count:count+1 })
 				})

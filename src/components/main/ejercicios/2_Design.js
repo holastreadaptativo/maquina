@@ -27,7 +27,7 @@ export default class Design extends Component {
 	render() {
 		const { device } = this.state
 		const { answers, design, functions } = this.props
-		let tablet = device <= 768, phone = device <= 320, aux = design ? functions : answers, container = design ? 'container' : 'content'
+		let aux = design ? functions : answers, container = design ? 'container' : 'content'
 		return (
 			<div class="row">
 				<div class="col-md-12 design">
@@ -41,9 +41,8 @@ export default class Design extends Component {
 					<div class="device canvas" style={{ width:device+'px' }}>
 					{
 						aux.map((m, i) => { 
-							let size = phone ? 12 : tablet && m.tag != 'general' ? 6 : m.width
 							return (
-								<div key={i} class={`col-md-${size} col-sm-6 div-${m.tag} tags`}>
+								<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
 									<canvas id={`${container}-${i}`} style={{background:m.params.background}}></canvas> :
