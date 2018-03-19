@@ -8,12 +8,12 @@ export class Respuestas extends Component {
 		this.state = { path:'answers', container:'content' }
 	}
     componentDidMount() {
-		data.child(this.props.code).once('value').then(snap => {
-			if (!snap.hasChild('idAnsw')) {
-				data.child(this.props.code).update({ idAnsw:0 })
+    	data.child(`${this.props.code}/${this.state.path}`).once('value').then(snap => {
+			if (!snap.hasChild('count')) {
+				data.child(`${this.props.code}/${this.state.path}`).update({ count:0 })
 			}
 		})		
-	}	
+	}
 	render() {
 		const { option, answers } = this.props
 		return(

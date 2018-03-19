@@ -19,12 +19,12 @@ export function ejercicios(action, state) {
 		case 'ADD': {
 			const { code, path, params, fn, tag, md, sm, xs } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(code).once('value').then(snap => {
+			data.child(`${code}/${path}`).once('value').then(snap => {
 				let count = snap.val().count
 				data.child(`${code}/${path}`).push({ 
 					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
-					data.child(code).update({ count:count+1 })
+					data.child(`${code}/${path}`).update({ count:count+1 })
 				})
 			})
 			break;
@@ -49,8 +49,8 @@ export function ejercicios(action, state) {
 		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f - 1 })
 		    			} else if (i == f) {
 		    				data.child(`${code}/${path}/${fn.key}`).remove().then(() => {
-		    					data.child(code).once('value').then(c => {
-		    						data.child(code).update({ count:c.val().count - 1 })
+		    					data.child(`${code}/${path}`).once('value').then(c => {
+		    						data.child(`${code}/${path}`).update({ count:c.val().count - 1 })
 		    					})
 		    				})
 		    			}

@@ -8,9 +8,9 @@ export class Ejercicios extends Component {
 		this.state = { path:'functions', container:'container' }
 	}
     componentDidMount() {
-		data.child(this.props.code).once('value').then(snap => {
+    	data.child(`${this.props.code}/${this.state.path}`).once('value').then(snap => {
 			if (!snap.hasChild('count')) {
-				data.child(this.props.code).update({ count:0 })
+				data.child(`${this.props.code}/${this.state.path}`).update({ count:0 })
 			}
 		})		
 	}	

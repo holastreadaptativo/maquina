@@ -1,10 +1,18 @@
 import React, { Component } from 'react'
 import { Section, Functions, Overview } from 'components'
+import { data } from 'stores'
 
 export class Glosa extends Component {
      constructor(props) {
 		super(props)
 		this.state = { path:'feedback', container:'modal' }
+	}
+    componentDidMount() {
+    	data.child(`${this.props.code}/${this.state.path}`).once('value').then(snap => {
+			if (!snap.hasChild('count')) {
+				data.child(`${this.props.code}/${this.state.path}`).update({ count:0 })
+			}
+		})		
 	}
     render() {
 		const { option } = this.props
