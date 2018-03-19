@@ -53,16 +53,16 @@ export class Versiones extends Component {
 		})
 	}
 	print() {
-		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false })
+		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions' })
 	}
 	render() {
-		const { answers, functions, option, versions } = this.props
+		const { answers, functions, feedback, option, versions } = this.props
         return(
         	<Section style="versiones" condition={true} {...this.props} download={::this.download}>
         		<div class="row">
         			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
     				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
-        			<Preview answers={answers} functions={functions}/>
+        			<Preview answers={answers} functions={functions} feedback={feedback}/>
         		</div>
         	</Section>
         )

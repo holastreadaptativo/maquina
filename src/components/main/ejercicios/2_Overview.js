@@ -53,13 +53,13 @@ export default class Overview extends Component {
        			params={this.state.params} onHide={::this.handleModal}/> : ''
 	}
 	render() {
-		const { answers, functions, path } = this.props
-		let aux = path == 'functions' ? functions : answers
+		const { answers, functions, feedback, path } = this.props
+		let aux = path == 'functions' ? functions : path == 'answers' ? answers : feedback
 		return (
         	<aside class={focus(this.props.condition, 'active')}>
 				<div class="overview">	
 					<div class="title">
-						<h3>{path == 'functions' ? 'Ejercicio' : 'Respuestas'}</h3>
+						<h3>{path == 'functions' ? 'Ejercicio' : path == 'answers' ? 'Respuestas' : 'Glosa'}</h3>
 					</div>
 					<table class="table">
 						<tbody>
