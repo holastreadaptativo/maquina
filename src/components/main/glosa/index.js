@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
-import { Section } from 'components'
+import { Section, Functions, Overview } from 'components'
 
 export class Glosa extends Component {
+     constructor(props) {
+		super(props)
+		this.state = { path:'feedback', container:'modal' }
+	}
     render() {
+		const { option } = this.props
 		return(
-        	<Section style="glosa" condition={false} {...this.props}>
+        	<Section style="ejercicios glosa" condition={false} {...this.props}>
         		<div class="row">
 	        		<div class="feedback">
 	        			<section>
@@ -17,6 +22,8 @@ export class Glosa extends Component {
 	        			<footer/>
 	        		</div>
         		</div>
+				<Overview condition={option == 0} {...this.props} {...this.state}/>
+				<Functions condition={option == 1} {...this.props} {...this.state}/>
         	</Section>
         )
     }
