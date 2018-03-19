@@ -6,7 +6,7 @@ import { FUNCIONES } from 'components'
 export default class Functions extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, fn:'', modal:false, tag:'', action:props.design ? ejercicios : respuestas }
+		this.state = { active:0, fn:'', modal:false, tag:'', action:props.design ? ejercicios : respuestas, md:12, sm:12, xs:12 }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -31,7 +31,7 @@ export default class Functions extends Component {
 						 FX = m.component
 				 })
        	return FX ? 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} 
+       		<FX add={(x) => this.handleCreate.bind(this, x)} setWidth={::this.setState}
        			onHide={::this.handleModal} push {...this.props}/> : '' 
 	}
 	render() {
