@@ -10,9 +10,9 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'', active:0,
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			extra:'no', dataTag: 'no', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
+			extra:'no', dataTag: '', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
 			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, scaleMin:0, scaleInterval:1, 
-			scaleColor:COLORS['grid'], scaleWidth:1, fontSize:14, limitVal: ''
+			scaleColor: '' /*COLORS['grid']*/, scaleWidth:1, fontSize:14, limitVal: '', highlightBar: ''
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -24,7 +24,7 @@ export default class GraficoDatos extends Component {
 	render() {
 		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, height, fontColor, fontFamily, width, axisColor, axisWidth,
 			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, 
-			extra, dataTag, withAxis, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal } = this.state
+			extra, dataTag, withAxis, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal, highlightBar } = this.state
 			let k = 0
 		return (
 			<Editor title="Gráfico Datos" params={this.state} store={this.props}>
@@ -46,8 +46,8 @@ export default class GraficoDatos extends Component {
 					<Input id="chartBorder" default={chartBorder} prefix="border" update={::this.setState} type="color"/>
 					<Input id="chartValues" default={chartValues} prefix="values" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
 					<Input id="chartTags" default={chartTags} prefix="tags" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
-					<Select id="dataTag" default={dataTag} prefix="datatag" update={::this.setState} options={['no', 'si']}/>
-					<Select id="withAxis" default={withAxis} prefix="Ejes" update={::this.setState} options={['no', 'si']}/>
+					<Input id="dataTag" default={dataTag} prefix="datatag" update={::this.setState} placeholder={'0,1,0,0,1'}/>
+					<Input id="highlightBar" default={highlightBar} prefix="highlight" placeholder={'0,1,0,0,1'} update={::this.setState} type="text"/>
 				</Item>
 				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
 					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>

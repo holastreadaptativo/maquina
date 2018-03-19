@@ -69,7 +69,7 @@
     "react-addons-create-fragment": "^15.4.1",
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-transition-group": "^15.3.2",
-    "react-bootstrap": "^0.30.10",
+    "react-bootstrap": "^0.32.1",
     "react-bootstrap-time-picker": "^1.0.3",
     "react-chartjs": "^0.8.0",
     "react-dom": "^15.3.2",

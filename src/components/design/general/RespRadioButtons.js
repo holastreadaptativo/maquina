@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Editor } from 'components'
-import { ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap'
+import { ButtonToolbar, ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 
 export default class RespRadioButtons extends Component {
+  constructor(props) {
+    super(props)
+  }
 
   render() {
     return(

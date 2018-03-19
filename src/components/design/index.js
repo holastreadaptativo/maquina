@@ -8,7 +8,7 @@ export const FUNCIONES =
 	{ 
 		name:'General', tag:'general', fns:[
 			{ id:'Insertar Texto', component:general.InsertarTexto, action:actions.insertarTexto },
-			{ id:'Radio Buttons', component:general.RespRadioButtons, action:general.respRadioBtn }
+			{ id:'Radio Buttons', component:general.RespRadioButtons, action:actions.respRadioBtn }
 		]
 	},
 	{ 

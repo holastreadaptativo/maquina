@@ -27,9 +27,9 @@ export default class Functions extends Component {
 	getComponent() {
 		let FX = null
 		FUNCIONES[this.state.active].fns.forEach(m => { 
-       		if (m.id == this.state.fn) 
-       			FX = m.component
-       	})
+					 if (m.id == this.state.fn) 
+						 FX = m.component
+				 })
        	return FX ? 
        		<FX add={(x) => this.handleCreate.bind(this, x)} 
        			onHide={::this.handleModal} push {...this.props}/> : '' 

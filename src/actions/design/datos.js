@@ -5,7 +5,7 @@ export function graficoDatos(config)
     const { container, params, variables, versions, vt } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth, chartBorder,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop, fontSize,
-        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withAxis, limitVal } = params
+        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withAxis, limitVal, highlightBar } = params
 
     if (!container) return
     let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
@@ -22,8 +22,8 @@ export function graficoDatos(config)
         canvas: { color: background, ctx: container.getContext('2d'), height: height, width: width },
         chart: { border: { color: chartBorder, width: 2 }, color: chartColor.split(','), length: values.length, 
                 margin: { x:margin == 'si' ? 70 : 50, y:margin == 'si' ? 90 : 60 }, padding: { x:10, y:10 }, position: chartPosition, 
-                values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag == 'si' ? true : false, withAxis: withAxis == 'si' ? true : false },
-        extra: { limit: extra == 'limite', projection: extra == 'proyeccion' },
+                values: values, tags: replace(chartTags, vars, vt).split(','), dataTag: dataTag, withAxis: withAxis == 'si' ? true : false },
+        extra: { limit: extra == 'limite', projection: extra == 'proyeccion', highlightBar: highlightBar ? highlightBar.split(',') : '' },
         font: { align: 'center', color: fontColor, family: 'arial', size: fontSize },
         line: { color: lineColor, value: 10, width: lineWidth, limitVal:replace(limitVal, vars, vt).split(',') },
         scale: { max:Number(scaleMax), min:Number(scaleMin), interval:Number(scaleInterval), color:scaleColor, width:scaleWidth }, 
@@ -101,15 +101,17 @@ function generarEjes(canvas, state) {
 }
 function generarColumnas(data, state) {
 
-    const { canvas, chart, scale, font } = state
+    const { canvas, chart, scale, font, extra } = state
     const { dx, dy, height, len, max, width, x0, y0 } = data
     const { ctx } = canvas
     const limit = Math.max(scale.max, max)
 
     ctx.beginPath()
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.strokeStyle = scale.color
+    ctx.strokeStyle = scale.color == '' ? 'transparent' : scale.color
     ctx.lineWidth = scale.width
+
+    extra.highlightBar && resaltarBarras(data, state)
 
     if (chart.position == 'vertical') 
     {
@@ -279,29 +281,71 @@ function insertarTextos(data, state) {
 function insertarValores(data, state) {
     const { chart, font, scale } = state
     const { ctx, dx, dy, height, len, max, width, x0, y0 } = data
-
-    chart.dataTag ? ctx.fillStyle = font.color : ctx.fillStyle = 'transparent'
     
-    ctx.save()
-    ctx.beginPath()
-    let fontSize = 14
-    ctx.font = fontSize + 'px ' + font.family
-    const limit = Math.max(scale.max, max)
-    ctx.textAlign = font.align
+    if (chart.dataTag != '' && chart.dataTag) {
+        ctx.save()
+        ctx.fillStyle = font.color
+        
+        let dataTags = chart.dataTag.split(',')
+    
+        ctx.beginPath()
+        let fontSize = 14
+        ctx.font = fontSize + 'px ' + font.family
+        const limit = Math.max(scale.max, max)
+        ctx.textAlign = font.align
 
-    if (chart.position == 'vertical') {
-        for (let i = 0, x = data.cx + dx/2; i < len; i++, x += width/len) {
-            let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÑO DE LA COLUMNA
-            ctx.fillText(chart.values[i], x, y - 10) //INSERTAR TEXTO
+        if (chart.position == 'vertical') {
+            for (let i = 0, x = data.cx + dx/2; i < len; i++, x += width/len) {
+                if (dataTags[i] == '0') {
+                    let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÑO DE LA COLUMNA
+                    ctx.fillText(chart.values[i], x, y - 10) //INSERTAR TEXTO
+                }
+            }
+        } else {
+            for (let i = 0, y = data.cy + dy/2 + fontSize/2; i < len; i++, y -= height/len) {
+                if (dataTags[i] == '0') {
+                    let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÑO DE LA COLUMNA
+                    ctx.fillText(chart.values[i], x + 15, y) //INSERTAR TEXTO
+                }
+            }
         }
+        
     } else {
-        for (let i = 0, y = data.cy + dy/2 + fontSize/2; i < len; i++, y -= height/len) {
-            let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÑO DE LA COLUMNA
-            ctx.fillText(chart.values[i], x + 15, y) //INSERTAR TEXTO
-        }
+        ctx.fillStyle = 'transparent'
     }
     
     ctx.closePath()
     ctx.restore()
     ctx.save()
+}
+function resaltarBarras(data, state) {
+
+    const { canvas, chart, scale, extra } = state
+    const { dx, dy, height, len, max, width, x0, y0 } = data
+    const { ctx } = canvas
+    const limit = Math.max(scale.max, max)
+
+    let hightBar = extra.highlightBar
+
+    if (chart.position == 'vertical') {
+        ctx.beginPath()
+        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
+        for (let i = 0, x = data.cx/1.1; i < len; i++, x += width/len) {
+            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
+                let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+                ctx.fillRect(x, y - height/limit, dx*1.2, dy + height/limit*1.4) //DIBUJAR COLUMNA
+            }
+        }
+    } else {
+        ctx.beginPath()
+        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
+        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
+            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
+                let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
+                ctx.fillRect(x - x*0.4, y - height/len*0.1, dx + x*0.8, dy + height/len*0.2) //DIBUJAR COLUMNA
+                // let dx = width/limit * chart.values[i], x = x0 + dx //TAMAÑO DE LA COLUMNA
+                // ctx.fillRect(x0 - width/limit*0.25, y + height/limit*0.2, dx + width/limit*0.45, dy - height/limit*0.4) //DIBUJAR COLUMNA
+            }
+        }
+    }
 }
