@@ -5,8 +5,9 @@ import $ from 'actions'
 export function ejercicios(action, state) {
 	switch(action) {
 		case 'GET': {
-			const { functions, variables, versions, vt } = state
-			functions.forEach((m, i) => {
+			const { variables, versions, vt, path, functions, answers, feedback } = state
+			let func = path == 'functions' ? functions : path == 'answers' ? answers : feedback
+			func.forEach((m, i) => {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
@@ -16,39 +17,40 @@ export function ejercicios(action, state) {
 			break;
 		}
 		case 'ADD': {
-			const { code, params, fn, tag, md, sm, xs } = state
+			const { code, path, params, fn, tag, md, sm, xs } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(code).once('value').then(snap => {
+			data.child(`${code}/${path}`).once('value').then(snap => {
 				let count = snap.val().count
-				data.child(`${code}/functions`).push({ 
+				data.child(`${code}/${path}`).push({ 
 					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
-					data.child(code).update({ count:count+1 })
+					data.child(`${code}/${path}`).update({ count:count+1 })
 				})
 			})
 			break;
 		}
 		case 'UPDATE': {
-			const { code, params, id } = state
+			const { code, path, params, id } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(`${code}/functions/${id}`).update({
+			data.child(`${code}/${path}/${id}`).update({
 				params:params, date:(new Date()).toLocaleString()
 			})
 			break;
 		}
 		case 'REMOVE': {
-			const { code, functions, id } = state
-			data.child(`${code}/functions/${id}`).once('value').then(t => {
+			const { code, path, id, functions, answers, feedback } = state
+			let func = path == 'functions' ? functions : path == 'answers' ? answers : feedback
+			data.child(`${code}/${path}/${id}`).once('value').then(t => {
 				let i = t.val().position
-					data.child(`${code}/functions/`).once('value').then(snap => {
+					data.child(`${code}/${path}/`).once('value').then(snap => {
 		    		snap.forEach(fn => {
 		    			let f = fn.val().position
-		    			if (i < f && functions.length) {
-		    				data.child(`${code}/functions/${fn.key}`).update({ position:f - 1 })
+		    			if (i < f && func.length) {
+		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f - 1 })
 		    			} else if (i == f) {
-		    				data.child(`${code}/functions/${fn.key}`).remove().then(() => {
-		    					data.child(code).once('value').then(c => {
-		    						data.child(code).update({ count:c.val().count - 1 })
+		    				data.child(`${code}/${path}/${fn.key}`).remove().then(() => {
+		    					data.child(`${code}/${path}`).once('value').then(c => {
+		    						data.child(`${code}/${path}`).update({ count:c.val().count - 1 })
 		    					})
 		    				})
 		    			}
@@ -58,26 +60,26 @@ export function ejercicios(action, state) {
 			break;
 		}
 		case 'MOVE': {
-			const { code, i, f } = state
+			const { code, path, i, f } = state
 			if (i < f) {
-		    	data.child(`${code}/functions/`).once('value').then(snap => {
+		    	data.child(`${code}/${path}/`).once('value').then(snap => {
 		    		snap.forEach(fn => {
 		    			let k = fn.val().position
 		    			if (k <= f && k > i) {
-		    				data.child(`${code}/functions/${fn.key}`).update({ position:k - 1 })
+		    				data.child(`${code}/${path}/${fn.key}`).update({ position:k - 1 })
 		    			} else if (k == i) {
-		    				data.child(`${code}/functions/${fn.key}`).update({ position:f })
+		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f })
 		    			}
 		    		})
 		    	})
 		    } else if (i > f) {
-		    	data.child(`${code}/functions/`).once('value').then(snap => {
+		    	data.child(`${code}/${path}/`).once('value').then(snap => {
 		    		snap.forEach(fn => {
 		    			let k = fn.val().position
 		    			if (k >= f && k < i) {
-		    				data.child(`${code}/functions/${fn.key}`).update({ position:k + 1 })
+		    				data.child(`${code}/${path}/${fn.key}`).update({ position:k + 1 })
 		    			} else if (k == i) {
-		    				data.child(`${code}/functions/${fn.key}`).update({ position:f })
+		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f })
 		    			}
 		    		})
 		    	})

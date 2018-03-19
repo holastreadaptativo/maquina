@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { ejercicios, respuestas, focus } from 'actions'
+import { ejercicios, focus } from 'actions'
 import { DEFAULT, DEVICES } from 'stores'
 
 export default class Design extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { device:DEFAULT.DEVICE, action:props.design ? ejercicios : respuestas }
+		this.state = { device:DEFAULT.DEVICE, action:ejercicios, container:props.container }
 		this.print = this.print.bind(this)
 	}
 	componentDidMount() {	
@@ -25,9 +25,9 @@ export default class Design extends Component {
 		this.state.action('GET', { ...this.props, vt:true })
 	}
 	render() {
-		const { device } = this.state
-		const { answers, design, functions } = this.props
-		let aux = design ? functions : answers, container = design ? 'container' : 'content'
+		const { device, container } = this.state
+		const { answers, functions, path } = this.props
+		let aux = path == 'functions' ? functions : answers
 		return (
 			<div class="row">
 				<div class="col-md-12 design">
@@ -41,8 +41,9 @@ export default class Design extends Component {
 					<div class="device canvas" style={{ width:device+'px' }}>
 					{
 						aux.map((m, i) => { 
+							let size = device <= DEVICES[2].size ? m.width.xs : device <= DEVICES[1].size ? m.width.sm : m.width.md
 							return (
-								<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
+								<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
 									<canvas id={`${container}-${i}`} style={{background:m.params.background}}></canvas> :

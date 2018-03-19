@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ejercicios, respuestas, focus } from 'actions'
+import { ejercicios, focus } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
 import { data, SIZES } from 'stores'
@@ -7,9 +7,7 @@ import { data, SIZES } from 'stores'
 export default class Overview extends Component {
 	constructor(props) {
 		super(props)
-		const { answers, design, functions } = props
-		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'', step:design ? 'functions' : 'answers',
-			functions:design ? functions : answers, action:design ? ejercicios : respuestas }
+		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'', action:ejercicios }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -35,10 +33,10 @@ export default class Overview extends Component {
 	    	this.state.action('MOVE', { ...this.props, i:i, f:f })
 	}
 	handleWidth(e) {
-		data.child(`${this.props.code}/${this.state.step}/${e.target.id}/width`).update({ md:e.target.value })
+		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:e.target.value })
 	}
 	handleUpdate(params) {
-		this.state.action('UPDATE', { ...this.props, params:params, id:this.state.id })
+		this.state.action('UPDATE', { ...this.props, ...this.state, params:params })
 		this.setState({ modal:false })
 	}
 	handleRemove(id) {
@@ -55,13 +53,13 @@ export default class Overview extends Component {
        			params={this.state.params} onHide={::this.handleModal}/> : ''
 	}
 	render() {
-		const { answers, design, functions } = this.props
-		let aux = design ? functions : answers
+		const { answers, functions, path } = this.props
+		let aux = path == 'functions' ? functions : answers
 		return (
         	<aside class={focus(this.props.condition, 'active')}>
 				<div class="overview">	
 					<div class="title">
-						<h3>{design ? 'Ejercicio' : 'Respuestas'}</h3>
+						<h3>{path == 'functions' ? 'Ejercicio' : 'Respuestas'}</h3>
 					</div>
 					<table class="table">
 						<tbody>

@@ -6,33 +6,33 @@ import { focus, show } from 'actions'
 export default class Editor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, step:props.store.design ? 'functions' : 'answers', md:12, sm:12, xs:12 }
+		this.state = { active:0, md:12, sm:12, xs:12, edited:false }
 	}
 	componentWillMount() {
 		const { store } = this.props
 		if (!store.push)
-		data.child(`${store.code}/${this.state.step}/${store.id}/width`).on('value', snap => {
+		data.child(`${store.code}/${store.path}/${store.id}/width`).on('value', snap => {
 			this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
 		})
 	}
 	componentWillUnmount() {
 		const { store } = this.props
-		const { md, sm, xs } = this.state
-		data.child(`${store.code}/${this.state.step}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
+		const { md, sm, xs, edited } = this.state
+		if (!this.props.store.push && edited)
+			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	setActive(active) {
 		this.setState({ active:active })
 	}
 	handleWidth(e) {
-		const { store } = this.props
-		if (store.push)
-			store.setWidth({ [e.target.id]:e.target.value })
+		if (this.props.store.push)
+			this.props.store.setWidth({ [e.target.id]:e.target.value })
 		else
-			this.setState({ [e.target.id]:e.target.value })
+			this.setState({ [e.target.id]:e.target.value, edited:true })
 	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push, onHide, design } = this.props.store
+		const { add, update, push, onHide, path } = this.props.store
 		const { active, md, sm, xs } = this.state
 		let onSave = push ? add : update, devices = [md, sm, xs]
         return(
@@ -41,7 +41,7 @@ export default class Editor extends Component {
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
-					<nav class={show(!design, 'react-nav')}>
+					<nav class={show(path == 'answers', 'react-nav')}>
 					{
 						['función', 'feedback'].map((m, i) => 
 							<li key={i} class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
