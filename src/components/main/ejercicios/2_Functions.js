@@ -6,7 +6,7 @@ import { FUNCIONES } from 'components'
 export default class Functions extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, modal:false, fn:'', tag:'', action:ejercicios, container:props.container, md:12, sm:12, xs:12 }
+		this.state = { active:0, modal:false, fn:'', tag:'', action:ejercicios, container:props.container, md:12, sm:12, xs:12, feedback:'' }
 	}
 	componentWillUnmount() {
 		this.setState({ modal:false })
@@ -27,12 +27,12 @@ export default class Functions extends Component {
 	getComponent() {
 		let FX = null
 		FUNCIONES[this.state.active].fns.forEach(m => { 
-					 if (m.id == this.state.fn) 
-						 FX = m.component
-				 })
+			if (m.id == this.state.fn) 
+				FX = m.component
+		})
        	return FX ? 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} setWidth={::this.setState}
-       			onHide={::this.handleModal} push {...this.props}/> : ''
+       		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState}
+       			onHide={::this.handleModal} push {...this.props} fn={this.state.fn}/> : ''
 	}
 	render() {
         return(

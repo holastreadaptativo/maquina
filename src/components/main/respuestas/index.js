@@ -28,3 +28,4 @@ export class Respuestas extends Component {
 
 export Editor from './3_Editor'
 export TextEditor from './3_TextEditor'
+export Devices from './3_Devices'

@@ -1,4 +1,4 @@
-import { auth, auth2, uid, users } from 'stores'
+import { auth, dbs, uid, users } from 'stores'
 import { browserHistory } from 'react-router'
 import $ from 'actions'
 
@@ -15,7 +15,7 @@ export function signIn(e) { e.preventDefault(); auth.signOut()
 }
 export function signUp() {   
     let email = $('rest_email').value, pass = $('password').value
-    return auth2.createUserWithEmailAndPassword(email, pass)
+    return dbs.createUserWithEmailAndPassword(email, pass)
 }
 
 export function sendPasswordReset(e) { e.preventDefault()   

@@ -10,9 +10,9 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'', active:0,
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			extra:'no', dataTag: '', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', chartTags:'A, B, C, D, E', 
-			titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, scaleMin:0, scaleInterval:1, 
-			scaleColor: '' /*COLORS['grid']*/, scaleWidth:1, fontSize:14, limitVal: '', highlightBar: ''
+			extra:'no', dataTag: '', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', 
+			chartTags:'A, B, C, D, E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, 
+			scaleMin:0, scaleInterval:1, scaleColor:'', scaleWidth:1, fontSize:14, limitVal:'0, 1', highlightBar:''
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -79,11 +79,17 @@ export default class GraficoDatos extends Component {
 					<Select id="extra" default={extra} prefix="lines" update={::this.setState} options={['no', 'proyeccion', 'limite']}/>
 					{
 						extra == 'limite' && (
-							<Input id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text" placeholder="$a,1,$b,2"/>
+							<Input id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text"/>
 						)
 					}
-					<Input id="lineColor" default={lineColor} update={::this.setState} type="color"/>
-					<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>	
+					{
+						extra != 'no' && (
+							<o>
+								<Input id="lineColor" default={lineColor} update={::this.setState} type="color"/>
+								<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
+							</o>
+						)
+					}					
 				</Item>
 			</Editor>
 		)

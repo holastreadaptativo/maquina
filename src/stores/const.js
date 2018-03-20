@@ -40,4 +40,4 @@ export const COLORS = 	{
 
 export const CODE = 	[ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
 
-export const SIZES = 	[ 12, 9, 8, 6, 4, 3 ]
+export const SIZES = 	[ 12, 10, 9, 8, 6, 4, 3, 2 ]

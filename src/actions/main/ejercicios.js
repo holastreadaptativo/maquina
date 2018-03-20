@@ -17,14 +17,17 @@ export function ejercicios(action, state) {
 			break;
 		}
 		case 'ADD': {
-			const { code, path, params, fn, tag, md, sm, xs } = state
+			const { code, path, params, fn, tag, md, sm, xs, feedback } = state
 			$('btn-save').setAttribute('disabled', 'true')
 			data.child(`${code}/${path}`).once('value').then(snap => {
 				let count = snap.val().count
-				data.child(`${code}/${path}`).push({ 
+				let ref = data.child(`${code}/${path}`).push()
+				ref.update({ 
 					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
 					data.child(`${code}/${path}`).update({ count:count+1 })
+					if (path == 'answers')
+						ref.update({ feedback:feedback })
 				})
 			})
 			break;

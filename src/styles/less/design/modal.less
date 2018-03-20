@@ -74,6 +74,7 @@
 						font-size: 13px;
 						float: right;	
 						margin-right: 10px;
+						margin-top: -1px;
 					}
 					&.active
 					{
@@ -136,7 +137,9 @@
 			}
 			.text-editor
 			{
-				margin: 42px 20px 20px;
+				margin: 42px 10px 20px;
+				overflow-x: hidden;
+				overflow-y: auto;
 			}
 		}
 		.react-header
@@ -164,6 +167,7 @@
 			bottom: @margin + 10px;
 			left: @margin + @config;
 			width:  ~'calc(100vw - 2*@{margin} - @{config})';
+			z-index: 10;
 			h6
 			{
 				display: inline;
@@ -189,6 +193,10 @@
 		width: 150px;
 		height: 40px;
 		transition: all .3s ease;
+		cursor: pointer;
+		padding: 0;
+		margin: 0;
+		z-index: 10;
 		&:hover
 		{
 			background: @main-hover;

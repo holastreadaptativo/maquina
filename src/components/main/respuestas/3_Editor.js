@@ -1,24 +1,29 @@
 import React, { Component } from 'react'
-import { data, SIZES, DEVICES } from 'stores'
-import { TextEditor } from 'components'
+import { TextEditor, Devices } from 'components'
 import { focus, show } from 'actions'
+import { data } from 'stores'
 
 export default class Editor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, md:12, sm:12, xs:12, edited:false }
+		this.state = { active:0, md:12, sm:12, xs:12, edited:false, feedback:'' }
 	}
 	componentWillMount() {
 		const { store } = this.props
-		if (!store.push)
-		data.child(`${store.code}/${store.path}/${store.id}/width`).on('value', snap => {
-			this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
-		})
+		if (!store.push) {
+			data.child(`${store.code}/${store.path}/${store.id}/width`).on('value', snap => {
+				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
+			})
+			if (store.path == 'answers')
+			data.child(`${store.code}/${store.path}/${store.id}`).on('value', snap => {
+				this.setState({ feedback:snap.val().feedback })
+			})
+		}
 	}
 	componentWillUnmount() {
 		const { store } = this.props
 		const { md, sm, xs, edited } = this.state
-		if (!this.props.store.push && edited)
+		if (!store.push && edited)
 			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	setActive(active) {
@@ -26,7 +31,7 @@ export default class Editor extends Component {
 	}
 	handleWidth(e) {
 		if (this.props.store.push)
-			this.props.store.setWidth({ [e.target.id]:e.target.value })
+			this.props.store.setState({ [e.target.id]:e.target.value })
 		else
 			this.setState({ [e.target.id]:e.target.value, edited:true })
 	}
@@ -34,7 +39,7 @@ export default class Editor extends Component {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
 		const { add, update, push, onHide, path } = this.props.store
 		const { active, md, sm, xs } = this.state
-		let onSave = push ? add : update, devices = [md, sm, xs]
+		let onSave = push ? add : update
         return(
         	<div class="react-functions">
 				<div class="react-config">
@@ -58,7 +63,7 @@ export default class Editor extends Component {
 						</canvas>
 					</div>
 					<div class={show(active == 1, 'text-editor')}>
-						<TextEditor {...this.props}/>
+						<TextEditor {...this.props} data={this.state.feedback}/>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
@@ -67,21 +72,7 @@ export default class Editor extends Component {
 					<h5>{this.props.title}</h5>
 				</div>
 				<div class="react-footer">
-					<h6>Devices:</h6>
-					{
-						DEVICES.map((n, j) => 
-							<h6 key={j}>
-								<i>{n.icon}</i>
-								<select id={n.col} defaultValue={devices[j]} onChange={::this.handleWidth}>
-								{
-									SIZES.map((m, i) =>
-										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-									)
-								}	
-								</select>
-							</h6>
-						)
-					}
+					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
 				</div>			
 			</div>
 		)
