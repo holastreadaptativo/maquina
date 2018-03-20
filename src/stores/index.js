@@ -10,12 +10,10 @@ let config = {
  }
 
 const firebase = db.initializeApp(config)
-const firebase2 = db.initializeApp(config, 'Secondary')
 
 export const database = firebase.database()
 export const storage = firebase.storage()
 export const auth = firebase.auth()
-export const auth2 = firebase2.auth()
 
 export const users = database.ref('users')
 export const data = database.ref('data')
