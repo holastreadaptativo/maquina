@@ -53,7 +53,7 @@ export class Versiones extends Component {
 		})
 	}
 	print() {
-		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions' })
+		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
 	}
 	render() {
 		const { answers, functions, feedback, option, versions } = this.props
