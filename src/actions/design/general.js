@@ -10,5 +10,5 @@ export function insertarTexto(config) {
 }
 
 export function respRadioBtn() {
-	console.log('holaaaa')
+	//console.log('holaaaa')
 }

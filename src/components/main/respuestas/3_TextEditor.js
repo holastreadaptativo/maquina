@@ -5,63 +5,44 @@ import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import { data } from 'stores'
 
-class TextEditor extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      code: this.props.store.code,
-      id: this.props.store.id,
-      editorState: EditorState.createEmpty()
+export default class TextEditor extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { editorState: EditorState.createEmpty(), edited:false }
     }
-  }
-  componentWillMount() {
-    data.child(`${this.state.code}/answers/${this.state.id}`).once('value').then(snap => {
-      if(snap.hasChild('feedback') != '') {
-        let textCont = snap.val().feedback
-        const blocksFromHtml = htmlToDraft(textCont);
-        const { contentBlocks, entityMap } = blocksFromHtml;
-        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-        const editorState = EditorState.createWithContent(contentState);
-        this.state = {
-          code: this.state.code,
-          id: this.state.id,
-          editorState
-        }
-      }
-    })
-  }    
-  componentWillUnmount() {
-    let textCont = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-    if (textCont != '<p></p>\n' && this.props.store.path == 'answers' && this.state.id) {
-      data.child(`${this.state.code}/answers/${this.state.id}`).update({
-        feedback:textCont, date:(new Date()).toLocaleString()
-      })
+    componentWillMount() {
+        const { path, push, code, id } = this.props.store
+        if (!push && path == 'answers')
+            data.child(`${code}/${push}/${id}`).once('value').then(snap => {
+                if (snap.hasChild('feedback')) {
+                    const { contentBlocks, entityMap } = htmlToDraft(snap.val().feedback)
+                    let contentState = ContentState.createFromBlockArray(contentBlocks, entityMap),
+                        editorState = EditorState.createWithContent(contentState)
+                    this.setState({ editorState })
+                }
+            })
+    }    
+    componentWillUnmount() {
+        const { path, push, code, id } = this.props.store
+        const { edited, editorState } = this.state
+        if (!push && path == 'answers' && edited)
+            data.child(`${code}/${path}/${id}`).update({
+                feedback:draftToHtml(convertToRaw(editorState.getCurrentContent())), date:(new Date()).toLocaleString()
+            })
     }
-  }
-  
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      code: this.state.code,
-      id: this.state.id,
-      editorState
-    })
-  }
-  render() {
-    const { editorState } = this.state;
-    return (
-      <div class="row">
-        <div class="col-sm-12">
-          <Editor
-              editorState={editorState}
-              wrapperClassName="demo-wrapper"
-              editorClassName="demo-editor"
-              onEditorStateChange={this.onEditorStateChange}
-            />
-        </div>
-        <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden" />
-      </div>
-    )
-  }
+    onEditorStateChange(text) {
+        this.setState({ editorState:text, edited:true })
+    }
+    render() {
+        const { editorState } = this.state
+        return (
+            <div class="row">
+                <div class="col-sm-12">
+                    <Editor editorState={editorState} wrapperClassName="demo-wrapper" editorClassName="demo-editor" 
+                    onEditorStateChange={::this.onEditorStateChange}/>
+                </div>
+                <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden"/>
+            </div>
+        )
+    }
 }
-
-export default TextEditor
