@@ -5,13 +5,13 @@ import $ from 'actions'
 export function ejercicios(action, state) {
 	switch(action) {
 		case 'GET': {
-			const { variables, versions, vt, path, functions, answers, feedback } = state
+			const { variables, versions, vt, path, functions, answers, feedback, container } = state
 			let func = path == 'functions' ? functions : path == 'answers' ? answers : feedback
 			func.forEach((m, i) => {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
-					container:$(`container-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
+					container:$(`${container}-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
 				})
 			}) 	
 			break;

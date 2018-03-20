@@ -20,7 +20,7 @@ export class Glosa extends Component {
 		setTimeout(() => this.print(), 0)
 	}
 	print() {
-		ejercicios('GET', { functions:this.props.feedback, variables:this.props.variables, vt:true, path:'functions' })
+		ejercicios('GET', { ...this.props, ...this.state, vt:true })
 	}
     render() {
 		const { option, feedback } = this.props
@@ -28,7 +28,7 @@ export class Glosa extends Component {
         	<Section style="ejercicios glosa" condition={feedback.length} {...this.props}>
         		<div class="row">
 	        		<div class="feedback">
-	        			<Feedback functions={feedback}/>
+	        			<Feedback feedback={feedback} {...this.state}/>
 	        			<div class="img-duck"/>
 	        			<div class="triangle"/>
 	        			<footer/>
