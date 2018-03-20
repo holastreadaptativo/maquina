@@ -40,8 +40,7 @@ export default class TextEditor extends Component {
         return (
             <div class="row">
                 <div class="col-sm-12">
-                    <Editor editorState={editorState} wrapperClassName="demo-wrapper" editorClassName="demo-editor" 
-                    onEditorStateChange={::this.onEditorStateChange}/>
+                    <Editor editorState={editorState} onEditorStateChange={::this.onEditorStateChange}/>
                 </div>
                 <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden"/>
             </div>
