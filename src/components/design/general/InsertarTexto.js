@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
-import { data, SIZES, DEVICES } from 'stores'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
+import { Devices } from 'components'
+import { data } from 'stores'
 
 export default class InsertTexto extends Component {
 	constructor(props) {
@@ -15,13 +16,12 @@ export default class InsertTexto extends Component {
 	}
 	componentWillMount() {
 		const { push, code, path, id } = this.props
-		if (!push) {
+		if (!push)
 			data.child(`${code}/${path}/${id}/width`).on('value', snap => {
 				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
 			})
-		} else {
+		else
 			this.setState({ md:12, sm:12, xs:12 })
-		}
 	}
 	componentWillUnmount() {
 		const { push, code, path, id } = this.props
@@ -38,7 +38,7 @@ export default class InsertTexto extends Component {
 	render() {
 		const { add, update, push, onHide } = this.props
 		const { md, sm, xs, textCont } = this.state
-		let onSave = push ? add : update, devices = [md, sm, xs]
+		let onSave = push ? add : update
 		return (
 			<div class="react-functions">
 				<div class="react-config">
@@ -57,21 +57,7 @@ export default class InsertTexto extends Component {
 					<h5>Insertar Texto</h5>
 				</div>
 				<div class="react-footer">
-					<h6>Devices:</h6>
-					{
-						DEVICES.map((n, j) => 
-							<h6 key={j}>
-								<i>{n.icon}</i>
-								<select id={n.col} defaultValue={devices[j]} onChange={::this.handleWidth}>
-								{
-									SIZES.map((m, i) =>
-										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-									)
-								}	
-								</select>
-							</h6>
-						)
-					}
+					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
 				</div>	
 			</div>
 		)

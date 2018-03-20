@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { data, SIZES, DEVICES } from 'stores'
-import { TextEditor } from 'components'
+import { TextEditor, Devices } from 'components'
 import { focus, show } from 'actions'
+import { data } from 'stores'
 
 export default class Editor extends Component {
 	constructor(props) {
@@ -39,7 +39,7 @@ export default class Editor extends Component {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
 		const { add, update, push, onHide, path } = this.props.store
 		const { active, md, sm, xs } = this.state
-		let onSave = push ? add : update, devices = [md, sm, xs]
+		let onSave = push ? add : update
         return(
         	<div class="react-functions">
 				<div class="react-config">
@@ -72,23 +72,11 @@ export default class Editor extends Component {
 					<h5>{this.props.title}</h5>
 				</div>
 				<div class="react-footer">
-					<h6>Devices:</h6>
-					{
-						DEVICES.map((n, j) => 
-							<h6 key={j}>
-								<i>{n.icon}</i>
-								<select id={n.col} defaultValue={devices[j]} onChange={::this.handleWidth}>
-								{
-									SIZES.map((m, i) =>
-										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-									)
-								}	
-								</select>
-							</h6>
-						)
-					}
+					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
 				</div>			
 			</div>
 		)
 	}
 }
+
+export Devices from './3_Devices'
