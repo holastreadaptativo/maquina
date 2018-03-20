@@ -32,10 +32,13 @@ class TextEditor extends Component {
   }    
   componentWillUnmount() {
     let textCont = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-    data.child(`${this.state.code}/answers/${this.state.id}`).update({
-      feedback:textCont, date:(new Date()).toLocaleString()
-    })
+    if (textCont != '<p></p>\n' && this.props.store.path == 'answers' && this.state.id) {
+      data.child(`${this.state.code}/answers/${this.state.id}`).update({
+        feedback:textCont, date:(new Date()).toLocaleString()
+      })
+    }
   }
+  
   onEditorStateChange = (editorState) => {
     this.setState({
       code: this.state.code,
