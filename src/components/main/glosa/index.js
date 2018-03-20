@@ -17,7 +17,7 @@ export class Glosa extends Component {
 		this.print()
 	}
 	componentDidUpdate() {
-		setTimeout(() => this.print(), 100)
+		setTimeout(() => this.print(), 0)
 	}
 	print() {
 		ejercicios('GET', { functions:this.props.feedback, variables:this.props.variables, vt:true, path:'functions' })

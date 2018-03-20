@@ -27,7 +27,7 @@ export class Versiones extends Component {
 		window.addEventListener('resize', this.print )
 	}
 	componentDidUpdate() {
-		setTimeout(() => this.print(), 100)
+		setTimeout(() => this.print(), 0)
 	}
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.print )
