@@ -23,7 +23,7 @@ export default class Editor extends Component {
 	componentWillUnmount() {
 		const { store } = this.props
 		const { md, sm, xs, edited } = this.state
-		if (!this.props.store.push && edited)
+		if (!store.push && edited)
 			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	setActive(active) {

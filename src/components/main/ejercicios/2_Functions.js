@@ -32,7 +32,7 @@ export default class Functions extends Component {
 		})
        	return FX ? 
        		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState}
-       			onHide={::this.handleModal} push {...this.props}/> : ''
+       			onHide={::this.handleModal} push {...this.props} fn={this.state.fn}/> : ''
 	}
 	render() {
         return(

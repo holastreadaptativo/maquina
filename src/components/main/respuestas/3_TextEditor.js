@@ -36,13 +36,12 @@ export default class TextEditor extends Component {
             this.setState({ editorState:text, edited:true })
     }
     render() {
-        const { editorState } = this.state
         return (
             <div class="row">
                 <div class="col-sm-12">
-                    <Editor editorState={editorState} onEditorStateChange={::this.onEditorStateChange}/>
+                    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}/>
                 </div>
-                <textarea disabled value={draftToHtml(convertToRaw(editorState.getCurrentContent()))} class="col-md-12 hidden"/>
+                <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))} class="col-md-12 hidden"/>
             </div>
         )
     }
