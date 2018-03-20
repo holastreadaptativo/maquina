@@ -7,11 +7,10 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode), 
-			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: [], versions:[]	
+			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: [], versions:[], feedback:[]	
 		}
 	}
 	componentWillMount() {
-		const { code } = this.state
 		auth.onAuthStateChanged(() => {
 			if (auth.currentUser) {
 				users.child(uid()).once('value').then(user => {
@@ -19,7 +18,7 @@ export class App extends Component {
 	  			})
 	  		}
 		})
-		this.onCodeChange(code)
+		this.onCodeChange(this.state.code)
 	}
 	componentWillUnmount() {
 		data.child(this.state.code).off()
@@ -39,32 +38,21 @@ export class App extends Component {
 						this.setState({ variables:variables })
 					}
 				})
-			else 
-				this.setState({ variables:[] })
-			if (r.hasChild('functions'))
-				data.child(`${code}/functions`).orderByChild('position').once('value').then(snap => {
-					let functions = []
-					snap.forEach(f => {
-						if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
-						functions.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
-							width:f.val().width, position:f.val().position })
-						this.setState({ functions:functions })
+			else { this.setState({ variables:[] }) }		
+			['functions', 'answers', 'feedback'].forEach(m => {
+				if (r.hasChild(m))
+					data.child(`${code}/${m}`).orderByChild('position').once('value').then(snap => {
+						let functions = []						
+						snap.forEach(f => {
+							if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
+							functions.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
+								width:f.val().width, position:f.val().position })
+							this.setState({ [m]:functions })
+						})
 					})
-				})
-			else 
-				this.setState({ functions:[] })
-			if (r.hasChild('answers'))
-			data.child(`${code}/answers`).orderByChild('position').once('value').then(snap => {
-				let answers = []
-				snap.forEach(f => {
-					if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
-					answers.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
-						width:f.val().width, position:f.val().position })
-					this.setState({ answers:answers })
-				})
+				else 
+					this.setState({ [m]:[] })
 			})
-			else 
-				this.setState({ answers:[] })
 			if (r.hasChild('versions')) 
 				data.child(`${code}/versions/gen`).once('value').then(snap => {
 					let versions = []
@@ -77,8 +65,7 @@ export class App extends Component {
 						})					
 					})
 				})
-			else
-				this.setState({ versions:[] })
+			else { this.setState({ versions:[] }) }
 		})
     }
     setActive(active) {
