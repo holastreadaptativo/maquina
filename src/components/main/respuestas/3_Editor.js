@@ -6,14 +6,19 @@ import { focus, show } from 'actions'
 export default class Editor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, md:12, sm:12, xs:12, edited:false }
+		this.state = { active:0, md:12, sm:12, xs:12, edited:false, feedback:'' }
 	}
 	componentWillMount() {
 		const { store } = this.props
-		if (!store.push)
-		data.child(`${store.code}/${store.path}/${store.id}/width`).on('value', snap => {
-			this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
-		})
+		if (!store.push) {
+			data.child(`${store.code}/${store.path}/${store.id}/width`).on('value', snap => {
+				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
+			})
+			if (store.path == 'answers')
+			data.child(`${store.code}/${store.path}/${store.id}`).on('value', snap => {
+				this.setState({ feedback:snap.val().feedback })
+			})
+		}
 	}
 	componentWillUnmount() {
 		const { store } = this.props
@@ -26,7 +31,7 @@ export default class Editor extends Component {
 	}
 	handleWidth(e) {
 		if (this.props.store.push)
-			this.props.store.setWidth({ [e.target.id]:e.target.value })
+			this.props.store.setState({ [e.target.id]:e.target.value })
 		else
 			this.setState({ [e.target.id]:e.target.value, edited:true })
 	}
@@ -58,7 +63,7 @@ export default class Editor extends Component {
 						</canvas>
 					</div>
 					<div class={show(active == 1, 'text-editor')}>
-						<TextEditor {...this.props}/>
+						<TextEditor {...this.props} data={this.state.feedback}/>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>

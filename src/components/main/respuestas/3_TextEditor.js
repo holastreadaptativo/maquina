@@ -8,19 +8,16 @@ import { data } from 'stores'
 export default class TextEditor extends Component {
     constructor(props) {
         super(props)
-        this.state = { editorState: EditorState.createEmpty(), edited:false }
+        this.state = { editorState:EditorState.createEmpty(), edited:false }
     }
     componentWillMount() {
-        const { path, push, code, id } = this.props.store
-        if (!push && path == 'answers')
-            data.child(`${code}/${push}/${id}`).once('value').then(snap => {
-                if (snap.hasChild('feedback')) {
-                    const { contentBlocks, entityMap } = htmlToDraft(snap.val().feedback)
-                    let contentState = ContentState.createFromBlockArray(contentBlocks, entityMap),
-                        editorState = EditorState.createWithContent(contentState)
-                    this.setState({ editorState })
-                }
-            })
+        const { data, store } = this.props
+        if (!store.push && store.path == 'answers' && data != '') {
+            const { contentBlocks, entityMap } = htmlToDraft(data)
+            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap)
+            const editorState = EditorState.createWithContent(contentState)
+            this.setState({ editorState:editorState })
+        }
     }    
     componentWillUnmount() {
         const { path, push, code, id } = this.props.store
@@ -31,7 +28,12 @@ export default class TextEditor extends Component {
             })
     }
     onEditorStateChange(text) {
-        this.setState({ editorState:text, edited:true })
+        if (this.props.store.push) {
+            this.setState({ editorState:text })
+            this.props.store.setState({ feedback:draftToHtml(convertToRaw(text.getCurrentContent())) })
+        }
+        else
+            this.setState({ editorState:text, edited:true })
     }
     render() {
         const { editorState } = this.state

@@ -9,19 +9,13 @@ import htmlToDraft from 'html-to-draftjs'
 class EditorConvertToHTML extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      ...this.props,
-      editorState: EditorState.createEmpty()
-    }
+    this.state = { ...props, editorState: EditorState.createEmpty() }
     if (props.textCont != '') {
-      const blocksFromHtml = htmlToDraft(props.textCont);
-      const { contentBlocks, entityMap } = blocksFromHtml;
-      const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-      const editorState = EditorState.createWithContent(contentState);
-      this.state = {
-        ...this.props,
-        editorState
-      }
+        const blocksFromHtml = htmlToDraft(props.textCont);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        this.state = { ...props,  editorState }
     }
   }
 
