@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Section, Functions, Overview } from 'components'
+import { Section, Functions, Overview, Feedback } from 'components'
+import { ejercicios } from 'actions'
 import { data } from 'stores'
 
 export class Glosa extends Component {
@@ -12,20 +13,23 @@ export class Glosa extends Component {
 			if (!snap.hasChild('count')) {
 				data.child(`${this.props.code}/${this.state.path}`).update({ count:0 })
 			}
-		})		
+		})	
+		this.print()
+	}
+	componentDidUpdate() {
+		setTimeout(() => this.print(), 100)
+	}
+	print() {
+		ejercicios('GET', { functions:this.props.feedback, variables:this.props.variables, vt:true, path:'functions' })
 	}
     render() {
-		const { option } = this.props
+		const { option, feedback } = this.props
 		return(
-        	<Section style="ejercicios glosa" condition={false} {...this.props}>
+        	<Section style="ejercicios glosa" condition={feedback.length} {...this.props}>
         		<div class="row">
 	        		<div class="feedback">
-	        			<section>
-
-
-	        			
-	        			</section>
-	        			<div class="img"/>
+	        			<Feedback functions={feedback}/>
+	        			<div class="img-duck"/>
 	        			<div class="triangle"/>
 	        			<footer/>
 	        		</div>
@@ -36,3 +40,5 @@ export class Glosa extends Component {
         )
     }
 }
+
+export Feedback from './4_Feedback'
