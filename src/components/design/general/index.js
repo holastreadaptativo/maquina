@@ -1,2 +1,2 @@
 export InsertarTexto from './InsertarTexto'
-export RespRadioButtons from './RespRadioButtons'
+export InsertarBotones from './InsertarBotones'
