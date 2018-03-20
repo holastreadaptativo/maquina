@@ -138,6 +138,8 @@
 			.text-editor
 			{
 				margin: 42px 10px 20px;
+				overflow-x: hidden;
+				overflow-y: auto;
 			}
 		}
 		.react-header
@@ -165,6 +167,7 @@
 			bottom: @margin + 10px;
 			left: @margin + @config;
 			width:  ~'calc(100vw - 2*@{margin} - @{config})';
+			z-index: 10;
 			h6
 			{
 				display: inline;
@@ -193,6 +196,7 @@
 		cursor: pointer;
 		padding: 0;
 		margin: 0;
+		z-index: 10;
 		&:hover
 		{
 			background: @main-hover;

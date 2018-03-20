@@ -78,5 +78,3 @@ export default class Editor extends Component {
 		)
 	}
 }
-
-export Devices from './3_Devices'
