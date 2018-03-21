@@ -33,7 +33,7 @@ export default class Overview extends Component {
 	    	this.state.action('MOVE', { ...this.props, i:i, f:f })
 	}
 	handleWidth(e) {
-		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:e.target.value })
+		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:Number(e.target.value) })
 	}
 	handleUpdate(params) {
 		this.state.action('UPDATE', { ...this.props, ...this.state, params:params })

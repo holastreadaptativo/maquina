@@ -20,9 +20,9 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/glosa', title:'Crear glosa', text:'Glosa', icon:'tasks', nav:['details','layers'] }, 
 				            { 
-				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['layers'] }, 
-				            /*{ 
-				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:[] },*/
+				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['toll'] }, 
+				            { 
+				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] },
 				            { 
 				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }
         				]
@@ -41,3 +41,9 @@ export const COLORS = 	{
 export const CODE = 	[ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
 
 export const SIZES = 	[ 12, 10, 9, 8, 6, 4, 3, 2 ]
+
+export const LINKS =	[
+							{ name:'bootstrap', type:'link', url:'https://goo.gl/PK5Rdx' },
+							{ name:'app.css', type:'link', url:'https://goo.gl/aMWDY3' },
+							{ name:'app.js', type:'script', url:'https://goo.gl/4SyPoR' }
+						]

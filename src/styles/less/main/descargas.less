@@ -1,36 +1,82 @@
 .react-app .descargas
 {
-	min-height: 100vh;
-	@keyframes latidos {
-		from { transform: none; }
-		50% { transform: scale(1.4); }
-		to { transform: none; }
-	}
-	#circle-css
+	h5
 	{
-		height: 100px;
-		width: 100px;
-		border-radius: 50%;
-		margin-top: 0px;
+		color: white;
+		text-transform: uppercase;
+		padding-left: 10px;
+		font-size: 12px;
+		font-weight: bold;
 		cursor: pointer;
-		transition: all .1s ease;
-		position: absolute;
-		box-shadow: 3px 3px 10px #999;
-		z-index: 99;
-		animation: latidos .5s infinite;
-		transform-origin: center;
-		display: inline-block;
-	}
-	text-align: center;
-	button
-	{
-		position: absolute;
-		margin: 0 auto;
-		top: 45vh;
-		z-index: 100;
-		&.b
+		background: @main-hover;
+		width: auto;
+		.glyphicon
 		{
-			margin-top: 30px;
+			color: white;
+			font-size: 13px;
+			float: right;	
+			margin-right: 10px;
+		}
+		&.active
+		{
+			background: @sec-hover;
+		}
+	}
+	form
+	{	
+		a.input
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 5px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(100% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				color: #f6f6f6;
+				background: lighten(@main-color, 5%);
+			}
+		}
+		.state
+		{
+			color: white;
+			border-left: 30px solid @sec-hover;
+			h6
+			{
+				font-size: 12px;
+				padding-left: 10px;
+			}
+		}
+		button
+		{
+			background: @sec-hover;
+			color: white;
+			border-radius: 0;
+			padding: 5px 35px;
+			margin-top: 5px;
+			margin-left: 10px;
+		}
+		a.box
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 30px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(50% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				background: lighten(@main-color, 5%);
+			}
+			&:active
+			{
+				background: @sec-hover;
+			}
 		}
 	}
 }

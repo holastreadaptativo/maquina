@@ -19,9 +19,9 @@ export default class Header extends Component {
                     <div class="code">
                         <h5>
                         {
-                            ROUTES[active].nav.map((m, i) => { return (
+                            ROUTES[active].nav.map((m, i) =>
                                 <i key={i} onClick={() => setOption(option != i ? i : null)}>{m}</i>
-                            )})
+                            )
                         }
                         </h5>
                         <h5 class="hidden">{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
@@ -31,14 +31,14 @@ export default class Header extends Component {
                 <nav>
                     <ul>
                     {
-                        ROUTES.map((m, i) => { return (
+                        ROUTES.map((m, i) => 
                             <Link key={i} to={m.path} onClick={() => setActive(i)}>
                                 <li class={focus(active == i, 'active')}>
                                     <span class={`glyphicon glyphicon-${m.icon}`}/>
                                     <span class="hover">{m.text}</span>
                                 </li>
                             </Link>
-                        )})
+                        )
                     }
                     </ul>
                 </nav>

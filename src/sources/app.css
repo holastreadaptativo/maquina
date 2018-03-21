@@ -1,0 +1,28 @@
+body
+{
+	padding: 0;
+	margin: 0;
+	background: #fafafa;
+}
+.design
+{
+	min-width: 100px;
+	min-height: 200px;
+	padding: 15px 0px;
+}
+.design .tag
+{
+	paddign: 0;
+	margin: 0 0 10px;
+}
+.design .tag canvas
+{
+	border: 1px solid #ddd;
+	width: 100%;
+}
+.design .tag .general
+{	
+	border: 1px solid #ddd;
+	width: 100%;
+	background: white;
+}
