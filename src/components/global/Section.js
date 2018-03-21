@@ -6,13 +6,11 @@ import { show } from 'actions'
 export default class Section extends Component {
     handlerSubmit(e) {
 		e.preventDefault()
-    	const { active, setActive, download } = this.props
-
-		if (!download) {
-			let i = active + 1; setActive(i)
+		if (!this.props.download) {
+			let i = this.props.active + 1; this.props.setActive(i)
 			browserHistory.push(ROUTES[i].path)
 		} else {
-			download()
+			this.props.download()
 		}
 	}
 	render() {

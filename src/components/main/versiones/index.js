@@ -32,9 +32,6 @@ export class Versiones extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.print )
 	}
-	handleChange(e) {
-		this.setState({ [e.target.id.split('-')[1]]:e.target.value })
-	}
 	print() {
 		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
 	}

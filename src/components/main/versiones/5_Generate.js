@@ -1,50 +1,21 @@
 import React, { Component } from 'react'
-import { focus, versiones, shuffle } from 'actions'
-import { data } from 'stores'
+import { focus, versiones } from 'actions'
 
 export default class Generate extends Component {
 	constructor() {
 		super()
-		this.state = { fns:[], rank:[] }
+		this.state = { fns:[], rank:[], action:versiones }
 	}
 	componentWillMount() {
 		let fns = []
 		this.props.variables.forEach(m => {
-			if (m.type == 'funcion') {
-				fns.push(m)
-				this.setState({ fns:fns })
-			}
+			if (m.type == 'funcion')
+				fns.push(m); this.setState({ fns:fns })
 		})
 	}
-	handleChange(e) {
-		this.props.setState({ [e.target.id.split('-')[1]]:e.target.value })
-	}
-	generate(e) {
+	handleGenerate(e) {
 		e.preventDefault()
-		const { fns } = this.state
-		const { code, limit, selected } = this.props
-
-		let matrix = versiones('GEN', { ...this.props, fns:fns }), total = matrix.length
-		matrix = shuffle(matrix).slice(0, limit)
-
-		let versions = matrix.slice(0, selected), box = []
-		for (let i = 0; i < selected; i++) {
-			box[i] = []
-			for (let j = 0; j < selected; j++) {
-				let sum = 0
-				for (let k = 0; k < versions[i].length; k++) {
-					let a = versions[i][k].val, b = versions[j][k].val, c = versions[i][k].rank
-					if (i != j && c != 0)		
-						if (c > 0) sum += Math.abs((a - b)/c)
-						else sum += 1
-				}
-				box[i][j] = Number(sum.toFixed(5))
-			}
-		}
-		data.child(`${code}/versions`).set({ 
-			bup:{...matrix.slice(selected)}, gen:versions, box:box,
-			limit:Math.min(limit, total), selected:Math.min(limit, selected), total:total
-		})
+		this.state.action('GEN', { ...this.props, fns:this.state.fns })
 	}
 	render() {
 		const { total, limit, selected, onChange } = this.props
@@ -72,7 +43,7 @@ export default class Generate extends Component {
 								<input id="gen-selected" defaultValue={selected} onChange={onChange} max={limit} type="number"/>
 							</div>						
 						</div>
-						<button class="btn" onClick={::this.generate}>Generar</button>
+						<button class="btn" onClick={::this.handleGenerate}>Generar</button>
 					</form>
 				</div>
 		    </aside>

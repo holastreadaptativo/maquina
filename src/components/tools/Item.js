@@ -10,9 +10,7 @@ export default class Item extends Component {
 					<h5 onClick={() => this.props.setActive(this.props.id)} class={focus(active, 'active')}>{this.props.title} 
 						<i class={`glyphicon glyphicon-chevron-${active ? 'up' : 'down'}`}/>
 					</h5>					
-					<div class={show(active)}>
-						{ this.props.children }
-					</div>
+					<div class={show(active)}>{this.props.children}</div>
 				</div>
 			</form>
 		)

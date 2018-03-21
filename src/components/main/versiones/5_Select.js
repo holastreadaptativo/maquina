@@ -1,30 +1,14 @@
 import React, { Component } from 'react'
-import { focus } from 'actions'
-import { data } from 'stores'
+import { focus, versiones } from 'actions'
 
 export default class Select extends Component {
     handleSelect(m, i) {
-		this.props.setState({ vars:m.vars, active:i })
+		this.props.setState({ vars:m.vars, active:i, action:versiones })
 	}
 	handleRemove(m, i) {
-		const { code } = this.props
 		if (confirm('¿Quieres eliminar esta versión?')) {
-			let ref = data.child(`${code}/versions`)
-			ref.child('gen').once('value').then(snap => {
-				snap.forEach(v => {
-					if (v.val().id == m.id) {
-						ref.child(`gen/${v.key}`).remove().then(() => {
-							ref.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
-								w.forEach(x => { 
-									ref.child('gen').push( x.val() )
-									ref.child(`bup/${x.key}`).remove()
-								})
-							})	
-						})
-					}					
-				})
-			})
-			this.props.setState({ active:i-1 })
+			this.state.action('REMOVE', { code:this.props.code, id:m.id })
+			this.props.setState({ active:i - 1 })
 		}		
 	}
 	render() {

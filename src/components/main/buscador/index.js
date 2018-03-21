@@ -4,7 +4,7 @@ import { DEFAULT } from 'stores'
 export class Buscador extends Component {
 	constructor() {
 		super()
-		this.state = { code:DEFAULT.CODE, length:0, search:[], temp:0, selected:false }
+		this.state = { code:DEFAULT.CODE, length:0, search:[], selected:false, temp:0 }
 	}
 	render() {
 		return (

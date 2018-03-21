@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { checkAll, show } from 'actions'
+import { data, DEFAULT } from 'stores'
 import { Section } from 'components'
-import { data } from 'stores'
+import { checkAll } from 'actions'
 
 export class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], clicked:false, advanced:false, checked:[[], []] }
+		this.state = { variables:[], clicked:false, checked:[[], []] }
 	}
 	componentWillMount() {
 		data.child(`${this.props.code}/variables`).on('value', snap => {
@@ -16,8 +16,8 @@ export class Variables extends Component {
 				this.setState({ variables:variables })
 			})
 			if (variables.length == 0) {
-				let key = data.child(`${this.props.code}/variables`).push({ var:'', val:'', type:'numero', vt:'', res:'' }).key
-				variables.push({ id:key, var:'', val:'', type:'numero', vt:'', res:'' })
+				let key = data.child(`${this.props.code}/variables`).push(DEFAULT.EMPTY).key
+				variables.push({ id:key, ...DEFAULT.EMPTY })
 				this.setState({ variables:variables })
 			}
 			this.setState({ checked:checkAll(variables) })
@@ -29,23 +29,18 @@ export class Variables extends Component {
 	handleClick() {
 		this.setState({ clicked:!this.state.clicked })
 	}
-	setAdvanced() {
-		let advanced = !this.state.advanced
-		data.child(this.props.code).update({ advanced:advanced })
-		this.setState({ advanced:advanced })
-	}
 	checkAll() {
 		this.setState({ checked:checkAll(this.state.variables) })
 		this.props.setNotification(!this.state.checked[0][6] ? 'Error en el ingreso de variables' : null, 'danger')
 	}
 	render() {
-		const { variables, checked, advanced } = this.state
+		const { variables, checked } = this.state
 		const { code, setActive } = this.props
 		return (
 			<Section style="variables" condition={checked[0][6]} {...this.props}>
 				<div class="row">
-					<Resume code={code} advanced={advanced} variables={variables}/>
-					<div class={show(!advanced, 'editor col-xs-9')}>
+					<Resume code={code} variables={variables}/>
+					<div class="editor col-xs-9">
 						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
 					</div>

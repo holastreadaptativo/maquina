@@ -5,7 +5,8 @@ export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows', 
 
 export const DEFAULT = 	{
 							CODE:'000000000000000',
-							DEVICE:DEVICES[0].size
+							DEVICE:DEVICES[0].size,
+							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' }
 						}
 
 export const ROUTES = 	[ 

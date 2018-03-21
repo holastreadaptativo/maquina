@@ -3,13 +3,13 @@ import SplitPane from 'react-split-pane'
 
 export default class Configuracion extends Component {
     render() {
-        let margin = 20
+        let min = 20, max = window.innerWidth - min - 240
         return(
         	<div class="config">
         		<div class="slider-control-container">
 					<div class="container">
 						<h3>Configuración</h3>
-						<SplitPane defaultSize="50%" minSize={margin} maxSize={window.innerWidth - margin - 240} split="vertical" class="resizable">
+						<SplitPane defaultSize="50%" minSize={min} maxSize={max} split="vertical" class="resizable">
 				            <div class="static-background"/>
 				            <div class="dynamic-background"/>
 				        </SplitPane>

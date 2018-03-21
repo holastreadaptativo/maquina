@@ -16,7 +16,7 @@ export default class GraficoDatos extends Component {
 		} : props.params
 	}
 	componentDidUpdate() {
-		datos.graficoDatos({ container:$('container'), params:this.state, variables:this.props.variables, versions:[], vt:true })
+		datos.graficoDatos({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
 	}
 	handleActive(active) {
 		this.setState({ active:active })
@@ -77,19 +77,9 @@ export default class GraficoDatos extends Component {
 				</Item>
 				<Item id={k++} active={active} title="Lines" setActive={::this.handleActive}>
 					<Select id="extra" default={extra} prefix="lines" update={::this.setState} options={['no', 'proyeccion', 'limite']}/>
-					{
-						extra == 'limite' && (
-							<Input id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text"/>
-						)
-					}
-					{
-						extra != 'no' && (
-							<o>
-								<Input id="lineColor" default={lineColor} update={::this.setState} type="color"/>
-								<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
-							</o>
-						)
-					}					
+					<Input hide={extra != 'limite'} id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text"/>
+					<Input hide={extra == 'no'} id="lineColor" default={lineColor} update={::this.setState} type="color"/>
+					<Input hide={extra == 'no'} id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>				
 				</Item>
 			</Editor>
 		)

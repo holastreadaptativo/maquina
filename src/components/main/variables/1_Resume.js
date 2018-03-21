@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { setFormat, show } from 'actions'
+import { setFormat } from 'actions'
 import { CODE } from 'stores'
 
 export default class Resume extends Component {
 	render() {
-		const { advanced, code, variables } = this.props
+		const { code, variables } = this.props
 		return (
 			<div class="resume col-xs-3">
 				<h5><b>Resumen</b></h5>
@@ -14,7 +14,7 @@ export default class Resume extends Component {
 						<h6 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h6>
 					)})
 				}
-				<div class={show(!advanced)}>
+				<div>
 					<h6 class="code"/>
 					<h6><b>Variables:</b></h6>
 					<ul> 

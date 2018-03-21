@@ -24,10 +24,7 @@ export default class Search extends Component {
 					if (c.key.toString().includes(n)) {
 						let t = 0, l = 0, v = 0
 						if (c.hasChild('versions')) {
-							let m = c.val().versions
-							v = m.selected
-							t = m.total
-							l = m.limit
+							let m = c.val().versions; v = m.selected; t = m.total; l = m.limit
 						}
 						search.push({ id:c.key, total:t, limit:l, versions:v })
 						this.props.setState({ search:search })

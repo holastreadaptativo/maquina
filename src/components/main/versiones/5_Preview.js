@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 
 export default class Preview extends Component {
 	render() {
-		const { functions } = this.props
-        return(
+		return(
         	<div class="col-xs-9 preview">	
 				<div class="design">
 				{	
-					functions.map((m, i) => 
+					this.props.functions.map((m, i) => 
 						<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 						{
 							m.tag != 'general' ? 
