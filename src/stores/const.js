@@ -1,12 +1,26 @@
-export const DEVICES = 	[ 	{ name:'DESKTOP', size:1200, icon:'desktop_windows', col:'md' },
+export const DEVICES = 	[ 	
+							{ name:'DESKTOP', size:1200, icon:'desktop_windows', col:'md' },
 							{ name:'TABLET', size:768, icon:'tablet_mac', col:'sm' },
 							{ name:'PHONE', size:320, icon:'phone_iphone', col:'xs' }
  						]
+
+export const LINKS =	[
+							{ name:'bootstrap', type:'link', url:'https://goo.gl/PK5Rdx' },
+							{ name:'app.css', type:'link', url:'https://goo.gl/aMWDY3' },
+							{ name:'app.js', type:'script', url:'https://goo.gl/4SyPoR' }
+						]
 
 export const DEFAULT = 	{
 							CODE:'000000000000000',
 							DEVICE:DEVICES[0].size,
 							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' }
+						}
+
+export const LABELS =	{
+							CODE:['Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio'],
+							VARS:['#', 'Variable', 'Tipo', 'Valores', 'Restricción', 'VT', ''],
+							SIZE:[ 12, 10, 9, 8, 6, 4, 3, 2 ],
+							TYPE:['var', 'type', 'val', 'res', 'vt']
 						}
 
 export const ROUTES = 	[ 
@@ -38,13 +52,3 @@ export const COLORS = 	{
 							border:'#cccccc', 
 							grid:'#dddddd' 
 						}
-
-export const CODE = 	[ 'Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio' ]
-
-export const SIZES = 	[ 12, 10, 9, 8, 6, 4, 3, 2 ]
-
-export const LINKS =	[
-							{ name:'bootstrap', type:'link', url:'https://goo.gl/PK5Rdx' },
-							{ name:'app.css', type:'link', url:'https://goo.gl/aMWDY3' },
-							{ name:'app.js', type:'script', url:'https://goo.gl/4SyPoR' }
-						]

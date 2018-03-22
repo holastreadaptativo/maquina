@@ -1,37 +1,28 @@
 import React, { Component } from 'react'
-import { focus, versiones } from 'actions'
+import { action, focus } from 'actions'
+import { Well } from 'components'
 
 export default class Select extends Component {
-	constructor() {
-		super()
-		this.state = { action:versiones }
-	}
-    handleSelect(m, i) {
+	handleSelect(m, i) {
 		this.props.setState({ vars:m.vars, active:i })
 	}
 	handleRemove(m, i) {
 		if (confirm('¿Quieres eliminar esta versión?')) {
-			this.state.action('REMOVE', { code:this.props.code, id:m.id })
+			action.versiones('REMOVE', { code:this.props.code, id:m.id })
 			this.props.setState({ active:i - 1 })
-		}		
+		}
 	}
 	render() {
-		const { versions, active, vt } = this.props
-        return(
-        	<div class="col-xs-3 seleccion">
-				<h5><b>Selección</b></h5>
-				<h4 class={focus(active == -1, 'active')} onClick={() => this.handleSelect(vt, -1)}>
-					Versión VT
-				</h4>
-				{
-					versions.map((m, i) => 
-						<h4 key={i} id={m.id} class={focus(active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
-							Versión {m.id + 1}
-							<span class="glyphicon glyphicon-remove close" onClick={() => this.handleRemove(m, i)}/>
-						</h4>
-					)
-				}
-			</div>
+		return (
+        	<Well title="Selección">
+			{
+				[this.props.vt, ...this.props.versions].map((m, i) => 
+					<h4 key={i} id={m.id} class={focus(this.props.active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
+						Versión <b>{m.id}</b> {m.id != 'vt' && (<span class="glyphicon glyphicon-remove close" onClick={() => this.handleRemove(m, i)}/>)}
+					</h4>
+				)
+			}
+			</Well>
         )
     }
 }

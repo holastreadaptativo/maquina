@@ -6,7 +6,7 @@ import { data } from 'stores'
 export class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { total:0, limit:128, selected:32, vars:[], active:-1, vt:[] }
+		this.state = { total:0, limit:128, selected:32, vars:[], active:0, vt:[] }
 		this.print = this.print.bind(this)
 	}
 	componentWillMount() {

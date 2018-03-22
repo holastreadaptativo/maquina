@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import { data, DEFAULT, LABELS } from 'stores'
 import $, { focus, show } from 'actions'
-import { data, DEFAULT } from 'stores'
 
 export default class Table extends Component {
 	constructor() {
@@ -34,62 +34,48 @@ export default class Table extends Component {
 	}
 	render() {
 		let error = this.props.checked[1]
-		return (
-			<form>
+		return (	
+			<section>
 				<table class="table table-condensed table-hover">
 					<thead>
-						<tr>
-							<th>#</th>
-							<th>Variable</th>
-							<th>Tipo</th>
-							<th>Valores</th>
-							<th>Restricción</th>
-							<th>VT</th>
-							<th></th>
-						</tr>
+						<tr>{ LABELS.VARS.map((m, i) => <th key={i}>{m}</th>) }</tr>
 					</thead>
 					<tbody>
 					{
 						this.props.variables.map((m, i) =>
 							<tr key={i} class={focus(!error[i], 'error')}>
-								<td>{i+1}</td>
+								<td><h6>{i+1}</h6></td>
+								{
+									LABELS.TYPE.map((n, j) => 
+										<td key={j} class={n}>
+										{
+											n != 'type' ?									
+											<input id={`${n}-${m.id}`} class="form-control" defaultValue={m[n]}
+												onChange={() => this.handleUpdate(n, m.id)} type="text"></input>
+											: 
+											<select id={`${n}-${m.id}`} class="form-control" defaultValue={m[n]}
+												onChange={() => this.handleUpdate(n, m.id)}>
+												<option value="numero">Número</option>
+												<option value="funcion">Función</option>
+												<option value="texto">Texto</option>
+											</select>
+										}
+										</td>
+									)
+								}
 								<td>
-									<input id={`var-${m.id}`} type="text" class="form-control vr" 
-									onChange={() => this.handleUpdate('var', m.id)} defaultValue={m.var}></input>
-								</td>
-								<td>
-									<select id={`type-${m.id}`} class="form-control" defaultValue={m.type} 
-									onChange={() => this.handleUpdate('type', m.id)}>
-										<option value="numero">Número</option>
-										<option value="funcion">Función</option>
-										<option value="texto">Texto</option>
-									</select>
-								</td>
-								<td>
-									<input id={`val-${m.id}`} type="text" class="form-control" 
-									onChange={() => this.handleUpdate('val', m.id)} defaultValue={m.val}></input>
-								</td>
-								<td>
-									<input id={`res-${m.id}`} type="text" class="form-control" 
-									onChange={() => this.handleUpdate('res', m.id)} defaultValue={m.res}></input>
-								</td>
-								<td>
-									<input id={`vt-${m.id}`} type="text" class="form-control vt" 
-									onChange={() => this.handleUpdate('vt', m.id)} defaultValue={m.vt}></input>
-								</td>
-								<td>
-									<span class="glyphicon glyphicon-remove" onClick={() => this.handleRemove(m)} title="Eliminar"/>
+									<h6><span class="glyphicon glyphicon-remove" onClick={() => this.handleRemove(m)} title="Eliminar"/></h6>
 								</td>
 							</tr>
 						)
 					}
 					</tbody>
 				</table>
-				<div class="add">
-					<i class={show(this.state.backup, 'btn-restore')} onClick={::this.handleRestore}>restore</i>
+				<nav class="table">
+					<i class={show(this.state.backup)} onClick={::this.handleRestore}>restore</i>
 					<button class="btn btn-default" onClick={this.handleCreate.bind(this)}>Agregar</button>
-				</div>
-			</form>
+				</nav>
+			</section>
 		)
 	}
 }

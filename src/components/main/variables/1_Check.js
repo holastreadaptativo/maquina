@@ -6,7 +6,7 @@ export default class Check extends Component {
 	}
 	render() {
 		return (
-			<form>
+			<section>
 				<ul class="checklist">
 					<li class="title"><b>Requisitos</b></li>
 					<li title="Crear al menos una variable, esta debe cumplir con todas las condiciones que suceden a esta">
@@ -28,7 +28,7 @@ export default class Check extends Component {
 						<span class={this.check(5)}/>Ingresar variables distintas, no repetir la letra
 					</li>
 				</ul>
-			</form>
+			</section>
 		)
 	}
 }

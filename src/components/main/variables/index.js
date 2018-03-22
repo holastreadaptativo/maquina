@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import { Section, Panel } from 'components'
 import { data, DEFAULT } from 'stores'
-import { Section } from 'components'
 import { checkAll } from 'actions'
 
 export class Variables extends Component {
@@ -40,10 +40,10 @@ export class Variables extends Component {
 			<Section style="variables" condition={checked[0][6]} {...this.props}>
 				<div class="row">
 					<Resume code={code} variables={variables}/>
-					<div class="editor col-xs-9">
+					<Panel container="table">
 						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
-					</div>
+					</Panel>
 				</div>
 			</Section>
 		)

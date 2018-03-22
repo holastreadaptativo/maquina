@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Section, Design, Functions, Overview } from 'components'
-import { data, SIZES, DEVICES } from 'stores'
+import { data, LABELS, DEVICES } from 'stores'
 
 export class Respuestas extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ export class Devices extends Component {
 							<i>{n.icon}</i>
 							<select id={n.col} defaultValue={devices[j]} onChange={onChange}>
 							{
-								SIZES.map((m, i) =>
+								LABELS.SIZE.map((m, i) =>
 									<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
 								)
 							}	

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ejercicios, focus } from 'actions'
 import { Modal } from 'react-bootstrap'
 import { FUNCIONES } from 'components'
-import { data, SIZES } from 'stores'
+import { data, LABELS } from 'stores'
 
 export default class Overview extends Component {
 	constructor(props) {
@@ -82,7 +82,7 @@ export default class Overview extends Component {
 										<li>
 											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
 											{
-												SIZES.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> )
+												LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> )
 											}
 											</select>
 										</li>

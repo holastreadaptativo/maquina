@@ -35,3 +35,7 @@ export function money(amount) {
         return i > 0 && c !== ',' && (a.length - i) % 3 === 0 ? '.' + c : c
     })
 }
+
+import * as fn from 'actions'
+
+export const action = { ejercicios:fn.ejercicios, versiones:fn.versiones }
