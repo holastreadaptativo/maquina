@@ -95,7 +95,7 @@ class EditorConvertToHTML extends Component {
 		    <div class="row">
 		        <div class="col-sm-12">
 		    	    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}
-		    	    toolbar={{ list:{ inDropdown:true }, link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
+		    	    toolbar={{ link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
 		        </div>
 		    </div>    
 	  	)

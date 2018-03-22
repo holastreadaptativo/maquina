@@ -9,9 +9,11 @@ export class Descargas extends Component {
 		this.state = { url:'https://www.youtube.com/embed/755MWeNQ34g' }
 	}
     componentDidMount() {
-		data.child(`${this.props.code}/variables`).once('value').then(snap => {
+    	data.child(`${this.props.code}/variables`).once('value').then(snap => {
+			let vars = []
 			snap.forEach(v => {
-				this.setState({ vt:{ id:'vt', vars:[{ var:v.val().var, val:v.val().vt }] } })
+				vars.push({ var:v.val().var, val:v.val().vt })
+				this.setState({ vt:{ id:'vt', vars:vars } })
 			})
 		})
 	}
