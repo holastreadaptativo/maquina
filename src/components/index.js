@@ -46,7 +46,7 @@ export class App extends Component {
 						snap.forEach(f => {
 							if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
 							functions.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
-								width:f.val().width, position:f.val().position })
+								width:f.val().width, position:f.val().position, json:JSON.stringify(f.val()) })
 							this.setState({ [m]:functions })
 						})
 					})

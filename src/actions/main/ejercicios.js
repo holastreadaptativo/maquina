@@ -1,6 +1,6 @@
 import { FUNCIONES } from 'components'
+import $, { date } from 'actions'
 import { data } from 'stores'
-import $ from 'actions'
 
 export function ejercicios(action, state) {
 	switch(action) {
@@ -23,7 +23,7 @@ export function ejercicios(action, state) {
 				let count = snap.val().count
 				let ref = data.child(`${code}/${path}`).push()
 				ref.update({ 
-					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
+					function:fn, params:params, date:date(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
 					data.child(`${code}/${path}`).update({ count:count+1 })
 					if (path == 'answers')
@@ -35,9 +35,7 @@ export function ejercicios(action, state) {
 		case 'UPDATE': {
 			const { code, path, params, id } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(`${code}/${path}/${id}`).update({
-				params:params, date:(new Date()).toLocaleString()
-			})
+			data.child(`${code}/${path}/${id}`).update({ params:params, date:date() })
 			break;
 		}
 		case 'REMOVE': {
@@ -88,6 +86,18 @@ export function ejercicios(action, state) {
 		    	})
 		    }
 			break;
+		}
+		case 'CLONE': {
+			const { code, path, clone } = state
+
+			data.child(`${code}/${path}`).once('value').then(snap => {
+				let count = snap.val().count
+				let ref = data.child(`${code}/${path}/`).push()
+				ref.update({...JSON.parse(clone)}); ref.update({ position:count, date:date() }).then(() => {
+					data.child(`${code}/${path}`).update({ count:count+1 })
+				})
+			})
+			
 		}
 	}
 }

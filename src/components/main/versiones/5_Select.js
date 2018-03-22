@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import { focus, versiones } from 'actions'
 
 export default class Select extends Component {
+	constructor() {
+		super()
+		this.state = { action:versiones }
+	}
     handleSelect(m, i) {
-		this.props.setState({ vars:m.vars, active:i, action:versiones })
+		this.props.setState({ vars:m.vars, active:i })
 	}
 	handleRemove(m, i) {
 		if (confirm('¿Quieres eliminar esta versión?')) {

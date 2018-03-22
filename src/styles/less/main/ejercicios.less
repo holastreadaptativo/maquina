@@ -349,6 +349,42 @@
 					}
 				}
 			}
+			.clone
+			{
+				select
+				{
+					background: transparent;
+					border: 1px solid @sec-hover;
+					padding: 5px 20px;
+					border-radius: 0;
+					color: white;
+					transition: all .3s ease;
+					width: ~'calc(100% - 20px)';
+					margin: 5px 10px;
+					cursor: pointer;
+					outline: none;
+					font-size: 13px;
+					&:hover
+					{
+						color: #f6f6f6;
+						background: lighten(@main-color, 5%);
+						outline: none;
+					}
+					option
+					{
+						background: @main-color;
+					}
+				}
+				button
+				{
+					background: @sec-hover;
+					color: white;
+					border-radius: 0;
+					padding: 5px 30px;
+					margin-top: 5px;
+					margin-left: 10px;
+				}
+			}
 		}
 	}
 }

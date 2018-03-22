@@ -43,6 +43,11 @@ export default class Overview extends Component {
 		if (confirm('¿Estas seguro de borrar la función?'))
 			this.state.action('REMOVE', { ...this.props, id:id })
 	}
+	handleClone() {
+		let val = this.refs.clone.value
+		if (val != 0 && val != -1)
+			this.state.action('CLONE', { ...this.props, clone:val })
+	}
 	getComponent() {
 		let FX = null
 		FUNCIONES.forEach(m => { 
@@ -77,9 +82,7 @@ export default class Overview extends Component {
 										<li>
 											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
 											{
-												SIZES.map((m, i) => { return (
-													<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-												)})
+												SIZES.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> )
 											}
 											</select>
 										</li>
@@ -96,6 +99,18 @@ export default class Overview extends Component {
 						}
 						</tbody>
 					</table>
+					<div class="clone">
+						<select ref="clone" class="form-control" defaultValue="-1">
+							<option value="-1" disabled>Selecciona una función</option>
+							<option value="0" disabled>Ejercicio</option>
+							{ functions.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
+							<option value="0" disabled>Respuesta</option>
+							{ answers.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
+							<option value="0" disabled>Glosa</option>
+							{ feedback.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
+						</select>
+						<button class="btn" onClick={::this.handleClone}>Clonar</button>
+					</div>
 				</div>
 			    <Modal show={this.state.modal} onHide={::this.handleModal} bsClass="react-modal">
 					{ this.getComponent() }					
