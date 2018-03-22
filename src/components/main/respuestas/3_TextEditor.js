@@ -39,7 +39,8 @@ export default class TextEditor extends Component {
         return (
             <div class="row">
                 <div class="col-sm-12">
-                    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}/>
+                    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}
+                    toolbar={{ list:{ inDropdown:true }, link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
                 </div>
                 <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))} class="col-md-12 hidden"/>
             </div>

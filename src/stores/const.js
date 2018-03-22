@@ -23,9 +23,9 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['toll'] }, 
 				            { 
-				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] },
+				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] }/*,
 				            { 
-				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }
+				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }*/
         				]
 
 export const COLORS = 	{
