@@ -48,14 +48,16 @@ section.well
 				display: initial;
 			}
 		}
+		&.title
+		{
+			background: darken(@info-color, 5%);
+			text-transform: uppercase;
+			color: darken(@main-hover, 10%);
+		}
 	}
 	h5, h6.br
 	{
 		margin-bottom: 20px;
-	}
-	h6 b
-	{
-		font-size: 13px;
 	}
 }
 section.panel
@@ -70,6 +72,126 @@ section.panel
 	padding: 10px 0px 20px;
 	transition: all .3s ease;
 	width: ~'calc(100% - 250px)';
+}
+section
+{
+	table.table
+	{
+		margin: -7px auto 0;
+		padding: 0;
+		width: ~'calc(100% - 30px)';
+		thead
+		{
+			color: @main-color;
+			font-size: 14px;
+			tr 
+			{
+				th
+				{
+					padding: 10px;
+				}
+			}
+		}
+		tbody
+		{
+			color: @main-color;
+			text-align: left;
+			tr 
+			{
+				td
+				{			
+					.form-control
+					{
+						border-radius: 0;
+					}
+					&.type
+					{
+						min-width: 120px;
+					}
+					&.var, &.vt
+					{
+						max-width: 120px;
+					}
+					h6
+					{
+						font-size: 13px;
+						font-weight: bold;
+					}
+					span
+					{
+						cursor: pointer;
+						color: @info-color;
+						transition: color .1s ease;
+					}
+				}
+				&:hover
+				{
+					background-color: #f6f6f6;				
+					span
+					{
+						color: darken(@info-color, 15%);
+						&:hover
+						{
+							color: @sec-hover;
+						}
+					}
+				}
+				&.error
+				{
+					background: @sec-hover;
+					color: white;
+				}
+			}
+		}
+	}
+	nav.table
+	{
+		text-align: right;
+		width: 100%;
+		button
+		{
+			margin: 20px 20px;
+			border-radius: 0;
+			padding: 7px 50px;
+		}
+		i
+		{
+			font-size: 25px;
+			position: relative;
+			top: 9px;
+			right: 7px;
+			cursor: pointer;
+			transition: color .3s ease;
+			&:hover
+			{
+				color: @sec-hover;
+			}
+		}
+	}
+	ul.checklist
+	{
+		color: #222;
+		font-size: 13px;
+		list-style: none;
+		margin: -80px 20px 0;
+		span
+		{
+			margin-left: 5px;
+			margin-right: 10px;
+			&.glyphicon-ok
+			{
+				color: green;
+			}
+			&.glyphicon-remove
+			{
+				color: red;
+			}
+		}
+		li.title
+		{
+			margin-bottom: 5px;
+		}
+	}
 }
 aside
 {
@@ -98,122 +220,5 @@ aside
 			font-size: 15px;
 			margin: 0;
 		}
-	}
-}
-table.table
-{
-	margin: 0 auto;
-	padding: 0;
-	width: ~'calc(100% - 40px)';
-	thead
-	{
-		color: @main-color;
-		font-size: 14px;
-		tr 
-		{
-			th
-			{
-				padding: 10px;
-			}
-		}
-	}
-	tbody
-	{
-		color: @main-color;
-		text-align: left;
-		tr 
-		{
-			td
-			{			
-				.form-control
-				{
-					border-radius: 0;
-				}
-				&.type
-				{
-					min-width: 120px;
-				}
-				&.var, &.vt
-				{
-					max-width: 120px;
-				}
-				h6
-				{
-					font-size: 13px;
-					font-weight: bold;
-				}
-				span
-				{
-					cursor: pointer;
-					color: @info-color;
-					transition: color .1s ease;
-				}
-			}
-			&:hover
-			{
-				background-color: #f6f6f6;				
-				span
-				{
-					color: darken(@info-color, 15%);
-					&:hover
-					{
-						color: @sec-hover;
-					}
-				}
-			}
-			&.error
-			{
-				background: @sec-hover;
-				color: white;
-			}
-		}
-	}
-}
-nav.table
-{
-	text-align: right;
-	width: 100%;
-	button
-	{
-		margin: 20px 20px;
-		border-radius: 0;
-		padding: 7px 50px;
-	}
-	i
-	{
-		font-size: 25px;
-		position: relative;
-		top: 9px;
-		right: 7px;
-		cursor: pointer;
-		transition: color .3s ease;
-		&:hover
-		{
-			color: @sec-hover;
-		}
-	}
-}
-ul.checklist
-{
-	color: #222;
-	font-size: 13px;
-	list-style: none;
-	margin: -80px 20px 0;
-	span
-	{
-		margin-left: 5px;
-		margin-right: 10px;
-		&.glyphicon-ok
-		{
-			color: green;
-		}
-		&.glyphicon-remove
-		{
-			color: red;
-		}
-	}
-	li.title
-	{
-		margin-bottom: 5px;
 	}
 }

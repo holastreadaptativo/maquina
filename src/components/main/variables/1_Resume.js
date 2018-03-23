@@ -8,19 +8,19 @@ export default class Resume extends Component {
 		const { code, variables } = this.props
 		return (
 			<Well title="Resumen">
-				<h6><b>Ejercicio:</b></h6>
+				<h4 class="title">Ejercicio</h4>
 				{
 					LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-						<h6 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h6>
+						<h4 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h4>
 					)})
 				}
 				<h6 class="br"/>
-				<h6><b>Variables:</b></h6>
+				<h4 class="title">Variables</h4>
 				<ul> 
 				{
 					variables.map(m => { 
 						if (m.var != '' && m.val != '') return (
-							<h6 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h6>
+							<h4 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h4>
 						)
 					})
 				}
