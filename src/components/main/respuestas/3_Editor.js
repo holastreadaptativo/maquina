@@ -56,7 +56,7 @@ export default class Editor extends Component {
 					{this.props.children}
 				</main>
 				<main class="preview">
-					<div class={show(active == 0, 'container')}>
+					<div class={show(active == 0, 'canvas')}>
 						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
 					</div>

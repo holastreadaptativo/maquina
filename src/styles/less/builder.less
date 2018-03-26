@@ -1,3 +1,4 @@
+@import "global/index";
 @import "tools/index";
 
 .react-app
@@ -7,23 +8,6 @@
 	min-height: 100vh;
 	padding: 50px 25px 50px 85px;
 	transition: all .3s ease;
-	.react-continue
-	{
-		text-align: right;
-		.btn-success
-		{
-			margin-top: 20px;
-			margin-right: 0px;
-			background: @main-color;
-			border-color: @main-hover;
-			border-radius: 0;
-			padding: 7px 40px;
-			&:hover
-			{
-				background: @main-hover;
-			}
-		}
-	}
 	&.slim
 	{
 		background-color: @gray-color;
@@ -36,14 +20,65 @@
 			}	
 		}
 	}
-	.color-line
+	div.color-line
 	{
-		height: 2px;
+		height: 3px;
+    	width: 100%;
+    	background: linear-gradient(to right, @color-medicion, @color-algebra, @color-numeracion, @color-datos, @color-geometria);
 	}
 }
+
 /*
-div
+.config
 {
+	max-height: 300px;
+	.slider-control-container
+	{
+		margin:0 ;
+		width: 100%;
+		padding-left: 50px;
+		h3 
+		{
+			margin-bottom: 20px;
+		}
+		.resizable
+		{
+			max-height: 500px !important;
+			margin-left: 140px;
+			width: ~'calc(100% - 220px)';
+			margin-bottom: 60px;
+			.static-background
+			{
+				background: @sec-hover;
+				height: 100%;
+				border-right: 1px solid white;
+				background-position: top;
+				background-size: cover;
+				background-attachment: fixed;
+				position: relative;
+				top: 10;
+				left: 0;
+				width: 100%;
+				background-repeat: no-repeat;
+				//background-image: url('https://goo.gl/ZsAs7S');
+			}
+			.dynamic-background
+			{
+				background: @pri-hover;
+				height: 100%;
+				border-left: 1px solid white;
+				background-position: center;
+				background-size: cover;
+				background-attachment: fixed;
+				position: relative;
+				top: 10;
+				right: 0;
+				width: 100%;
+				background-repeat: no-repeat;
+				//background-image: url('https://goo.gl/8iuB1h');
+			}
+		}	
+	}
 	.Resizer {
 	    -moz-box-sizing: border-box;
 	    -webkit-box-sizing: border-box;
@@ -174,132 +209,6 @@ div
 	    -webkit-flex: 1;
 	        -ms-flex: 1;
 	            flex: 1;
-	}
-}
-
-.config
-{
-	max-height: 300px;
-	.slider-control-container
-	{
-		margin:0 ;
-		width: 100%;
-		padding-left: 50px;
-		h3 
-		{
-			margin-bottom: 20px;
-		}
-		.resizable
-		{
-			max-height: 500px !important;
-			margin-left: 140px;
-			width: ~'calc(100% - 220px)';
-			margin-bottom: 60px;
-			.static-background
-			{
-				background: @sec-hover;
-				height: 100%;
-				border-right: 1px solid white;
-				background-position: top;
-				background-size: cover;
-				background-attachment: fixed;
-				position: relative;
-				top: 10;
-				left: 0;
-				width: 100%;
-				background-repeat: no-repeat;
-				//background-image: url('https://goo.gl/ZsAs7S');
-			}
-			.dynamic-background
-			{
-				background: @pri-hover;
-				height: 100%;
-				border-left: 1px solid white;
-				background-position: center;
-				background-size: cover;
-				background-attachment: fixed;
-				position: relative;
-				top: 10;
-				right: 0;
-				width: 100%;
-				background-repeat: no-repeat;
-				//background-image: url('https://goo.gl/8iuB1h');
-			}
-		}	
-	}
-}
-
-.react-app .descargas
-{
-	form
-	{	
-		a.input
-		{
-			background: transparent;
-			border: 1px solid @sec-hover;
-			padding: 5px 20px;
-			border-radius: 0;
-			color: white;
-			transition: all .3s ease;
-			width: ~'calc(100% - 20px)';
-			margin: 5px 10px;
-			&:hover
-			{
-				color: #f6f6f6;
-				background: lighten(@main-color, 5%);
-			}
-		}
-		.state
-		{
-			color: white;
-			border-left: 30px solid @sec-hover;
-			h6
-			{
-				font-size: 12px;
-				padding-left: 10px;
-			}
-		}
-		button
-		{
-			background: @sec-hover;
-			color: white;
-			border-radius: 0;
-			padding: 5px 35px;
-			margin-top: 5px;
-			margin-left: 10px;
-		}
-		a.box
-		{
-			background: transparent;
-			border: 1px solid @sec-hover;
-			padding: 30px 20px;
-			border-radius: 0;
-			color: white;
-			transition: all .3s ease;
-			width: ~'calc(50% - 20px)';
-			margin: 5px 10px;
-			&:hover
-			{
-				background: lighten(@main-color, 5%);
-			}
-			&:active
-			{
-				background: @sec-hover;
-			}
-		}
-	}
-	iframe
-	{
-		margin-top: 20px;
-		border: 2px solid @sec-hover;
-		width: 100%;
-		height: 430px;
-		background: white;
-		transition: all .3 ease;
-		&:hover
-		{
-			background: #f6f6f6;
-		}
 	}
 }
 */

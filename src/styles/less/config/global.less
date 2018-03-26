@@ -21,9 +21,17 @@ body
 }
 iframe
 {
-    background: white;
-    min-height: 300px;
-    color: black; 
+    background: @background;
+    border: 2px solid @sec-hover;
+    color: black;
+    height: 430px;
+    margin-top: 20px;
+    transition: all .3 ease;
+    width: 100%;
+    &:hover
+    {
+        background: #f6f6f6;
+    }
 }
 i
 {
@@ -49,10 +57,6 @@ a, a:hover
 {
     cursor: pointer;
     text-decoration: none;
-}
-.continue
-{
-    padding: 30px 35px 0;
 }
 
 .hide() { display: none; } 
@@ -127,17 +131,7 @@ a, a:hover
     font-family: Segoesc;
     src: url('@{fonts}/segoe-script.ttf');
 }
-.color-line
-{
-    height: 3px;
-    width: 100%;
-    background: linear-gradient(to right, @color-medicion, @color-algebra, @color-numeracion, @color-datos, @color-geometria);
-}
 #app
 {
     background-color: white;
-}
-.script
-{
-    font-family: Segoesc;
 }

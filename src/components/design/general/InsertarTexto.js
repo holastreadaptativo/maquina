@@ -45,8 +45,8 @@ export default class InsertTexto extends Component {
 		let onSave = push ? add : update, k = 0, params = this.state
 		delete params.md; delete params.sm; delete params.xs
 		return (
-			<div class="react-functions">
-				<div class="react-config">
+			<section class="editor">
+				<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
@@ -56,21 +56,21 @@ export default class InsertTexto extends Component {
 							<Input id="padding" default={padding} prefix="padding" update={::this.setState} type="text"/>
 						</Item>
 					</div>
-				</div>
-				<div class="react-container">			
-					<div class="text-editor">
+				</main>
+				<main class="preview">			
+					<div class="textarea">
 						<EditorConvertToHTML {...this.state} contUpdate={(html) => this.onContUpdate(html)}/>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
-				</div>
-				<div class="react-header">
+				</main>
+				<header>
 					<h5>Insertar Texto</h5>
-				</div>
-				<div class="react-footer">
+				</header>
+				<footer>
 					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
-				</div>	
-			</div>
+				</footer>	
+			</section>
 		)
 	}
 }

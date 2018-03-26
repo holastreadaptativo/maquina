@@ -8,7 +8,7 @@ export default class Search extends Component {
 		return (
 			<center>
 				<h3 class={focus(selected, 'selected')}>Buscar por código</h3>
-				<form>
+				<form class="search">
 					<div class="input-group" onKeyPress={::this.handleKeyPress}>
 						<span class="input-group-addon">
 							<search class="glyphicon glyphicon-search"/>
@@ -19,8 +19,8 @@ export default class Search extends Component {
 							<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>
 						</span>
 					</div>
+					<div class="color-line"/>
 				</form>
-				<div class="color-line"/>
 				<summary>
 					<h5>
 						{length}/15 { length == 15 && <span class="glyphicon glyphicon-ok"/> }

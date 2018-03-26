@@ -5,7 +5,7 @@ import { DEFAULT } from 'stores'
 export default class Table extends Component {
 	render() {
 		return (
-			<table class={show(this.props.selected, 'table table-condensed table-striped table-hover')}>
+			<table class={show(this.props.selected, 'table search table-condensed table-striped table-hover')}>
 				<thead>
 					<tr>
 						<th>#</th>

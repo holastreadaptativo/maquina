@@ -46,11 +46,11 @@ section.editor
 	{
 		width: ~'calc(100vw - 2*@{margin} - @{config})';
 		height: ~'calc(100vh - 2*@{margin})';
-		background: red;
+		background: white;
 		position: absolute;
 		top: @margin;
 		left: @margin + @config;
-		.container
+		.canvas
 		{
 			margin-top: 42px;
 			canvas
@@ -110,14 +110,14 @@ section.editor
 {
 	@margin: 40px;
 	@config: 300px;
-	background: rgba(0, 0, 0, .90);
+	background: rgba(0, 0, 0, .9);
 	height: 100vh;
 	left: 0;
+	outline: none;	
 	position: absolute;
 	top: 0;
 	width: 100vw;
 	z-index: 999999;
-	outline: none;	
 }
 .react-submit
 {

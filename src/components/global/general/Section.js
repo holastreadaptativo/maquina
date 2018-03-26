@@ -19,11 +19,11 @@ export default class Section extends Component {
         		<div class="container-fluid">
         			{this.props.children}
         			<div class={show(this.props.condition, 'row')}>
-						<div class="react-continue">						
+						<article>						
 							<button class="btn btn-success" onClick={::this.handlerSubmit}>
 								{!this.props.download ? 'Continuar' : 'Descargar'}
 							</button>
-						</div>
+						</article>
 					</div>
         		</div>
         	</section>

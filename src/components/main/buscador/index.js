@@ -8,10 +8,10 @@ export class Buscador extends Component {
 	}
 	render() {
 		return (
-			<div class="buscador">
+			<section class="code">
 				<Search {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
 				<Table {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
-			</div>
+			</section>
 		)
 	}
 }
