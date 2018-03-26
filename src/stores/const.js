@@ -13,14 +13,16 @@ export const LINKS =	[
 export const DEFAULT = 	{
 							CODE:'000000000000000',
 							DEVICE:DEVICES[0].size,
-							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' }
+							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' },
+							SEARCH:{ code:'000000000000000', length:0, search:[], selected:false, temp:0 }
 						}
 
 export const LABELS =	{
 							CODE:['Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio'],
 							VARS:['#', 'Variable', 'Tipo', 'Valores', 'Restricción', 'VT', ''],
+							TYPE:['var', 'type', 'val', 'res', 'vt'],
 							SIZE:[ 12, 10, 9, 8, 6, 4, 3, 2 ],
-							TYPE:['var', 'type', 'val', 'res', 'vt']
+							NAME:{functions:'Ejercicios', answers:'Respuestas', feedback:'Glosa'}
 						}
 
 export const ROUTES = 	[ 

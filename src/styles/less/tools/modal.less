@@ -1,0 +1,156 @@
+section.editor
+{
+	@margin: 40px;
+	@config: 300px;
+	background: white;
+	height: ~'calc(100vh - 2*@{margin})';
+	width: ~'calc(100vw - 2*@{margin})';
+	margin: @margin;
+	main.config
+	{
+		width: @config;
+		height: 100%;
+		background: @main-color;
+		position: relative;
+		top: 0;
+		left: 0;
+		h3 
+		{
+			background: @main-hover;
+			color: white;
+			height: 50px;
+			padding: 15px 10px;
+			margin-bottom: 20px;
+			font-size: 18px;
+		}
+		nav.select
+		{
+			margin-bottom: 50px;				
+			li
+			{
+				display: inline;
+				padding: 1px 0 2px;
+				text-align: center;
+				color: white;
+				cursor: pointer;
+				font-size: 13px;
+				background: @main-hover;
+				&.active
+				{
+					background: @sec-hover;
+				}
+			}
+		}
+	}
+	main.preview
+	{
+		width: ~'calc(100vw - 2*@{margin} - @{config})';
+		height: ~'calc(100vh - 2*@{margin})';
+		background: white;
+		position: absolute;
+		top: @margin;
+		left: @margin + @config;
+		.container
+		{
+			margin-top: 42px;
+			canvas
+			{
+				max-width: 100%;
+			}
+		}
+		.textarea
+		{
+			margin: 42px 10px 20px;
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+	}
+	header
+	{
+		position: absolute;
+		top: @margin;
+		left: @margin + @config;
+		width:  ~'calc(100vw - 2*@{margin} - @{config})';
+		height: 30px;
+		padding: 15px 10px;
+		h5
+		{
+			color: @main-hover;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin: 0;
+			font-size: 15px;
+			display: inline;
+			margin-right: 300px;
+		}
+	}
+	footer
+	{
+		position: absolute;
+		bottom: @margin + 10px;
+		left: @margin + @config;
+		width:  ~'calc(100vw - 2*@{margin} - @{config})';
+		z-index: 10;
+		h6
+		{
+			display: inline;
+			margin-left: 10px;
+			margin-right: 10px;
+			font-size: 13px;
+			font-weight: bold;
+			i
+			{
+				font-size: 15px;
+				margin-right: 7px;
+			}
+		}
+	}
+}
+.react-modal
+{
+	@margin: 40px;
+	@config: 300px;
+	background: rgba(0, 0, 0, .90);
+	height: 100vh;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100vw;
+	z-index: 999999;
+	outline: none;	
+}
+.react-submit
+{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	background: @main-color;
+	color: white;
+	width: 150px;
+	height: 40px;
+	transition: all .3s ease;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+	z-index: 10;
+	border-radius: 0;
+	&:hover
+	{
+		background: @main-hover;
+		color: white;
+	}
+}
+.react-close
+{
+	position: absolute;
+	top: 50px;
+	right: 50px;
+	color: @main-color;
+	font-size: 18px;
+	cursor: pointer;
+	z-index: 1;
+	&:hover
+	{
+		color: @main-hover;
+	}
+}

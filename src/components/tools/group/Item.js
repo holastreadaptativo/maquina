@@ -5,7 +5,7 @@ export default class Item extends Component {
 	render() {
 		let active = this.props.active == this.props.id
 		return (
-			<form>
+			<form class="control">
 				<div class="form-inline">
 					<h5 onClick={() => this.props.setActive(this.props.id)} class={focus(active, 'active')}>{this.props.title} 
 						<i class={`glyphicon glyphicon-chevron-${active ? 'up' : 'down'}`}/>

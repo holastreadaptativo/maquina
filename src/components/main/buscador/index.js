@@ -4,15 +4,13 @@ import { DEFAULT } from 'stores'
 export class Buscador extends Component {
 	constructor() {
 		super()
-		this.state = { code:DEFAULT.CODE, length:0, search:[], selected:false, temp:0 }
+		this.state = DEFAULT.SEARCH
 	}
 	render() {
 		return (
 			<div class="buscador">
-				<form>
-					<Search {...this.state} {...this.props} setState={::this.setState}/>
-					<Table {...this.state} {...this.props} setState={::this.setState}/>
-				</form>
+				<Search {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
+				<Table {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
 			</div>
 		)
 	}

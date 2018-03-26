@@ -37,16 +37,16 @@ export default class Editor extends Component {
 	}
 	render() {
 		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push, onHide, path } = this.props.store
+		const { add, update, push, path } = this.props.store
 		const { active, md, sm, xs } = this.state
 		let onSave = push ? add : update
-        return(
-        	<div class="react-functions">
-				<div class="react-config">
+        return (
+        	<section class="editor">
+        		<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
-					<nav class={show(path == 'answers', 'react-nav')}>
+					<nav class={show(path == 'answers', 'select')}>
 					{
 						['función', 'feedback'].map((m, i) => 
 							<li key={i} class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
@@ -54,27 +54,27 @@ export default class Editor extends Component {
 					}
 					</nav>
 					{this.props.children}
-				</div>
-				<div class="react-container">			
-					<div class={show(active == 0, 'canvas')}>
-						<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
+				</main>
+				<main class="preview">
+					<div class={show(active == 0, 'container')}>
+						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
 							Your browser does not support the HTML5 canvas.
 						</canvas>
 					</div>
-					<div class={show(active == 1, 'text-editor')}>
+					<div class={show(active == 1, 'textarea')}>
 						<TextEditor {...this.props} data={this.state.feedback}/>
 					</div>
-					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
-				</div>
-				<div class="react-header">
+				</main>
+				<header>
 					<h5>{this.props.title}</h5>
-				</div>
-				<div class="react-footer">
+				</header>
+				<footer>
 					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
-				</div>			
-			</div>
+				</footer>
+        	</section>
+        	
 		)
 	}
 }

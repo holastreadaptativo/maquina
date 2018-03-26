@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ejercicios } from 'actions'
 import { Section } from 'components'
+import { action } from 'actions'
 import { data } from 'stores'
 
 export class Versiones extends Component {
@@ -32,21 +32,21 @@ export class Versiones extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.print )
 	}
-	print() {
-		ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
-	}
 	render() {
 		const { answers, functions, feedback, option, versions } = this.props
         return(
         	<Section style="versiones" condition={true} {...this.props}>
         		<div class="row">
-        			<Generate {...this.props} {...this.state} condition={option == 0} onChange={(e) => this.handleChange(e)}/>
+        			<Generate {...this.props} {...this.state} condition={option == 0} setState={::this.setState}/>
     				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
         			<Preview answers={answers} functions={functions} feedback={feedback}/>
         		</div>
         	</Section>
         )
     }
+	print() {
+		action.ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
+	}
 }
 
 import Generate from './5_Generate'

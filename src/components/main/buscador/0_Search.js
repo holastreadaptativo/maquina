@@ -1,9 +1,56 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
-import { data, DEFAULT } from 'stores'
+import { data, DEFAULT, LABELS } from 'stores'
 import $, { focus } from 'actions'
 
 export default class Search extends Component {
+	render() {
+		const { selected, length, temp } = this.props
+		return (
+			<center>
+				<h3 class={focus(selected, 'selected')}>Buscar por código</h3>
+				<form>
+					<div class="input-group" onKeyPress={::this.handleKeyPress}>
+						<span class="input-group-addon">
+							<search class="glyphicon glyphicon-search"/>
+						</span>
+						<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
+							onChange={::this.onChange} maxLength="15"></input>
+						<span class="input-group-btn">
+							<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>
+						</span>
+					</div>
+				</form>
+				<div class="color-line"/>
+				<summary>
+					<h5>
+						{length}/15 { length == 15 && <span class="glyphicon glyphicon-ok"/> }
+					</h5>
+					<div class="row">
+					{
+						LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
+							<h6 key={i}>{m}: {length >= 2*i + x ? temp.substring(2*i, 2*i + x) : '-' }</h6>
+						)})
+					}
+					</div>
+				</summary>
+			</center>
+		)
+	}
+	handleSubmit(e) {
+		e.preventDefault()
+		let code = $('search-code').value
+		
+		if (code.length == 15) {
+			this.props.setCode(code)
+			this.props.setNotification(null, this.props.alert)
+		}					
+
+		this.props.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
+	}
+	handleKeyPress(e) {
+		if (e.charCode == 13)
+			this.handleSubmit(e)
+	}
 	onChange(e) {
 		let n = e.target.value, l = n.length, 
 			m = parseInt(n.substring(l - 1, l))
@@ -13,10 +60,9 @@ export default class Search extends Component {
 		
 		this.props.setState({ length:n.length, temp:n })
 
-		if (n.length == 0) {
-			this.props.setState({ code:DEFAULT.CODE, selected:false, search:[] })
-			this.props.setCode(DEFAULT.CODE)
-		}
+		if (n.length == 0)
+			this.props.setState(DEFAULT.SEARCH)
+
 		else if (n.length > 2) {
 			let search = []
 			data.once('value').then(snap => {
@@ -34,52 +80,5 @@ export default class Search extends Component {
 		}
 		else
 			this.props.setState({ selected:false })
-	}
-	handleSubmit(e) {
-		e.preventDefault()
-		let code = $('search-code').value
-		
-		if (code.length == 15) {
-			this.props.setActive(1)
-			browserHistory.push('/variables')
-			this.props.setNotification(null, this.props.alert)
-			this.props.setCode(code)
-		}					
-
-		this.props.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
-	}
-	handleKeyPress(e) {
-		if (e.charCode == 13)
-			this.handleSubmit(e)
-	}
-	render() {
-		const { selected, length, temp } = this.props
-		let items = ['Nivel', 'Eje', 'OA', 'IE', 'Tipo', 'Ejercicio']
-		return (
-			<div>
-				<h3 class={focus(selected, 'selected')}>Buscar por código</h3>
-				<div class="input-group" onKeyPress={::this.handleKeyPress}>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-search"/></span>
-					<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
-						onChange={::this.onChange} maxLength="15"></input>
-					<span class="input-group-btn">
-						<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>
-					</span>
-				</div>
-				<div class="color-line"/>
-				<div>
-					<h6 class="search-count">{length}/15 
-						{length == 15 ? <span class="glyphicon glyphicon-ok"/> : ''}
-					</h6>
-					<div class="row">
-					{
-						items.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-							<h6 key={i}>{m}: {length >= 2*i + x ? temp.substring(2*i, 2*i + x) : '-' }</h6>
-						)})
-					}
-					</div>
-				</div>
-			</div>
-		)
 	}
 }

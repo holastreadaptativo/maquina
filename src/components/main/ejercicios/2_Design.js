@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
+import { action, focus } from 'actions'
 import { DEFAULT, DEVICES } from 'stores'
 
 export default class Design extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { device:DEFAULT.DEVICE, action:ejercicios, container:props.container }
+		this.state = { device:DEFAULT.DEVICE, container:props.container }
 		this.print = this.print.bind(this)
 	}
 	componentDidMount() {	
@@ -18,27 +18,23 @@ export default class Design extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.print )
 	}
-    handleDevice(device) {
-        this.setState({ device:device })
-    }
-	print() {
-		this.state.action('GET', { ...this.props, vt:true })
-	}
 	render() {
 		const { device, container } = this.state
 		const { answers, functions, path } = this.props
 		let aux = path == 'functions' ? functions : answers
 		return (
-			<div class="row">
-				<div class="col-md-12 design">
-					<nav class="devices">
+			<section class="design">			
+				<div class="row">
+					<menu class="devices">
 					{
 						DEVICES.map((m, i) =>
-							<i key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}>{m.icon}</i>
+							<li key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}>
+								<i>{m.icon}</i>
+							</li>
 						)
 					}
-					</nav>
-					<div class="device canvas" style={{ width:device+'px' }}>
+					</menu>
+					<main class="device" style={{ width:device+'px' }}>
 					{
 						aux.map((m, i) => { 
 							let size = device <= DEVICES[2].size ? m.width.xs : device <= DEVICES[1].size ? m.width.sm : m.width.md
@@ -46,16 +42,22 @@ export default class Design extends Component {
 								<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
-									<canvas id={`${container}-${i}`} style={{background:m.params.background}}></canvas> :
+									<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background}}></canvas> :
 									<div id={`${container}-${i}`} class="general"></div>
 								}
 								</div>
 							)
 						})
 					}
-					</div>
+					</main>
 				</div>
-			</div>
+			</section>
 		)
+	}
+    handleDevice(device) {
+        this.setState({ device:device })
+    }
+	print() {
+		action.ejercicios('GET', { ...this.props, vt:true })
 	}
 }

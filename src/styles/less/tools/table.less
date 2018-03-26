@@ -1,0 +1,158 @@
+table.table
+{
+	margin: -7px auto 0;
+	padding: 0;
+	width: ~'calc(100% - 30px)';
+	thead
+	{
+		color: @main-color;
+		font-size: 14px;
+		tr 
+		{
+			th
+			{
+				padding: 10px;
+			}
+		}
+	}
+	tbody
+	{
+		color: @main-color;
+		text-align: left;
+		tr 
+		{
+			td
+			{			
+				.form-control
+				{
+					border-radius: 0;
+				}
+				&.type
+				{
+					min-width: 120px;
+				}
+				&.var, &.vt
+				{
+					max-width: 120px;
+				}
+				h6
+				{
+					font-size: 13px;
+					font-weight: bold;
+				}
+				span
+				{
+					cursor: pointer;
+					color: @info-color;
+					transition: color .1s ease;
+				}
+			}
+			&:hover
+			{
+				background-color: #f6f6f6;				
+				span
+				{
+					color: darken(@info-color, 15%);
+					&:hover
+					{
+						color: @sec-hover;
+					}
+				}
+			}
+			&.error
+			{
+				background: @sec-hover;
+				color: white;
+			}
+		}
+	}
+	tfoot
+	{
+		width: 100%;
+		button
+		{
+			border-radius: 0;
+			margin: 20px 20px;
+			padding: 7px 50px;
+			position: absolute;
+			right: 0;
+		}
+		i
+		{
+			cursor: pointer;
+			font-size: 25px;
+			margin-top: 25px;
+			position: absolute;
+			right: 200px;
+			transition: color .3s ease;
+			&:hover
+			{
+				color: @sec-hover;
+			}
+		}
+	}
+}
+table.draggable
+{
+	width: 100%;
+	tr
+	{
+		background-color: @main-hover;
+		border: 1px solid  @color;
+		border-left-width: 2px;
+		border-right-width: 2px;
+		color: white;
+		font-size: 13px;
+		&[draggable="true"]
+		{
+			cursor: move;
+		    cursor: grab;
+		    cursor: -moz-grab;
+		    cursor: -webkit-grab;
+			&:hover
+			{
+				background-color: lighten(@main-color, 7%);
+			}
+		    &:active 
+		    { 
+			    cursor: grabbing;
+			    cursor: -moz-grabbing;
+			    cursor: -webkit-grabbing;
+			    background-color: darken(@sec-hover, 7%);
+			}
+		}
+		&.datos
+		{
+			border-color: @color-datos;							
+		}
+		&.geometria
+		{
+			border-color: @color-geometria;
+		}
+		&.general
+		{
+			border-color: @color-general;
+		}
+		td
+		{
+			padding: 3px 5px;
+			select
+			{
+				background: transparent;
+				cursor: pointer;
+				display: inline;
+				margin-left: 3px;
+			}
+			option
+			{
+				background-color: @bar-color;
+			}
+			span
+			{
+				cursor: pointer;
+				display: inline;
+				padding-left: 15px;
+			}
+		}
+	}
+}

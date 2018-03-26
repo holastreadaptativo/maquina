@@ -1,0 +1,58 @@
+aside
+{
+	background: @main-color;
+	box-shadow: -1px 0px rgba(0, 0, 0, .3);
+	height: ~'calc(100vh - 45px)';
+	position: fixed;
+	right: -320px;
+	transition: right .3s ease;
+	top: 45px;
+	width: 300px;
+	z-index: 1000;
+	color: white;
+	&.active
+	{
+		right: 0;
+	}
+	h3
+	{
+		background: @main-hover;
+		height: 35px;
+		margin: 0 0 20px;
+		padding: 10px;
+		font-size: 15px;
+	}
+	h5
+	{
+		background: @main-hover;
+		cursor: pointer;
+		font-size: 12px;
+		font-weight: bold;
+		padding-left: 10px;
+		text-transform: uppercase;
+		width: auto;
+		.glyphicon
+		{
+			color: white;
+			float: right;	
+			font-size: 13px;
+			margin-right: 10px;
+			margin-top: -1px;
+		}
+		&.active
+		{
+			background: @sec-hover;
+		}
+	}
+	li
+	{
+		list-style: none;
+		cursor: pointer;
+		padding-left: 10px;
+		font-size: 13px;
+		&:hover
+		{
+			background: lighten(@main-color, 7%);
+		}
+	}
+}

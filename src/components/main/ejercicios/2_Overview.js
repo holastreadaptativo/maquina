@@ -1,121 +1,71 @@
 import React, { Component } from 'react'
-import { ejercicios, focus } from 'actions'
-import { Modal } from 'react-bootstrap'
-import { FUNCIONES } from 'components'
+import { FUNCIONES, Aside, Modal } from 'components'
 import { data, LABELS } from 'stores'
+import { action } from 'actions'
 
 export default class Overview extends Component {
-	constructor(props) {
-		super(props)
-		this.state = { modal:false, fn:'', tag:'', params:'', id:'', drag:'', action:ejercicios }
+	constructor() {
+		super()
+		this.state = { modal:false, drag:'', fn:'', id:'', params:'', tag:'' }
 	}
-	componentWillUnmount() {
-		this.setState({ modal:false })
+	render() {
+		return (
+        	<Aside show={this.props.condition} title={LABELS.NAME[this.props.path]}>
+				<table class="draggable">
+					<tbody>
+					{
+						this.props[this.props.path].map((m, i) => { 
+							let k = 0, d = `${m.id}-/${i}-/`
+								return (
+									<tr key={i} id={d.concat(k++)} class={m.tag} onDrop={::this.handleChange} onDragOver={e => e.preventDefault()} 
+										draggable="true" onDragStart={e => this.setState({ drag:e.target.id })}>
+										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
+										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.function}-{m.id.substring(4, 7)}</h6></td>
+										<td>
+											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
+												{ LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) }
+											</select>
+										</td>
+										<td>
+											<span class="glyphicon glyphicon-pencil" onClick={() => this.handleSelect(m.function, m.params, m.id)}/>
+											<span class="glyphicon glyphicon-trash" onClick={() => this.handleRemove(m.id)}/>
+										</td>
+									</tr>
+								)
+							}
+						)
+					}
+					</tbody>
+				</table>
+			    <Modal modal={this.state.modal} setState={::this.setState}>{ this.getComponent() }</Modal>
+			</Aside>
+		)
 	}
-	handleModal() {
-		this.setState({ modal:!this.state.modal })
-	}
-	handleEditor(fn, params, id) {
-		this.setState({ modal:!this.state.modal, fn:fn, params:params, id:id })
-	}
-	allowDrop(e) {
-    	e.preventDefault()
+	handleSelect(fn, params, id) {
+		this.setState({ modal:true, fn:fn, params:params, id:id })
 	}	
-	drag(e) {
-		this.setState({ drag:e.target.id })
-	}
-	drop(e) {
-	    e.preventDefault()
-	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
-	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
-
-	    if (drag.length > 1)
-	    	this.state.action('MOVE', { ...this.props, i:i, f:f })
-	}
-	handleWidth(e) {
-		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:Number(e.target.value) })
-	}
 	handleUpdate(params) {
-		this.state.action('UPDATE', { ...this.props, ...this.state, params:params })
+		action.ejercicios('UPDATE', { ...this.props, ...this.state, params:params })
 		this.setState({ modal:false })
 	}
 	handleRemove(id) {
 		if (confirm('¿Estas seguro de borrar la función?'))
-			this.state.action('REMOVE', { ...this.props, id:id })
+			action.ejercicios('REMOVE', { ...this.props, id:id })
 	}
-	handleClone() {
-		let val = this.refs.clone.value
-		if (val != 0 && val != -1)
-			this.state.action('CLONE', { ...this.props, clone:val })
+	handleChange(e) {
+	    e.preventDefault()
+	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
+	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
+	    if (drag.length > 1)
+	    	action.ejercicios('MOVE', { ...this.props, i:i, f:f })
+	}
+	handleWidth(e) {
+		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:Number(e.target.value) })
 	}
 	getComponent() {
 		let FX = null
-		FUNCIONES.forEach(m => { 
-			m.fns.forEach(n => { if (n.id == this.state.fn) FX = n.component })
-        })
-       	return FX ? 
-       		<FX update={(x) => this.handleUpdate.bind(this, x)} id={this.state.id} {...this.props}
-       			params={this.state.params} onHide={::this.handleModal} fn={this.state.fn}/> : ''
-	}
-	render() {
-		const { answers, functions, feedback, path } = this.props
-		let aux = path == 'functions' ? functions : path == 'answers' ? answers : feedback
-		return (
-        	<aside class={focus(this.props.condition, 'active')}>
-				<div class="overview">	
-					<div class="title">
-						<h3>{path == 'functions' ? 'Ejercicio' : path == 'answers' ? 'Respuestas' : 'Glosa'}</h3>
-					</div>
-					<table class="table">
-						<tbody>
-						{
-							aux.map((m, i) => 
-								<tr key={i} id={`${m.id}-/${i}-/a`} class={m.tag} onDrop={::this.drop} onDragOver={this.allowDrop} 
-								draggable="true" onDragStart={::this.drag}>
-									<td id={`${m.id}-/${i}-/e`}>
-										<h6 id={`${m.id}-/${i}-/i`}>{i+1}</h6>
-									</td>
-									<td id={`${m.id}-/${i}-/o`}>
-										<h6 id={`${m.id}-/${i}-/u`}>{m.function}-{m.id.substring(4, 7)}</h6>
-									</td>
-									<td>
-										<li>
-											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
-											{
-												LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> )
-											}
-											</select>
-										</li>
-									</td>
-									<td>
-										<li>
-											<span class="glyphicon glyphicon-pencil" 
-												onClick={this.handleEditor.bind(this, m.function, m.params, m.id)}/>
-											<span class="glyphicon glyphicon-trash" onClick={this.handleRemove.bind(this, m.id)}/>
-										</li>
-									</td>
-								</tr>
-							)
-						}
-						</tbody>
-					</table>
-					<div class="clone">
-						<select ref="clone" class="form-control" defaultValue="-1">
-							<option value="-1" disabled>Selecciona una función</option>
-							<option value="0" disabled>Ejercicio</option>
-							{ functions.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
-							<option value="0" disabled>Respuesta</option>
-							{ answers.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
-							<option value="0" disabled>Glosa</option>
-							{ feedback.map((m, i) => <option key={i} value={m.json}>{`${m.function}-${m.id.substring(4, 7)}`}</option> ) }
-						</select>
-						<button class="btn" onClick={::this.handleClone}>Clonar</button>
-					</div>
-				</div>
-			    <Modal show={this.state.modal} onHide={::this.handleModal} bsClass="react-modal">
-					{ this.getComponent() }					
-				</Modal>
-			</aside>
-		)
+		FUNCIONES.forEach(m => { m.fns.forEach(n => { if (n.id == this.state.fn) FX = n.component }) })
+		return FX &&
+       		<FX update={(x) => this.handleUpdate.bind(this, x)} id={this.state.id} fn={this.state.fn} {...this.props} params={this.state.params}/>
 	}
 }

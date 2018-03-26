@@ -29,3 +29,6 @@ export class Ejercicios extends Component {
 export Overview from './2_Overview'
 export Functions from './2_Functions'
 export Design from './2_Design'
+export Clone from './2_Clone'
+export Devices from './2_Devices'
+export Modal from './2_Modal'

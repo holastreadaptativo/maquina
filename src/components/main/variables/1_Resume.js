@@ -5,22 +5,21 @@ import { LABELS } from 'stores'
 
 export default class Resume extends Component {
 	render() {
-		const { code, variables } = this.props
 		return (
 			<Well title="Resumen">
-				<h4 class="title">Ejercicio</h4>
+				<h5 class="title">Ejercicio</h5>
 				{
 					LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-						<h4 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h4>
+						<h5 key={i}>{m}: {this.props.code.length >= 2*i + x ? this.props.code.substring(2*i, 2*i + x) : '-' }</h5>
 					)})
 				}
 				<h6 class="br"/>
-				<h4 class="title">Variables</h4>
+				<h5 class="title">Variables</h5>
 				<ul> 
 				{
-					variables.map(m => { 
+					this.props.variables.map(m => { 
 						if (m.var != '' && m.val != '') return (
-							<h4 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h4>
+							<h5 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h5>
 						)
 					})
 				}

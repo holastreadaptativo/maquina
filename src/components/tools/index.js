@@ -7,3 +7,4 @@ export Tabs from './group/Tabs'
 
 export Well from './panel/Well'
 export Panel from './panel/Panel'
+export Aside from './panel/Aside'

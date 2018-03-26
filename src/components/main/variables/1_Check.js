@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 
 export default class Check extends Component {
-	check(condition) {
-		return `glyphicon glyphicon-${this.props.checked[0][condition] ? 'ok' : 'remove'}`
-	}
 	render() {
 		return (
 			<section>
@@ -30,5 +27,8 @@ export default class Check extends Component {
 				</ul>
 			</section>
 		)
+	}
+	check(condition) {
+		return `glyphicon glyphicon-${this.props.checked[0][condition] ? 'ok' : 'remove'}`
 	}
 }

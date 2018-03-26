@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { auth, users, uid, data, DEFAULT } from 'stores'
 import { Header } from 'components'
 import { focus } from 'actions'
@@ -74,7 +75,8 @@ export class App extends Component {
 	setCode(code) {
 		data.child(this.state.code).off()
 		this.onCodeChange(code)
-		this.setState({ code:code })
+		this.setState({ code:code, active:1 })
+		browserHistory.push('/variables')
 	}
 	setNotification(message, alert) {
 		this.setState({ notification:message, alert:alert })

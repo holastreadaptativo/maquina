@@ -1,179 +1,19 @@
-section.well
-{
-	background-color: @info-color;
-	border: 2px solid #ddd;
-	border-right-width: 1px;
-	color: #444;
-	padding: 10px 15px;
-	margin-top: 20px;
-	width: 250px;
-	border-radius: 0;
-	margin-bottom: 0;
-	h4
-	{
-	    border: 1px solid @main-color;
-		cursor: pointer;
-	    font-size: 12px;
-	    font-weight: bold;
-	    height: 25px;
-	    margin: 0 0 7px;
-	    padding: 5px 10px;
-	    transition: all .3s ease;
-		&:hover
-		{
-	    	background-color: darken(@info-color, 7%);
-		}
-	    &:active 
-	    { 
-		    background-color: darken(@info-color, 20%);
-		}
-		b
-		{
-			text-transform: uppercase;
-		}
-		.close
-		{
-			color: white !important;
-			display: none;
-			font-size: 12px;
-		}
-		&.active
-		{
-			background-color: @sec-hover;
-			border-color: @sec-hover;
-	    	color: white;
-			cursor: default;
-			.close
-			{
-				display: initial;
-			}
-		}
-		&.title
-		{
-			background: darken(@info-color, 5%);
-			text-transform: uppercase;
-			color: darken(@main-hover, 10%);
-		}
-	}
-	h5, h6.br
-	{
-		margin-bottom: 20px;
-	}
-}
-section.panel
-{
-	background: white;
-	border: 2px solid #ddd;
-	border-left-width: 1px;
-	border-radius: 0;
-	margin-top: 20px;
-	margin-bottom: 0;
-	min-height: 330px;
-	padding: 10px 0px 20px;
-	transition: all .3s ease;
-	width: ~'calc(100% - 250px)';
-}
+@import "toastr";
+@import "draft";
+@import "table";
+@import "aside";
+@import "panel";
+@import "form";
+@import "modal";
+
 section
 {
-	table.table
-	{
-		margin: -7px auto 0;
-		padding: 0;
-		width: ~'calc(100% - 30px)';
-		thead
-		{
-			color: @main-color;
-			font-size: 14px;
-			tr 
-			{
-				th
-				{
-					padding: 10px;
-				}
-			}
-		}
-		tbody
-		{
-			color: @main-color;
-			text-align: left;
-			tr 
-			{
-				td
-				{			
-					.form-control
-					{
-						border-radius: 0;
-					}
-					&.type
-					{
-						min-width: 120px;
-					}
-					&.var, &.vt
-					{
-						max-width: 120px;
-					}
-					h6
-					{
-						font-size: 13px;
-						font-weight: bold;
-					}
-					span
-					{
-						cursor: pointer;
-						color: @info-color;
-						transition: color .1s ease;
-					}
-				}
-				&:hover
-				{
-					background-color: #f6f6f6;				
-					span
-					{
-						color: darken(@info-color, 15%);
-						&:hover
-						{
-							color: @sec-hover;
-						}
-					}
-				}
-				&.error
-				{
-					background: @sec-hover;
-					color: white;
-				}
-			}
-		}
-	}
-	nav.table
-	{
-		text-align: right;
-		width: 100%;
-		button
-		{
-			margin: 20px 20px;
-			border-radius: 0;
-			padding: 7px 50px;
-		}
-		i
-		{
-			font-size: 25px;
-			position: relative;
-			top: 9px;
-			right: 7px;
-			cursor: pointer;
-			transition: color .3s ease;
-			&:hover
-			{
-				color: @sec-hover;
-			}
-		}
-	}
 	ul.checklist
 	{
 		color: #222;
 		font-size: 13px;
 		list-style: none;
-		margin: -80px 20px 0;
+		margin: 20px 20px 0;
 		span
 		{
 			margin-left: 5px;
@@ -192,33 +32,62 @@ section
 			margin-bottom: 5px;
 		}
 	}
-}
-aside
-{
-	background: @main-color;
-	box-shadow: -1px 0px rgba(0, 0, 0, .3);
-	height: ~'calc(100vh - 45px)';
-	position: fixed;
-	right: -320px;
-	transition: right .3s ease;
-	top: 45px;
-	width: 300px;
-	z-index: 1000;
-	&.active
+	menu.devices
 	{
-		right: 0;
-	}
-	.title
-	{
-		background: @main-hover;
-		color: white;
-		height: 35px;
-		margin-bottom: 20px;
-		padding: 10px;
-		h3 
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 3px;
+		position: absolute;
+		right: ~'calc(50% - 95px)';
+		top: 12px;
+		z-index: 99999;
+		li
 		{
-			font-size: 15px;
+			border-bottom: 1px solid #ccc;
+			cursor: pointer;
+			display: inline;
+			margin: 2px;
+			padding: 8px 8px 4px;
+			transition: all .3s ease;
+			&.active
+			{
+				border-color: @sec-color;
+			}
+			i
+			{
+				color: white;
+				font-size: 16px;
+			}
+		}
+		
+	}
+	main.device
+	{
+		background-color: white;
+		border: 2px solid #ddd;
+		max-width: 100%;
+		min-height: 330px;
+		margin: 20px auto 0;
+		overflow: auto;
+		padding: 5px;
+		transition: all .3s ease;
+		width: 100%;
+		.tags
+		{
+			border: 3px solid white;
+			padding: 0;
 			margin: 0;
+			overflow: hidden;
+			canvas
+			{
+				border: none;
+			}
+			.general
+			{
+				text-align: left;
+				padding: 10px 10px 0;
+				margin: 0 2px;
+				color: black;
+			}
 		}
 	}
 }

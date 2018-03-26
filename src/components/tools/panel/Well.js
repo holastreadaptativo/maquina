@@ -4,7 +4,7 @@ export default class Well extends Component {
 	render() {
 		return (
 			<section class="col-xs-3 well">
-				<h5><b>{this.props.title}</b></h5>
+				<h3><b>{this.props.title}</b></h3>
 				{this.props.children}
 			</section>
 		)
