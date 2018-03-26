@@ -40,7 +40,7 @@ export default class InsertTexto extends Component {
 		this.setState({ active:active })
 	}
 	render() {
-		const { add, update, push, onHide } = this.props
+		const { add, update, push } = this.props
 		const { active, md, sm, xs, color, padding } = this.state
 		let onSave = push ? add : update, k = 0, params = this.state
 		delete params.md; delete params.sm; delete params.xs
@@ -61,7 +61,6 @@ export default class InsertTexto extends Component {
 					<div class="textarea">
 						<EditorConvertToHTML {...this.state} contUpdate={(html) => this.onContUpdate(html)}/>
 					</div>
-					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
 				</main>
 				<header>
