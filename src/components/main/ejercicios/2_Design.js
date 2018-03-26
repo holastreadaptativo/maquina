@@ -20,8 +20,6 @@ export default class Design extends Component {
 	}
 	render() {
 		const { device, container } = this.state
-		const { answers, functions, path } = this.props
-		let aux = path == 'functions' ? functions : answers
 		return (
 			<section class="design">			
 				<div class="row">
@@ -34,9 +32,9 @@ export default class Design extends Component {
 						)
 					}
 					</menu>
-					<main class="device" style={{ width:device+'px' }}>
+					<main class="device" style={{ width:device == DEFAULT.DEVICE ? '100%' : device+'px' }}>
 					{
-						aux.map((m, i) => { 
+						this.props[this.props.path].map((m, i) => { 
 							let size = device <= DEVICES[2].size ? m.width.xs : device <= DEVICES[1].size ? m.width.sm : m.width.md
 							return (
 								<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>

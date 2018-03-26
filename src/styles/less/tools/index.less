@@ -3,35 +3,12 @@
 @import "table";
 @import "aside";
 @import "panel";
-@import "form";
 @import "modal";
+@import "form";
+@import "menu";
 
-section
+section.design
 {
-	ul.checklist
-	{
-		color: #222;
-		font-size: 13px;
-		list-style: none;
-		margin: 20px 20px 0;
-		span
-		{
-			margin-left: 5px;
-			margin-right: 10px;
-			&.glyphicon-ok
-			{
-				color: green;
-			}
-			&.glyphicon-remove
-			{
-				color: red;
-			}
-		}
-		li.title
-		{
-			margin-bottom: 5px;
-		}
-	}
 	menu.devices
 	{
 		border-bottom: 1px solid #ccc;
@@ -57,8 +34,7 @@ section
 				color: white;
 				font-size: 16px;
 			}
-		}
-		
+		}	
 	}
 	main.device
 	{
@@ -88,6 +64,67 @@ section
 				margin: 0 2px;
 				color: black;
 			}
+		}
+	}
+	main.feedback
+	{
+		@width: 960px;
+		@height: 500px;
+		@border: 2px;
+		@margin: 60px;
+		@color: #ddd;
+		height: @height;
+		margin: 20px auto 0;
+		width: @width;
+		section
+		{
+			height: @height - 2*@border - @margin;
+			overflow-y: auto;
+			overflow-x: hidden;
+			border: @border solid @color;
+			padding-bottom: 60px;
+			background: white;
+			width: 100%;
+			padding-top: 20px;
+			padding-right: 20px;
+			canvas
+			{
+				margin: 0 auto;
+			}
+		}
+		footer
+		{
+			background: lighten(@color, 5%);
+			width: @width - 2*@border - 85px;
+			height: @margin;
+			border-bottom-left-radius: 15px;
+			margin-left: @border;
+			margin-top: -@border/2;
+		}
+		div.img-duck
+		{
+			position: absolute;
+			height: 150px;
+			width: 150px;
+			background: white;
+			margin-top: -90px - @border/2;
+			border: @border solid @color;
+			border-radius: 15px;
+			background-image: url('https://desarrolloadaptatin.blob.core.windows.net/feedbacksimg/PatoFeedBack_00001.png');
+			background-position: center -5px;
+			background-size: 165px;
+			background-repeat: no-repeat;
+			-webkit-filter: grayscale(.5);
+		}
+		div.triangle
+		{
+			position: absolute;
+			width: 0;   
+			height: 0; 
+			margin-left: @width - @border - 85px;
+			border-bottom: @margin solid transparent;
+			border-left: 70px solid lighten(@color, 5%);
+			margin-top: -@border/2;
 		}
 	}
 }

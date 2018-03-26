@@ -24,8 +24,23 @@ form.control
 			background: @sec-hover;
 		}
 	}
+	button
+	{
+		background: @sec-hover;
+		border-radius: 0;
+		border: none;
+		color: white;
+		margin-left: 10px;
+		margin-top: 5px;
+		padding: 7px 45px;
+		&:hover
+		{
+			background: darken(@sec-hover, 3%);
+		}
+	}
 	.input-group
 	{
+		background: @main-color;
 		span
 		{
 			background: transparent;

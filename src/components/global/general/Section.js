@@ -14,21 +14,19 @@ export default class Section extends Component {
 		}
 	}
 	render() {
-		return(
-        	<div class={this.props.style}>
-        		<div class="container">
+		return (
+        	<section class={this.props.style}>
+        		<div class="container-fluid">
         			{this.props.children}
         			<div class={show(this.props.condition, 'row')}>
-						<div class="continue">						
-							<div class="react-continue">
-								<button class={'btn btn-success'} onClick={::this.handlerSubmit}>
-									{!this.props.download ? 'Continuar' : 'Descargar'}
-								</button>
-							</div>
+						<div class="react-continue">						
+							<button class="btn btn-success" onClick={::this.handlerSubmit}>
+								{!this.props.download ? 'Continuar' : 'Descargar'}
+							</button>
 						</div>
 					</div>
         		</div>
-        	</div>
+        	</section>
         )
     }
 }

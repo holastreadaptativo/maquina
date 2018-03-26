@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { focus, show } from 'actions'
+import { Aside, Item } from 'components'
 import { src, LINKS } from 'stores'
+import { show } from 'actions'
 
 export default class Uploads extends Component {
 	constructor(props) {
@@ -30,29 +31,24 @@ export default class Uploads extends Component {
 		this.setState({ len:0, files:[], name:'' })
 	}
 	render() {
-		const { len, name } = this.state
-        return(
-			<aside class={focus(this.props.condition, 'active')}>
-				<div class="title">
-					<h3>Archivos JS y CSS</h3>
-				</div>
-				<form>
-					<h5 class="active">Descargar</h5>
+		const { len, name } = this.state; let k = 0
+        return (
+			<Aside show={this.props.condition} title="Archivos JS y CSS">
+				<Item id={k} active={k} title="Descargar">
 					<a class="btn box" href={LINKS[2].url} download>JS</a>
 					<a class="btn box" href={LINKS[1].url} download>CSS</a>
-	        	</form>
-				<form>	
-					<h5 class="active">Actualizar</h5>
-	        		<a class="btn input" onClick={() => this.refs.input.click()}>Elegir archivos</a>
+	        	</Item>
+				<Item id={k} active={k} title="Actualizar">
+					<a class="btn input" onClick={() => this.refs.input.click()}>Elegir archivos</a>
 	        		<input ref="input" type="file" multiple required onChange={::this.onSelect} class="hidden"></input>
-					<div class="state">
+					<ol>
 						<h6 class={show(len < 1)}>Ningún archivo seleccionado</h6>
 						<h6 class={show(len == 1)}>{name}</h6>
 						<h6 class={show(len > 1)}>{len} archivos</h6>
-					</div>
-        			<button type="submit" class="btn" onClick={::this.upload}>Subir</button>
-	        	</form>
-		    </aside>
+					</ol>
+        			<button type="submit" onClick={::this.upload}>Subir</button>
+	        	</Item>
+		    </Aside>
 		)
 	}
 }

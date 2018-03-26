@@ -25,14 +25,14 @@ export class Glosa extends Component {
     render() {
 		const { option, feedback } = this.props
 		return(
-        	<Section style="ejercicios glosa" condition={feedback.length} {...this.props}>
+        	<Section style="design" condition={feedback.length} {...this.props}>
         		<div class="row">
-	        		<div class="feedback">
+	        		<main class="feedback">
 	        			<Feedback feedback={feedback} {...this.state}/>
 	        			<div class="img-duck"/>
 	        			<div class="triangle"/>
 	        			<footer/>
-	        		</div>
+	        		</main>
         		</div>
 				<Overview condition={option == 0} {...this.props} {...this.state}/>
 				<Functions condition={option == 1} {...this.props} {...this.state}/>

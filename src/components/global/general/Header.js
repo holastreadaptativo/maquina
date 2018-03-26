@@ -7,7 +7,7 @@ export default class Header extends Component {
    render() {
         const { active, setActive, code, option, setOption } = this.props     
         return(
-            <header class="main-header">
+            <header class="menu">
                 <div class="container-fluid">
                     <div class="logo"></div>
                     <div class="title">

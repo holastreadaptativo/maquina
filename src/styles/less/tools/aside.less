@@ -22,28 +22,6 @@ aside
 		padding: 10px;
 		font-size: 15px;
 	}
-	h5
-	{
-		background: @main-hover;
-		cursor: pointer;
-		font-size: 12px;
-		font-weight: bold;
-		padding-left: 10px;
-		text-transform: uppercase;
-		width: auto;
-		.glyphicon
-		{
-			color: white;
-			float: right;	
-			font-size: 13px;
-			margin-right: 10px;
-			margin-top: -1px;
-		}
-		&.active
-		{
-			background: @sec-hover;
-		}
-	}
 	li
 	{
 		list-style: none;
@@ -53,6 +31,55 @@ aside
 		&:hover
 		{
 			background: lighten(@main-color, 7%);
+		}
+	}
+	a
+	{
+		&.input
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 5px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(100% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				color: #f6f6f6;
+				background: lighten(@main-color, 5%);
+			}
+		}
+		&.box
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 30px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(50% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				background: lighten(@main-color, 5%);
+				color: white;
+			}
+			&:active
+			{
+				background: @sec-hover;
+			}
+		}
+	}	
+	ol
+	{
+		color: white;
+		border-left: 30px solid @sec-hover;
+		h6
+		{
+			font-size: 12px;
+			padding-left: 10px;
 		}
 	}
 }

@@ -58,9 +58,7 @@ export default class Editor extends Component {
 				<main class="preview">
 					<div class={show(active == 0, 'container')}>
 						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
-						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
-							Your browser does not support the HTML5 canvas.
-						</canvas>
+							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
 					</div>
 					<div class={show(active == 1, 'textarea')}>
 						<TextEditor {...this.props} data={this.state.feedback}/>
