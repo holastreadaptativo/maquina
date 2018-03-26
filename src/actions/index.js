@@ -1,6 +1,6 @@
 export * from './design'
 export * from './main'
-export * from './global'
+export * from './auth'
 
 export default function $(id) { return document.getElementById(id) }
 
@@ -28,4 +28,4 @@ export function stringify(t) { return JSON.stringify(t).replace(/[\"]/g,'\'') }
 
 import * as fn from 'actions'
 
-export const action = { code:fn.code, ejercicios:fn.ejercicios, versiones:fn.versiones }
+export const action = { cod:fn.code, exe:fn.ejercicios, ver:fn.versiones }

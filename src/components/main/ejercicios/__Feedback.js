@@ -41,6 +41,6 @@ export default class Feedback extends Component {
         )
     }
 	print() {
-		action.ejercicios('GET', { ...this.props, vt:true })
+		action.exe('GET', { ...this.props, vt:true })
 	}
 }

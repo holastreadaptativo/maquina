@@ -20,11 +20,11 @@ class General extends Component {
 		this.state = { path:props.path, container:props.container }
 	}
     componentDidMount() {
-    	action.ejercicios('COUNT', { code:this.props.code, path:this.state.path })
+    	action.exe('COUNT', { code:this.props.code, path:this.state.path })
 	}
 	render() {
 		return (
-			<Section style="design" condition={this.props[this.state.path].length} {...this.props}>
+			<Section style="ejercicios" condition={this.props[this.state.path].length} {...this.props}>
 				<Overview id={0} {...this.props} {...this.state}/>
 				<Functions id={1} {...this.props} {...this.state}/>
 				{

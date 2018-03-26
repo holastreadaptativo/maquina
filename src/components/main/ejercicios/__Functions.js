@@ -31,7 +31,7 @@ export default class Functions extends Component {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
 	handleCreate(params) {
-		action.ejercicios('ADD', { ...this.props, ...this.state, params:params })
+		action.exe('ADD', { ...this.props, ...this.state, params:params })
 		this.setState({ modal:false }) 
 	}
 	getComponent() {
@@ -64,6 +64,6 @@ class Clone extends Component {
 	handleClone() {
 		let val = this.refs.clone.value
 		if (val != 0 && val != 1)
-			action.ejercicios('CLONE', { ...this.props, target:val })
+			action.exe('CLONE', { ...this.props, target:val })
 	}
 }

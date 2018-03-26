@@ -45,19 +45,19 @@ export default class Overview extends Component {
 		this.setState({ modal:true, fn:fn, params:params, id:id })
 	}	
 	handleUpdate(params) {
-		action.ejercicios('UPDATE', { ...this.props, ...this.state, params:params })
+		action.exe('UPDATE', { ...this.props, ...this.state, params:params })
 		this.setState({ modal:false })
 	}
 	handleRemove(id) {
 		if (confirm('¿Estas seguro de borrar la función?'))
-			action.ejercicios('REMOVE', { ...this.props, id:id })
+			action.exe('REMOVE', { ...this.props, id:id })
 	}
 	handleChange(e) {
 	    e.preventDefault()
 	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
 	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
 	    if (drag.length > 1)
-	    	action.ejercicios('MOVE', { ...this.props, i:i, f:f })
+	    	action.exe('MOVE', { ...this.props, i:i, f:f })
 	}
 	handleWidth(e) {
 		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:Number(e.target.value) })

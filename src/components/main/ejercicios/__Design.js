@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { action, focus } from 'actions'
 import { DEFAULT, DEVICES } from 'stores'
+import { action, focus } from 'actions'
 
 export default class Design extends Component {
 	constructor(props) {
@@ -56,6 +56,6 @@ export default class Design extends Component {
         this.setState({ device:device })
     }
 	print() {
-		action.ejercicios('GET', { ...this.props, vt:true })
+		action.exe('GET', { ...this.props, vt:true })
 	}
 }

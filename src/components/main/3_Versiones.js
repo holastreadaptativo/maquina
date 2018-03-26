@@ -9,10 +9,10 @@ export default class Versiones extends Component {
 		this.print = this.print.bind(this)
 	}
 	componentWillMount() {
-		action.versiones('COUNT', { code:this.props.code, update:(::this.setState) })
+		action.ver('COUNT', { code:this.props.code, update:(::this.setState) })
 	}
 	componentDidMount() {
-		action.versiones('GET', { code:this.props.code, update:(::this.setState), print:this.print })
+		action.ver('GET', { code:this.props.code, update:(::this.setState), print:this.print })
 		window.addEventListener('resize', this.print )
 	}
 	componentDidUpdate() {
@@ -34,7 +34,7 @@ export default class Versiones extends Component {
         )
     }
 	print() {
-		action.ejercicios('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
+		action.exe('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
 	}
 }
 
@@ -79,7 +79,7 @@ class Select extends Component {
 	}
 	handleRemove(m, i) {
 		if (confirm('¿Quieres eliminar esta versión?')) {
-			action.versiones('REMOVE', { code:this.props.code, id:m.id })
+			action.ver('REMOVE', { code:this.props.code, id:m.id })
 			this.props.setState({ active:i - 1 })
 		}
 	}
@@ -112,6 +112,6 @@ class Generate extends Component {
 	}
 	handleGenerate(e) {
 		e.preventDefault()
-		action.versiones('GEN', { ...this.props, fns:this.state.fns })
+		action.ver('GEN', { ...this.props, fns:this.state.fns })
 	}
 }

@@ -123,7 +123,7 @@ class Search extends Component {
 			setState(DEFAULT.SEARCH)
 
 		else if (n.length > 2)
-			action.code('GET', { target:n, update:setState })
+			action.cod('GET', { target:n, update:setState })
 		
 		else
 			setState({ selected:false })
