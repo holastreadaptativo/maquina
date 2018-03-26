@@ -4,6 +4,18 @@ import { data } from 'stores'
 var num = 0, max = Math.pow(2, 13)
 export function versiones(action, state) {
 	switch(action) {
+		case 'GET': {
+			const { code, update, print } = state
+			data.child(`${code}/variables`).once('value').then(snap => {
+				let vars = []
+				snap.forEach(v => {
+					vars.push({ var:v.val().var, val:v.val().vt })
+					update({ vars:vars, vt:{ id:'vt', vars:vars } })
+					print()
+				})
+			})
+			break	
+		}
 		case 'GEN': {
 			const { fns, variables, code, limit, selected } = state
 
@@ -27,7 +39,8 @@ export function versiones(action, state) {
 			data.child(`${code}/versions`).set({ 
 				bup:{...matrix.slice(selected)}, gen:versions, box:box, total:total,
 				limit:Math.min(limit, total), selected:Math.min(limit, selected)
-			})	
+			})
+			break	
 		}
 		case 'REMOVE': {
 			const { code, id } = state
@@ -47,6 +60,15 @@ export function versiones(action, state) {
 					}					
 				})
 			})
+			break
+		}
+		case 'COUNT': {
+			const { code, update } = state
+			data.child(`${code}/versions`).once('value').then(v => {
+				if (v.hasChild('total'))
+					update({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+			})
+			break
 		}
 	}
 }

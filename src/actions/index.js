@@ -4,38 +4,28 @@ export * from './global'
 
 export default function $(id) { return document.getElementById(id) }
 
-export function show(bool, tags) {
-    return `${bool ? tags : 'hidden'}`
-}
+export function date() { return (new Date()).toLocaleString() }
 
-export function focus(bool, active) {
-    return `${bool ? active : ''}`
-}
+export function focus(b, c) { return `${b ? c : ''}` }
 
-export function random(from, to) {
-    return Math.floor(Math.random(0, 1) * (to - from) + from)
-}
-
-export function shuffle(array, times = 10) {
-    for (let i = 0; i < times; i++)
-        array = array.sort(() => (.5 - Math.random()))
-    return array
-}
-
-export function stringify(json) {
-    return JSON.stringify(json).replace(/[\"]/g,'\'')
-}
-
-export function date() {
-    return (new Date()).toLocaleString()
-}
-
-export function money(amount) {
-    return '$' + parseInt(amount).toFixed(0).replace(/./g, (c, i, a) => {
+export function money(m) {
+    return '$' + parseInt(m).toFixed(0).replace(/./g, (c, i, a) => {
         return i > 0 && c !== ',' && (a.length - i) % 3 === 0 ? '.' + c : c
     })
 }
 
+export function random(i, f) { return Math.floor(Math.random(0, 1) * (f - i) + i) }
+
+export function show(b, c) { return `${b ? c : 'hidden'}` }
+
+export function shuffle(a, t = 10) {
+    for (let i = 0; i < t; i++)
+        a = a.sort(() => (.5 - Math.random()))
+    return a
+}
+
+export function stringify(t) { return JSON.stringify(t).replace(/[\"]/g,'\'') }
+
 import * as fn from 'actions'
 
-export const action = { ejercicios:fn.ejercicios, versiones:fn.versiones }
+export const action = { code:fn.code, ejercicios:fn.ejercicios, versiones:fn.versiones }

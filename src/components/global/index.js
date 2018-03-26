@@ -5,6 +5,7 @@ export Text from './forms/Text'
 export Header from './general/Header'
 export Footer from './general/Footer'
 export Section from './general/Section'
+export Modal from './general/Modal'
 
 export Item from './group/Item'
 export Tabs from './group/Tabs'

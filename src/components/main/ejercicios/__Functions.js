@@ -9,7 +9,7 @@ export default class Functions extends Component {
 	}
 	render() {
 		return (
-			<Aside show={this.props.condition} title="Funciones">
+			<Aside show={this.props.id == this.props.option} title="Funciones">
 				{
 					FUNCIONES.map((m, i) => m.fns.length > 0 &&
 						<Item key={i} id={i} active={this.state.active} title={m.name} setActive={::this.handleActive}>
@@ -38,5 +38,29 @@ export default class Functions extends Component {
 		FUNCIONES[this.state.active].fns.forEach(m => { if (m.id == this.state.fn) FX = m.component })
        	return FX && 
        		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState} fn={this.state.fn} push {...this.props}/>
+	}
+}
+
+export class Clone extends Component {
+	render() {
+		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
+		return (
+			<div class="clone">
+				<select ref="clone" class="form-control" defaultValue="-1">
+					<option value="0" disabled>Selecciona una función</option>
+					{
+						f.map((m, i) => 
+							m.map((n, j) => <option key={j} value={n.json}>{`${t[i]} ${n.function}-${n.id.substring(4, 7)}`}</option>)
+						)
+					}
+				</select>
+				<button class="btn" onClick={::this.handleClone}>Clonar</button>
+			</div>
+		)
+	}
+	handleClone() {
+		let val = this.refs.clone.value
+		if (val != 0 && val != 1)
+			action.ejercicios('CLONE', { ...this.props, target:val })
 	}
 }

@@ -1,8 +1,66 @@
 import React, { Component } from 'react'
-import { data, DEFAULT, LABELS } from 'stores'
-import $, { focus } from 'actions'
+import $, { action, focus, show } from 'actions'
+import { DEFAULT, LABELS } from 'stores'
 
-export default class Search extends Component {
+export default class Buscador extends Component {
+	constructor() {
+		super()
+		this.state = DEFAULT.SEARCH
+	}
+	render() {
+		return (
+			<section class="code">
+				<Search {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
+				<Table {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
+			</section>
+		)
+	}
+}
+
+class Table extends Component {
+	render() {
+		return (
+			<table class={show(this.props.selected, 'table search table-condensed table-striped table-hover')}>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Código del Ejercicio</th>
+						<th>Versiones</th>
+						<th>Generados</th>
+						<th>Estado</th>
+					</tr>
+				</thead>
+				<tbody>
+				{
+					this.props.search.map((m, i) => 
+						<tr key={i} onClick={() => this.props.setCode(m.id)}>
+							<td>{i + 1}</td>
+							<td>{ m.id }</td>
+							<td>{ m.versions }/{ m.limit }</td>
+							<td>{ m.total }</td>
+							<td>-</td>
+						</tr>
+					)
+				}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<button class="btn btn-default clean" onClick={::this.handleClear}>Limpiar</button>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		)
+	}
+	handleClear(e) {
+		e.preventDefault()
+		this.props.setState(DEFAULT.SEARCH)
+		$('search-code').value = ''
+	}
+}
+
+class Search extends Component {
 	render() {
 		const { selected, length, temp } = this.props
 		return (
@@ -52,33 +110,22 @@ export default class Search extends Component {
 			this.handleSubmit(e)
 	}
 	onChange(e) {
+		const { setState } = this.props
 		let n = e.target.value, l = n.length, 
 			m = parseInt(n.substring(l - 1, l))
 
 		if (!Number.isInteger(m)) 
 			n = e.target.value = n.substring(0, l - 1)
 		
-		this.props.setState({ length:n.length, temp:n })
+		setState({ length:n.length, temp:n })
 
 		if (n.length == 0)
-			this.props.setState(DEFAULT.SEARCH)
+			setState(DEFAULT.SEARCH)
 
-		else if (n.length > 2) {
-			let search = []
-			data.once('value').then(snap => {
-				snap.forEach(c => {
-					if (c.key.toString().includes(n)) {
-						let t = 0, l = 0, v = 0
-						if (c.hasChild('versions')) {
-							let m = c.val().versions; v = m.selected; t = m.total; l = m.limit
-						}
-						search.push({ id:c.key, total:t, limit:l, versions:v })
-						this.props.setState({ search:search })
-					}
-				})
-			})
-		}
+		else if (n.length > 2)
+			action.code('GET', { target:n, update:setState })
+		
 		else
-			this.props.setState({ selected:false })
+			setState({ selected:false })
 	}
 }
