@@ -176,9 +176,10 @@ article
 		border-color: @main-hover;
 		border-radius: 0;
 		padding: 7px 40px;
-		&:hover
+		&:hover, &:active, &:focus
 		{
-			background: @main-hover;
+			background: @main-hover !important;
+			border-color: @main-hover !important;
 		}
 	}
 }

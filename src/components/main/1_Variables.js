@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import $, { checkAll, focus, setFormat, show } from 'actions'
-import { Section, Panel, Well } from 'components'
+import { Panel, Section, Well } from 'components'
 import { data, DEFAULT, LABELS } from 'stores'
 
 export default class Variables extends Component {

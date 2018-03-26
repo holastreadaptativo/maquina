@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FUNCIONES, Aside, Item, Modal } from 'components'
-import { action } from 'actions'
+import { action, show } from 'actions'
 
 export default class Functions extends Component {
 	constructor(props) {
@@ -19,6 +19,7 @@ export default class Functions extends Component {
 					    </Item>
 					)
 				}
+				<Clone {...this.props}/>
 			    <Modal modal={this.state.modal} setState={::this.setState}>{ this.getComponent() }</Modal>
 		    </Aside>
 		)
@@ -41,20 +42,22 @@ export default class Functions extends Component {
 	}
 }
 
-export class Clone extends Component {
+class Clone extends Component {
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
 		return (
-			<div class="clone">
-				<select ref="clone" class="form-control" defaultValue="-1">
-					<option value="0" disabled>Selecciona una función</option>
-					{
-						f.map((m, i) => 
-							m.map((n, j) => <option key={j} value={n.json}>{`${t[i]} ${n.function}-${n.id.substring(4, 7)}`}</option>)
-						)
-					}
-				</select>
-				<button class="btn" onClick={::this.handleClone}>Clonar</button>
+			<div class={show(f[0].length || f[1].length || f[2].length)}>
+				<Item id={0} active={0} title="Clonar">
+					<select ref="clone" class="form-control clone" defaultValue="0">
+						<option value="0" disabled>Selecciona una función</option>
+						{
+							f.map((m, i) => 
+								m.map((n, j) => <option key={j} value={n.json}>{`${t[i]} ${n.function}-${n.id.substring(4, 7)}`}</option>)
+							)
+						}
+					</select>
+					<button class="btn" onClick={::this.handleClone}>Clonar</button>
+				</Item>
 			</div>
 		)
 	}
