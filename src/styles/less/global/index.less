@@ -38,11 +38,12 @@ section.design
 	{
 		background-color: white;
 		border: 2px solid #ddd;
+    	box-shadow: 2px 3px 4px #ddd;
 		max-width: 100%;
 		min-height: 330px;
 		margin: 20px auto 0;
 		overflow: auto;
-		padding: 5px;
+		padding: 5px 5px 15px;
 		transition: all .3s ease;
 		width: 100%;
 		.tags
@@ -77,15 +78,14 @@ section.design
 		width: @width;
 		article
 		{
-			height: @height - 2*@border - @margin;
-			overflow-y: auto;
-			overflow-x: hidden;
-			border: @border solid @color;
-			padding-bottom: 60px;
 			background: white;
+			border: @border solid @color;
+    		box-shadow: 2px 3px 2px #eee;
+			height: @height - 2*@border - @margin;
+			overflow-x: hidden;
+			overflow-y: auto;
+			padding: 20px 20px 60px;
 			width: 100%;
-			padding-top: 20px;
-			padding-right: 20px;
 			canvas
 			{
 				margin: 0 auto;
@@ -94,25 +94,25 @@ section.design
 		footer
 		{
 			background: lighten(@color, 5%);
-			width: @width - 2*@border - 85px;
-			height: @margin;
 			border-bottom-left-radius: 15px;
+			height: @margin;
 			margin-left: @border;
 			margin-top: -@border/2;
+			width: @width - 2*@border - 85px;
 		}
 		div.img-duck
 		{
-			position: absolute;
-			height: 150px;
-			width: 150px;
 			background: white;
-			margin-top: -90px - @border/2;
-			border: @border solid @color;
-			border-radius: 15px;
 			background-image: url('https://desarrolloadaptatin.blob.core.windows.net/feedbacksimg/PatoFeedBack_00001.png');
 			background-position: center -5px;
 			background-size: 165px;
 			background-repeat: no-repeat;
+			border: @border solid @color;
+			border-radius: 15px;
+			height: 150px;
+			margin-top: -90px - @border/2;
+			position: absolute;
+			width: 150px;
 			-webkit-filter: grayscale(.5);
 		}
 		div.triangle
@@ -134,11 +134,11 @@ section.code
 	width: 600px;
 	h3
 	{
-		padding: 28vh 0 10px;
+		padding: ~'calc(40vh - 100px)' 0 10px;
 		transition: all .3s ease;
 		&.selected
 		{
-			padding-top: 0;
+			padding-top: 5vh;
 		}
 	}
 	summary
@@ -170,12 +170,13 @@ article
 	text-align: right;
 	.btn-success
 	{
-		margin-top: 20px;
-		margin-right: 0px;
 		background: @main-color;
 		border-color: @main-hover;
 		border-radius: 0;
-		padding: 7px 40px;
+    	box-shadow: 2px 4px 8px #666;
+		margin-right: 0px;
+		margin-top: 20px;
+		padding: 8px 40px;
 		&:hover, &:active, &:focus
 		{
 			background: @main-hover !important;

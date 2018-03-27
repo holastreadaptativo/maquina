@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import { Section } from 'components'
+import { Section, Overview, Functions, Design, Feedback } from 'components'
 import { action } from 'actions'
 
 export class Ejercicios extends Component {
-	render() { return <General {...this.props} path="functions" container="container"/> }
+	render() { return <General {...this.props} path="functions" container="container-E"/> }
 }
 
 export class Respuestas extends Component {
-	render() { return <General {...this.props} path="answers" container="content"/> }
+	render() { return <General {...this.props} path="answers" container="container-R"/> }
 }
 
 export class Glosa extends Component {
-	render() { return <General {...this.props} path="feedback" container="modal"/> }
+	render() { return <General {...this.props} path="feedback" container="container-G"/> }
 }
 
 class General extends Component {
@@ -25,8 +25,8 @@ class General extends Component {
 	render() {
 		return (
 			<Section style="ejercicios" condition={this.props[this.state.path].length} {...this.props}>
-				<Overview id={0} {...this.props} {...this.state}/>
-				<Functions id={1} {...this.props} {...this.state}/>
+				<Functions id={0} {...this.props} {...this.state}/>
+				<Overview id={1} {...this.props} {...this.state}/>
 				{
 					this.state.path != 'feedback' ? 
 					<Design {...this.props} {...this.state}/> : 
@@ -36,9 +36,3 @@ class General extends Component {
         )
 	}
 }
-
-import Overview from './ejercicios/__Overview'
-import Functions from './ejercicios/__Functions'
-import Feedback from './ejercicios/__Feedback'
-import Design from './ejercicios/__Design'
-export Editor, { Devices } from './ejercicios/Editor'
