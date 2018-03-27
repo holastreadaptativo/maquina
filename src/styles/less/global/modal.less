@@ -41,6 +41,42 @@ section.editor
 				}
 			}
 		}
+		details
+		{
+			color: white;
+			margin: 0;
+			padding-top: 10px;
+			summary
+			{
+				background: @sec-hover;
+				cursor: pointer;
+				font-size: 12px;
+				font-weight: bold;
+				margin: 0;
+				outline: none;
+				padding: 0;
+				text-transform: uppercase;
+			}
+			ul
+			{
+				max-height: 180px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				li
+				{
+					background: lighten(@main-color, 3%);
+					border: 2px solid @main-color;
+					border-width: 3px 0px 2px;
+					font-size: 13px;
+					list-style: none;
+					padding: 0 10px;
+					&:hover
+					{
+						background: lighten(@main-color, 5%);
+					}
+				}
+			}
+		}
 	}
 	main.preview
 	{
