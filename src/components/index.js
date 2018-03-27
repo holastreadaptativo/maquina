@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { auth, users, uid, data, DEFAULT } from 'stores'
 import { Header } from 'components'
 import { focus } from 'actions'
@@ -46,7 +47,7 @@ export class App extends Component {
 						snap.forEach(f => {
 							if (f.hasChild('function') && f.hasChild('params') && f.hasChild('tag') && f.hasChild('position'))
 							functions.push({ id:f.key, function:f.val().function, params:f.val().params, tag:f.val().tag, 
-								width:f.val().width, position:f.val().position })
+								width:f.val().width, position:f.val().position, json:JSON.stringify(f.val()) })
 							this.setState({ [m]:functions })
 						})
 					})
@@ -74,7 +75,8 @@ export class App extends Component {
 	setCode(code) {
 		data.child(this.state.code).off()
 		this.onCodeChange(code)
-		this.setState({ code:code })
+		this.setState({ code:code, active:1 })
+		browserHistory.push('/variables')
 	}
 	setNotification(message, alert) {
 		this.setState({ notification:message, alert:alert })
@@ -96,5 +98,4 @@ export class App extends Component {
 
 export * from './design'
 export * from './global'
-export * from './tools'
 export * from './main'

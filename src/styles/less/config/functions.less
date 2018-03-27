@@ -1,0 +1,45 @@
+.id-image(@id, @url, @ext: png)
+{
+	&#@{id}
+	{
+		content: url('@{images}/@{url}.@{ext}');
+	}
+}
+.margin-top(@i, @j: 0) when(@i => @j)
+{
+	.m@{i} 
+	{ 
+		margin-top: @i * 1px; 
+	}
+	.margin-top(@i - 10, @j)
+}
+.if(@condition, @property, @value) when (@condition = true)
+{
+     @{property}: @value;
+}
+.for(@list, @code) {
+    & {
+        .loop(@i:1) when (@i =< length(@list)) {
+            @value: extract(@list, @i);
+
+            @code();
+
+            .loop(@i + 1);
+        }
+
+        .loop();
+    }
+}
+.default()
+{
+	margin: 0;
+	padding: 0;
+}
+.show()
+{
+	display: initial;
+}
+.hide()
+{
+	display: none;
+}

@@ -1,3 +1,4 @@
 export InsertarTexto from './InsertarTexto'
-export InsertarBotones from './InsertarBotones'
-export InsertarInputs from './InsertarInputs'
+export RespRadioButtons from './RespRadioButtons'
+export GraficoDatos from './GraficoDatos'
+export PlanoCartesiano from './PlanoCartesiano'

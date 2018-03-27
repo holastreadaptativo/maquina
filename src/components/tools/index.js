@@ -1,5 +1,0 @@
-export Tabs from './Tabs'
-export Item from './Item'
-export Input from './Input'
-export Select from './Select'
-export Text from './Text'

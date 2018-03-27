@@ -1,54 +1,50 @@
 import { FUNCIONES } from 'components'
+import $, { date } from 'actions'
 import { data } from 'stores'
-import $ from 'actions'
 
 export function ejercicios(action, state) {
 	switch(action) {
 		case 'GET': {
-			const { variables, versions, vt, path, functions, answers, feedback, container } = state
-			let func = path == 'functions' ? functions : path == 'answers' ? answers : feedback
-			func.forEach((m, i) => {
+			const { container, path, variables, versions, vt } = state
+			state[path].forEach((m, i) => {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
 					container:$(`${container}-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
 				})
 			}) 	
-			break;
+			break
 		}
 		case 'ADD': {
-			const { code, path, params, fn, tag, md, sm, xs, feedback } = state
+			const { code, feedback, fn, params, path, tag, md, sm, xs } = state
 			$('btn-save').setAttribute('disabled', 'true')
 			data.child(`${code}/${path}`).once('value').then(snap => {
 				let count = snap.val().count
 				let ref = data.child(`${code}/${path}`).push()
 				ref.update({ 
-					function:fn, params:params, date:(new Date()).toLocaleString(), tag:tag, position:count, width:{md, sm, xs}
+					function:fn, params:params, date:date(), tag:tag, position:count, width:{md, sm, xs}
 				}).then(() => {
 					data.child(`${code}/${path}`).update({ count:count+1 })
 					if (path == 'answers')
 						ref.update({ feedback:feedback })
 				})
 			})
-			break;
+			break
 		}
 		case 'UPDATE': {
-			const { code, path, params, id } = state
+			const { code, id, params, path } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(`${code}/${path}/${id}`).update({
-				params:params, date:(new Date()).toLocaleString()
-			})
-			break;
+			data.child(`${code}/${path}/${id}`).update({ params:params, date:date() })
+			break
 		}
 		case 'REMOVE': {
-			const { code, path, id, functions, answers, feedback } = state
-			let func = path == 'functions' ? functions : path == 'answers' ? answers : feedback
+			const { code, id, path } = state
 			data.child(`${code}/${path}/${id}`).once('value').then(t => {
 				let i = t.val().position
 					data.child(`${code}/${path}/`).once('value').then(snap => {
 		    		snap.forEach(fn => {
 		    			let f = fn.val().position
-		    			if (i < f && func.length) {
+		    			if (i < f && state[path].length) {
 		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f - 1 })
 		    			} else if (i == f) {
 		    				data.child(`${code}/${path}/${fn.key}`).remove().then(() => {
@@ -60,7 +56,7 @@ export function ejercicios(action, state) {
 		    		})
 		    	})
 			})	
-			break;
+			break
 		}
 		case 'MOVE': {
 			const { code, path, i, f } = state
@@ -87,7 +83,27 @@ export function ejercicios(action, state) {
 		    		})
 		    	})
 		    }
-			break;
+			break
+		}
+		case 'CLONE': {
+			const { code, path, target } = state
+			data.child(`${code}/${path}`).once('value').then(snap => {
+				let count = snap.val().count
+				let ref = data.child(`${code}/${path}/`).push()
+				ref.update({...JSON.parse(target)}); ref.update({ position:count, date:date() }).then(() => {
+					data.child(`${code}/${path}`).update({ count:count+1 })
+				})
+			})	
+			break
+		}
+		case 'COUNT': {
+			const { code, path } = state
+			data.child(`${code}/${path}`).once('value').then(snap => {
+				if (!snap.hasChild('count')) {
+					data.child(`${code}/${path}`).update({ count:0 })
+				}
+			})
+			break
 		}
 	}
 }

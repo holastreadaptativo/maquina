@@ -1,0 +1,127 @@
+form.control
+{
+	margin-top: 10px;
+	h5
+	{
+		color: white;
+		text-transform: uppercase;
+		padding-left: 10px;
+		font-size: 12px;
+		font-weight: bold;
+		cursor: pointer;
+		background: @main-hover;
+		width: auto;
+		.glyphicon
+		{
+			color: white;
+			font-size: 13px;
+			float: right;	
+			margin-right: 10px;
+			margin-top: -1px;
+		}
+		&.active
+		{
+			background: @sec-hover;
+		}
+	}
+	button
+	{
+		background: @sec-hover;
+		border-radius: 0;
+		border: none;
+		color: white;
+		margin-left: 10px;
+		margin-top: 5px;
+		padding: 7px 45px;
+		&:hover
+		{
+			background: darken(@sec-hover, 3%);
+		}
+	}
+	.input-group
+	{
+		background: @main-color;
+		span
+		{
+			background: transparent;
+			color: white;
+			border: none;
+			height: 20px;
+			font-size: 13px;					
+			padding: 5px 0;
+			text-align: left;
+			padding-left: 10px;
+			&.prefix
+			{
+				width: 80px;
+			}
+			&.postfix
+			{
+				width: 30px;
+				padding-right: 10px;
+			}
+		}
+		input, select
+		{
+			height: 20px;
+			font-size: 13px;
+			min-width: 180px;
+			max-width: 180px;
+			&[type="color"]
+			{
+				width: 180px;
+				padding: 0 10px;
+			}
+		}
+		select
+		{
+			padding: 0 10px;
+			border-radius: 0;
+		}
+	}
+	select.clone
+	{
+		background: transparent;
+		border: 1px solid @sec-hover;
+		padding: 5px 20px;
+		border-radius: 0;
+		color: white;
+		transition: all .3s ease;
+		width: ~'calc(100% - 20px)';
+		margin: 5px 10px;
+		cursor: pointer;
+		outline: none;
+		font-size: 13px;
+		&:hover
+		{
+			color: @gray;
+			background: lighten(@main-color, 5%);
+			outline: none;
+		}
+		option
+		{
+			background: @main-color;
+		}
+	}
+}
+form.search
+{
+	span.input-group-addon, button
+	{
+		background-color: white;
+		border-radius: 0;
+	}
+	input.form-control
+	{
+		border-left-color: white;
+		border-radius: 0;
+		&:hover, &:focus
+		{
+			border-color: #66afe9;
+		}
+	}
+	div.color-line
+	{
+		height: 2px;
+	}		
+}

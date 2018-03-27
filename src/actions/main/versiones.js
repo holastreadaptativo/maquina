@@ -1,80 +1,146 @@
 import { shuffle, random } from 'actions'
+import { data } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
 export function versiones(action, state) {
 	switch(action) {
-		case 'GEN': {
-			const { fns, variables } = state
-			let aux = variables.slice(0), vars = [], matrix = []; num = 1
-
-			while (aux.length) {
-				let m = aux.shift()	
-				switch (m.type) {
-					case 'numero': {
-						if (m.val.includes(',')) {
-							let x = m.val.split(','), y = []
-							if (m.val.includes('..')) {
-								x.forEach(n => { 
-									let z = n.split('..')
-									for (let i = Number(z[0]); i <= Number(z[1]); i++) {
-										y.push(Number(i))
-									}
-								})
-							}
-							else
-								x.forEach(n => { y.push(Number(n)) })
-							vars.push({ var:m.var, val:y, rank:Number(y.length) })						
-						}
-						else if (m.val.includes('..')) {
-							let x = m.val.split('..'), y = []	
-							for (let i = Number(x[0]); i <= Number(x[1]); i++) {
-								y.push(Number(i))
-							}
-							vars.push({ var:m.var, val:y, rank:Number(y.length) })
-						}
-						else
-						{
-							vars.push({ var:m.var, val:[Number(m.val)], rank:0 })
-						}
-						break
-					}
-					case 'texto': {
-						if (m.val.includes(',')) {
-							let x = m.val.split(','), y = []
-							x.forEach(m => { y.push(m.trim()) })
-							vars.push({ var:m.var, val:y, rank:-1 })
-						}
-						else
-						{
-							vars.push({ var:m.var, val:[m.val], rank:-1 })
-						}
-					}
-				}
-			}
-
-			vars.forEach((m, i) => {
-				vars[i].val = shuffle(m.val)
-				if (m.rank > 0) num *= m.rank
+		case 'GET': {
+			const { code, update, print } = state
+			data.child(`${code}/variables`).once('value').then(snap => {
+				let vars = []
+				snap.forEach(v => {
+					vars.push({ var:v.val().var, val:v.val().vt })
+					update({ vars:vars, vt:{ id:'vt', vars:vars } })
+					print()
+				})
 			})
+			break	
+		}
+		case 'GEN': {
+			const { fns, variables, code, limit, selected } = state
 
-			if (num < max)
-				concat(vars, matrix, fns, [])				
-			else {
-				for (let i = 0; i < max; i++) {
-					let arr = []
-					for (let j = 0; j < vars.length; j++) {
-						let k = vars[j].val[random(0, vars[j].rank)]
-						arr.push({ var:vars[j].var, val:k, rank:vars[j].rank })
+			let matrix = getmtx(fns, variables), total = matrix.length
+			matrix = shuffle(matrix).slice(0, limit)
+		
+			let versions = matrix.slice(0, selected), box = []
+			for (let i = 0; i < selected; i++) {
+				box[i] = []
+				for (let j = 0; j < selected; j++) {
+					let sum = 0
+					for (let k = 0; k < versions[i].length; k++) {
+						let a = versions[i][k].val, b = versions[j][k].val, c = versions[i][k].rank
+						if (i != j && c != 0)		
+							if (c > 0) sum += Math.abs((a - b)/c)
+							else sum += 1
 					}
-					matrix.push(evalfn( arr, fns ))
+					box[i][j] = Number(sum.toFixed(5))
 				}
 			}
-			matrix.forEach((m, i) => { m.id = i })
-			return matrix
+			data.child(`${code}/versions`).set({ 
+				bup:{...matrix.slice(selected)}, gen:versions, box:box, total:total,
+				limit:Math.min(limit, total), selected:Math.min(limit, selected)
+			})
+			break	
+		}
+		case 'REMOVE': {
+			const { code, id } = state
+
+			let ref = data.child(`${code}/versions`)
+			ref.child('gen').once('value').then(snap => {
+				snap.forEach(v => {
+					if (v.val().id == id) {
+						ref.child(`gen/${v.key}`).remove().then(() => {
+							ref.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
+								w.forEach(x => { 
+									ref.child('gen').push( x.val() )
+									ref.child(`bup/${x.key}`).remove()
+								})
+							})	
+						})
+					}					
+				})
+			})
+			break
+		}
+		case 'COUNT': {
+			const { code, update } = state
+			data.child(`${code}/versions`).once('value').then(v => {
+				if (v.hasChild('total'))
+					update({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+			})
+			break
 		}
 	}
 }
 
+function getmtx(fns, variables) {
+	let aux = variables.slice(0), vars = [], matrix = []; num = 1
+
+	while (aux.length) {
+		let m = aux.shift()	
+		switch (m.type) {
+			case 'numero': {
+				if (m.val.includes(',')) {
+					let x = m.val.split(','), y = []
+					if (m.val.includes('..')) {
+						x.forEach(n => { 
+							let z = n.split('..')
+							for (let i = Number(z[0]); i <= Number(z[1]); i++) {
+								y.push(Number(i))
+							}
+						})
+					}
+					else
+						x.forEach(n => { y.push(Number(n)) })
+					vars.push({ var:m.var, val:y, rank:Number(y.length) })						
+				}
+				else if (m.val.includes('..')) {
+					let x = m.val.split('..'), y = []	
+					for (let i = Number(x[0]); i <= Number(x[1]); i++) {
+						y.push(Number(i))
+					}
+					vars.push({ var:m.var, val:y, rank:Number(y.length) })
+				}
+				else
+				{
+					vars.push({ var:m.var, val:[Number(m.val)], rank:0 })
+				}
+				break
+			}
+			case 'texto': {
+				if (m.val.includes(',')) {
+					let x = m.val.split(','), y = []
+					x.forEach(m => { y.push(m.trim()) })
+					vars.push({ var:m.var, val:y, rank:-1 })
+				}
+				else
+				{
+					vars.push({ var:m.var, val:[m.val], rank:-1 })
+				}
+			}
+		}
+	}
+
+	vars.forEach((m, i) => {
+		vars[i].val = shuffle(m.val)
+		if (m.rank > 0) num *= m.rank
+	})
+
+	if (num < max)
+		concat(vars, matrix, fns, [])				
+	else {
+		for (let i = 0; i < max; i++) {
+			let arr = []
+			for (let j = 0; j < vars.length; j++) {
+				let k = vars[j].val[random(0, vars[j].rank)]
+				arr.push({ var:vars[j].var, val:k, rank:vars[j].rank })
+			}
+			matrix.push(evalfn( arr, fns ))
+		}
+	}
+	matrix.forEach((m, i) => { m.id = i })
+	return matrix
+}
 function concat(vars, matrix, fns, arr) {
 	let values = vars[0].val, size = vars.length
 	for (let i = 0; i < values.length; i++) {

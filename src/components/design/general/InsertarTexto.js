@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
+import { Input, Item } from 'components'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
@@ -9,7 +10,7 @@ import { data } from 'stores'
 export default class InsertTexto extends Component {
 	constructor(props) {
 		super(props)
-		this.state = props.push ? { textCont: '' } : props.params
+		this.state = props.push ? { textCont: '', active:0, color:'#ffffff', padding:'10px 10px 0px' } : props.params
 	}
 	onContUpdate(html) {
 		this.setState({ textCont:html })
@@ -35,37 +36,40 @@ export default class InsertTexto extends Component {
 		else
 			this.setState({ [e.target.id]:e.target.value, edited:true })
 	}
+	handleActive(active) {
+		this.setState({ active:active })
+	}
 	render() {
-		const { add, update, push, onHide } = this.props
-		const { md, sm, xs, textCont } = this.state
-		let onSave = push ? add : update
+		const { add, update, push } = this.props
+		const { active, md, sm, xs, color, padding } = this.state
+		let onSave = push ? add : update, k = 0, params = this.state
+		delete params.md; delete params.sm; delete params.xs
 		return (
-			<div class="react-functions">
-				<div class="react-config">
+			<section class="editor">
+				<main class="config">
 					<div class="title">
-						<h3></h3>
+						<h3>Configuración</h3>
 					</div>
-				</div>
-				<div class="react-container">			
-					<div class="text-editor">
+					<div>
+						<Item id={k++} active={active} title="Texto" setActive={::this.handleActive}>
+							<Input id="color" default={color} prefix="color" update={::this.setState} type="color"/>
+							<Input id="padding" default={padding} prefix="padding" update={::this.setState} type="text"/>
+						</Item>
+					</div>
+				</main>
+				<main class="preview">			
+					<div class="textarea">
 						<EditorConvertToHTML {...this.state} contUpdate={(html) => this.onContUpdate(html)}/>
 					</div>
-					<div class="buttons-editor">
-						<h1>BUTTONS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
-					</div>
-					<div class="inputs-editor">
-						<h1>INPUTS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
-					</div>
-					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
-					<button id="btn-save" class="react-submit" onClick={onSave({ textCont:textCont })}>Guardar</button>
-				</div>
-				<div class="react-header">
+					<button id="btn-save" class="react-submit" onClick={onSave(params)}>Guardar</button>
+				</main>
+				<header>
 					<h5>Insertar Texto</h5>
-				</div>
-				<div class="react-footer">
+				</header>
+				<footer>
 					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
-				</div>	
-			</div>
+				</footer>	
+			</section>
 		)
 	}
 }
@@ -89,7 +93,8 @@ class EditorConvertToHTML extends Component {
 	    return (
 		    <div class="row">
 		        <div class="col-sm-12">
-		    	    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}/>
+		    	    <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}
+		    	    toolbar={{ link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
 		        </div>
 		    </div>    
 	  	)

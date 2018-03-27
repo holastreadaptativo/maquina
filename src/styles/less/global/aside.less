@@ -1,0 +1,85 @@
+aside
+{
+	background: @main-color;
+	box-shadow: -1px 0px rgba(0, 0, 0, .3);
+	height: ~'calc(100vh - 45px)';
+	position: fixed;
+	right: -320px;
+	transition: right .3s ease;
+	top: 45px;
+	width: 300px;
+	z-index: 1000;
+	color: white;
+	&.active
+	{
+		right: 0;
+	}
+	h3
+	{
+		background: @main-hover;
+		height: 35px;
+		margin: 0 0 20px;
+		padding: 10px;
+		font-size: 15px;
+	}
+	li
+	{
+		list-style: none;
+		cursor: pointer;
+		padding-left: 10px;
+		font-size: 13px;
+		&:hover
+		{
+			background: lighten(@main-color, 7%);
+		}
+	}
+	a
+	{
+		&.input
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 5px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(100% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				color: @gray;
+				background: lighten(@main-color, 5%);
+			}
+		}
+		&.box
+		{
+			background: transparent;
+			border: 1px solid @sec-hover;
+			padding: 30px 20px;
+			border-radius: 0;
+			color: white;
+			transition: all .3s ease;
+			width: ~'calc(50% - 20px)';
+			margin: 5px 10px;
+			&:hover
+			{
+				background: lighten(@main-color, 5%);
+				color: white;
+			}
+			&:active
+			{
+				background: @sec-hover;
+			}
+		}
+	}	
+	ol
+	{
+		color: white;
+		border-left: 30px solid @sec-hover;
+		h6
+		{
+			font-size: 12px;
+			padding-left: 10px;
+		}
+	}
+}

@@ -17,7 +17,9 @@ export const auth = firebase.auth()
 
 export const users = database.ref('users')
 export const data = database.ref('data')
+export const files = database.ref('files')
 export const images = storage.ref('images')
+export const src = storage.ref('src')
 
 export function uid() { return auth.currentUser.uid }
 export const dbs = db.initializeApp(config, 'Secondary').auth()
