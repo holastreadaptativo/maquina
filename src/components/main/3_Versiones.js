@@ -12,8 +12,9 @@ export default class Versiones extends Component {
 		action.ver('COUNT', { code:this.props.code, update:(::this.setState) })
 	}
 	componentDidMount() {
-		action.ver('GET', { code:this.props.code, update:(::this.setState), print:this.print })
+		action.ver('GET', { code:this.props.code, update:(::this.setState) })
 		window.addEventListener('resize', this.print )
+		this.print()
 	}
 	componentDidUpdate() {
 		setTimeout(() => this.print(), 0)
@@ -33,8 +34,8 @@ export default class Versiones extends Component {
         )
     }
 	print() {
-		action.exe('GET', { ...this.props, versions:this.state.vars, vt:false, path:'functions', container:'container-E' })
-		action.exe('GET', { ...this.props, versions:this.state.vars, vt:false, path:'answers', container:'container-R' })
+		action.exe('PRINT', { ...this.props, versions:this.state.vars, vt:false, path:'functions', container:'container-E' })
+		action.exe('PRINT', { ...this.props, versions:this.state.vars, vt:false, path:'answers', container:'container-R' })
 	}
 }
 

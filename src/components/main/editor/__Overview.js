@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FUNCIONES, Aside, Modal } from 'components'
-import { data, LABELS } from 'stores'
-import { action } from 'actions'
+import { action, glyph } from 'actions'
+import { LABELS } from 'stores'
 
 export default class Overview extends Component {
 	constructor() {
@@ -27,8 +27,8 @@ export default class Overview extends Component {
 											</select>
 										</td>
 										<td>
-											<span class="glyphicon glyphicon-pencil" onClick={() => this.handleSelect(m.function, m.params, m.id)}/>
-											<span class="glyphicon glyphicon-trash" onClick={() => this.handleRemove(m.id)}/>
+											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.function, m.params, m.id)}/>
+											<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
 										</td>
 									</tr>
 								)
@@ -41,26 +41,30 @@ export default class Overview extends Component {
 			</Aside>
 		)
 	}
-	handleSelect(fn, params, id) {
-		this.setState({ modal:true, fn:fn, params:params, id:id })
-	}	
-	handleUpdate(params) {
-		action.exe('UPDATE', { ...this.props, ...this.state, params:params })
-		this.setState({ modal:false })
-	}
-	handleRemove(id) {
-		if (confirm('¿Estas seguro de borrar la función?'))
-			action.exe('REMOVE', { ...this.props, id:id })
-	}
 	handleChange(e) {
 	    e.preventDefault()
+		const { code, path } = this.props
 	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
 	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
 	    if (drag.length > 1)
-	    	action.exe('MOVE', { ...this.props, i:i, f:f })
+	    	action.exe('MOVE', { code, i, f, path })
+	}
+	handleRemove(id) {
+		const { code, path } = this.props
+		if (confirm('¿Estas seguro de borrar la función?'))
+			action.exe('DELETE', { code, id, path })
+	}	
+	handleSelect(fn, params, id) {
+		this.setState({ modal:true, id:id, fn:fn, params:params })
+	}
+	handleUpdate(params) {
+		const { code, path } = this.props, { id } = this.state
+		action.exe('UPDATE', { code, id, params, path })
+		this.setState({ modal:false })
 	}
 	handleWidth(e) {
-		data.child(`${this.props.code}/${this.props.path}/${e.target.id}/width`).update({ md:Number(e.target.value) })
+		const { code, path } = this.props, { id, value } = e.target
+		action.exe('WIDTH', { code, id, path, value })
 	}
 	getComponent() {
 		let FX = null

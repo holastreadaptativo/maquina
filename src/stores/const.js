@@ -14,7 +14,8 @@ export const DEFAULT = 	{
 							CODE:'000000000000000',
 							DEVICE:DEVICES[0].size,
 							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' },
-							SEARCH:{ code:'000000000000000', length:0, search:[], selected:false, temp:0 }
+							SEARCH:{ code:'000000000000000', length:0, search:[], selected:false, temp:0 },
+							FNS:['functions', 'answers', 'feedback']
 						}
 
 export const LABELS =	{
@@ -22,7 +23,8 @@ export const LABELS =	{
 							VARS:['#', 'Variable', 'Tipo', 'Valores', 'Restricción', 'VT', ''],
 							TYPE:['var', 'type', 'val', 'res', 'vt'],
 							SIZE:[ 12, 10, 9, 8, 6, 4, 3, 2 ],
-							NAME:{functions:'Ejercicios', answers:'Respuestas', feedback:'Glosa'}
+							NAME:{functions:'Ejercicios', answers:'Respuestas', feedback:'Glosa'},
+							CONT:{functions:'container-E', answers:'container-R', feedback:'container-G'}
 						}
 
 export const ROUTES = 	[ 

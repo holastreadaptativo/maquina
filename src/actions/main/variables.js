@@ -1,11 +1,27 @@
-import { data } from 'stores'
+import { data, DEFAULT } from 'stores'
 
-export function code(action, state) {
+export function cod(action, state) {
+	const { code, update } = state
 	switch(action) {
-		case 'GET': {
-			const { target, update } = state
-			let search = []
+		case 'READ': {
+			data.child(`${code}/variables`).orderByChild('var').once('value').then(snap => {
+				let variables = []
+				snap.forEach(v => {
+					variables.push({ id:v.key, ...v.val() })
+					update({ variables:variables })
+				})
+				if (variables.length == 0) {
+					let key = data.child(`${code}/variables`).push(DEFAULT.EMPTY).key
+					variables.push({ id:key, ...DEFAULT.EMPTY })
+					update({ variables:variables })
+				}
+			})
+			break
+		}
+		case 'CODE': {
+			const { target } = state	
 			data.once('value').then(snap => {
+				let search = []
 				snap.forEach(c => {
 					if (c.key.toString().includes(target)) {
 						let t = 0, l = 0, v = 0
@@ -16,7 +32,28 @@ export function code(action, state) {
 						update({ search:search })
 					}
 				})
-			})	
+			})
+			break
+		}
+	}
+}
+
+export function ver(action, state) {
+	const { code, update } = state
+	switch(action) {
+		case 'READ': {
+			data.child(`${code}/versions/gen`).once('value').then(snap => {
+				let versions = []
+				snap.forEach(g => {
+					let vars = []
+					data.child(`${code}/versions/gen/${g.key}`).orderByChild('var').once('value').then(h => {	
+						h.forEach(v => { if (v.key != 'id') vars.push( v.val() ) })
+						versions.push({ id:h.val().id, vars:vars })
+						update({ versions:versions })
+					})					
+				})
+			})
+			break
 		}
 	}
 }

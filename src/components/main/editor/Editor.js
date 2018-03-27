@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { data, DEVICES, LABELS } from 'stores'
-import { focus, show } from 'actions'
+import { focus, show } from 'actions' //Actualizar
 
 export default class eEditor extends Component {
 	constructor(props) {

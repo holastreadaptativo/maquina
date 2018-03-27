@@ -3,32 +3,31 @@ import { data } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
 export function versiones(action, state) {
+	const { code, update } = state, base = data.child(code.concat('/versions'))
 	switch(action) {
 		case 'GET': {
-			const { code, update, print } = state
 			data.child(`${code}/variables`).once('value').then(snap => {
 				let vars = []
 				snap.forEach(v => {
 					vars.push({ var:v.val().var, val:v.val().vt })
 					update({ vars:vars, vt:{ id:'vt', vars:vars } })
-					print()
 				})
 			})
 			break	
 		}
 		case 'GEN': {
-			const { fns, variables, code, limit, selected } = state
+			const { fns, limit, selected, variables } = state
 
 			let matrix = getmtx(fns, variables), total = matrix.length
 			matrix = shuffle(matrix).slice(0, limit)
 		
-			let versions = matrix.slice(0, selected), box = []
+			let gen = matrix.slice(0, selected), box = [], bup = matrix.slice(selected)
 			for (let i = 0; i < selected; i++) {
 				box[i] = []
 				for (let j = 0; j < selected; j++) {
 					let sum = 0
-					for (let k = 0; k < versions[i].length; k++) {
-						let a = versions[i][k].val, b = versions[j][k].val, c = versions[i][k].rank
+					for (let k = 0; k < gen[i].length; k++) {
+						let a = gen[i][k].val, b = gen[j][k].val, c = gen[i][k].rank
 						if (i != j && c != 0)		
 							if (c > 0) sum += Math.abs((a - b)/c)
 							else sum += 1
@@ -36,24 +35,19 @@ export function versiones(action, state) {
 					box[i][j] = Number(sum.toFixed(5))
 				}
 			}
-			data.child(`${code}/versions`).set({ 
-				bup:{...matrix.slice(selected)}, gen:versions, box:box, total:total,
-				limit:Math.min(limit, total), selected:Math.min(limit, selected)
-			})
+			base.set({ box, bup, gen, total, limit:Math.min(limit, total), selected:Math.min(limit, selected) })
 			break	
 		}
 		case 'REMOVE': {
-			const { code, id } = state
-
-			let ref = data.child(`${code}/versions`)
-			ref.child('gen').once('value').then(snap => {
-				snap.forEach(v => {
-					if (v.val().id == id) {
-						ref.child(`gen/${v.key}`).remove().then(() => {
-							ref.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
-								w.forEach(x => { 
-									ref.child('gen').push( x.val() )
-									ref.child(`bup/${x.key}`).remove()
+			const { id } = state
+			base.child('gen').once('value').then(snap => {
+				snap.forEach(g => {
+					if (g.val().id == id) {
+						base.child(`gen/${g.key}`).remove().then(() => {
+							base.child('bup').orderByKey().limitToFirst(1).once('value').then(w => {	
+								w.forEach(v => { 
+									base.child('gen').push( v.val() )
+									base.child(`bup/${v.key}`).remove()
 								})
 							})	
 						})
@@ -63,8 +57,7 @@ export function versiones(action, state) {
 			break
 		}
 		case 'COUNT': {
-			const { code, update } = state
-			data.child(`${code}/versions`).once('value').then(v => {
+			base.once('value').then(v => {
 				if (v.hasChild('total'))
 					update({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
 			})

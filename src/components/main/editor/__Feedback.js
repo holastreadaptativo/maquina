@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 import { action } from 'actions'
 
 export default class Feedback extends Component {	
-	constructor(props) {
-		super(props)
-		this.state = { path:props.path, container:props.container }
-		this.print = this.print.bind(this)
-	}
 	componentDidMount() {	
 		this.print()
 	}
@@ -14,14 +9,14 @@ export default class Feedback extends Component {
 		setTimeout(() => this.print(), 0)
 	}
 	render() {
-		const { container } = this.state
+		const { container, feedback } = this.props
         return (
         	<section class="design">
 	        	<div class="row">
 		        	<main class="feedback">
 		        		<article>
 						{	
-							this.props.feedback.map((m, i) => 
+							feedback.map((m, i) => 
 								<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
@@ -41,6 +36,6 @@ export default class Feedback extends Component {
         )
     }
 	print() {
-		action.exe('GET', { ...this.props, vt:true })
+		action.exe('PRINT', { ...this.props, vt:true })
 	}
 }
