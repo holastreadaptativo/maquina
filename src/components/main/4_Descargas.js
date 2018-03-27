@@ -18,10 +18,9 @@ export default class Descargas extends Component {
 		})
 	}
 	render() {
-		const { option } = this.props
 		return (
 			<Section style="descargas" condition={true} {...this.props} download={::this.download}>    	
-	        	<Upload condition={option == 0} {...this.props} {...this.state}/>
+	        	<Upload id={0} {...this.props} {...this.state}/>
 	        	<div class="row" ref="iframe">
 					<iframe src={this.state.url} width="100%" height="420px" allowFullScreen></iframe>
 					<input type="text" onChange={::this.onChange} class="form-control"/>
@@ -65,7 +64,7 @@ class Upload extends Component {
 	render() {
 		const { len, name } = this.state; let k = 0
         return (
-			<Aside show={this.props.condition} title="Archivos JS y CSS">
+			<Aside show={this.props.id == this.props.option} title="Archivos JS y CSS">
 				<Item id={k} active={k} title="Descargar">
 					<a class="btn box" href={LINKS[2].url} download>JS</a>
 					<a class="btn box" href={LINKS[1].url} download>CSS</a>

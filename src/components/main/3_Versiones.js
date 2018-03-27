@@ -22,19 +22,19 @@ export default class Versiones extends Component {
 		window.removeEventListener('resize', this.print )
 	}
 	render() {
-		const { answers, functions, feedback, option, versions } = this.props
-        return(
+		return (
         	<Section style="versiones" condition={true} {...this.props}>
         		<div class="row">
-        			<Generate {...this.props} {...this.state} condition={option == 0} setState={::this.setState}/>
-    				<Select {...this.state} code={this.props.code} versions={versions} setState={::this.setState}/>
-        			<Preview answers={answers} functions={functions} feedback={feedback}/>
+        			<Generate {...this.props} {...this.state} id={0} setState={::this.setState}/>
+    				<Select {...this.state} code={this.props.code} versions={this.props.versions} setState={::this.setState}/>
+        			<Preview answers={this.props.answers} functions={this.props.functions} feedback={this.props.feedback}/>
         		</div>
         	</Section>
         )
     }
 	print() {
-		action.exe('GET', { functions:this.props.functions, versions:this.state.vars, vt:false, path:'functions', container:'container' })
+		action.exe('GET', { ...this.props, versions:this.state.vars, vt:false, path:'functions', container:'container-E' })
+		action.exe('GET', { ...this.props, versions:this.state.vars, vt:false, path:'answers', container:'container-R' })
 	}
 }
 
@@ -48,8 +48,19 @@ class Preview extends Component {
 						<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 						{
 							m.tag != 'general' ? 
-							<canvas id={`container-${i}`} style={{background:m.params.background}}></canvas> :
-							<div id={`container-${i}`} class="general"></div>
+							<canvas id={`container-E-${i}`} class="center-block" style={{background:m.params.background}}></canvas> :
+							<div id={`container-E-${i}`} class="general"></div>
+						}
+						</div>
+					)
+				}
+				{
+					this.props.answers.map((m, i) => 
+						<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
+						{
+							m.tag != 'general' ? 
+							<canvas id={`container-R-${i}`} class="center-block" style={{background:m.params.background}}></canvas> :
+							<div id={`container-R-${i}`} class="general"></div>
 						}
 						</div>
 					)
@@ -100,7 +111,7 @@ class Generate extends Component {
 	render() {
 		const { total, limit, selected, setState } = this.props
         return(
-			<Aside show={this.props.condition} title="Versiones">
+			<Aside show={this.props.id == this.props.option} title="Versiones">
 				<Item id={0} active={0} title="Generar">
 					<Input id="total" default={total} prefix="máximo" update={setState} type="number"/>
 					<Input id="limit" default={limit} prefix="intentos" update={setState} type="number"/>
