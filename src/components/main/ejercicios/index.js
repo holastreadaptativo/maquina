@@ -20,8 +20,8 @@ export class Ejercicios extends Component {
 			<Section style="ejercicios" condition={functions.length} {...this.props}>
 				<Overview condition={option == 0} {...this.props} {...this.state}/>
 				<Functions condition={option == 1} {...this.props} {...this.state}/>
-        		<Design {...this.props} {...this.state}/>
-        	</Section>
+				<Design {...this.props} {...this.state}/>
+			</Section>
         )
     }
 }

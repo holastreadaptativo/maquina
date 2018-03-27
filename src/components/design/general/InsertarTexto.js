@@ -50,6 +50,12 @@ export default class InsertTexto extends Component {
 					<div class="text-editor">
 						<EditorConvertToHTML {...this.state} contUpdate={(html) => this.onContUpdate(html)}/>
 					</div>
+					<div class="buttons-editor">
+						<h1>BUTTONS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
+					</div>
+					<div class="inputs-editor">
+						<h1>INPUTS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
+					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave({ textCont:textCont })}>Guardar</button>
 				</div>

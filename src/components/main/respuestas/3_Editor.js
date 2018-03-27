@@ -56,7 +56,7 @@ export default class Editor extends Component {
 					{this.props.children}
 				</div>
 				<div class="react-container">			
-					<div class={show(active == 0, 'canvas')}>
+					<div class={show(active == 2, 'canvas')}>
 						<canvas id="container" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 						border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}>
 							Your browser does not support the HTML5 canvas.
@@ -64,6 +64,12 @@ export default class Editor extends Component {
 					</div>
 					<div class={show(active == 1, 'text-editor')}>
 						<TextEditor {...this.props} data={this.state.feedback}/>
+					</div>
+					<div class={show(active == 0, 'buttons-editor')}>
+						<h1>BUTTONS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
+					</div>
+					<div class={show(active == 3, 'inputs-editor')}>
+						<h1>INPUTS AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</h1>
 					</div>
 					<span class="react-close glyphicon glyphicon-remove" onClick={onHide}/>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>

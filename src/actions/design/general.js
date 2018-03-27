@@ -15,5 +15,14 @@ export function insertarBotones(config) {
 		let vars = vt ? variables : versions
   		container.innerHTML = replace(params.textCont, vars, vt)
 	}
-	console.log('holaaaa')
+	console.log('*********** insertarBotones')
+}
+
+export function insertarInputs(config) {
+	const { container, params, variables, versions, vt } = config
+	if (container) {
+		let vars = vt ? variables : versions
+  		container.innerHTML = replace(params.textCont, vars, vt)
+	}
+	console.log('*********** insertarInputs')
 }
