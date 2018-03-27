@@ -21,7 +21,7 @@ export default class Descargas extends Component {
 		return (
 			<Section style="descargas" condition={true} {...this.props} download={::this.download}>    	
 	        	<Upload id={0} {...this.props} {...this.state}/>
-	        	<div class="row" ref="iframe">
+	        	<div class="row hidden" ref="iframe">
 					<iframe src={this.state.url} width="100%" height="420px" allowFullScreen></iframe>
 					<input type="text" onChange={::this.onChange} class="form-control"/>
 				</div>
