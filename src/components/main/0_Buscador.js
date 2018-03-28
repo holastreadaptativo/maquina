@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import $, { action, focus, show } from 'actions'
+import $, { action, glyph, focus, show } from 'actions'
 import { DEFAULT, LABELS } from 'stores'
 
 export default class Buscador extends Component {
@@ -69,7 +69,7 @@ class Search extends Component {
 				<form class="search">
 					<div class="input-group" onKeyPress={::this.handleKeyPress}>
 						<span class="input-group-addon">
-							<search class="glyphicon glyphicon-search"/>
+							<span class={glyph('search')}/>
 						</span>
 						<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
 							onChange={::this.onChange} maxLength="15"></input>
@@ -81,7 +81,7 @@ class Search extends Component {
 				</form>
 				<summary>
 					<h5>
-						{length}/15 { length == 15 && <span class="glyphicon glyphicon-ok"/> }
+						{length}/15 { length == 15 && <span class={glyph('ok')}/> }
 					</h5>
 					<div class="row">
 					{

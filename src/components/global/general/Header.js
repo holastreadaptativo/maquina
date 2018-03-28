@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ROUTES, DEFAULT } from 'stores'
-import { focus, show } from 'actions'
+import { glyph, focus, show } from 'actions'
 import { Link } from 'react-router'
 
 export default class Header extends Component {
@@ -12,7 +12,7 @@ export default class Header extends Component {
                     <div class="logo"></div>
                     <div class="title">
                         <h5>Adaptativamente
-                            <span class="glyphicon glyphicon-education"/>
+                            <span class={glyph('education')}/>
                             <b>{ROUTES[active].title}</b>
                         </h5>
                     </div>
@@ -34,7 +34,7 @@ export default class Header extends Component {
                         ROUTES.map((m, i) => 
                             <Link key={i} to={m.path} onClick={() => setActive(i)}>
                                 <li class={focus(active == i, 'active')}>
-                                    <span class={`glyphicon glyphicon-${m.icon}`}/>
+                                    <span class={glyph(m.icon)}/>
                                     <span class="hover">{m.text}</span>
                                 </li>
                             </Link>
@@ -56,7 +56,7 @@ class Alert extends Component {
                 <div class="container">
                     <h5>{notification}
                         <b class={show(alert == 'danger')}> 
-                            <span class="glyphicon glyphicon-arrow-right"/> 
+                            <span class={glyph('arrow-right')}/> 
                             <Link to="/variables" onClick={() => setActive(1)}>Resolver</Link>
                         </b>
                     </h5>

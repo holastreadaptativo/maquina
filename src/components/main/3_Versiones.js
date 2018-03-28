@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Aside, Item, Input, Panel, Section, Well } from 'components'
-import { action, focus } from 'actions'
+import { action, glyph, focus } from 'actions'
 import { LABELS } from 'stores'
 
 export default class Versiones extends Component {
@@ -70,7 +70,7 @@ class Select extends Component {
 			{
 				[this.props.vt, ...this.props.versions].map((m, i) => 
 					<h4 key={i} id={m.id} class={focus(this.props.active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
-						Versión <b>{m.id}</b> {m.id != 'vt' && <span class="glyphicon glyphicon-remove close" onClick={() => this.handleRemove(m, i)}/>}
+						Versión <b>{m.id}</b> {m.id != 'vt' && <span class={glyph('remove close')} onClick={() => this.handleRemove(m, i)}/>}
 					</h4>
 				)
 			}

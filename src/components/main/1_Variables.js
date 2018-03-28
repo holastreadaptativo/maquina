@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Panel, Section, Well } from 'components'
-import { action, focus, show } from 'actions'
+import { action, glyph, focus, show } from 'actions'
 import { data, LABELS } from 'stores'
 
 export default class Variables extends Component {
@@ -68,7 +68,7 @@ class Check extends Component {
 		)
 	}
 	check(condition) {
-		return `glyphicon glyphicon-${this.props.checked[0][condition] ? 'ok' : 'remove'}`
+		return glyph(this.props.checked[0][condition] ? 'ok' : 'remove')
 	}
 }
 
@@ -135,7 +135,7 @@ class Table extends Component {
 								)
 							}
 							<td>
-								<h6><span class="glyphicon glyphicon-remove" onClick={() => this.handleRemove(m)} title="Eliminar"/></h6>
+								<h6><span class={glyph('remove')} onClick={() => this.handleRemove(m)} title="Eliminar"/></h6>
 							</td>
 						</tr>
 					)

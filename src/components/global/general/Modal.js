@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Modal } from 'react-bootstrap'
+import { glyph } from 'actions'
 
 export default class eModal extends Component {
 	componentWillUnmount() {
@@ -12,7 +13,7 @@ export default class eModal extends Component {
 		return (
         	<Modal show={this.props.modal} onHide={::this.handleModal} bsClass="react-modal">
 				{ this.props.children }
-				<span class="react-close glyphicon glyphicon-remove" onClick={::this.handleModal}/>
+				<span class={glyph('remove react-close')} onClick={::this.handleModal}/>
 			</Modal>
 		)
 	}
