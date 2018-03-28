@@ -32,6 +32,4 @@ export function stringify(t) { return JSON.stringify(t).replace(/[\"]/g,'\'') }
 
 import * as fn from 'actions'
 
-export const action = { var:fn.cod, exe:fn.exe, ver:fn.versiones }
-
-export const temp = { ver:fn.ver }
+export const action = { var:fn.cod, exe:fn.exe, ver:fn.ver }

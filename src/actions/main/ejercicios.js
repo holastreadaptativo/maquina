@@ -1,6 +1,6 @@
 import { FUNCIONES } from 'components'
+import { data, LABELS } from 'stores'
 import $, { date } from 'actions'
-import { data } from 'stores'
 
 export function exe(action, state) {
 	const { code, path, update } = state, base = data.child(code.concat('/', path))
@@ -12,7 +12,7 @@ export function exe(action, state) {
 				let ref = base.push(), position = snap.val().count
 				ref.update({ date:date(), function:fn, params, position, tag, width:{md, sm, xs} }).then(() => {
 					base.update({ count:position + 1 }).then(() => {
-						if (path == 'answers') { ref.update({ feedback:feedback }) }
+						if (path == 'answers') { ref.update({ feedback }) }
 					})				
 				})
 			})
@@ -45,9 +45,7 @@ export function exe(action, state) {
 		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
 		    			else if (i == f) {
 		    				ref.remove().then(() => {
-		    					base.once('value').then(c => {
-		    						base.update({ count:c.val().count - 1 })
-		    					})
+		    					base.once('value').then(c => { base.update({ count:c.val().count - 1 }) })
 		    				})
 		    			}
 		    		})
@@ -56,12 +54,12 @@ export function exe(action, state) {
 			break
 		}
 		case 'PRINT': {
-			const { container, variables, versions, vt } = state
+			const { variables, versions, vt } = state
 			state[path].forEach((m, i) => {
 				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
 				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
 				FUNCIONES[j].fns[k].action({
-					container:$(`${container}-${i}`), params:m.params, variables, versions, vt
+					container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt
 				})
 			}) 	
 			break

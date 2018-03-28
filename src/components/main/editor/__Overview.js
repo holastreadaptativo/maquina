@@ -10,7 +10,7 @@ export default class Overview extends Component {
 	}
 	render() {
 		return (
-        	<Aside show={this.props.id == this.props.option} title={LABELS.NAME[this.props.path]}>
+        	<Aside id={this.props.id} option={this.props.option} title={LABELS.NAME[this.props.path]}>
 				<table class="draggable">
 					<tbody>
 					{

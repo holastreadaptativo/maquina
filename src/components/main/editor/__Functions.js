@@ -10,7 +10,7 @@ export default class Functions extends Component {
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
 		return (
-			<Aside show={this.props.id == this.props.option} title="Funciones">
+			<Aside id={this.props.id} option={this.props.option} title="Funciones">
 				<div>
 				{
 					FUNCIONES.map((m, i) => m.fns.length > 0 &&
@@ -42,7 +42,8 @@ export default class Functions extends Component {
     handleActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
     }
-	handleClone() {
+	handleClone(e) {
+		e.preventDefault()
 		const { code, path } = this.props, target = this.refs.clone.value
 		if (target != 0 && target != 1)
 			action.exe('CLONE', { code, path, target })

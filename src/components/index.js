@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { action, focus, temp } from 'actions'
+import { action, focus } from 'actions'
 import { data, DEFAULT } from 'stores'
 import { Header } from 'components'
 
@@ -44,7 +44,7 @@ export class App extends Component {
 				else { this.setState({ [m]:[] }) }
 			})
 
-			if (r.hasChild('versions')) { temp.ver('READ', state) }
+			if (r.hasChild('versions')) { action.ver('READ', state) }
 			else { this.setState({ versions:[] }) }
 		})
     }
