@@ -32,9 +32,8 @@ section.well
 		{
 			text-transform: uppercase;
 		}
-		.close
+		span.glyphicon.close
 		{
-			color: white !important;
 			display: none;
 			font-size: 12px;
 		}
@@ -44,9 +43,13 @@ section.well
 			border-color: @sec-hover;
 	    	color: white;
 			cursor: default;
-			.close
+			span.glyphicon.close, 
 			{
 				display: initial;
+				&:hover
+				{
+					color: white;
+				}
 			}
 		}
 	}
