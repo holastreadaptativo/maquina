@@ -178,8 +178,3 @@ export function cod(action, state) {
 		}
 	}
 }
-
-export function replace(input, vars, vt) {
-	vars.forEach(m => { input = input.toString().replace(`$${m.var}`, `${vt ? m.vt : m.val}`) })
-	return input
-}
