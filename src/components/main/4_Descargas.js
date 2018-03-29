@@ -42,7 +42,7 @@ class Upload extends Component {
 	        	</Item>
 				<Item id={k} active={k} title="Actualizar">
 					<a class="btn input" onClick={() => this.refs.input.click()}>Elegir archivos</a>
-	        		<input type="file" multiple required onChange={::this.onSelect} class="hidden"></input>
+	        		<input ref="input" type="file" multiple required onChange={::this.onSelect} class="hidden"></input>
 					<ol>
 						<h6 class={show(len < 1)}>Ningún archivo seleccionado</h6>
 						<h6 class={show(len == 1)}>{name}</h6>
@@ -55,7 +55,7 @@ class Upload extends Component {
 	}
 	handleUpload(e) {
 		e.preventDefault()
-		action.ver('UPLOAD', { ...this.state, code:this.props.code, e })
+		action.ver('UPLOAD', { ...this.state, code:this.props.code, form:e.target.form, update:(::this.setState) })
 	}
 	onSelect(e) {
 		const { files } = e.target

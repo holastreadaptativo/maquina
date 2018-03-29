@@ -1,28 +1,66 @@
-body
+*
 {
 	padding: 0;
 	margin: 0;
-	background: #fafafa;
+	user-select: none;
 }
-.design
+body
+{
+	padding: 0;
+	margin: -20px 0 0;
+	background: /*white*/#fafafa;
+}
+section
+{
+	position: static;	
+}
+section.design
 {
 	min-width: 100px;
 	min-height: 200px;
-	padding: 15px 0px;
+	padding: 15px 0 0;
+	width: 100%;
 }
-.design .tag
+section.design .tag
 {
-	paddign: 0;
 	margin: 0 0 10px;
 }
-.design .tag canvas
+section.design .tag canvas
 {
 	border: 1px solid #ddd;
 	width: 100%;
 }
-.design .tag .general
+section.design .tag .general
 {	
 	border: 1px solid #ddd;
-	width: 100%;
 	background: white;
+	padding: 10px 15px 0;
+	width: 100%;
+}
+header
+{
+	background: #ccc/*#bc2424*/;
+	color: white;
+	width: 100%;
+	height: 80px;
+	margin: 0;
+}
+header h2
+{
+	font-size: 30px;
+	padding: 25px;
+}
+footer
+{
+	background: #ccc/*#bc2424*/;
+	height: 80px;
+	text-align: right;
+	width: 100%;
+}
+footer button
+{
+	font-size: 16px;
+	height: 40px;
+	margin: 20px 25px;
+	padding: 5px 50px;
 }

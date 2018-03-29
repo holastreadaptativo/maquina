@@ -177,12 +177,11 @@ export function ver(action, state) {
 			break
 		}
 		case 'DOWNLOAD': {
-			const { code, functions, versions, vt } = state
-			let v = [...versions, vt], f = stringify(functions), s = code.substring(10, 15)
+			const { answers, code, feedback, functions, versions, vt } = state, v = [...versions, vt]
+			let e = stringify(functions), r = stringify(answers), g = stringify(feedback), s = code.substring(10, 15)
 
 			v.forEach(m => {
-				let doc = '<!doctype html>', name=`${s}_${m.id}`
-				
+				let doc = '<!doctype html>', name=`${s}_${m.id}`			
 				doc += `<html lang="es"><head><meta charset="utf-8"><title>${name}</title>`
 				LINKS.forEach(m => {
 					switch (m.type) {
@@ -190,8 +189,8 @@ export function ver(action, state) {
 						case 'link': { doc += `<link rel="stylesheet" type="text/css" href="${m.url}">`; break }
 					}
 				})
-				doc += `<body id="${name}" data-content="${f}" data-version="${stringify(m)}">`
-				doc += '<div id="content" class="design"></div></body></html>'
+				doc += `<body id="${name}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}"><header><h2 id="title"></h2></header>`
+				doc += '<section id="content" class="container-fluid design"></section><footer><button id="submit"></button></footer></body></html>'
 
 				let a = document.createElement('a'), url = URL.createObjectURL(new Blob([doc], {type:'text/html'}))
 				a.href = url; a.download = `${name}.html`; document.body.appendChild(a); a.click()
@@ -200,13 +199,13 @@ export function ver(action, state) {
 			break
 		}
 		case 'UPLOAD': {
-			const { e, files, len } = state
+			const { files, form, len } = state
 			if (len) 
 				Array.from(files).forEach(m => {
 					src.child(m.name).put(m).then(() => { 
-						alert('¡Archivos actualizados!'); 
+						alert('¡Archivos actualizados!')
 						update({ len:0, files:[], name:'' })
-						e.target.form.reset()
+						form.reset()
 					})
 				})
 			else alert('No hay archivos seleccionados')
