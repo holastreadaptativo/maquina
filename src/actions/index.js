@@ -1,12 +1,16 @@
 export * from './design'
-export * from './main'
-export * from './auth'
+export * from './global'
+export * from './main/ejercicios'
+export * from './main/variables'
+export * from './main/versiones'
 
 export default function $(id) { return document.getElementById(id) }
 
 export function date() { return (new Date()).toLocaleString() }
 
 export function focus(b, c) { return `${b ? c : ''}` }
+
+export function glyph(i) { return `glyphicon glyphicon-${i}` }
 
 export function money(m) {
     return '$' + parseInt(m).toFixed(0).replace(/./g, (c, i, a) => {
@@ -15,6 +19,11 @@ export function money(m) {
 }
 
 export function random(i, f) { return Math.floor(Math.random(0, 1) * (f - i) + i) }
+
+export function replace(i, v, t) {
+	v.forEach(m => { i = i.toString().replace(`$${m.var}`, `${t ? m.vt : m.val}`) })
+	return i
+}
 
 export function show(b, c) { return `${b ? c : 'hidden'}` }
 
@@ -28,4 +37,4 @@ export function stringify(t) { return JSON.stringify(t).replace(/[\"]/g,'\'') }
 
 import * as fn from 'actions'
 
-export const action = { cod:fn.code, exe:fn.ejercicios, ver:fn.versiones }
+export const action = { var:fn.cod, exe:fn.exe, ver:fn.ver }

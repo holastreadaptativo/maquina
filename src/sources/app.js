@@ -1,21 +1,28 @@
 window.onload = () => {
-	let f = get('data-content'), v = get('data-version').vars, r = $('content'), doc = '', c = 'container'
+	let f = get('data-content'), v = get('data-version').vars, r = $('content'), doc = '', c = 'container', m = ['e', 'r']
 	
-	f.forEach((m, i) => {
-		doc += `<div class="col-md-${m.width.md} col-sm-${m.width.sm} col-xs-${m.width.xs} tag">`
-		if (m.tag != 'general') doc += `<canvas id="${c}-${i}" style="background:${m.params.background}"></canvas>`
-		else doc += `<div id="${c}-${i}" class="general"></div>`
-		doc += '</div>'
-	})
-
-	r.innerHTML = doc	
-	f.forEach((m, i) => {
-		let j = FUNCIONES.findIndex(x => x.tag == m.tag)
-		let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-		FUNCIONES[j].fns[k].action({
-			container:$(`${c}-${i}`), params:m.params, versions:v, vt:false
+	m.forEach(n => {
+		f[n].forEach((m, i) => {
+			doc += `<div class="col-md-${m.width.md} col-sm-${m.width.sm} col-xs-${m.width.xs} tag">`
+			if (m.tag != 'general') doc += `<canvas id="${c}-${i}-${n}" style="background:${m.params.background}"></canvas>`
+			else doc += `<div id="${c}-${i}-${n}" class="general"></div>`
+			doc += '</div>'
 		})
 	})
+
+	r.innerHTML = doc
+	m.forEach(n => {
+		f[n].forEach((m, i) => {
+			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
+			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+			FUNCIONES[j].fns[k].action({
+				container:$(`${c}-${i}-${n}`), params:m.params, versions:v, vt:false
+			})
+		})
+	})
+
+	$('title').innerText = 'Gráfico de Datos'
+	$('submit').innerText = 'Enviar'
 }
 
 function $(id) { return document.getElementById(id) }
@@ -157,7 +164,7 @@ function graficoDatos(config)
 
 	            if (scale.width > 0)
 	            for (let i = scale.min; i <= limit; i += scale.interval) { 
-	                let dy = height/limit * i, y = y0 - dy //TAMAÑO DE LA COLUMNA
+	                let dy = height/limit * i, y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	                ctx.moveTo(chart.margin.x, y)
 	                ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y)
 	            }
@@ -167,7 +174,7 @@ function graficoDatos(config)
 	            ctx.beginPath()
 	            ctx.fillStyle = font.color
 	            for (let i = scale.min; i <= limit; i += scale.interval) {
-	                let dy = height/limit * i, y = y0 - dy //TAMAÑO DE LA COLUMNA
+	                let dy = height/limit * i, y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	                ctx.fillText(i, x0 - 7, y + 5) //INSERTAR TEXTO
 	            }
 	            ctx.closePath()
@@ -176,7 +183,7 @@ function graficoDatos(config)
 	        ctx.beginPath()
 	        ctx.fillStyle = chart.color[0]
 	        for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
-	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	            ctx.fillRect(x, y, dx, dy) //DIBUJAR COLUMNA      
 	            ctx.moveTo(x, y0) 
 	            ctx.lineTo(x, y)
@@ -192,7 +199,7 @@ function graficoDatos(config)
 
 	            if (scale.width > 0)
 	            for (let i = scale.min; i <= limit; i += scale.interval) { 
-	                let dx = width/limit * i, x = x0 + dx //TAMAÑO DE LA COLUMNA
+	                let dx = width/limit * i, x = x0 + dx //TAMAÃ‘O DE LA COLUMNA
 	                ctx.moveTo(x, chart.margin.y - 2*chart.padding.y)
 	                ctx.lineTo(x, y0)
 	            }
@@ -203,7 +210,7 @@ function graficoDatos(config)
 	            ctx.fillStyle = font.color
 	            ctx.textAlign = font.align
 	            for (let i = scale.min; i <= limit; i += scale.interval) {
-	                let dx = width/limit * i, x = x0 + dx //TAMAÑO DE LA COLUMNA
+	                let dx = width/limit * i, x = x0 + dx //TAMAÃ‘O DE LA COLUMNA
 	                ctx.fillText(i, x, y0 + 24) //INSERTAR TEXTO
 	            }
 	            ctx.closePath()
@@ -211,7 +218,7 @@ function graficoDatos(config)
 
 	        ctx.fillStyle = chart.color[0]
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
-	            let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
+	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
 	            ctx.fillRect(x, y, dx, dy) //DIBUJAR COLUMNA
 	            ctx.moveTo(x, y) 
 	            ctx.lineTo(x + dx, y)
@@ -235,7 +242,7 @@ function graficoDatos(config)
 	    if (chart.position == 'vertical') 
 	    {
 	        for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
-	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	            ctx.moveTo(x0, y) 
 	            ctx.lineTo(x, y) //PROYECCION COLUMNA
 	        }
@@ -243,7 +250,7 @@ function graficoDatos(config)
 	    else
 	    {
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
-	            let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
+	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
 	            ctx.moveTo(x + dx, y0) 
 	            ctx.lineTo(x + dx, y) //PROYECCION COLUMNA
 	        }
@@ -267,7 +274,7 @@ function graficoDatos(config)
 	        if (chart.position == 'vertical') 
 	        {
 	            for (let i = 0, x = data.cx; i < max; i++, x += width/len) {
-	                let dy = height/limit * values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+	                let dy = height/limit * values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	                ctx.moveTo(x0, y) 
 	                ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y) //PROYECCION COLUMNA
 	            }
@@ -275,7 +282,7 @@ function graficoDatos(config)
 	        else
 	        {
 	            for (let i = 0, y = data.cy; i < max; i++, y -= height/len) {
-	                let dx = width/limit * values[i], x = x0 //TAMAÑO DE LA COLUMNA
+	                let dx = width/limit * values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
 	                ctx.moveTo(x + dx, y0) 
 	                ctx.lineTo(x + dx,  chart.margin.y - 2*chart.padding.y + canvas.height/110) //PROYECCION COLUMNA
 	            }
@@ -332,14 +339,14 @@ function graficoDatos(config)
 	        if (chart.position == 'vertical') {
 	            for (let i = 0, x = data.cx + dx/2; i < len; i++, x += width/len) {
 	                if (dataTags[i] == '0') {
-	                    let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÑO DE LA COLUMNA
+	                    let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÃ‘O DE LA COLUMNA
 	                    ctx.fillText(chart.values[i], x, y - 10) //INSERTAR TEXTO
 	                }
 	            }
 	        } else {
 	            for (let i = 0, y = data.cy + dy/2 + fontSize/2; i < len; i++, y -= height/len) {
 	                if (dataTags[i] == '0') {
-	                    let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÑO DE LA COLUMNA
+	                    let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÃ‘O DE LA COLUMNA
 	                    ctx.fillText(chart.values[i], x + 15, y) //INSERTAR TEXTO
 	                }
 	            }
@@ -367,7 +374,7 @@ function graficoDatos(config)
 	        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
 	        for (let i = 0, x = data.cx/1.1; i < len; i++, x += width/len) {
 	            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
-	                let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÑO DE LA COLUMNA
+	                let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
 	                ctx.fillRect(x, y - height/limit, dx*1.2, dy + height/limit*1.4) //DIBUJAR COLUMNA
 	            }
 	        }
@@ -376,7 +383,7 @@ function graficoDatos(config)
 	        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
 	            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
-	                let dx = width/limit * chart.values[i], x = x0 //TAMAÑO DE LA COLUMNA
+	                let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
 	                ctx.fillRect(x - x*0.4, y - height/len*0.1, dx + x*0.8, dy + height/len*0.2) //DIBUJAR COLUMNA
 	            }
 	        }

@@ -36,3 +36,11 @@ export function signOut() {
 export function check(input, name) {
     if (input.length < 4) { alert(`Por favor ingrese su ${name}.`) } return input.length >= 4
 }
+
+// auth.onAuthStateChanged(() => {
+//     if (auth.currentUser) {
+//         users.child(uid()).once('value').then(user => {
+//             if (user.exists()) { this.setState({ fn:user.val().first_name, ln:user.val().last_name }) } 
+//         })
+//     }
+// })

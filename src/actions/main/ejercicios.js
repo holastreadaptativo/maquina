@@ -1,56 +1,51 @@
 import { FUNCIONES } from 'components'
+import { data, LABELS } from 'stores'
 import $, { date } from 'actions'
-import { data } from 'stores'
 
-export function ejercicios(action, state) {
+export function exe(action, state) {
+	const { code, path, update } = state, base = data.child(code.concat('/', path))
 	switch(action) {
-		case 'GET': {
-			const { container, path, variables, versions, vt } = state
-			state[path].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
-				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-				FUNCIONES[j].fns[k].action({
-					container:$(`${container}-${i}`), params:m.params, variables:variables, versions:versions, vt:vt
+		case 'CREATE': {
+			const { feedback, fn, md, sm, xs, params, tag } = state
+			$('btn-save').setAttribute('disabled', 'true')
+			base.once('value').then(snap => {
+				let ref = base.push(), position = snap.val().count
+				ref.update({ date:date(), function:fn, params, position, tag, width:{md, sm, xs} }).then(() => {
+					base.update({ count:position + 1 }).then(() => {
+						if (path == 'answers') { ref.update({ feedback }) }
+					})				
 				})
-			}) 	
+			})
 			break
 		}
-		case 'ADD': {
-			const { code, feedback, fn, params, path, tag, md, sm, xs } = state
-			$('btn-save').setAttribute('disabled', 'true')
-			data.child(`${code}/${path}`).once('value').then(snap => {
-				let count = snap.val().count
-				let ref = data.child(`${code}/${path}`).push()
-				ref.update({ 
-					function:fn, params:params, date:date(), tag:tag, position:count, width:{md, sm, xs}
-				}).then(() => {
-					data.child(`${code}/${path}`).update({ count:count+1 })
-					if (path == 'answers')
-						ref.update({ feedback:feedback })
+		case 'READ': {
+			base.orderByChild('position').once('value').then(snap => {
+				let functions = []						
+				snap.forEach(f => {
+					if (f.hasChild('function') && f.hasChild('params') && f.hasChild('position'))
+					functions.push({ id:f.key, ...f.val(), json:JSON.stringify(f.val()) })
+					update({ [path]:functions })
 				})
 			})
 			break
 		}
 		case 'UPDATE': {
-			const { code, id, params, path } = state
+			const { id, params } = state
 			$('btn-save').setAttribute('disabled', 'true')
-			data.child(`${code}/${path}/${id}`).update({ params:params, date:date() })
+			base.child(id).update({ date:date(), params })
 			break
 		}
-		case 'REMOVE': {
-			const { code, id, path } = state
-			data.child(`${code}/${path}/${id}`).once('value').then(t => {
+		case 'DELETE': {
+			const { id } = state
+			base.child(id).once('value').then(t => {
 				let i = t.val().position
-					data.child(`${code}/${path}/`).once('value').then(snap => {
+				base.once('value').then(snap => {
 		    		snap.forEach(fn => {
-		    			let f = fn.val().position
-		    			if (i < f && state[path].length) {
-		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f - 1 })
-		    			} else if (i == f) {
-		    				data.child(`${code}/${path}/${fn.key}`).remove().then(() => {
-		    					data.child(`${code}/${path}`).once('value').then(c => {
-		    						data.child(`${code}/${path}`).update({ count:c.val().count - 1 })
-		    					})
+		    			let f = fn.val().position, ref = base.child(fn.key)
+		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
+		    			else if (i == f) {
+		    				ref.remove().then(() => {
+		    					base.once('value').then(c => { base.update({ count:c.val().count - 1 }) })
 		    				})
 		    			}
 		    		})
@@ -58,51 +53,57 @@ export function ejercicios(action, state) {
 			})	
 			break
 		}
+		case 'PRINT': {
+			const { variables, versions, vt } = state
+			state[path].forEach((m, i) => {
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
+				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+				FUNCIONES[j].fns[k].action({
+					container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt
+				})
+			}) 	
+			break
+		}
+		case 'CLONE': {
+			const { target } = state
+			base.once('value').then(snap => {
+				let ref = base.push(), position = snap.val().count
+				ref.update({ ...JSON.parse(target), date:date(), position }).then(() => {
+					base.update({ count:position + 1 })
+				})
+			})	
+			break
+		}
 		case 'MOVE': {
-			const { code, path, i, f } = state
+			const { i, f } = state
 			if (i < f) {
-		    	data.child(`${code}/${path}/`).once('value').then(snap => {
+		    	base.once('value').then(snap => {
 		    		snap.forEach(fn => {
-		    			let k = fn.val().position
-		    			if (k <= f && k > i) {
-		    				data.child(`${code}/${path}/${fn.key}`).update({ position:k - 1 })
-		    			} else if (k == i) {
-		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f })
-		    			}
+		    			let k = fn.val().position, ref = base.child(fn.key)
+		    			if (k <= f && k > i) { ref.update({ position:k - 1 }) } 
+		    			else if (k == i) { ref.update({ position:f }) }
 		    		})
 		    	})
 		    } else if (i > f) {
-		    	data.child(`${code}/${path}/`).once('value').then(snap => {
+		    	base.once('value').then(snap => {
 		    		snap.forEach(fn => {
-		    			let k = fn.val().position
-		    			if (k >= f && k < i) {
-		    				data.child(`${code}/${path}/${fn.key}`).update({ position:k + 1 })
-		    			} else if (k == i) {
-		    				data.child(`${code}/${path}/${fn.key}`).update({ position:f })
-		    			}
+		    			let k = fn.val().position, ref = base.child(fn.key)
+		    			if (k >= f && k < i) { ref.update({ position:k + 1 }) } 
+		    			else if (k == i) {ref.update({ position:f }) }
 		    		})
 		    	})
 		    }
 			break
 		}
-		case 'CLONE': {
-			const { code, path, target } = state
-			data.child(`${code}/${path}`).once('value').then(snap => {
-				let count = snap.val().count
-				let ref = data.child(`${code}/${path}/`).push()
-				ref.update({...JSON.parse(target)}); ref.update({ position:count, date:date() }).then(() => {
-					data.child(`${code}/${path}`).update({ count:count+1 })
-				})
-			})	
-			break
-		}
-		case 'COUNT': {
-			const { code, path } = state
-			data.child(`${code}/${path}`).once('value').then(snap => {
-				if (!snap.hasChild('count')) {
-					data.child(`${code}/${path}`).update({ count:0 })
-				}
+		case 'CHECK': {
+			base.once('value').then(snap => {
+				if (!snap.hasChild('count')) { base.update({ count:0 }) }
 			})
+		}
+		case 'WIDTH': {
+			const { id, value } = state
+			if (Number.isInteger(parseInt(value)))
+				base.child(`${id}/width`).update({ md:Number(value) })
 			break
 		}
 	}

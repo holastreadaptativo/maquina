@@ -56,6 +56,6 @@ export default class Design extends Component {
         this.setState({ device:device })
     }
 	print() {
-		action.exe('GET', { ...this.props, vt:true })
+		action.exe('PRINT', { ...this.props, vt:true })
 	}
 }

@@ -1,52 +1,41 @@
 import React, { Component } from 'react'
-import $, { checkAll, focus, setFormat, show } from 'actions'
 import { Panel, Section, Well } from 'components'
-import { data, DEFAULT, LABELS } from 'stores'
+import { action, glyph, focus, show } from 'actions'
+import { data, LABELS } from 'stores'
 
 export default class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { variables:[], clicked:false, checked:[[], []] }
+		this.state = { checked:[[], []], variables:[] }
 	}
 	componentWillMount() {
-		data.child(`${this.props.code}/variables`).on('value', snap => {
-			let variables = []
-			snap.forEach(v => {
-				variables.push({ id:v.key, var:v.val().var, type:v.val().type, val:v.val().val, vt:v.val().vt, res:v.val().res })
-				this.setState({ variables:variables })
-			})
-			if (variables.length == 0) {
-				let key = data.child(`${this.props.code}/variables`).push(DEFAULT.EMPTY).key
-				variables.push({ id:key, ...DEFAULT.EMPTY })
-				this.setState({ variables:variables })
-			}
-			this.setState({ checked:checkAll(variables) })
-		})	
+		const { code } = this.props
+		data.child(`${code}/variables`).on('value', () => {
+			action.var('READ', { code, check:true, update:(::this.setState) })
+		})
 	}
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
 	}
-	handleClick() {
-		this.setState({ clicked:!this.state.clicked })
-	}
-	checkAll() {
-		this.setState({ checked:checkAll(this.state.variables) })
-		this.props.setNotification(!this.state.checked[0][6] ? 'Error en el ingreso de variables' : null, 'danger')
-	}
 	render() {
-		const { variables, checked } = this.state
+		const { checked, variables } = this.state
 		const { code, setActive } = this.props
 		return (
 			<Section style="variables" condition={checked[0][6]} {...this.props}>
 				<div class="row">
 					<Resume code={code} variables={variables}/>
 					<Panel container="table">
-						<Table code={code} checked={checked} variables={variables} checkAll={::this.checkAll}/>
+						<Table code={code} checked={checked} variables={variables} check={::this.check}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
 					</Panel>
 				</div>
 			</Section>
 		)
+	}
+	check() {
+		const { code } = this.props, { variables } = this.state
+		action.var('CHECK', { code, update:(::this.setState), variables })
+		// this.props.setNotification(!this.state.checked[0][6] ? 'Error en el ingreso de variables' : null, 'danger')
 	}
 }
 
@@ -79,27 +68,28 @@ class Check extends Component {
 		)
 	}
 	check(condition) {
-		return `glyphicon glyphicon-${this.props.checked[0][condition] ? 'ok' : 'remove'}`
+		return glyph(this.props.checked[0][condition] ? 'ok' : 'remove')
 	}
 }
 
 class Resume extends Component {
 	render() {
+		const { code, variables } = this.props
 		return (
 			<Well title="Resumen">
 				<h5 class="title">Ejercicio</h5>
 				{
 					LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-						<h5 key={i}>{m}: {this.props.code.length >= 2*i + x ? this.props.code.substring(2*i, 2*i + x) : '-' }</h5>
+						<h5 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h5>
 					)})
 				}
 				<h6 class="br"/>
-				<h5 class="title">Variables</h5>
+				<h5 class={show(variables.length, 'title')}>Variables</h5>
 				<ul> 
 				{
-					this.props.variables.map(m => { 
+					variables.map(m => { 
 						if (m.var != '' && m.val != '') return (
-							<h5 key={m.id}>${m.var.trim()} = {setFormat(m.val)};</h5>
+							<h5 key={m.id}>{action.var('FORMAT', { code, m })}</h5>
 						)
 					})
 				}
@@ -145,7 +135,7 @@ class Table extends Component {
 								)
 							}
 							<td>
-								<h6><span class="glyphicon glyphicon-remove" onClick={() => this.handleRemove(m)} title="Eliminar"/></h6>
+								<h6><span class={glyph('remove')} onClick={() => this.handleRemove(m)} title="Eliminar"/></h6>
 							</td>
 						</tr>
 					)
@@ -164,27 +154,21 @@ class Table extends Component {
 	}
 	handleCreate(e) {
 		e.preventDefault()
-		data.child(`${this.props.code}/variables`).push(DEFAULT.EMPTY).then(() => { this.props.checkAll() })
+		const { code, check } = this.props
+		action.var('READ', { check, code })
 	}
 	handleUpdate(input, id) {
-		data.child(`${this.props.code}/variables/${id}`).update({ 
-			[input]:$(`${input}-${id}`).value.trim() }).then(() => { this.props.checkAll() })
+		const { code, check } = this.props
+		action.var('UPDATE', { check, code, id, input })
 	}
 	handleRemove(item) {
-		let id = item.id
-		if (this.props.variables.length > 1)
-			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
-		else {
-			$(`var-${id}`).value = $(`val-${id}`).value = $(`res-${id}`).value = $(`vt-${id}`).value = ''
-			data.child(`${this.props.code}/variables/${id}`).remove().then(() => { this.props.checkAll() })
-		}
+		const { code, check, variables } = this.props, id = item.id
+		action.var('DELETE', { code, check, id, variables })
 		this.setState({ backup:item })
 	}
 	handleRestore() {
-		const { backup } = this.state
-		data.child(`${this.props.code}/variables/${backup.id}`).update({ 
-			var:backup.var, val:backup.val, type:backup.type, vt:backup.vt, res:backup.res 
-		})
+		const { code, check } = this.props, { backup } = this.state
+		action.var('RESTORE', { backup, code, check })
 		this.setState({ backup:null })
 	}
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { data, DEVICES, LABELS } from 'stores'
-import { focus, show } from 'actions'
+import { focus, show } from 'actions' //Actualizar
 
 export default class eEditor extends Component {
 	constructor(props) {
@@ -44,6 +44,10 @@ export default class eEditor extends Component {
 					}
 					</nav>
 					{this.props.children}
+					<details class="variables">
+						<summary>Variables</summary>
+						<ul>{ this.props.store.variables.map((m, i) => <li key={i}>${m.var} = {m.val} [{m.vt}]</li>) }</ul>
+					</details>
 				</main>
 				<main class="preview">
 					<div class={show(active == 0, 'canvas')}>

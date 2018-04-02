@@ -2,13 +2,14 @@ section.well
 {
 	background-color: @info-color;
 	border: 2px solid #ddd;
-	border-right-width: 1px;
-	color: #444;
-	padding: 0 15px 10px;
-	margin-top: 20px;
-	width: 250px;
 	border-radius: 0;
+	border-right-width: 1px;
+    box-shadow: 2px 3px 4px #ddd;
+	color: #444;
 	margin-bottom: 0;
+	margin-top: 20px;
+	padding: 0 15px 10px;
+	width: 250px;
 	h4, h5
 	{
 	    border: 1px solid @main-color;
@@ -31,9 +32,8 @@ section.well
 		{
 			text-transform: uppercase;
 		}
-		.close
+		span.glyphicon.close
 		{
-			color: white !important;
 			display: none;
 			font-size: 12px;
 		}
@@ -43,9 +43,13 @@ section.well
 			border-color: @sec-hover;
 	    	color: white;
 			cursor: default;
-			.close
+			span.glyphicon.close, 
 			{
 				display: initial;
+				&:hover
+				{
+					color: white;
+				}
 			}
 		}
 	}
@@ -74,6 +78,7 @@ section.panel
 	border: 2px solid #ddd;
 	border-left-width: 1px;
 	border-radius: 0;
+    box-shadow: 2px 3px 4px #ddd;
 	margin-top: 20px;
 	margin-bottom: 0;
 	min-height: 330px;
