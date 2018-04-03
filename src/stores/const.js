@@ -6,8 +6,8 @@ export const DEVICES = 	[
 
 export const LINKS =	[
 							{ name:'bootstrap', type:'link', url:'https://goo.gl/PK5Rdx' },
-							{ name:'app.css', type:'link', url:'app.css'/*'https://goo.gl/aMWDY3'*/ },
-							{ name:'app.js', type:'script', url:'app.js'/*'https://goo.gl/4SyPoR'*/ }
+							{ name:'app.css', type:'link', url:/*'app.css'*/'https://goo.gl/aMWDY3' },
+							{ name:'app.js', type:'script', url:/*'app.js'*/'https://goo.gl/4SyPoR' }
 						]
 
 export const DEFAULT = 	{

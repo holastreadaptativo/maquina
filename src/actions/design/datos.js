@@ -88,7 +88,6 @@ export function graficoDatos(config)
     }
 
     let anchoTag = []
-
     state.chart.tags.map(tag => {
         anchoTag.push(state.canvas.ctx.measureText(tag).width)
     })
@@ -355,7 +354,6 @@ function insertarTextos(data, state) {
     // Textos de Tags y Values End
     ctx.restore()
     ctx.save()
-
 }
 function insertarValores(data, state) {
     const { chart, font, scale, canvas } = state
