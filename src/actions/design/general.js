@@ -8,21 +8,10 @@ export function insertarTexto(config) {
   		container.innerHTML = replace(params.textCont, vars, vt)
 	}
 }
-
-export function insertarBotones(config) {
+export function insertarInput(config) {
 	const { container, params, variables, versions, vt } = config
 	if (container) {
-		let vars = vt ? variables : versions
-  		container.innerHTML = replace(params.textCont, vars, vt)
+		
 	}
-	console.log('*********** insertarBotones')
-}
-
-export function insertarInputs(config) {
-	const { container, params, variables, versions, vt } = config
-	if (container) {
-		let vars = vt ? variables : versions
-  		container.innerHTML = replace(params.textCont, vars, vt)
-	}
-	console.log('*********** insertarInputs')
+	console.log('*********** insertarInput')
 }

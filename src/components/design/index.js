@@ -4,7 +4,7 @@ import * as components from './general'
 export const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto },
-		{ id:'Radio Buttons', component:components.RespRadioButtons, action:actions.respRadioBtn }
+		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput }
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
