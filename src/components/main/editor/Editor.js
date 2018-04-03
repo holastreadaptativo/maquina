@@ -157,7 +157,7 @@ class TextEditor extends Component {
 
 class InputEditor extends Component {
 	render () {
-		const { inputType } = this.props.params, radio = ['1', '2', '3', '4']
+		const { inputType, value1, value2, value3, value4 } = this.props.params, options = [value1, value2, value3, value4]
 
 		let info = ''
 		switch(inputType) {
@@ -176,17 +176,17 @@ class InputEditor extends Component {
 			}
 			{
 				inputType == 'radio' &&
-				radio.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> )
+				options.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> )
 			}
 			{
 				inputType == 'checkbox' &&
-				radio.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> )
+				options.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> )
 			}
 			{
 				inputType == 'select' &&
 				<select>
 				{
-					radio.map((m, i) => <option key={i} value={m}>{m}</option> )
+					options.map((m, i) => <option key={i} value={m}>{m}</option> )
 				}
 				</select>
 			}
