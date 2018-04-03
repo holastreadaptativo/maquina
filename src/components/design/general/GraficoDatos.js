@@ -10,9 +10,9 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'', active:0,
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			extra:'no', dataTag: '', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', 
+			/*extra:'no',*/ dataTag: '0,1', withAxis: 'no', margin:'no', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', 
 			chartTags:'A, B, C, D, E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, 
-			scaleMin:0, scaleInterval:1, scaleColor:'', scaleWidth:1, fontSize:14, limitVal:'0, 1', highlightBar:''
+			scaleMin:0, scaleInterval:1, scaleColor:'', scaleWidth:1, fontSize:14, limitVal:'0,1', projectionVal:'0,1', highlightBar:''
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -24,7 +24,7 @@ export default class GraficoDatos extends Component {
 	render() {
 		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, height, fontColor, fontFamily, width, axisColor, axisWidth,
 			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, 
-			extra, dataTag, withAxis, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal, highlightBar } = this.state
+			/*extra,*/ dataTag, withArrowsX, withArrowsY, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal, projectionVal, highlightBar } = this.state
 			let k = 0
 		return (
 			<Editor title="Gráfico Datos" params={this.state} store={this.props}>
@@ -46,20 +46,19 @@ export default class GraficoDatos extends Component {
 					<Input id="chartBorder" default={chartBorder} prefix="border" update={::this.setState} type="color"/>
 					<Input id="chartValues" default={chartValues} prefix="values" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
 					<Input id="chartTags" default={chartTags} prefix="tags" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
-					<Input id="dataTag" default={dataTag} prefix="datatag" update={::this.setState} placeholder={'0,1,0,0,1'}/>
-					<Input id="highlightBar" default={highlightBar} prefix="highlight" placeholder={'0,1,0,0,1'} update={::this.setState} type="text"/>
 				</Item>
 				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
 					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>
 					<Input id="axisWidth" default={axisWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
 					<Input id="axisTitleX" default={axisTitleX} prefix="title x" placeholder={'Eje X'} update={::this.setState} type="text"/>
 					<Input id="axisTitleY" default={axisTitleY} prefix="title y" placeholder={'Eje Y'} update={::this.setState} type="text"/>
-					<Select id="withAxis" default={withAxis} prefix="arrows" update={::this.setState} options={['no', 'si']}/>
+					<Select id="withArrowsX" default={withArrowsX} prefix="arrow X" update={::this.setState} options={['no', 'si']}/>
+					<Select id="withArrowsY" default={withArrowsY} prefix="arrow Y" update={::this.setState} options={['no', 'si']}/>
 				</Item>
 				<Item id={k++} active={active} title="Scale" setActive={::this.handleActive}>
 					<Input id="scaleMax" default={scaleMax} prefix="max" update={::this.setState} type="number"/>
 					<Input id="scaleMin" default={scaleMin} prefix="min" update={::this.setState} type="number"/>
-					<Input id="scaleInterval" default={scaleInterval} prefix="interval" update={::this.setState} type="number"/>
+					<Input id="scaleInterval" default={scaleInterval} prefix="interval" min="1" update={::this.setState} type="number"/>
 					<Input id="scaleWidth" default={scaleWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
 					<Input id="scaleColor" default={scaleColor} update={::this.setState} type="color"/>
 				</Item>
@@ -70,16 +69,18 @@ export default class GraficoDatos extends Component {
 					<Input id="titleTop" default={titleTop} prefix="top" postfix="px" update={::this.setState} type="number"/>
 				</Item>
 				<Item id={k++} active={active} title="Font" setActive={::this.handleActive}>
-					<Select id="fontFamily" default={fontFamily} prefix="family" update={::this.setState} options={['arial']}/>
+					<Select id="fontFamily" default={fontFamily} prefix="family" update={::this.setState} options={['Larke Neue Thin']}/>
 					<Select id="fontWeight" default={'bold'} prefix="weight" update={::this.setState} options={['bold']}/>
 					<Input id="fontSize" default={fontSize} prefix="size" postfix="px" update={::this.setState} type="number"/>
 					<Input id="fontColor" default={fontColor} update={::this.setState} type="color"/>
 				</Item>
 				<Item id={k++} active={active} title="Lines" setActive={::this.handleActive}>
-					<Select id="extra" default={extra} prefix="lines" update={::this.setState} options={['no', 'proyeccion', 'limite']}/>
-					<Input hide={extra != 'limite'} id="limitVal" default={limitVal} prefix="values" update={::this.setState} type="text"/>
-					<Input hide={extra == 'no'} id="lineColor" default={lineColor} update={::this.setState} type="color"/>
-					<Input hide={extra == 'no'} id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>				
+					<Input id="dataTag" default={dataTag} prefix="datatag" update={::this.setState} placeholder={'0,1,0,0,1'}/>
+					<Input id="highlightBar" default={highlightBar} prefix="highlight" placeholder={'0,1,0,0,1'} update={::this.setState} type="text"/>
+					<Input id="limitVal" default={limitVal} prefix="limitval" update={::this.setState} type="text" placeholder={'$a,$b,$c'}/>
+					<Input id="projectionVal" default={projectionVal} prefix="projectVal" update={::this.setState} type="text" placeholder={'0,1,0,0,1'}/>
+					<Input id="lineColor" default={lineColor} update={::this.setState} type="color" placeholder={'0,1,0,0,1'}/>
+					<Input id="lineWidth" default={lineWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
 				</Item>
 			</Editor>
 		)
