@@ -11,9 +11,7 @@ export function exe(action, state) {
 			base.once('value').then(snap => {
 				let ref = base.push(), position = snap.val().count
 				ref.update({ date:date(), function:fn, params, position, tag, width:{md, sm, xs} }).then(() => {
-					base.update({ count:position + 1 }).then(() => {
-						if (path == 'answers') { ref.update({ feedback }) }
-					})				
+					base.update({ count:position + 1 }).then(() => { if (path == 'answers') { ref.update({ feedback }) } })				
 				})
 			})
 			break
@@ -23,7 +21,7 @@ export function exe(action, state) {
 				let functions = []						
 				snap.forEach(f => {
 					if (f.hasChild('function') && f.hasChild('params') && f.hasChild('position'))
-					functions.push({ id:f.key, ...f.val(), json:JSON.stringify(f.val()) })
+						functions.push({ id:f.key, ...f.val(), json:JSON.stringify(f.val()) })
 					update({ [path]:functions })
 				})
 			})
@@ -44,9 +42,7 @@ export function exe(action, state) {
 		    			let f = fn.val().position, ref = base.child(fn.key)
 		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
 		    			else if (i == f) {
-		    				ref.remove().then(() => {
-		    					base.once('value').then(c => { base.update({ count:c.val().count - 1 }) })
-		    				})
+		    				ref.remove().then(() => { base.once('value').then(c => { base.update({ count:c.val().count - 1 }) }) })
 		    			}
 		    		})
 		    	})
@@ -56,11 +52,8 @@ export function exe(action, state) {
 		case 'PRINT': {
 			const { variables, versions, vt } = state
 			state[path].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag)
-				let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-				FUNCIONES[j].fns[k].action({
-					container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt
-				})
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+				FUNCIONES[j].fns[k].action({ container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt })
 			}) 	
 			break
 		}
@@ -68,9 +61,7 @@ export function exe(action, state) {
 			const { target } = state
 			base.once('value').then(snap => {
 				let ref = base.push(), position = snap.val().count
-				ref.update({ ...JSON.parse(target), date:date(), position }).then(() => {
-					base.update({ count:position + 1 })
-				})
+				ref.update({ ...JSON.parse(target), date:date(), position }).then(() => { base.update({ count:position + 1 }) })
 			})	
 			break
 		}
@@ -89,7 +80,7 @@ export function exe(action, state) {
 		    		snap.forEach(fn => {
 		    			let k = fn.val().position, ref = base.child(fn.key)
 		    			if (k >= f && k < i) { ref.update({ position:k + 1 }) } 
-		    			else if (k == i) {ref.update({ position:f }) }
+		    			else if (k == i) { ref.update({ position:f }) }
 		    		})
 		    	})
 		    }

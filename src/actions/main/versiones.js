@@ -147,7 +147,7 @@ export function ver(action, state) {
 						base.child(`gen/${g.key}`).remove().then(() => {
 							base.child('bup').orderByKey().limitToFirst(1).once('value').then(h => {	
 								h.forEach(v => { 
-									base.child('gen').push( v.val() )
+									base.child('gen').push(v.val())
 									base.child(`bup/${v.key}`).remove()
 								})
 							})	
@@ -189,8 +189,9 @@ export function ver(action, state) {
 						case 'link': { doc += `<link rel="stylesheet" type="text/css" href="${m.url}">`; break }
 					}
 				})
-				doc += `<body id="${name}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}"><header><h2 id="title"></h2></header>`
-				doc += '<section id="content" class="container-fluid design"></section><footer><button id="submit"></button></footer></body></html>'
+				doc += `<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">`
+				doc += '<header><h2 id="title"></h2></header><section id="content" class="container-fluid design"></section>'
+				doc += '<footer><div id="help" class="help"><span>Consulta</span></div><button id="submit"></button></footer></body></html>'
 
 				let a = document.createElement('a'), url = URL.createObjectURL(new Blob([doc], {type:'text/html'}))
 				a.href = url; a.download = `${name}.html`; document.body.appendChild(a); a.click()

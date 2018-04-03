@@ -1,36 +1,59 @@
 window.onload = () => {
-	let f = get('data-content'), v = get('data-version').vars, r = $('content'), doc = '', c = 'container', m = ['e', 'r']
+	let c = get('data-content'), v = get('data-version'), doc = '', h = ['e', 'r', 'g'], r = $('content'), id = document.body.id,
+		pics = ['sDYoR4', 'ePDC7C', '7nyhge', 'KrDnZf', 'mSHQer', '9Tz57g'], p = Math.floor(Math.random(0, 1) * pics.length)
 	
-	m.forEach(n => {
-		f[n].forEach((m, i) => {
+	h.forEach(n => { //Crear contenedores de ejercicio
+		if (n == 'g') doc += '<div id="glosa" class="filter hidden"><div class="glosa">'
+		if (n == 'r') c[n] = shuffle(c[n])
+
+		c[n].forEach((m, i) => {
 			doc += `<div class="col-md-${m.width.md} col-sm-${m.width.sm} col-xs-${m.width.xs} tag">`
-			if (m.tag != 'general') doc += `<canvas id="${c}-${i}-${n}" style="background:${m.params.background}"></canvas>`
-			else doc += `<div id="${c}-${i}-${n}" class="general"></div>`
+			if (m.tag != 'general') doc += `<canvas id="container-${n}${i}" style="background:${m.params.background}"></canvas>`
+			else doc += `<div id="container-${n}${i}" class="general"></div>`
 			doc += '</div>'
 		})
-	})
+	}) 
+
+	doc += '</div></div><div id="feedback" class="filter hidden"><div class="feedback"><div id="bubble"><div id="message" class="info"></div>'
+	doc += '<button id="close"><span class="glyphicon glyphicon-remove-circle"/></button><div id="feedFlecha"></div></div>'
+	doc += '<div id="caption" class="feed" style="background-image:url(https://goo.gl/'+pics[p]+')"></div></div></div>'
+	doc += '<script src="jsEjercicios.js"></script>'
 
 	r.innerHTML = doc
-	m.forEach(n => {
-		f[n].forEach((m, i) => {
-			let j = FUNCIONES.findIndex(x => x.tag == m.tag)
-			let k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
-			FUNCIONES[j].fns[k].action({
-				container:$(`${c}-${i}-${n}`), params:m.params, versions:v, vt:false
+
+	var respGeneral = 0, rspMalas = 0, rspSinFeedBack = 0, datos = [], RespNeg = 0; fechaEntrada = (new Date()).toLocaleTimeString()
+	var idEjercicio = id, nivelF = id.substring(0, 2), ejeF = id.substring(2, 4), oaF = id.substring(4, 6), ieGeneral = '', errFre = ''
+
+	let s = $('submit'), t = $('title'), g = $('glosa'), f = $('feedback'), x = $('close'), y = $('message')
+		s.onclick = () => { answer() }; s.innerText = 'Enviar'; t.innerText = 'Gráfico de Datos'; y.innerHTML = '<h2>¡Correcto!</h2>'
+		x.onclick = (e) => { f.classList.add('hidden'); s.removeAttribute('disabled') }
+
+	let print = () => { //Imprimir o dibujar ejercicio
+		h.forEach(n => { 
+			c[n].forEach((m, i) => {
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+				FUNCIONES[j].fns[k].action({ container:$(`container-${n}${i}`), params:m.params, versions:v.vars, vt:false })
+				if (n == 'r') { let e = $(`container-${n}${i}`); e.onclick = () => { select(e) } }
 			})
 		})
-	})
+	}
+    let answer = () => { //Validar respuesta y mostrar feedback
+        if (!respGeneral) { f.classList.remove('hidden'); s.setAttribute('disabled', 'true') } 
+        else { g.classList.remove('hidden'); s.setAttribute('disabled', 'true'); print() }
+        respGeneral++ //https://goo.gl/WeWvAP -> Correcta
+    }
+	let select = (e) => { //Seleccionar respuseta
+		c.r.forEach((m, i) => { $(`container-r${i}`).setAttribute('style', 'border:1px solid #ddd') })
+		e.setAttribute('style', 'border:5px solid #bc2424')
+	}
 
-	$('title').innerText = 'Gráfico de Datos'
-	$('submit').innerText = 'Enviar'
+	print()
 }
 
 function $(id) { return document.getElementById(id) }
 function get(attr) { return JSON.parse(document.body.getAttribute(attr).replace(/\'/g, '\"')) }
-function replace(input, vars) {
-	vars.forEach(m => { input = input.toString().replace(`$${m.var}`, m.val) })
-	return input
-}
+function replace(input, vars) { vars.forEach(m => { input = input.toString().replace(`$${m.var}`, m.val) }); return input }
+function shuffle(arr, t = 10) { for (let i = 0; i < t; i++) { arr = arr.sort(() => (.5 - Math.random())) }; return arr }
 
 const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[ { id:'Insertar Texto', action:insertarTexto } ] },
