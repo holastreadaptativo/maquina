@@ -8,10 +8,6 @@ export function insertarTexto(config) {
   		container.innerHTML = replace(params.textCont, vars, vt)
 	}
 }
-export function insertarInput(config) {
-	const { container, params, variables, versions, vt } = config
-	if (container) {
-		
-	}
-	console.log('*********** insertarInput')
+export function insertarInput(/*config*/) {
+	//console.log('*********** insertarInput' + config)
 }

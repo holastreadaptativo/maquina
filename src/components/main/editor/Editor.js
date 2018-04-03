@@ -26,17 +26,16 @@ export default class eEditor extends Component {
 			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	render() {
-		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = this.props.params
-		const { add, update, push, path } = this.props.store
-		const { active, md, sm, xs } = this.state
-		let onSave = push ? add : update
+		const { active, md, sm, xs } = this.state, { params, store, title } = this.props, { add, update, push, path } = store
+		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = params
+		let onSave = push ? add : update, input = title == 'Insertar Input'
         return (
         	<section class="editor">
         		<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
-					<nav class={show(path == 'answers', 'select')}>
+					<nav class={show(path == 'answers' && !input, 'select')}>
 					{
 						['función', 'feedback'].map((m, i) => 
 							<li key={i} class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
@@ -50,12 +49,15 @@ export default class eEditor extends Component {
 					</details>
 				</main>
 				<main class="preview">
-					<div class={show(active == 0, 'canvas')}>
+					<div class={show(active == 0 && !input, 'canvas')}>
 						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
 					</div>
-					<div class={show(active == 1, 'textarea')}>
+					<div class={show(active == 1 && !input, 'textarea')}>
 						<TextEditor {...this.props} data={this.state.feedback}/>
+					</div>
+					<div class={show(input), 'options'}>
+						<InputEditor {...this.props}/>
 					</div>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</main>
@@ -145,10 +147,54 @@ class TextEditor extends Component {
             <div class="row">
                 <div class="col-sm-12">
                     <Editor editorState={this.state.editorState} onEditorStateChange={::this.onEditorStateChange}
-                    toolbar={{ list:{ inDropdown:true }, link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
+                    	toolbar={{ list:{ inDropdown:true }, link:{ inDropdown:true }, emoji:{ className:'hidden' }}}/>
                 </div>
                 <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))} class="col-md-12 hidden"/>
             </div>
         )
     }
+}
+
+class InputEditor extends Component {
+	render () {
+		const { inputType } = this.props.params, radio = ['1', '2', '3', '4']
+
+		let info = ''
+		switch(inputType) {
+			case 'input': { info = 'Permite ingresar un texto o un número'; break }
+			case 'checkbox': { info = 'Permite seleccionar múltiples alternativas'; break }
+			case 'radio': case 'select': { info = 'Permite seleccionar solo una alternativa'; break }
+			case 'textarea': { info = 'Permite ingresar una respuesta extensa'; break }
+		}
+		return (
+			<form>
+			<h5>Tipo de respuesta: <b>{inputType}</b></h5>
+			<h6>{info}</h6>
+			{
+				inputType == 'input' &&
+				<input type="text" placeholder="Respuesta"></input>
+			}
+			{
+				inputType == 'radio' &&
+				radio.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> )
+			}
+			{
+				inputType == 'checkbox' &&
+				radio.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> )
+			}
+			{
+				inputType == 'select' &&
+				<select>
+				{
+					radio.map((m, i) => <option key={i} value={m}>{m}</option> )
+				}
+				</select>
+			}
+			{
+				inputType == 'textarea' &&
+				<textarea placeholder="Respuesta"></textarea>
+			}
+			</form>
+		)
+	}
 }

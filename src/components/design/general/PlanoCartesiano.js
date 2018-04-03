@@ -24,7 +24,7 @@ export default class PlanoCartesiano extends Component {
 			gridColor, gridWidth, rows, width, axisColor, axisWidth, axisDisplay } = this.state
 			let k = 0
 		return (
-			<Editor title="Plano Cartesiano" params={this.state} store={this.props}>
+			<Editor title={this.props.fn} params={this.state} store={this.props}>
 				<Item id={k++} active={active} title="Canvas" setActive={::this.handleActive}>
 					<Input id="width" default={width} prefix="width" postfix="px" update={::this.setState} type="number"/>	
 					<Input id="height" default={height} prefix="height" postfix="px" update={::this.setState} type="number"/>	

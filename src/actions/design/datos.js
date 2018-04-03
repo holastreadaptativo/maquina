@@ -487,7 +487,7 @@ function lineasGuias(data, state) {
             }
         } 
     }
-    console.log(ctx.lineWidth)
+    //console.log(ctx.lineWidth)
     ctx.stroke()
     //ctx.closePath()
     ctx.restore()

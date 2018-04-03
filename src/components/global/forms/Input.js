@@ -5,6 +5,10 @@ export default class Input extends Component {
 	update() {
 		this.props.update({ [this.props.id]:this.refs.input.value })
 	}
+	componentDidMount() {
+		if (this.props.disabled)
+			this.refs.input.setAttribute('disabled', 'true')
+	}
 	render() {
 		return (
 			<div class={show(!this.props.hide, 'input-group')}>

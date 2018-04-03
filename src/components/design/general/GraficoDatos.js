@@ -27,7 +27,7 @@ export default class GraficoDatos extends Component {
 			withArrowsX, withArrowsY, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal, 
 			projectionVal, highlightBar } = this.state; let k = 0
 		return (
-			<Editor title="Gráfico Datos" params={this.state} store={this.props}>
+			<Editor title={this.props.fn} params={this.state} store={this.props}>
 				<Item id={k++} active={active} title="Canvas" setActive={::this.handleActive}>
 					<Input id="height" default={height} prefix="alto" postfix="px" update={::this.setState} type="number"/>	
 					<Input id="width" default={width} prefix="ancho" postfix="px" update={::this.setState} type="number"/>	
