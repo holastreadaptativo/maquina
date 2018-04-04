@@ -30,17 +30,17 @@ export default class Descargas extends Component {
 class Upload extends Component {
 	constructor() {
 		super()	
-		this.state = { files:[], len:0, name:'' }
+		this.state = { active:0, files:[], len:0, name:'' }
 	}
 	render() {
 		const { len, name } = this.state; let k = 0
         return (
 			<Aside id={this.props.id} option={this.props.option} title="Archivos JS y CSS">
-				<Item id={k} active={k} title="Descargar">
+				<Item id={k} title="Descargar" parent={this}>
 					<a class="btn box" href={LINKS[2].url} download>JS</a>
 					<a class="btn box" href={LINKS[1].url} download>CSS</a>
 	        	</Item>
-				<Item id={k} active={k} title="Actualizar">
+				<Item id={k} title="Actualizar" parent={this}>
 					<a class="btn input" onClick={() => this.refs.input.click()}>Elegir archivos</a>
 	        		<input ref="input" type="file" multiple required onChange={::this.onSelect} class="hidden"></input>
 					<ol>

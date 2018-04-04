@@ -10,7 +10,7 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'',
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			dataTag: '0,1', withAxis: 'no', margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', 
+			dataTag: '0,1', withAxis: 'no', margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', fontWeight:'bold',
 			chartTags:'A, B, C, D, E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, 
 			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:1, fontSize:14, limitVal:'0,1', projectionVal:'0,1', highlightBar:''
 		} : props.params
@@ -18,69 +18,63 @@ export default class GraficoDatos extends Component {
 	componentDidUpdate() {
 		datos.graficoDatos({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
 	}
-	handleActive(active) {
-		this.setState({ active:active })
-	}
 	render() {
-		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, height, fontColor, fontFamily, width, axisColor, axisWidth,
-			chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, lineColor, lineWidth, dataTag, 
-			withArrowsX, withArrowsY, margin, titleTop, chartBorder, scaleMin, scaleMax, scaleInterval, scaleColor, scaleWidth, fontSize, limitVal, 
-			projectionVal, highlightBar } = this.state; let k = 0
+		let k = 0
 		return (
-			<Editor title={this.props.fn} params={this.state} store={this.props}>
-				<Item id={k++} active={active} title="Canvas" setActive={::this.handleActive}>
-					<Input id="height" default={height} prefix="alto" postfix="px" update={::this.setState} type="number"/>	
-					<Input id="width" default={width} prefix="ancho" postfix="px" update={::this.setState} type="number"/>	
-					<Input id="background" default={background} update={::this.setState} type="color"/>
-					<Input id="margin" default={margin} prefix="margen" postfix="px" update={::this.setState} type="text"/>
+			<Editor params={this.state} store={this.props} parent={this}>
+				<Item id={k++} title="Canvas" parent={this}>
+					<Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
+					<Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
+					<Input id="background" type="color" parent={this}/>
+					<Input id="margin" prefix="margen" postfix="px" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Títulos" setActive={::this.handleActive}>
-					<Input id="titleColor" default={titleColor} update={::this.setState} type="color"/>
-					<Input id="titleTop" default={titleTop} prefix="margen" postfix="px" update={::this.setState} type="number"/>
-					<Input id="titleSize" default={titleSize} prefix="tamaño" postfix="px" update={::this.setState} type="number"/>
-					<Input id="titleValue" default={titleValue} prefix="texto" placeholder={'Título'} update={::this.setState} type="text"/>
+				<Item id={k++} title="Títulos" parent={this}>
+					<Input id="titleColor" type="color" parent={this}/>
+					<Input id="titleTop" prefix="margen" postfix="px" type="number" parent={this}/>
+					<Input id="titleSize" prefix="tamaño" postfix="px" type="number" parent={this}/>
+					<Input id="titleValue" prefix="texto" placeholder={'Título'} parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Gráfico" setActive={::this.handleActive}>
-					<Input id="chartBorder" default={chartBorder} prefix="borde" update={::this.setState} type="color"/>
-					<Input id="chartColor" default={chartColor} update={::this.setState} type="color"/>
-					<Input id="chartTags" default={chartTags} prefix="etiquetas" placeholder={'A, B, C, D, E'} update={::this.setState} type="text"/>
-					<Select id="chartPosition" default={chartPosition} prefix="orientación" update={::this.setState} options={['vertical','horizontal']}/>
-					<Input id="chartValues" default={chartValues} prefix="valores" placeholder={'1, 2, 3, 4, 5'} update={::this.setState} type="text"/>
+				<Item id={k++} title="Gráfico" parent={this}>
+					<Input id="chartBorder" prefix="borde" type="color" parent={this}/>
+					<Input id="chartColor" type="color" parent={this}/>
+					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
+					<Select id="chartPosition" prefix="orientación" options={['vertical','horizontal']} parent={this}/>
+					<Input id="chartValues" prefix="valores" placeholder={'1, 2, 3, 4, 5'} parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Escala" setActive={::this.handleActive}>
-					<Input id="scaleColor" default={scaleColor} update={::this.setState} type="color"/>
-					<Input id="scaleInterval" default={scaleInterval} prefix="intervalo" min="1" update={::this.setState} type="number"/>
-					<Input id="scaleWidth" default={scaleWidth} prefix="grosor" postfix="px" update={::this.setState} type="number"/>
-					<Input id="scaleMax" default={scaleMax} prefix="máximo" update={::this.setState} type="number"/>
-					<Input id="scaleMin" default={scaleMin} prefix="mínimo" update={::this.setState} type="number"/>
+				<Item id={k++} title="Escala" parent={this}>
+					<Input id="scaleColor" type="color" parent={this}/>
+					<Input id="scaleInterval" prefix="intervalo" min="1" type="number" parent={this}/>
+					<Input id="scaleWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
+					<Input id="scaleMax" prefix="máximo" type="number" parent={this}/>
+					<Input id="scaleMin" prefix="mínimo" type="number" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Ejes" setActive={::this.handleActive}>
-					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>
-					<Select id="withArrowsX" default={withArrowsX} prefix="flecha x" update={::this.setState} options={['no', 'si']}/>
-					<Select id="withArrowsY" default={withArrowsY} prefix="flecha y" update={::this.setState} options={['no', 'si']}/>
-					<Input id="axisWidth" default={axisWidth} prefix="grosor" postfix="px" update={::this.setState} type="number"/>
-					<Input id="axisTitleX" default={axisTitleX} prefix="titulo x" placeholder={'Eje X'} update={::this.setState} type="text"/>
-					<Input id="axisTitleY" default={axisTitleY} prefix="titulo y" placeholder={'Eje Y'} update={::this.setState} type="text"/>
+				<Item id={k++} title="Ejes" parent={this}>
+					<Input id="axisColor" type="color" parent={this}/>
+					<Select id="withArrowsX" prefix="flecha x" options={['no', 'si']} parent={this}/>
+					<Select id="withArrowsY" prefix="flecha y" options={['no', 'si']} parent={this}/>
+					<Input id="axisWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
+					<Input id="axisTitleX" prefix="titulo x" placeholder={'Eje X'} parent={this}/>
+					<Input id="axisTitleY" prefix="titulo y" placeholder={'Eje Y'} parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Lineas" setActive={::this.handleActive}>
-					<Input id="lineColor" default={lineColor} update={::this.setState} type="color" placeholder={'0,1,0,0,1'}/>
-					<Input id="lineWidth" default={lineWidth} prefix="grosor" postfix="px" update={::this.setState} type="number"/>
-					<Input id="dataTag" default={dataTag} prefix="etiquetas" update={::this.setState} placeholder={'0,1,0,0,1'}/>
-					<Input id="limitVal" default={limitVal} prefix="limites" update={::this.setState} type="text" placeholder={'$a,$b,$c'}/>
-					<Input id="projectionVal" default={projectionVal} prefix="proyectar" update={::this.setState} type="text" placeholder={'0,1,0,0,1'}/>
-					<Input id="highlightBar" default={highlightBar} prefix="resaltar" placeholder={'0,1,0,0,1'} update={::this.setState} type="text"/>
+				<Item id={k++} title="Lineas" parent={this}>
+					<Input id="lineColor" type="color" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
+					<Input id="lineWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
+					<Input id="dataTag" prefix="etiquetas" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
+					<Input id="limitVal" prefix="limites" type="text" placeholder={'$a, $b, $c'} parent={this}/>
+					<Input id="projectionVal" prefix="proyectar" type="text" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
+					<Input id="highlightBar" prefix="resaltar" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Borde" setActive={::this.handleActive}>
-					<Input id="borderColor" default={borderColor} update={::this.setState} type="color"/>
-					<Select id="borderStyle" default={borderStyle} prefix="estilo" update={::this.setState} options={['solid']}/>
-					<Input id="borderWidth" default={borderWidth} prefix="grosor" postfix="px" update={::this.setState} type="number"/>	
-					<Input id="borderRadius" default={borderRadius} prefix="radio" postfix="px" update={::this.setState} type="number"/>
+				<Item id={k++} title="Borde" parent={this}>
+					<Input id="borderColor" type="color" parent={this}/>
+					<Select id="borderStyle" prefix="estilo" options={['solid']} parent={this}/>
+					<Input id="borderWidth" prefix="grosor" postfix="px" type="number" parent={this}/>	
+					<Input id="borderRadius" prefix="radio" postfix="px" type="number" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Fuente" setActive={::this.handleActive}>
-					<Input id="fontColor" default={fontColor} update={::this.setState} type="color"/>
-					<Select id="fontWeight" default={'bold'} prefix="estilo" update={::this.setState} options={['bold']}/>
-					<Input id="fontSize" default={fontSize} prefix="tamaño" postfix="px" update={::this.setState} type="number"/>
-					<Select id="fontFamily" default={fontFamily} prefix="tipo" update={::this.setState} options={['Larke Neue Thin']}/>
+				<Item id={k++} title="Fuente" parent={this}>
+					<Input id="fontColor" type="color" parent={this}/>
+					<Select id="fontWeight" prefix="estilo" options={['bold']} parent={this}/>
+					<Input id="fontSize" prefix="tamaño" postfix="px" type="number" parent={this}/>
+					<Select id="fontFamily" prefix="tipo" options={['Larke Neue Thin']} parent={this}/>
 				</Item>
 			</Editor>
 		)

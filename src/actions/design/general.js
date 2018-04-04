@@ -5,7 +5,7 @@ export function insertarTexto(config) {
 
 	if (container) {
 		let vars = vt ? variables : versions
-  		container.innerHTML = replace(params.textCont, vars, vt)
+  		container.innerHTML = replace(params.content, vars, vt)
 	}
 }
 export function insertarInput(/*config*/) {

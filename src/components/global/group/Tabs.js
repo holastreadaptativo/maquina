@@ -1,19 +1,17 @@
 import React, { Component } from 'react'
-import { focus } from 'actions'
+import { focus, show } from 'actions'
 
 export default class Tabs extends Component {
 	render() {
 		return (
-			<ul class="modal-tabs">
+			<nav class={show(this.props.show, 'select')}>
 			{
-				this.props.items.map((m, i) =>
-					<li key={i} class={focus(this.props.active == i, 'active')} style={{ width:`${100/this.props.items.length}%` }} 
-						onClick={this.props.setActive(i)}>
-						<a><i>{m}</i></a>
-					</li>
+				this.props.arr.map((m, i) => 
+					<li key={i} class={`col-sm-6 ${focus(this.props.parent.state.active == i, 'active')}`} 
+						onClick={() => { this.props.parent.setState({ active:i }) }}>{m}</li>
 				)
 			}
-			</ul>
+			</nav>
 		)
 	}
 }

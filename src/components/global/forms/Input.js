@@ -3,19 +3,21 @@ import { show } from 'actions'
 
 export default class Input extends Component {
 	update() {
-		this.props.update({ [this.props.id]:this.refs.input.value })
+		const { id, parent, update } = this.props, { input } = this.refs
+		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
 	}
 	componentDidMount() {
 		if (this.props.disabled)
 			this.refs.input.setAttribute('disabled', 'true')
 	}
 	render() {
+		const { hide, id, type, parent, placeholder, postfix, prefix } = this.props
 		return (
-			<div class={show(!this.props.hide, 'input-group')}>
-				<span class="input-group-addon prefix">{this.props.type == 'color' && !this.props.prefix ? 'color' : this.props.prefix}</span>
-				<input ref="input" type={this.props.type} class={`form-control ${this.props.style}`} defaultValue={this.props.default} 
-					onChange={::this.update} placeholder={this.props.placeholder} max="950" min="0"/>
-				<span class={show(this.props.postfix, 'input-group-addon postfix')}>{this.props.postfix}</span>
+			<div class={show(!hide, 'input-group')}>
+				<span class="input-group-addon prefix">{type == 'color' && !prefix ? type : prefix}</span>
+				<input ref="input" class={`form-control ${this.props.style}`} onChange={::this.update} placeholder={placeholder} type={type ? type : 'text'}
+					defaultValue={parent.state[id]} max="999" min="0"/>
+				<span class={show(postfix, 'input-group-addon postfix')}>{postfix}</span>
 			</div>
 		)
 	}

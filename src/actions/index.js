@@ -6,6 +6,8 @@ export * from './main/versiones'
 
 export default function $(id) { return document.getElementById(id) }
 
+export function compare(a, b) { return a.localeCompare(b) == 0 }
+
 export function date() { return (new Date()).toLocaleString() }
 
 export function focus(b, c) { return `${b ? c : ''}` }

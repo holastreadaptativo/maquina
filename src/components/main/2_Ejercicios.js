@@ -29,9 +29,7 @@ class General extends Component {
 				<Functions id={0} {...this.props} {...this.state}/>
 				<Overview id={1} {...this.props} {...this.state}/>
 				{
-					this.state.path != 'feedback' ? 
-					<Design {...this.props} {...this.state}/> : 
-					<Feedback {...this.props} {...this.state}/>
+					this.state.path != 'feedback' ? <Design {...this.props} {...this.state}/> : <Feedback {...this.props} {...this.state}/>
 				}
         	</Section>
         )

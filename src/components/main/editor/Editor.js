@@ -1,74 +1,84 @@
 import React, { Component } from 'react'
+import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import { data, DEVICES, LABELS } from 'stores'
-import { focus, show } from 'actions' //Actualizar
+import { Editor } from 'react-draft-wysiwyg'
+import draftToHtml from 'draftjs-to-html'
+import htmlToDraft from 'html-to-draftjs'
+import { compare, show } from 'actions'
+import { Tabs } from 'components'
 
 export default class eEditor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, md:12, sm:12, xs:12, edited:false, feedback:'' }
+		this.state = { active:0, md:12, sm:12, xs:12, edited:false }
 	}
 	componentWillMount() {
-		const { store } = this.props
-		if (!store.push) {
-			data.child(`${store.code}/${store.path}/${store.id}/width`).once('value').then(snap => {
+		const { code, id, path, push } = this.props.store, base = data.child(`${code}/${path}/${id}`)
+		if (!push) {
+			base.child('width').once('value').then(snap => {
 				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
-			})
-			if (store.path == 'answers')
-			data.child(`${store.code}/${store.path}/${store.id}`).once('value').then(snap => {
-				this.setState({ feedback:snap.val().feedback })
 			})
 		}
 	}
 	componentWillUnmount() {
-		const { store } = this.props
-		const { md, sm, xs, edited } = this.state
-		if (!store.push && edited)
-			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
+		const { code, id, path, push } = this.props.store, { md, sm, xs, edited } = this.state
+		if (!push && edited)
+			data.child(`${code}/${path}/${id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	render() {
-		const { active, md, sm, xs } = this.state, { params, store, title } = this.props, { add, update, push, path } = store
-		const { background, width, height, borderWidth, borderStyle, borderColor, borderRadius } = params
-		let onSave = push ? add : update, input = title == 'Insertar Input'
+		const { active, md, sm, xs } = this.state, { params, store } = this.props, { add, fn, path, push, tag, update, variables } = store
+		const { background, borderColor, borderRadius, borderStyle, borderWidth, height, width } = params
+		let onSave = push ? add : update, devices = [md, sm, xs], general = compare(tag, 'general')
         return (
         	<section class="editor">
         		<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
 					</div>
-					<nav class={show(path == 'answers' && !input, 'select')}>
-					{
-						['función', 'feedback'].map((m, i) => 
-							<li key={i} class={`col-sm-6 ${focus(active == i, 'active')}`} onClick={() => this.setActive(i)}>{m}</li>
-						)
-					}
-					</nav>
+					<Tabs arr={['función', 'feedback']} show={compare(path, 'answers') && !general} parent={this}/>
 					{this.props.children}
 					<details class="variables">
 						<summary>Variables</summary>
-						<ul>{ this.props.store.variables.map((m, i) => <li key={i}>${m.var} = {m.val} [{m.vt}]</li>) }</ul>
+						<ul>{ variables.map((m, i) => <li key={i}>${m.var} = {m.val} [{m.vt}]</li>) }</ul>
 					</details>
 				</main>
 				<main class="preview">
-					<div class={show(active == 0 && !input, 'canvas')}>
+					<div class={show(active == 0 && !general, 'canvas')}>
 						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
 							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
 					</div>
-					<div class={show(active == 1 && !input, 'textarea')}>
-						<TextEditor {...this.props} data={this.state.feedback}/>
+					<div class={show(active == 0 && compare(fn, 'Insertar Texto'), 'textarea')}>
+						<TextEditor {...this.props} text="content"/>
 					</div>
-					<div class={show(input), 'options'}>
+					<div class={show(active == 1 && path == 'answers' && !general, 'textarea')}>
+						<TextEditor {...this.props} text="feedback"/>
+					</div>
+					<div class={show(compare(fn, 'Insertar Input'), 'options')}>
 						<InputEditor {...this.props}/>
 					</div>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</main>
 				<header>
-					<h5>{this.props.title}</h5>
+					<h5>{fn}</h5>
 				</header>
 				<footer>
-					<Devices devices={[md, sm, xs]} onChange={::this.handleWidth}/>
+					<h6>Devices:</h6>
+					{
+						DEVICES.map((n, j) => 
+							<h6 key={j}>
+								<i>{n.icon}</i>
+								<select id={n.col} defaultValue={devices[j]} onChange={::this.handleWidth}>
+								{
+									LABELS.SIZE.map((m, i) =>
+										<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
+									)
+								}	
+								</select>
+							</h6>
+						)
+					}
 				</footer>
         	</section>
-        	
 		)
 	}
 	handleWidth(e) {
@@ -77,40 +87,7 @@ export default class eEditor extends Component {
 		else
 			this.setState({ [e.target.id]:e.target.value, edited:true })
 	}
-	setActive(active) {
-		this.setState({ active:active })
-	}
 }
-
-export class Devices extends Component {
-	render() {
-		const { devices, onChange } = this.props
-		return (
-			<div>
-				<h6>Devices:</h6>
-				{
-					DEVICES.map((n, j) => 
-						<h6 key={j}>
-							<i>{n.icon}</i>
-							<select id={n.col} defaultValue={devices[j]} onChange={onChange}>
-							{
-								LABELS.SIZE.map((m, i) =>
-									<option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option>
-								)
-							}	
-							</select>
-						</h6>
-					)
-				}
-			</div>
-		)
-	}
-}
-
-import { EditorState, convertToRaw, ContentState } from 'draft-js'
-import { Editor } from 'react-draft-wysiwyg'
-import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
 
 class TextEditor extends Component {
     constructor(props) {
@@ -118,29 +95,19 @@ class TextEditor extends Component {
         this.state = { editorState:EditorState.createEmpty(), edited:false }
     }
     componentWillMount() {
-        const { data, store } = this.props
-        if (!store.push && store.path == 'answers' && data != '') {
-            const { contentBlocks, entityMap } = htmlToDraft(data)
+        const { params, store, text } = this.props
+        if (!store.push && params[text]) {
+        	const { contentBlocks, entityMap } = htmlToDraft(params[text])
             const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap)
             const editorState = EditorState.createWithContent(contentState)
             this.setState({ editorState:editorState })
         }
     }    
     componentWillUnmount() {
-        const { path, push, code, id } = this.props.store
-        const { edited, editorState } = this.state
-        if (!push && path == 'answers' && edited)
-            data.child(`${code}/${path}/${id}`).update({
-                feedback:draftToHtml(convertToRaw(editorState.getCurrentContent())), date:(new Date()).toLocaleString()
-            })
-    }
-    onEditorStateChange(text) {
-        if (this.props.store.push) {
-            this.setState({ editorState:text })
-            this.props.store.setState({ feedback:draftToHtml(convertToRaw(text.getCurrentContent())) })
-        }
-        else
-            this.setState({ editorState:text, edited:true })
+        const { path, push, code, id } = this.props.store, { edited, editorState } = this.state, base = data.child(`${code}/${path}/${id}/params`)
+        const { text } = this.props, html = draftToHtml(convertToRaw(editorState.getCurrentContent())), date = (new Date()).toLocaleString()
+        if (!push && edited && (text == 'content' || (text == 'feedback' && path == 'answers')))
+        	base.update({ [text]:html, date })
     }
     render() {
         return (
@@ -153,48 +120,61 @@ class TextEditor extends Component {
             </div>
         )
     }
+    onEditorStateChange(text) {
+        if (this.props.store.push) {
+            this.setState({ editorState:text })
+            this.props.parent.setState({ [this.props.text]:draftToHtml(convertToRaw(text.getCurrentContent())) })
+        }
+        else
+            this.setState({ editorState:text, edited:true })
+    }
 }
 
 class InputEditor extends Component {
 	render () {
-		const { inputType, value1, value2, value3, value4 } = this.props.params, options = [value1, value2, value3, value4]
-
-		let info = ''
-		switch(inputType) {
-			case 'input': { info = 'Permite ingresar un texto o un número'; break }
-			case 'checkbox': { info = 'Permite seleccionar múltiples alternativas'; break }
-			case 'radio': case 'select': { info = 'Permite seleccionar solo una alternativa'; break }
-			case 'textarea': { info = 'Permite ingresar una respuesta extensa'; break }
-		}
+		const { inputSize, inputType } = this.props.params
 		return (
 			<form>
-			<h5>Tipo de respuesta: <b>{inputType}</b></h5>
-			<h6>{info}</h6>
-			{
-				inputType == 'input' &&
-				<input type="text" placeholder="Respuesta"></input>
-			}
-			{
-				inputType == 'radio' &&
-				options.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> )
-			}
-			{
-				inputType == 'checkbox' &&
-				options.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> )
-			}
-			{
-				inputType == 'select' &&
-				<select>
-				{
-					options.map((m, i) => <option key={i} value={m}>{m}</option> )
-				}
-				</select>
-			}
-			{
-				inputType == 'textarea' &&
-				<textarea placeholder="Respuesta"></textarea>
-			}
+				<h5>Tipo de respuesta: <b>{inputType}</b></h5>
+				<h6>{ this.getInfo(inputType) }</h6>
+				<div>{ this.getInput(inputType) }</div>
+				<div>{ this.getError(inputSize) }</div>
 			</form>
+		)
+	}	
+	getInfo(type) {
+		switch(type) {
+			case 'input': { return 'Permite ingresar un texto o un número' }
+			case 'checkbox': { return 'Permite seleccionar múltiples alternativas' }
+			case 'radio': case 'select': { return 'Permite seleccionar solo una alternativa' }
+			case 'textarea': { return 'Permite ingresar una respuesta extensa' }
+		}
+	}
+	getInput(type) {
+		const { value1, value2, value3, value4 } = this.props.params, arr = [value1, value2, value3, value4]
+		switch(type) {
+			case 'input': { return <input type="text" placeholder="Respuesta"></input> }
+			case 'radio': { return arr.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> ) }
+			case 'checkbox': { return arr.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> ) }
+			case 'select': { return <select>{ arr.slice(0, 3).map((m, i) => <option key={i} value={m}>{m}</option> ) }</select> }
+			case 'textarea': { return <textarea placeholder="Respuesta"></textarea> }
+		}
+	}
+	getError(size) {
+		const { error2, error3, error4 } = this.props.params
+		return (
+			<div class={show(size > 2)}>
+				<h5 >Errores asociados:</h5>
+				<h6><b>Opción 2: </b> 
+					{ error2 == 0 ? 'Sin error frecuente asociado' : 'Código de error' } { error2 != 0 && <b>{error2}</b> }
+				</h6>
+				<h6><b>Opción 3: </b> 
+					{ error3 == 0 ? 'Sin error frecuente asociado' : 'Código de error' } { error3 != 0 && <b>{error3}</b> }
+				</h6>
+				<h6 class={show(size > 3)}><b>Opción 4: </b> 
+					{ error4 == 0 ? 'Sin error frecuente asociado' : 'Código de error' } { error4 != 0 && <b>{error4}</b> }
+				</h6>
+			</div>
 		)
 	}
 }

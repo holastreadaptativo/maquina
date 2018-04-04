@@ -9,52 +9,47 @@ export default class PlanoCartesiano extends Component {
 		super(props)
 		this.state = props.push ? { 
 			height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0,
-			borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2,
-			fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none'
+			borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, imageDisplay:'none',
+			fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none', fontSize:'auto', fontWeight:'bold'
 		} : props.params
 	}
 	componentDidUpdate() {
 		geometria.planoCartesiano({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
 	}
-	handleActive(active) {
-		this.setState({ active:active })
-	}
 	render() {
-		const { active, background, borderColor, borderWidth, borderRadius, borderStyle, cols, height, fontColor, fontFamily, 
-			gridColor, gridWidth, rows, width, axisColor, axisWidth, axisDisplay } = this.state
-			let k = 0
+		let k = 0
 		return (
-			<Editor title={this.props.fn} params={this.state} store={this.props}>
-				<Item id={k++} active={active} title="Canvas" setActive={::this.handleActive}>
-					<Input id="width" default={width} prefix="width" postfix="px" update={::this.setState} type="number"/>	
-					<Input id="height" default={height} prefix="height" postfix="px" update={::this.setState} type="number"/>	
-					<Input id="background" default={background} update={::this.setState} type="color"/>
+			<Editor params={this.state} store={this.props} parent={this}>
+				<Item id={k++} title="Canvas" parent={this}>
+					<Input id="width" prefix="width" postfix="px" type="number" parent={this}/>	
+					<Input id="height" prefix="height" postfix="px" type="number" parent={this}/>	
+					<Input id="background" type="color" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Border" setActive={::this.handleActive}>
-					<Input id="borderWidth" default={borderWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>	
-					<Select id="borderStyle" default={borderStyle} prefix="style" update={::this.setState} options={['solid']}/>
-					<Input id="borderColor" default={borderColor} update={::this.setState} type="color"/>
-					<Input id="borderRadius" default={borderRadius} prefix="radius" postfix="px" update={::this.setState} type="number"/>
+				<Item id={k++} title="Border" parent={this}>
+					<Input id="borderWidth" prefix="width" postfix="px" type="number" parent={this}/>	
+					<Select id="borderStyle" prefix="style" options={['solid']} parent={this}/>
+					<Input id="borderColor" type="color" parent={this}/>
+					<Input id="borderRadius" prefix="radius" postfix="px" type="number" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Grid" setActive={::this.handleActive}>
-					<Input id="rows" default={rows} prefix="rows" postfix="#" update={::this.setState} type="number"/>
-					<Input id="cols" default={cols} prefix="cols" postfix="#" update={::this.setState} type="number"/>
-					<Input id="gridWidth" default={gridWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
-					<Input id="gridColor" default={gridColor} update={::this.setState} type="color"/>
+				<Item id={k++} title="Grid" parent={this}>
+					<Input id="rows" prefix="rows" postfix="#" type="number" parent={this}/>
+					<Input id="cols" prefix="cols" postfix="#" type="number" parent={this}/>
+					<Input id="gridWidth" prefix="width" postfix="px" type="number" parent={this}/>
+					<Input id="gridColor" type="color" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Axis" setActive={::this.handleActive}>
-					<Select id="axisDisplay" default={axisDisplay} prefix="display" update={::this.setState} options={['none','block']}/>
-					<Input id="axisWidth" default={axisWidth} prefix="width" postfix="px" update={::this.setState} type="number"/>
-					<Input id="axisColor" default={axisColor} update={::this.setState} type="color"/>
+				<Item id={k++} title="Axis" parent={this}>
+					<Select id="axisDisplay" prefix="display" options={['none','block']} parent={this}/>
+					<Input id="axisWidth" prefix="width" postfix="px" type="number" parent={this}/>
+					<Input id="axisColor" type="color" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Font" setActive={::this.handleActive}>
-					<Select id="fontFamily" default={fontFamily} prefix="family" update={::this.setState} options={['arial']}/>
-					<Select id="fontSize" default={'auto'} prefix="size" update={::this.setState} options={['auto']}/>
-					<Select id="fontWeight" default={'bold'} prefix="weight" update={::this.setState} options={['bold']}/>
-					<Input id="fontColor" default={fontColor} update={::this.setState} type="color"/>
+				<Item id={k++} title="Font" parent={this}>
+					<Select id="fontFamily" prefix="family" options={['arial']} parent={this}/>
+					<Select id="fontSize" prefix="size" options={['auto']} parent={this}/>
+					<Select id="fontWeight" prefix="weight" options={['bold']} parent={this}/>
+					<Input id="fontColor" type="color" parent={this}/>
 				</Item>
-				<Item id={k++} active={active} title="Images" setActive={::this.handleActive}>
-					<Select id="imageDisplay" default={'none'} prefix="display" update={::this.setState} options={['none','block']}/>
+				<Item id={k++} title="Images" parent={this}>
+					<Select id="imageDisplay" prefix="display" options={['none','block']} parent={this}/>
 				</Item>
 			</Editor>
 		)

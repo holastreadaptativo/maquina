@@ -5,7 +5,7 @@ import { action, show } from 'actions'
 export default class Functions extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, modal:false, feedback:'', fn:'', md:12, sm:12, xs:12, tag:'' }
+		this.state = { active:0, modal:false, fn:'', md:12, sm:12, xs:12, tag:'' }
 	}
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
@@ -14,7 +14,7 @@ export default class Functions extends Component {
 				<div>
 				{
 					FUNCIONES.map((m, i) => m.fns.length > 0 &&
-						<Item key={i} id={i} active={this.state.active} title={m.name} setActive={::this.handleActive}>
+						<Item key={i} id={i} title={m.name} parent={this} update={::this.handleActive}>
 			          	{
 			          		m.fns.map((n, j) => <li key={j} onClick={() => this.handleSelect(n.id)} class="button">{n.id}</li> )
 			          	}
@@ -23,7 +23,7 @@ export default class Functions extends Component {
 				}
 				</div>
 				<div class={show(f[0].length || f[1].length || f[2].length)}>
-					<Item id={0} active={0} title="Clonar">
+					<Item id={this.state.active} title="Clonar" parent={this}>
 						<select ref="clone" class="form-control clone" defaultValue="0">
 							<option value="0" disabled>Selecciona una función</option>
 							{
@@ -60,6 +60,6 @@ export default class Functions extends Component {
 		let FX = null
 		FUNCIONES[this.state.active].fns.forEach(m => { if (m.id == this.state.fn) FX = m.component })
        	return FX && 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState} fn={this.state.fn} push {...this.props}/>
+       		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState} fn={this.state.fn} tag={this.state.tag} push {...this.props}/>
 	}
 }

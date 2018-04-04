@@ -90,9 +90,9 @@ class Select extends Component {
 }
 
 class Generate extends Component {
-	constructor() {
-		super()
-		this.state = { fns:[], rank:[] }
+	constructor(props) {
+		super(props)
+		this.state = { active:0, fns:[], rank:[], limit:props.limit, selected:props.selected, total:props.total }
 	}
 	componentWillMount() {
 		let fns = []
@@ -102,13 +102,13 @@ class Generate extends Component {
 		})
 	}
 	render() {
-		const { id, limit, option, selected, setState, total } = this.props
+		const { id, option, setState } = this.props
         return(
 			<Aside id={id} option={option} title="Versiones">
-				<Item id={0} active={0} title="Generar">
-					<Input id="total" default={total} prefix="máximo" update={setState} type="number"/>
-					<Input id="limit" default={limit} prefix="intentos" update={setState} type="number"/>
-					<Input id="selected" default={selected} prefix="selección" update={setState} type="number"/>
+				<Item id={0} title="Generar" parent={this}>
+					<Input id="total" prefix="máximo" update={setState} type="number" parent={this}/>
+					<Input id="limit" prefix="intentos" update={setState} type="number" parent={this}/>
+					<Input id="selected" prefix="selección" update={setState} type="number" parent={this}/>
 					<button class="btn" onClick={::this.handleGenerate}>Generar</button>
 				</Item>
 		    </Aside>

@@ -27,7 +27,7 @@ export default class Overview extends Component {
 											</select>
 										</td>
 										<td>
-											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.function, m.params, m.id)}/>
+											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.function, m.params, m.id, m.tag)}/>
 											<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
 										</td>
 									</tr>
@@ -54,8 +54,8 @@ export default class Overview extends Component {
 		if (confirm('¿Estas seguro de borrar la función?'))
 			action.exe('DELETE', { code, id, path })
 	}	
-	handleSelect(fn, params, id) {
-		this.setState({ modal:true, id:id, fn:fn, params:params })
+	handleSelect(fn, params, id, tag) {
+		this.setState({ modal:true, id:id, fn:fn, params:params, tag:tag })
 	}
 	handleUpdate(params) {
 		const { code, path } = this.props, { id } = this.state
@@ -70,6 +70,6 @@ export default class Overview extends Component {
 		let FX = null
 		FUNCIONES.forEach(m => { m.fns.forEach(n => { if (n.id == this.state.fn) FX = n.component }) })
 		return FX &&
-       		<FX update={(x) => this.handleUpdate.bind(this, x)} id={this.state.id} fn={this.state.fn} {...this.props} params={this.state.params}/>
+       		<FX update={(x) => this.handleUpdate.bind(this, x)} {...this.props} {...this.state}/>
 	}
 }
