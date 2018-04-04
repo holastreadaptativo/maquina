@@ -13,17 +13,17 @@ export default class eEditor extends Component {
 		this.state = { active:0, md:12, sm:12, xs:12, edited:false }
 	}
 	componentWillMount() {
-		const { code, id, path, push } = this.props.store, base = data.child(`${code}/${path}/${id}`)
-		if (!push) {
-			base.child('width').once('value').then(snap => {
+		const { store } = this.props
+		if (!store.push) {
+			data.child(`${store.code}/${store.path}/${store.id}`).child('width').once('value').then(snap => {
 				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
 			})
 		}
 	}
 	componentWillUnmount() {
-		const { code, id, path, push } = this.props.store, { md, sm, xs, edited } = this.state
-		if (!push && edited)
-			data.child(`${code}/${path}/${id}/width`).update({ md:md, sm:sm, xs:xs })
+		const { store } = this.props, { md, sm, xs, edited } = this.state
+		if (!store.push && edited)
+			data.child(`${store.code}/${store.path}/${store.id}/width`).update({ md:md, sm:sm, xs:xs })
 	}
 	render() {
 		const { active, md, sm, xs } = this.state, { params, store } = this.props, { add, fn, path, push, tag, update, variables } = store
