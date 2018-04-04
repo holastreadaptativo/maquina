@@ -139,6 +139,7 @@ class InputEditor extends Component {
 				<h6>{ this.getInfo(inputType) }</h6>
 				<div>{ this.getInput(inputType) }</div>
 				<div>{ this.getError(inputSize) }</div>
+				<div>{ this.getFeed(inputSize) }</div>
 			</form>
 		)
 	}	
@@ -163,7 +164,7 @@ class InputEditor extends Component {
 	getError(size) {
 		const { error2, error3, error4 } = this.props.params
 		return (
-			<div class={show(size > 2)}>
+			<div class={show(size > 2, 'error')}>
 				<h5 >Errores asociados:</h5>
 				<h6><b>Opción 2: </b> 
 					{ error2 == 0 ? 'Sin error frecuente asociado' : 'Código de error' } { error2 != 0 && <b>{error2}</b> }
@@ -174,6 +175,19 @@ class InputEditor extends Component {
 				<h6 class={show(size > 3)}><b>Opción 4: </b> 
 					{ error4 == 0 ? 'Sin error frecuente asociado' : 'Código de error' } { error4 != 0 && <b>{error4}</b> }
 				</h6>
+			</div>
+		)
+	}
+	getFeed(size) {
+		const { feed0, feed1, feed2, feed3, feed4 } = this.props.params
+		return (
+			<div class="feed">
+				<h5>Feedback:</h5>
+				<h6><b>Genérico: </b>{ feed0 ? feed0 : 'Ingresa un feedback general para los errores' }</h6>
+				<h6><b>Correcto: </b>{ feed1 ? feed1 : 'Ingresa un feedback para la respuesta correcta' }</h6>
+				<h6 class={show(size > 2)}><b>Opción 2: </b>{ feed2 ? feed2 : 'No hay feedback' }</h6>
+				<h6 class={show(size > 2)}><b>Opción 3: </b>{ feed3 ? feed3 : 'No hay feedback' }</h6>
+				<h6 class={show(size > 3)}><b>Opción 4: </b>{ feed4 ? feed4 : 'No hay feedback' }</h6>
 			</div>
 		)
 	}
