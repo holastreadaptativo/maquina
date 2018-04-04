@@ -5,7 +5,7 @@ import { action, show } from 'actions'
 export default class Functions extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, modal:false, fn:'', md:12, sm:12, xs:12, tag:'' }
+		this.state = { active:0, modal:false, fn:'', md:12, sm:12, xs:12, tag:'general' }
 	}
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']

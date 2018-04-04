@@ -29,7 +29,7 @@ export default class eEditor extends Component {
 		const { active, md, sm, xs } = this.state, { params, store } = this.props, { add, fn, path, push, tag, update, variables } = store
 		const { background, borderColor, borderRadius, borderStyle, borderWidth, height, width } = params
 		let onSave = push ? add : update, devices = [md, sm, xs], general = compare(tag, 'general')
-        return (
+		return (
         	<section class="editor">
         		<main class="config">
 					<div class="title">

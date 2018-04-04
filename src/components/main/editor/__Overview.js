@@ -6,7 +6,7 @@ import { LABELS } from 'stores'
 export default class Overview extends Component {
 	constructor() {
 		super()
-		this.state = { modal:false, drag:'', fn:'', id:'', params:'', tag:'' }
+		this.state = { modal:false, drag:'', fn:'', id:'', params:'', tag:'general' }
 	}
 	render() {
 		return (

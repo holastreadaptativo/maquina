@@ -6,7 +6,8 @@ export default class InsertInput extends Component {
 	constructor(props) {
 		super(props)
 		this.state = props.push ? { 
-			active:0, inputSize:4, inputType:'radio', value1:'1', value2:'2', value3:'3', value4:'4', error2:'0', error3:'0', error4:'0', feedbackG:''
+			active:0, inputSize:4, inputType:'radio', value1:'1', value2:'2', value3:'3', value4:'4', error2:'0', error3:'0', error4:'0', 
+			feedGen:'', feed1:'', feed2:'', feed3:'', feed4:''
 		} : props.params
 	}
 	render() {
@@ -26,7 +27,11 @@ export default class InsertInput extends Component {
 					<Input id="error4" prefix="error 4" type="number" hide={i < 4} parent={this}/>
 				</Item>
 				<Item id={k++} title="Feedback" parent={this}>
-					<Input id="feedbackG" prefix="genérico" parent={this}/>
+					<Input id="feedGen" prefix="genérico" parent={this}/>
+					<Input id="feed1" prefix="correcto" parent={this}/>
+					<Input id="feed2" prefix="feed 2" parent={this}/>
+					<Input id="feed3" prefix="feed 3" parent={this}/>
+					<Input id="feed4" prefix="feed 4" parent={this}/>
 				</Item>
 			</Editor>
 		)
