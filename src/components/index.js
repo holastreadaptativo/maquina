@@ -51,6 +51,7 @@ export class App extends Component {
 	render() {  
         return (
       		<div class={`react-app ${focus(this.state.option != null, 'slim')}`}>
+      			<div class="react-bg"/>
       			<Header {...this.state}/>
       			{  
       				React.cloneElement( this.props.children, { ...this.state } ) 

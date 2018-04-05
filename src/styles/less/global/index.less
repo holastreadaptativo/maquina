@@ -37,11 +37,11 @@ section.design
 	main.device
 	{
 		background-color: white;
-		border: 2px solid #ddd;
-    	box-shadow: 2px 3px 4px #ddd;
+		border: 1px solid #ddd;
+    	//box-shadow: 2px 3px 4px #ddd;
 		max-width: 100%;
 		min-height: 330px;
-		margin: 20px auto 0;
+		margin: @top auto 0;
 		overflow: auto;
 		padding: 5px 5px 15px;
 		transition: all .3s ease;
@@ -61,7 +61,7 @@ section.design
 				text-align: left;
 				padding: 10px 10px 0;
 				margin: 0 2px;
-				color: black;
+				color: @main-hover;
 			}
 		}
 	}
@@ -69,18 +69,18 @@ section.design
 	{
 		@width: 960px;
 		@height: 500px;
-		@border: 2px;
+		@border: 1px;
 		@margin: 60px;
 		@color: #ddd;
 		height: @height;
-		margin: 20px auto 0;
+		margin: @top auto 0;
 		max-width: 100%;
 		width: @width;
 		article
 		{
 			background: white;
 			border: @border solid @color;
-    		box-shadow: 2px 3px 2px #eee;
+    		//box-shadow: 2px 3px 2px #eee;
 			height: @height - 2*@border - @margin;
 			overflow-x: hidden;
 			overflow-y: auto;
@@ -89,6 +89,10 @@ section.design
 			canvas
 			{
 				margin: 0 auto;
+			}
+			.general
+			{
+				color: @main-hover;
 			}
 		}
 		footer
@@ -113,7 +117,7 @@ section.design
 			margin-top: -90px - @border/2;
 			position: absolute;
 			width: 150px;
-			-webkit-filter: grayscale(.5);
+			//-webkit-filter: grayscale(.1);
 		}
 		div.triangle
 		{
@@ -129,6 +133,7 @@ section.design
 }
 section.code
 {
+	color: @main-hover;
 	margin: 0 auto;
 	padding-bottom: 80px;
 	width: 600px;
@@ -173,7 +178,6 @@ article
 		background: @main-color;
 		border-color: @main-hover;
 		border-radius: 0;
-    	box-shadow: 2px 4px 8px #666;
     	margin-right: 0px;
 		margin-top: 20px;
 		padding: 8px 40px;

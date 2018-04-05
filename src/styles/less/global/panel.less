@@ -1,18 +1,16 @@
 section.well
 {
-	background-color: @info-color;
-	border: 2px solid #ddd;
+	background-color: #f1f1f1;
 	border-radius: 0;
-	border-right-width: 1px;
-    box-shadow: 2px 3px 4px #ddd;
-	color: #444;
+    border: none;
+	color: @color;
 	margin-bottom: 0;
-	margin-top: 20px;
+	margin-top: @top;
 	padding: 0 15px 10px;
 	width: 250px;
 	h4, h5
 	{
-	    border: 1px solid @main-color;
+	    border: 1px solid lighten(@google, 25%);
 		cursor: pointer;
 	    font-size: 12px;
 	    font-weight: bold;
@@ -22,11 +20,11 @@ section.well
 	    transition: all .3s ease;
 		&:hover
 		{
-	    	background-color: darken(@info-color, 7%);
+	    	background-color: lighten(@google, 30%);
 		}
 	    &:active 
 	    { 
-		    background-color: darken(@info-color, 20%);
+		    background-color: lighten(@google, 25%);
 		}
 		b
 		{
@@ -55,16 +53,15 @@ section.well
 	}
 	h5, h5:hover
 	{
-		background: inherit;
-		border-color: darken(@info-color, 20%);
+		background: transparent;
+		border-color: lighten(@google, 25%);
 		cursor: default;
 		&.title
 		{
-			background: darken(@info-color, 10%);
-			border-color: darken(@info-color, 30%);
-			color: darken(@main-hover, 10%);
-			margin-top: 20px;
-			text-transform: uppercase;
+			background: @google;
+			border-color: @google;
+			color: white;
+			//text-transform: uppercase;
 		}
 	}
 	h3
@@ -75,11 +72,9 @@ section.well
 section.panel
 {
 	background: white;
-	border: 2px solid #ddd;
-	border-left-width: 1px;
 	border-radius: 0;
-    box-shadow: 2px 3px 4px #ddd;
-	margin-top: 20px;
+	border: 1px solid #ddd;
+	margin-top: @top;
 	margin-bottom: 0;
 	min-height: 330px;
 	padding: 10px 0px 20px;
@@ -88,6 +83,7 @@ section.panel
 	main.device
 	{
 		border: none;
+		color: black;
 		padding: 0 5px;
 		margin: 20px 0px -10px;
 	}

@@ -5,8 +5,8 @@ header.menu
 	@nav-color: white;
 	@nav-bg-color: #262f3d;
 	@nav-bg-hover: #19212b;
-	background-color: @nav-bg-hover;
-	box-shadow: 2px 2px 5px #777;
+	background-color: @main-hover;
+	box-shadow: 2px 2px 3px #777;
 	color: @nav-color;
 	height: @navh;
 	padding: 0;
@@ -17,11 +17,13 @@ header.menu
 	z-index: 999;
 	div.logo
 	{
+		background-color: @main-hover;
 		background-image: linear-gradient(@sec-color, @sec-hover);
 		background-image: url('@{images}/media/logo.png');
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
+		border-bottom: 1px solid @hover;
 		font-size: 32px;
 		font-weight: bold;
 		height: @navh;

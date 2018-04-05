@@ -113,20 +113,40 @@ form.control
 }
 form.search
 {
-	box-shadow: 2px 3px 3px #ddd;
+	//box-shadow: 2px 3px 3px #ddd;
 	span.input-group-addon, button
 	{
-		background-color: white;
+		background-color: transparent;
 		border-radius: 0;
+		border: 2px solid #f1f1f1;
+		color: @color;
+		height: 40px;
+		//font-weight: bold;
 	}
 	input.form-control
 	{
-		border-left-color: white;
+		background: transparent;
+		border: 1px solid #f1f1f1;
+		border-left: none;
+		border-right: none;
+		border-bottom-width: 2px;
 		border-radius: 0;
+		color: @color;
+		height: 40px;
+		transition: all .3s ease;
 		&:hover, &:focus
 		{
-			border-color: #66afe9;
+			border-bottom-color: @google;
 		}
+	}
+	button:hover
+	{
+		background-color: #fafafa;
+		border-color: #f1f1f1;
+		color: @color;
+	}
+	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	  	color: #aaa;
 	}
 	div.color-line
 	{
