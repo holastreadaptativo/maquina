@@ -11,11 +11,11 @@ export default class Input extends Component {
 			this.refs.input.setAttribute('disabled', 'true')
 	}
 	render() {
-		const { hide, id, type, parent, placeholder, postfix, prefix } = this.props
+		const { hide, id, type, parent, placeholder, postfix, prefix, style } = this.props
 		return (
 			<div class={show(!hide, 'input-group')}>
 				<span class="input-group-addon prefix">{type == 'color' && !prefix ? type : prefix}</span>
-				<input ref="input" class={`form-control ${this.props.style}`} onChange={::this.update} placeholder={placeholder} type={type ? type : 'text'}
+				<input ref="input" class={`form-control ${style}`} onChange={::this.update} placeholder={placeholder} type={type ? type : 'text'}
 					defaultValue={parent.state[id]} max="999" min="0"/>
 				<span class={show(postfix, 'input-group-addon postfix')}>{postfix}</span>
 			</div>

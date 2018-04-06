@@ -7,12 +7,13 @@ export default class Text extends Component {
 		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
 	}
 	render() {
+		const { hide, id, type, parent, placeholder, postfix, prefix, style } = this.props
 		return (
-			<div class="input-group">
-				<span class={show(this.props.prefix, 'input-group-addon')}>{this.props.prefix}</span>
-				<textarea ref="input" type={this.props.type} class={`form-control textarea ${this.props.style}`} defaultValue={this.props.parent.state[this.props.id]} 
-					onChange={::this.update} placeholder={this.props.placeholder}/>
-				<span class={show(this.props.postfix, 'input-group-addon')}>{this.props.postfix}</span>
+			<div class={show(!hide, 'input-group')}>
+				<span class="input-group-addon prefix">{prefix}</span>
+				<textarea ref="input" class={`form-control textarea ${style}`} onChange={::this.update} placeholder={placeholder} type={type}
+					defaultValue={parent.state[id]}/>
+				<span class={show(postfix, 'input-group-addon')}>{postfix}</span>
 			</div>
 		)
 	}

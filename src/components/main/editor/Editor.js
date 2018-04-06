@@ -6,6 +6,7 @@ import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
 import { compare, show } from 'actions'
 import { Tabs } from 'components'
+import { replace } from 'actions'
 
 export default class eEditor extends Component {
 	constructor(props) {
@@ -152,12 +153,18 @@ class InputEditor extends Component {
 		}
 	}
 	getInput(type) {
-		const { value1, value2, value3, value4 } = this.props.params, arr = [value1, value2, value3, value4]
+		const { value1, value2, value3, value4 } = this.props.params, { variables } = this.props.store, arr = [value1, value2, value3, value4]
 		switch(type) {
 			case 'input': { return <input type="text" placeholder="Respuesta"></input> }
-			case 'radio': { return arr.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="radio"/><label>{m}</label></li> ) }
-			case 'checkbox': { return arr.map((m, i) => <li key={i}><input id={m} name="answer" value={m} type="checkbox"/><label>{m}</label></li> ) }
-			case 'select': { return <select>{ arr.slice(0, 3).map((m, i) => <option key={i} value={m}>{m}</option> ) }</select> }
+			case 'radio': { return arr.map((m, i) => { let n = replace(m, variables, true)
+				return ( <li key={i}><input name="answer" value={n} type="radio"/><label>{n}</label></li> )}					 
+			)}
+			case 'checkbox': { return arr.map((m, i) => { let n = replace(m, variables, true)
+				return ( <li key={i}><input name="answer" value={n} type="checkbox"/><label>{n}</label></li> )}	
+			)}	
+			case 'select': { return <select>{ arr.slice(0, 3).map((m, i) => { let n = replace(m, variables, true)
+				return ( <option key={i} value={n}>{n}</option> )} )}</select> 
+			}
 			case 'textarea': { return <textarea placeholder="Respuesta"></textarea> }
 		}
 	}

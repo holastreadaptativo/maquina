@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Editor, Input, Item, Select } from 'components'
+import { Editor, Input, Item, Select, Text } from 'components'
 import { glyph } from 'actions'
 
 export default class InsertInput extends Component {
@@ -16,10 +16,10 @@ export default class InsertInput extends Component {
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Opciones" parent={this}>
 					<Select id="inputType" parent={this} update={::this.update} prefix="tipo" options={['input', 'checkbox', 'radio', 'select', 'textarea']}/>
-					<Input id="value1" prefix="opción 1" postfix={<span class={glyph('ok')}/>} hide={i < 3} parent={this}/> 
-					<Input id="value2" prefix="opción 2" postfix={<span class={glyph('remove')}/>} hide={i < 3} parent={this}/> 
-					<Input id="value3" prefix="opción 3" postfix={<span class={glyph('remove')}/>} hide={i < 3} parent={this}/> 
-					<Input id="value4" prefix="opción 4" postfix={<span class={glyph('remove')}/>} hide={i < 4} parent={this}/> 				
+					<Text id="value1" prefix="opción 1" postfix={<span class={glyph('ok')}/>} hide={i < 3} parent={this}/> 
+					<Text id="value2" prefix="opción 2" postfix={<span class={glyph('remove')}/>} hide={i < 3} parent={this}/> 
+					<Text id="value3" prefix="opción 3" postfix={<span class={glyph('remove')}/>} hide={i < 3} parent={this}/> 
+					<Text id="value4" prefix="opción 4" postfix={<span class={glyph('remove')}/>} hide={i < 4} parent={this}/> 				
 				</Item>
 				<Item id={k++} title="Errores" parent={this}>
 					<Input id="error2" prefix="error 2" type="number" hide={i < 3} parent={this}/> 

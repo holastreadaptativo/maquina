@@ -68,7 +68,7 @@ form.control
 				}
 			}
 		}
-		input, select
+		input, select, textarea
 		{
 			font-size: 13px;
 			height: 20px;
@@ -82,8 +82,15 @@ form.control
 		}
 		select
 		{
-			padding: 0 10px;
 			border-radius: 0;
+			padding: 0 10px;
+		}
+		textarea
+		{
+			height: 60px !important;
+			margin-right: -6px;
+			padding: 2px 5px;
+			resize: none;
 		}
 	}
 	select.clone
@@ -113,7 +120,6 @@ form.control
 }
 form.search
 {
-	//box-shadow: 2px 3px 3px #ddd;
 	span.input-group-addon, button
 	{
 		background-color: transparent;
@@ -121,7 +127,6 @@ form.search
 		border: 2px solid #f1f1f1;
 		color: @color;
 		height: 40px;
-		//font-weight: bold;
 	}
 	input.form-control
 	{
@@ -145,7 +150,8 @@ form.search
 		border-color: #f1f1f1;
 		color: @color;
 	}
-	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	::-webkit-input-placeholder 
+	{
 	  	color: #aaa;
 	}
 	div.color-line

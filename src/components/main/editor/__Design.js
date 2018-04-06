@@ -26,9 +26,7 @@ export default class Design extends Component {
 					<menu class="devices">
 					{
 						DEVICES.map((m, i) =>
-							<li key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}>
-								<i>{m.icon}</i>
-							</li>
+							<li key={i} class={focus(device == m.size, 'active')} onClick={() => this.handleDevice(m.size)}><i>{m.icon}</i></li>
 						)
 					}
 					</menu>
