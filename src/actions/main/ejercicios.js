@@ -1,6 +1,7 @@
 import { FUNCIONES } from 'components'
-import { data, LABELS } from 'stores'
+import { data, DEVICES, LABELS } from 'stores'
 import $, { date } from 'actions'
+import React from 'react'
 
 export function exe(action, state) {
 	const { code, path, update } = state, base = data.child(code.concat('/', path))
@@ -10,7 +11,7 @@ export function exe(action, state) {
 			$('btn-save').setAttribute('disabled', 'true')
 			base.once('value').then(snap => {
 				let ref = base.push(), position = snap.val().count
-				ref.update({ date:date(), function:fn, params, position, tag, width:{md, sm, xs} }).then(() => {
+				ref.update({ date:date(), name:fn, params, position, tag, width:{md, sm, xs} }).then(() => {
 					base.update({ count:position + 1 }).then(() => { if (path == 'answers') { ref.update({ feedback }) } })				
 				})
 			})
@@ -20,7 +21,7 @@ export function exe(action, state) {
 			base.orderByChild('position').once('value').then(snap => {
 				let functions = []						
 				snap.forEach(f => {
-					if (f.hasChild('function') && f.hasChild('params') && f.hasChild('position'))
+					if (f.hasChild('name') && f.hasChild('params') && f.hasChild('position'))
 						functions.push({ id:f.key, ...f.val(), json:JSON.stringify(f.val()) })
 					update({ [path]:functions })
 				})
@@ -52,7 +53,7 @@ export function exe(action, state) {
 		case 'PRINT': {
 			const { variables, versions, vt } = state
 			state[path].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
 				FUNCIONES[j].fns[k].action({ container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt })
 			}) 	
 			break
@@ -96,6 +97,35 @@ export function exe(action, state) {
 			if (Number.isInteger(parseInt(value)))
 				base.child(`${id}/width`).update({ md:Number(value) })
 			break
+		}
+		case 'GET': {
+			const { container, device } = state, fn = state[path]; let count = 0, arr = [], aux = []
+
+			fn.forEach((m, i) => { 
+				let size = device <= DEVICES[2].size ? m.width.xs : device <= DEVICES[1].size ? m.width.sm : m.width.md; count += Number(size)
+				let component = 
+					<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
+					{
+						m.tag != 'general' ? 
+						<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background}}></canvas> :
+						<div id={`${container}-${i}`} class="general"></div>
+					}
+					</div>
+				if (count <= 12) {
+					aux.push(component)
+					if (count == 12 || fn.length == i + 1) {
+						arr.push(<div key={`${i}-0`} class="row">{aux}</div>); aux = []; count = 0
+					}
+				}
+				else
+				{
+					arr.push(<div key={`${i}-0`} class="row">{aux}</div>); aux = []; count = size
+					aux.push(component)
+					if (fn.length == i + 1)
+						arr.push(<div key={`${i}-1`} class="row">{aux}</div>)
+				}
+			})
+			return arr
 		}
 	}
 }
