@@ -28,9 +28,13 @@ export default class eModal extends Component {
         			<h5>Descripción</h5>
         			<p>Math es un objeto incorporado por JavaScript que posee propiedades y métodos creados por constantes y funciones matemáticas.</p>
         			<h5>Propiedades</h5>
-        			<p>{ MATH.props.map((m, i) => <tr key={i}><td><b>{m.prop}:</b></td><td>{m.desc}</td></tr> )}</p>
+                    <table>
+        			     <tbody>{ MATH.props.map((m, i) => <tr key={i}><td><b>{m.prop}:</b></td><td>{m.desc}</td></tr> )}</tbody>
+                    </table>
         			<h5>Métodos</h5>
-        			<p>{ MATH.funcs.map((m, i) => <tr key={i}><td><b>{m.func}:</b></td><td>{m.desc}</td></tr> )}</p>
+                    <table>
+        		      	<tbody>{ MATH.funcs.map((m, i) => <tr key={i}><td><b>{m.func}:</b></td><td>{m.desc}</td></tr> )}</tbody>
+                    </table>
         		</div>
 				<span class={glyph('remove react-close')} onClick={::this.handleModal}/>
 			</Modal>

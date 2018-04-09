@@ -20,14 +20,14 @@ export default class Overview extends Component {
 									<tr key={i} id={d.concat(k++)} class={m.tag} onDrop={::this.handleChange} onDragOver={e => e.preventDefault()} 
 										draggable="true" onDragStart={e => this.setState({ drag:e.target.id })}>
 										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
-										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.function}-{m.id.substring(4, 7)}</h6></td>
+										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
 										<td>
 											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
 												{ LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) }
 											</select>
 										</td>
 										<td>
-											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.function, m.params, m.id, m.tag)}/>
+											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.name, m.params, m.id, m.tag)}/>
 											<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
 										</td>
 									</tr>
