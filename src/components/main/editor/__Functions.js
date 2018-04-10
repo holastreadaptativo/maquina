@@ -28,7 +28,7 @@ export default class Functions extends Component {
 							<option value="0" disabled>Selecciona una función</option>
 							{
 								f.map((m, i) => 
-									m.map((n, j) => <option key={j} value={n.json}>{`${t[i]} ${n.function}-${n.id.substring(4, 7)}`}</option>)
+									m.map((n, j) => <option key={j} value={n.json}>{`${t[i]} ${n.name}-${n.id.substring(4, 7)}`}</option>)
 								)
 							}
 						</select>

@@ -3,8 +3,8 @@ import { show } from 'actions'
 
 export default class Text extends Component {
 	update() {
-		const { id, parent, update } = this.props, { input } = this.refs
-		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
+		const { id, parent, update } = this.props, { input } = this.refs; let value = input.value.replace(/[\']/g,'\`')
+		if (!update) parent.setState({ [id]:value }); else update({ [id]:value })
 	}
 	render() {
 		const { hide, id, type, parent, placeholder, postfix, prefix, style } = this.props

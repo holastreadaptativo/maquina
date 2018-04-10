@@ -4,8 +4,7 @@ window.onload = () => {
 	
 	h.forEach(n => { //Crear contenedores de ejercicio
 		if (n == 'g') doc += '<div id="glosa" class="filter hidden"><div class="glosa">'
-		if (n == 'r') c[n] = shuffle(c[n])
-
+		//if (n == 'r') c[n] = shuffle(c[n])
 		c[n].forEach((m, i) => {
 			doc += `<div class="col-md-${m.width.md} col-sm-${m.width.sm} col-xs-${m.width.xs} tag">`
 			if (m.tag != 'general') doc += `<canvas id="container-${n}${i}" style="background:${m.params.background}"></canvas>`
@@ -21,26 +20,50 @@ window.onload = () => {
 
 	r.innerHTML = doc
 
-	var respGeneral = 0, rspMalas = 0, rspSinFeedBack = 0, datos = [], RespNeg = 0; fechaEntrada = (new Date()).toLocaleTimeString()
-	var idEjercicio = id, nivelF = id.substring(0, 2), ejeF = id.substring(2, 4), oaF = id.substring(4, 6), ieGeneral = '', errFre = ''
+	var respGeneral = 0, rspMalas = 0, rspSinFeedBack = 0, RespNeg = 0, datos = []; fechaEntrada = (new Date()).toLocaleTimeString()
+	var idEjercicio = id, nivelF = id.substring(0, 2), ejeF = id.substring(2, 4), oaF = id.substring(4, 6), ieGeneral = '', errFre = '', feed = ''
 
-	let s = $('submit'), t = $('title'), g = $('glosa'), f = $('feedback'), x = $('close'), y = $('message')
-		s.onclick = () => { answer() }; s.innerText = 'Enviar'; t.innerText = 'Gráfico de Datos'; y.innerHTML = '<h2>¡Correcto!</h2>'
+	let s = $('submit'), t = $('title'), g = $('glosa'), f = $('feedback'), x = $('close'), y = $('message'), k = $('caption')
+		s.onclick = () => { answer() }; s.innerText = 'Enviar'; t.innerText = 'Gráfico de Datos'
 		x.onclick = (e) => { f.classList.add('hidden'); s.removeAttribute('disabled') }
 
 	let print = () => { //Imprimir o dibujar ejercicio
 		h.forEach(n => { 
 			c[n].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.function)
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
 				FUNCIONES[j].fns[k].action({ container:$(`container-${n}${i}`), params:m.params, versions:v.vars, vt:false })
-				if (n == 'r') { let e = $(`container-${n}${i}`); e.onclick = () => { select(e) } }
+				//if (n == 'r') { let e = $(`container-${n}${i}`); e.onclick = () => { select(e) } }
 			})
 		})
 	}
     let answer = () => { //Validar respuesta y mostrar feedback
-        if (!respGeneral) { f.classList.remove('hidden'); s.setAttribute('disabled', 'true') } 
-        else { g.classList.remove('hidden'); s.setAttribute('disabled', 'true'); print() }
-        respGeneral++ //https://goo.gl/WeWvAP -> Correcta
+    	let u = $('answer'), e = u.elements, z = u.getAttribute('type'), ans = false
+
+    	for (let i = 0, a = e[0]; i < e.length; i++, a = e[i]) {
+    		if ((z == 'radio' || z == 'checkbox') && a.checked) {
+    			errFre = a.getAttribute('error'); feed = a.getAttribute('feed'); ans = a.value; break
+    		}
+    		else if (z == 'select') {
+    			let o = a.item(a.selectedIndex)
+    			if (o.value != 'null') { 
+    				errFre = o.getAttribute('error'); feed = o.getAttribute('feed'); ans = o.value; break 
+    			}
+    		}
+    	}
+
+    	if (!ans) { console.log('sin respuesta'); feed = u.getAttribute('feed') }
+    	else console.log('answer: ' + ans + '\nerror: ' + errFre + '\nfeedback: ' + feed)
+    	y.innerHTML = `<h3>${feed}</h3>`
+
+    	if (errFre == 'null') {
+    		k.setAttribute('style', 'background-image:url(https://goo.gl/WeWvAP)')
+    		f.classList.remove('hidden'); s.setAttribute('disabled', 'true')
+    	} else {
+    		if (!respGeneral) { f.classList.remove('hidden'); s.setAttribute('disabled', 'true') } 
+	        else { g.classList.remove('hidden'); s.setAttribute('disabled', 'true'); print() }
+    	}
+
+    	respGeneral++
     }
 	let select = (e) => { //Seleccionar respuseta
 		c.r.forEach((m, i) => { $(`container-r${i}`).setAttribute('style', 'border:1px solid #ddd') })
@@ -56,7 +79,7 @@ function replace(input, vars) { vars.forEach(m => { input = input.toString().rep
 function shuffle(arr, t = 10) { for (let i = 0; i < t; i++) { arr = arr.sort(() => (.5 - Math.random())) }; return arr }
 
 const FUNCIONES = [	
-	{ name:'General', tag:'general', fns:[ { id:'Insertar Texto', action:insertarTexto } ] },
+	{ name:'General', tag:'general', fns:[ { id:'Insertar Texto', action:insertarTexto }, { id:'Insertar Input', action:insertarInput } ] },
 	{ name:'Datos', tag:'datos', fns:[ { id:'Gráfico Datos', action:graficoDatos } ] }
 ]
 function insertarTexto(config) {
@@ -64,7 +87,41 @@ function insertarTexto(config) {
 
 	if (container) {
 		let vars = vt ? variables : versions
-  		container.innerHTML = replace(params.textCont, vars, vt)
+  		container.innerHTML = replace(params.content, vars, vt)
+	}
+}
+function insertarInput(config) {
+	const { container, params, variables, versions, vt } = config, vars = vt ? variables : versions, 
+		{ inputType, value1, value2, value3, value4, error2, error3, error4, feed0, feed1, feed2, feed3, feed4 } = params
+	let ans = [value1, value2, value3, value4], err = [null, error2, error3, error4], fee = [feed1, feed2, feed3, feed4], r = [], n = '', e = '', f = '', c = ''
+	
+	if (container) {
+		switch(inputType) {
+			case 'input': { c = '<input type="text" placeholder="Respuesta"></input>'; break }
+			case 'radio': {
+				ans.forEach((m, i) => { 
+					n = eval(replace(m, vars, vt)); e = err[i]; f = fee[i] != '' ? fee[i] : feed0
+					r.push(`<li key="${i}"><input name="ans" value="${n}" type="radio" error="${e}" feed="${f}"/><label>&nbsp;&nbsp;${n}</label></li>`)	
+				}); c = shuffle(r).join('')
+				break
+			}
+			case 'checkbox': {
+				ans.forEach((m, i) => { 
+					n = eval(replace(m, vars, vt)); e = err[i]; f = fee[i] != '' ? fee[i] : feed0
+					r.push(`<li key="${i}"><input name="ans" value="${n}" type="checkbox" error="${e}" feed="${f}"/><label>&nbsp;&nbsp;${n}</label></li>`)
+				}); c = shuffle(r).join('')
+				break
+			}
+			case 'select': {
+				ans.slice(0, 3).forEach((m, i) => { 
+					n = eval(replace(m, vars, vt)); e = err[i]; f = fee[i] != '' ? fee[i] : feed0
+					r.push(`<option key="${i}" value="${n}" error="${e}" feed="${f}">${n}</option>`)
+				}); c = `<select><option selected disabled value="null">Seleccionar respuesta</option>${shuffle(r).join('')}</select>`
+				break
+			}
+			case 'textarea': { c = '<textarea placeholder="Respuesta"></textarea>'; break }
+		}
+		container.innerHTML = `<form id="answer" feed="${feed0}" type="${inputType}">${c}</form>`
 	}
 }
 function graficoDatos(config) 
@@ -187,7 +244,7 @@ function graficoDatos(config)
 
 	            if (scale.width > 0)
 	            for (let i = scale.min; i <= limit; i += scale.interval) { 
-	                let dy = height/limit * i, y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	                let dy = height/limit * i, y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.moveTo(chart.margin.x, y)
 	                ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y)
 	            }
@@ -197,7 +254,7 @@ function graficoDatos(config)
 	            ctx.beginPath()
 	            ctx.fillStyle = font.color
 	            for (let i = scale.min; i <= limit; i += scale.interval) {
-	                let dy = height/limit * i, y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	                let dy = height/limit * i, y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.fillText(i, x0 - 7, y + 5) //INSERTAR TEXTO
 	            }
 	            ctx.closePath()
@@ -206,7 +263,7 @@ function graficoDatos(config)
 	        ctx.beginPath()
 	        ctx.fillStyle = chart.color[0]
 	        for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
-	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	            ctx.fillRect(x, y, dx, dy) //DIBUJAR COLUMNA      
 	            ctx.moveTo(x, y0) 
 	            ctx.lineTo(x, y)
@@ -222,7 +279,7 @@ function graficoDatos(config)
 
 	            if (scale.width > 0)
 	            for (let i = scale.min; i <= limit; i += scale.interval) { 
-	                let dx = width/limit * i, x = x0 + dx //TAMAÃ‘O DE LA COLUMNA
+	                let dx = width/limit * i, x = x0 + dx //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.moveTo(x, chart.margin.y - 2*chart.padding.y)
 	                ctx.lineTo(x, y0)
 	            }
@@ -233,7 +290,7 @@ function graficoDatos(config)
 	            ctx.fillStyle = font.color
 	            ctx.textAlign = font.align
 	            for (let i = scale.min; i <= limit; i += scale.interval) {
-	                let dx = width/limit * i, x = x0 + dx //TAMAÃ‘O DE LA COLUMNA
+	                let dx = width/limit * i, x = x0 + dx //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.fillText(i, x, y0 + 24) //INSERTAR TEXTO
 	            }
 	            ctx.closePath()
@@ -241,7 +298,7 @@ function graficoDatos(config)
 
 	        ctx.fillStyle = chart.color[0]
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
-	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
+	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃƒâ€˜O DE LA COLUMNA
 	            ctx.fillRect(x, y, dx, dy) //DIBUJAR COLUMNA
 	            ctx.moveTo(x, y) 
 	            ctx.lineTo(x + dx, y)
@@ -265,7 +322,7 @@ function graficoDatos(config)
 	    if (chart.position == 'vertical') 
 	    {
 	        for (let i = 0, x = data.cx; i < len; i++, x += width/len) {
-	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	            let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	            ctx.moveTo(x0, y) 
 	            ctx.lineTo(x, y) //PROYECCION COLUMNA
 	        }
@@ -273,7 +330,7 @@ function graficoDatos(config)
 	    else
 	    {
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
-	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
+	            let dx = width/limit * chart.values[i], x = x0 //TAMAÃƒâ€˜O DE LA COLUMNA
 	            ctx.moveTo(x + dx, y0) 
 	            ctx.lineTo(x + dx, y) //PROYECCION COLUMNA
 	        }
@@ -297,7 +354,7 @@ function graficoDatos(config)
 	        if (chart.position == 'vertical') 
 	        {
 	            for (let i = 0, x = data.cx; i < max; i++, x += width/len) {
-	                let dy = height/limit * values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	                let dy = height/limit * values[i], y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.moveTo(x0, y) 
 	                ctx.lineTo(canvas.width - chart.margin.x + 2*chart.padding.x, y) //PROYECCION COLUMNA
 	            }
@@ -305,7 +362,7 @@ function graficoDatos(config)
 	        else
 	        {
 	            for (let i = 0, y = data.cy; i < max; i++, y -= height/len) {
-	                let dx = width/limit * values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
+	                let dx = width/limit * values[i], x = x0 //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.moveTo(x + dx, y0) 
 	                ctx.lineTo(x + dx,  chart.margin.y - 2*chart.padding.y + canvas.height/110) //PROYECCION COLUMNA
 	            }
@@ -362,14 +419,14 @@ function graficoDatos(config)
 	        if (chart.position == 'vertical') {
 	            for (let i = 0, x = data.cx + dx/2; i < len; i++, x += width/len) {
 	                if (dataTags[i] == '0') {
-	                    let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÃ‘O DE LA COLUMNA
+	                    let dy = height/limit * chart.values[i], y = y0 - dy//TAMAÃƒâ€˜O DE LA COLUMNA
 	                    ctx.fillText(chart.values[i], x, y - 10) //INSERTAR TEXTO
 	                }
 	            }
 	        } else {
 	            for (let i = 0, y = data.cy + dy/2 + fontSize/2; i < len; i++, y -= height/len) {
 	                if (dataTags[i] == '0') {
-	                    let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÃ‘O DE LA COLUMNA
+	                    let dx = width/limit * chart.values[i], x = x0 + dx//TAMAÃƒâ€˜O DE LA COLUMNA
 	                    ctx.fillText(chart.values[i], x + 15, y) //INSERTAR TEXTO
 	                }
 	            }
@@ -397,7 +454,7 @@ function graficoDatos(config)
 	        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
 	        for (let i = 0, x = data.cx/1.1; i < len; i++, x += width/len) {
 	            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
-	                let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃ‘O DE LA COLUMNA
+	                let dy = height/limit * chart.values[i], y = y0 - dy //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.fillRect(x, y - height/limit, dx*1.2, dy + height/limit*1.4) //DIBUJAR COLUMNA
 	            }
 	        }
@@ -406,7 +463,7 @@ function graficoDatos(config)
 	        ctx.fillStyle = 'rgba(212,230,192, 0.6)'
 	        for (let i = 0, y = data.cy; i < len; i++, y -= height/len) {
 	            if (!isNaN(hightBar[i]) && hightBar[i].length === 1 && eval(hightBar[i]) === 0) {
-	                let dx = width/limit * chart.values[i], x = x0 //TAMAÃ‘O DE LA COLUMNA
+	                let dx = width/limit * chart.values[i], x = x0 //TAMAÃƒâ€˜O DE LA COLUMNA
 	                ctx.fillRect(x - x*0.4, y - height/len*0.1, dx + x*0.8, dy + height/len*0.2) //DIBUJAR COLUMNA
 	            }
 	        }

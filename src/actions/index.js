@@ -4,6 +4,8 @@ export * from './main/ejercicios'
 export * from './main/variables'
 export * from './main/versiones'
 
+import * as fn from 'actions'
+
 export default function $(id) { return document.getElementById(id) }
 
 export function compare(a, b) { return a.localeCompare(b) == 0 }
@@ -36,7 +38,5 @@ export function shuffle(a, t = 10) {
 }
 
 export function stringify(t) { return JSON.stringify(t).replace(/[\"]/g,'\'') }
-
-import * as fn from 'actions'
 
 export const action = { var:fn.cod, exe:fn.exe, ver:fn.ver }
