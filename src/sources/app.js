@@ -1,9 +1,15 @@
+var respGeneral = 0, rspMalas = 0, rspSinFeedBack = 0, RespNeg = 0, datos = []; fechaEntrada = (new Date()).toLocaleTimeString()
+var idEjercicio = '', nivelF = '', ejeF = '', ieGeneral = '', errFre = '', feed = '', version = '', check = false
+
 window.onload = () => {
 	let c = get('data-content'), v = get('data-version'), doc = '', h = ['e', 'r', 'g'], r = $('content'), id = document.body.id,
 		pics = ['sDYoR4', 'ePDC7C', '7nyhge', 'KrDnZf', 'mSHQer', '9Tz57g'], p = Math.floor(Math.random(0, 1) * pics.length)
 	
 	h.forEach(n => { //Crear contenedores de ejercicio
-		if (n == 'g') doc += '<div id="glosa" class="filter hidden"><div class="glosa">'
+		if (n == 'g') {
+			doc += '<div id="glosa" class="filter hidden"><button id="finish" class="wide">'
+			doc +='<span class="glyphicon glyphicon-remove-circle"/></button><div class="glosa">'
+		}
 		//if (n == 'r') c[n] = shuffle(c[n])
 		c[n].forEach((m, i) => {
 			doc += `<div class="col-md-${m.width.md} col-sm-${m.width.sm} col-xs-${m.width.xs} tag">`
@@ -18,14 +24,10 @@ window.onload = () => {
 	doc += '<div id="caption" class="feed" style="background-image:url(https://goo.gl/'+pics[p]+')"></div></div></div>'
 	doc += '<script src="jsEjercicios.js"></script>'
 
-	r.innerHTML = doc
-
-	var respGeneral = 0, rspMalas = 0, rspSinFeedBack = 0, RespNeg = 0, datos = []; fechaEntrada = (new Date()).toLocaleTimeString()
-	var idEjercicio = id, nivelF = id.substring(0, 2), ejeF = id.substring(2, 4), oaF = id.substring(4, 6), ieGeneral = '', errFre = '', feed = ''
-
-	let s = $('submit'), t = $('title'), g = $('glosa'), f = $('feedback'), x = $('close'), y = $('message'), k = $('caption')
+	r.innerHTML = doc; idEjercicio = id; nivelF = id.substring(0, 2); ejeF = id.substring(2, 4); oaF = id.substring(4, 6); version = v.id
+	let s = $('submit'), t = $('title'), f = $('feedback'), g = $('glosa'), k = $('caption'), w = $('finish'), x = $('close'), y = $('message')
+		x.onclick = (e) => { f.classList.add('hidden'); s.removeAttribute('disabled') }; w.onclick = (e) => { g.classList.add('hidden') }
 		s.onclick = () => { answer() }; s.innerText = 'Enviar'; t.innerText = 'Gráfico de Datos'
-		x.onclick = (e) => { f.classList.add('hidden'); s.removeAttribute('disabled') }
 
 	let print = () => { //Imprimir o dibujar ejercicio
 		h.forEach(n => { 
@@ -39,33 +41,40 @@ window.onload = () => {
     let answer = () => { //Validar respuesta y mostrar feedback
     	let u = $('answer'), e = u.elements, z = u.getAttribute('type'), ans = false
 
-    	for (let i = 0, a = e[0]; i < e.length; i++, a = e[i]) {
-    		if ((z == 'radio' || z == 'checkbox') && a.checked) {
-    			errFre = a.getAttribute('error'); feed = a.getAttribute('feed'); ans = a.value; break
-    		}
-    		else if (z == 'select') {
-    			let o = a.item(a.selectedIndex)
-    			if (o.value != 'null') { 
-    				errFre = o.getAttribute('error'); feed = o.getAttribute('feed'); ans = o.value; break 
-    			}
-    		}
+    	if (respGeneral < 2 && !check) {
+	    	for (let i = 0, a = e[0]; i < e.length; i++, a = e[i]) {
+	    		if ((z == 'radio' || z == 'checkbox') && a.checked) {
+	    			errFre = a.getAttribute('error'); feed = a.getAttribute('feed'); ans = a.value; break
+	    		}
+	    		else if (z == 'select') {
+	    			let o = a.item(a.selectedIndex)
+	    			if (o.value != 'null') { 
+	    				errFre = o.getAttribute('error'); feed = o.getAttribute('feed'); ans = o.value; break 
+	    			}
+	    		}
+	    	}
+
+	    	if (!ans) { console.log('sin respuesta'); feed = u.getAttribute('feed') }
+	    	else console.log('answer: ' + ans + '\nerror: ' + errFre + '\nfeedback: ' + feed)
+	    	y.innerHTML = `<h3>${feed}</h3>`
+
+	    	if (errFre == 'null') {
+	    		k.setAttribute('style', 'background-image:url(https://goo.gl/WeWvAP)')
+	    		f.classList.remove('hidden'); s.setAttribute('disabled', 'true'); check = true
+	    	} else {
+	    		if (!respGeneral) { f.classList.remove('hidden'); s.setAttribute('disabled', 'true') } 
+		        else { g.classList.remove('hidden'); s.setAttribute('disabled', 'true'); print() }
+	    	}
+
+    		respGeneral++
+    		enviar()
     	}
-
-    	if (!ans) { console.log('sin respuesta'); feed = u.getAttribute('feed') }
-    	else console.log('answer: ' + ans + '\nerror: ' + errFre + '\nfeedback: ' + feed)
-    	y.innerHTML = `<h3>${feed}</h3>`
-
-    	if (errFre == 'null') {
-    		k.setAttribute('style', 'background-image:url(https://goo.gl/WeWvAP)')
-    		f.classList.remove('hidden'); s.setAttribute('disabled', 'true')
-    	} else {
-    		if (!respGeneral) { f.classList.remove('hidden'); s.setAttribute('disabled', 'true') } 
-	        else { g.classList.remove('hidden'); s.setAttribute('disabled', 'true'); print() }
+    	else
+    	{
+    		console.log('salir')
     	}
-
-    	respGeneral++
     }
-	let select = (e) => { //Seleccionar respuseta
+	let select = (e) => { //Seleccionar respuesta
 		c.r.forEach((m, i) => { $(`container-r${i}`).setAttribute('style', 'border:1px solid #ddd') })
 		e.setAttribute('style', 'border:5px solid #bc2424')
 	}

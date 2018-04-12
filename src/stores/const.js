@@ -39,9 +39,9 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/glosa', title:'Crear glosa', text:'Glosa', icon:'tasks', nav:['details','layers'] }, 
 				            { 
-				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['toll'] }, 
+				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['toll', 'cloud_upload'] }/*, 
 				            { 
-				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] }/*,
+				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] },
 				            { 
 				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }*/
         				]

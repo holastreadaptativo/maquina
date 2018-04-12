@@ -17,7 +17,6 @@ export function signUp() {
     let email = $('rest_email').value, pass = $('password').value
     return dbs.createUserWithEmailAndPassword(email, pass)
 }
-
 export function sendPasswordReset(e) { e.preventDefault()   
   let email = $('forgot-email').value
   auth.sendPasswordResetEmail(email).then(() => { alert('Se ha enviado un mail para restablecer tu contraseña!') })

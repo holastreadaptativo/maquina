@@ -1,4 +1,4 @@
-import { exe, random, shuffle, stringify } from 'actions'
+import $, { exe, random, shuffle, stringify } from 'actions'
 import { data, src, LINKS } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
@@ -164,8 +164,10 @@ export function ver(action, state) {
 		}
 		case 'CHECK': {
 			base.once('value').then(v => {
-				if (v.hasChild('total'))
-					update({ total:v.val().total, limit:v.val().limit, selected:v.val().selected })
+				if (v.hasChild('total')) {
+					const { total, limit, selected } = v.val(); update({ total, limit, selected })
+					$('total').value = total; $('limit').value = limit; $('selected').value = selected
+				}
 			})
 			data.child(`${code}/variables`).once('value').then(snap => {
 				let vars = []
