@@ -13,7 +13,6 @@
     & {
         .loop(@i:1) when (@i =< length(@list)) {
             @value: extract(@list, @i);
-
             @code();
 
             .loop(@i + 1);
@@ -54,7 +53,7 @@
 			color: @main-hover;
 			// border: 1px solid red;
 			margin: 0 3px;
-			padding: 0 10px;
+			padding: 5px 10px 0;
 			text-align: left;
 			li
 			{

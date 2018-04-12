@@ -49,11 +49,11 @@ section.design
 	}
 	main.feedback
 	{
-		@width: 960px;
-		@height: 500px;
 		@border: 1px;
-		@margin: 60px;
 		@color: #ddd;
+		@height: 500px;
+		@margin: 60px;
+		@width: 960px;
 		height: @height;
 		margin: @top auto 0;
 		max-width: 100%;
@@ -65,7 +65,7 @@ section.design
 			height: @height - 2*@border - @margin;
 			overflow-x: hidden;
 			overflow-y: auto;
-			padding: 10px 5px 60px;
+			padding: 10px 5px 50px;
 			width: 100%;
 			.design();
 		}
@@ -95,12 +95,12 @@ section.design
 		div.triangle
 		{
 			position: absolute;
-			width: 0;   
-			height: 0; 
-			margin-left: @width - @border - 85px;
 			border-bottom: @margin solid transparent;
 			border-left: 70px solid lighten(@color, 5%);
+			height: 0; 
+			margin-left: @width - @border - 85px;
 			margin-top: -@border/2;
+			width: 0;   
 		}
 	}
 }
@@ -123,10 +123,10 @@ section.code
 	{
 		h5
 		{
-			width: 100%;
+			font-size: 13px;
 			font-weight: bold;
 			text-align: right;
-			font-size: 13px;
+			width: 100%;
 			span.glyphicon-ok
 			{
 				color: green;

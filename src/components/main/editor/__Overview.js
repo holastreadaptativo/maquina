@@ -23,7 +23,9 @@ export default class Overview extends Component {
 										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
 										<td>
 											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
-												{ LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) }
+											{ 
+												LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) 
+											}
 											</select>
 										</td>
 										<td>
