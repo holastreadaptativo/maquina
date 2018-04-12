@@ -6,7 +6,7 @@ import { LABELS, LINKS } from 'stores'
 export default class Versiones extends Component {
     constructor() {
 		super()
-		this.state = { active:0, limit:128, selected:32, total:8192, vars:[], vt:[] }
+		this.state = { active:0, limit:128, selected:32, total:0, vars:[], vt:[] }
 		this.print = this.print.bind(this)
 	}
 	componentWillMount() {

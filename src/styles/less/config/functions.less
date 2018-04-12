@@ -5,14 +5,6 @@
 		content: url('@{images}/@{url}.@{ext}');
 	}
 }
-.margin-top(@i, @j: 0) when(@i => @j)
-{
-	.m@{i} 
-	{ 
-		margin-top: @i * 1px; 
-	}
-	.margin-top(@i - 10, @j)
-}
 .if(@condition, @property, @value) when (@condition = true)
 {
      @{property}: @value;
@@ -30,11 +22,6 @@
         .loop();
     }
 }
-.default()
-{
-	margin: 0;
-	padding: 0;
-}
 .show()
 {
 	display: initial;
@@ -42,4 +29,41 @@
 .hide()
 {
 	display: none;
+}
+.design()
+{	
+	.row
+	{
+		margin: 0 auto;
+		width: 100%;
+	}
+	.tags
+	{
+		border: 3px solid white;
+		padding: 0;
+		margin: 0;
+		overflow: hidden;
+		canvas
+		{
+			color: @main-hover;
+			// border: 1px solid red;
+			margin: 0 3px;
+		}
+		.general
+		{
+			color: @main-hover;
+			// border: 1px solid red;
+			margin: 0 3px;
+			padding: 0 10px;
+			text-align: left;
+			li
+			{
+				list-style: none;
+				label
+				{
+					margin-left: 10px;
+				}
+			}
+		}
+	}
 }

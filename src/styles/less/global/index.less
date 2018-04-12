@@ -38,45 +38,14 @@ section.design
 	{
 		background-color: white;
 		border: 1px solid #ddd;
-    	//box-shadow: 2px 3px 4px #ddd;
 		max-width: 100%;
 		min-height: 330px;
 		margin: @top auto 0;
 		overflow: auto;
-		padding: 5px 5px 15px;
+		padding: 10px 5px;
 		transition: all .3s ease;
 		width: 100%;
-		.row
-		{
-			margin: 5px auto;
-			width: 100%;
-		}
-		.tags
-		{
-			border: 3px solid white;
-			padding: 0;
-			margin: 0;
-			overflow: hidden;
-			canvas
-			{
-				border: none;
-			}
-			.general
-			{
-				color: @main-hover;
-				margin: 0 2px;
-				padding: 10px 10px 5px;
-				text-align: left;
-				li
-				{
-					list-style: none;
-					label
-					{
-						margin-left: 10px;
-					}
-				}
-			}
-		}
+		.design();
 	}
 	main.feedback
 	{
@@ -93,21 +62,12 @@ section.design
 		{
 			background: white;
 			border: @border solid @color;
-    		//box-shadow: 2px 3px 2px #eee;
 			height: @height - 2*@border - @margin;
 			overflow-x: hidden;
 			overflow-y: auto;
-			padding: 10px 10px 60px;
+			padding: 10px 5px 60px;
 			width: 100%;
-			canvas
-			{
-				margin: 0 auto;
-			}
-			.general
-			{
-				color: @main-hover;		
-				padding: 10px 0 0;
-			}
+			.design();
 		}
 		footer
 		{
@@ -131,7 +91,6 @@ section.design
 			margin-top: -90px - @border/2;
 			position: absolute;
 			width: 150px;
-			//-webkit-filter: grayscale(.1);
 		}
 		div.triangle
 		{
