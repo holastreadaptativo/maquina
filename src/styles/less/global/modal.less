@@ -1,27 +1,48 @@
 section.editor
 {
-	@margin: 40px;
-	@config: 300px;
 	background: white;
+	position: absolute;
 	height: ~'calc(100vh - 2*@{margin})';
+	left: @margin;
+	top: @margin;
 	width: ~'calc(100vw - 2*@{margin})';
-	margin: @margin;
 	main.config
 	{
-		width: @config;
-		height: 100%;
 		background: @main-color;
-		position: relative;
-		top: 0;
+		height: 100%;
 		left: 0;
+		overflow-y: auto;
+		position: absolute;
+		top: 0;
+		width: @config;
 		h3 
 		{
 			background: @main-hover;
 			color: white;
 			height: 50px;
 			padding: 15px 10px;
-			margin-bottom: 20px;
+			margin: 0 0 20px;
 			font-size: 18px;
+		}
+		.vars
+		{		
+			h5, h5:hover
+			{
+				background: transparent;
+				border-color: lighten(@main-color, 20%);
+			    font-size: 12px;
+			    font-weight: bold;
+			    height: 25px;
+			    margin: 0 0 7px;
+			    padding: 5px 10px;
+			    transition: all .3s ease;
+				&.title
+				{
+					background: @sec-hover;
+					border-color: @sec-hover;
+					color: white;
+				}
+			}
 		}
 		nav.select
 		{
@@ -81,12 +102,13 @@ section.editor
 	}
 	main.preview
 	{
-		width: ~'calc(100vw - 2*@{margin} - @{config})';
-		height: ~'calc(100vh - 2*@{margin})';
 		background: white;
+		height: ~'calc(100vh - 2*@{margin})';
+		left: @config;
+		overflow-y: auto;
 		position: absolute;
-		top: @margin;
-		left: @margin + @config;
+		top: 0;
+		width: ~'calc(100vw - 2*@{margin} - @{config})';
 		.canvas
 		{
 			margin-top: 42px;
@@ -142,12 +164,36 @@ section.editor
 				font-weight: normal;
 			}
 		}
+		ul.checklist
+		{
+			color: #222;
+			font-size: 13px;
+			list-style: none;
+			margin: 10px 20px 20px;
+			span
+			{
+				margin-left: 5px;
+				margin-right: 10px;
+				&.glyphicon-ok
+				{
+					color: green;
+				}
+				&.glyphicon-remove
+				{
+					color: red;
+				}
+			}
+			li.title
+			{
+				margin-bottom: 5px;
+			}
+		}
 	}
 	header
 	{
 		position: absolute;
-		top: @margin;
-		left: @margin + @config;
+		top: 0;
+		left: @config;
 		width:  ~'calc(100vw - 2*@{margin} - @{config})';
 		height: 30px;
 		padding: 15px 10px;
@@ -165,8 +211,8 @@ section.editor
 	footer
 	{
 		position: absolute;
-		bottom: @margin + 10px;
-		left: @margin + @config;
+		bottom: 10px;
+		left: @config;
 		width:  ~'calc(100vw - 2*@{margin} - @{config})';
 		z-index: 10;
 		h6
@@ -186,27 +232,24 @@ section.editor
 }
 .react-modal
 {
-	@margin: 40px;
-	@config: 300px;
 	background: rgba(0, 0, 0, .9);
 	height: 100vh;
 	left: 0;
 	outline: none;	
-	position: absolute;
+	position: fixed;
 	top: 0;
 	width: 100vw;
 	z-index: 999999;
 }
 .react-info
 {
-	@margin: 40px;
 	background: #fafafa;
 	border: 1px solid #777;
 	color: black;
 	height: ~'calc(100vh - 4*@{margin})';
 	padding: 10px;
 	overflow-y: auto;
-	position: fixed;
+	position: absolute;
 	right: 2*@margin;
 	top: 2*@margin;
 	width: ~'calc(100vw - 4*@{margin} - 300px)';
@@ -278,11 +321,11 @@ section.editor
 }
 .react-help
 {
-	position: absolute;
-	top: 50px;
-	right: 90px;
 	color: @main-color;
-	font-size: 18px;
 	cursor: pointer;
+	font-size: 18px;
+	position: absolute;
+	right: 90px;
+	top: 50px;
 	z-index: 1;
 }

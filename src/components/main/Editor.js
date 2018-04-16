@@ -40,7 +40,11 @@ export default class eEditor extends Component {
 					{this.props.children}
 					<details class="variables">
 						<summary>Variables</summary>
-						<ul>{ variables.map((m, i) => <li key={i}>${m.var} = {m.val} [{m.vt}]</li>) }</ul>
+						<ul>
+						{ 
+							variables.map((m, i) => <li key={i}>${m.var} = {m.val} [{m.vt}]</li>) 
+						}
+						</ul>
 					</details>
 				</main>
 				<main class="preview">
@@ -110,6 +114,14 @@ class TextEditor extends Component {
         if (!push && edited && (text == 'content' || (text == 'feedback' && path == 'answers')))
         	base.update({ [text]:html, date })
     }
+    onEditorStateChange(text) {
+        if (this.props.store.push) {
+            this.setState({ editorState:text })
+            this.props.parent.setState({ [this.props.text]:draftToHtml(convertToRaw(text.getCurrentContent())) })
+        }
+        else
+            this.setState({ editorState:text, edited:true })
+    }
     render() {
         return (
             <div class="row">
@@ -120,14 +132,6 @@ class TextEditor extends Component {
                 <textarea disabled value={draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))} class="col-md-12 hidden"/>
             </div>
         )
-    }
-    onEditorStateChange(text) {
-        if (this.props.store.push) {
-            this.setState({ editorState:text })
-            this.props.parent.setState({ [this.props.text]:draftToHtml(convertToRaw(text.getCurrentContent())) })
-        }
-        else
-            this.setState({ editorState:text, edited:true })
     }
 }
 

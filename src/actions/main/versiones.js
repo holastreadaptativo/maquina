@@ -160,6 +160,7 @@ export function ver(action, state) {
 		case 'PRINT': {
 			exe(action, { ...state, path:'functions' })
 			exe(action, { ...state, path:'answers' })
+			exe(action, { ...state, path:'feedback' })
 			break
 		}
 		case 'CHECK': {
@@ -172,14 +173,13 @@ export function ver(action, state) {
 			data.child(`${code}/variables`).once('value').then(snap => {
 				let vars = []
 				snap.forEach(v => {
-					vars.push({ var:v.val().var, val:v.val().vt })
-					update({ vars, vt:{ id:'vt', vars } })
+					vars.push({ var:v.val().var, val:v.val().vt }); update({ vars, vt:{ id:'vt', vars } })
 				})
 			})
 			break
 		}
 		case 'DOWNLOAD': {
-			const { answers, code, feedback, functions, versions, vt } = state, v = [...versions, vt]
+			const { answers, feedback, functions, versions, vt } = state, v = [...versions, vt]
 			answers.forEach(m => { delete m.json }); feedback.forEach(m => { delete m.json }); functions.forEach(m => { delete m.json })
 			let e = stringify(functions), r = stringify(answers), g = stringify(feedback), s = code.substring(10, 15)
 

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Panel, Section, Well } from 'components'
 import { action, glyph, focus, show } from 'actions'
 import { data, LABELS } from 'stores'
+import { Section, Item } from 'components'
 
 export default class Variables extends Component {
 	constructor() {
 		super()
-		this.state = { checked:[[], []], variables:[] }
+		this.state = { active:0, checked:[[], []], variables:[] }
 	}
 	componentWillMount() {
 		const { code } = this.props
@@ -21,14 +21,36 @@ export default class Variables extends Component {
 		const { checked, variables } = this.state
 		const { code, setActive } = this.props
 		return (
-			<Section style="variables" condition={checked[0][6]} {...this.props}>
-				<div class="row">
-					<Resume code={code} variables={variables}/>
-					<Panel container="table">
+			<Section style="variables" condition={false} {...this.props}>
+				<section class="editor">
+					<main class="config">
+						<div class="title">
+							<h3>Resumen</h3>
+						</div>
+						<Item id={0} parent={this} title="Ejercicio">
+						{
+							LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
+								<h5 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h5>
+							)})
+						}
+						</Item>
+						<div class={show(variables.length)}>
+							<Item id={1} parent={this} title="Variables">
+							{
+								variables.map(m => { 
+									if (m.var != '' && m.val != '') return (
+										<h5 key={m.id}>{action.var('FORMAT', { code, m })}</h5>
+									)
+								})
+							}
+							</Item>
+						</div>
+					</main>
+					<main class="preview">
 						<Table code={code} checked={checked} variables={variables} check={::this.check}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
-					</Panel>
-				</div>
+					</main>
+				</section>
 			</Section>
 		)
 	}
@@ -69,33 +91,6 @@ class Check extends Component {
 	}
 	check(condition) {
 		return glyph(this.props.checked[0][condition] ? 'ok' : 'remove')
-	}
-}
-
-class Resume extends Component {
-	render() {
-		const { code, variables } = this.props
-		return (
-			<Well title="Resumen">
-				<h5 class="title">Ejercicio</h5>
-				{
-					LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-						<h5 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h5>
-					)})
-				}
-				<h6 class="br"/>
-				<h5 class={show(variables.length, 'title')}>Variables</h5>
-				<ul> 
-				{
-					variables.map(m => { 
-						if (m.var != '' && m.val != '') return (
-							<h5 key={m.id}>{action.var('FORMAT', { code, m })}</h5>
-						)
-					})
-				}
-				</ul>
-			</Well>
-		)
 	}
 }
 

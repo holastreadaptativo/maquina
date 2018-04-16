@@ -39,6 +39,30 @@ form.control
 			color: white;
 		}
 	}
+	select.clone
+	{
+		background: transparent;
+		border: 1px solid @sec-hover;
+		padding: 5px 20px;
+		border-radius: 0;
+		color: white;
+		transition: all .3s ease;
+		width: ~'calc(100% - 20px)';
+		margin: 5px 10px;
+		cursor: pointer;
+		outline: none;
+		font-size: 13px;
+		&:hover
+		{
+			color: @gray;
+			background: lighten(@main-color, 5%);
+			outline: none;
+		}
+		option
+		{
+			background: @main-color;
+		}
+	}
 	.input-group
 	{
 		background: @main-color;
@@ -91,30 +115,6 @@ form.control
 			margin-right: -6px;
 			padding: 2px 5px;
 			resize: none;
-		}
-	}
-	select.clone
-	{
-		background: transparent;
-		border: 1px solid @sec-hover;
-		padding: 5px 20px;
-		border-radius: 0;
-		color: white;
-		transition: all .3s ease;
-		width: ~'calc(100% - 20px)';
-		margin: 5px 10px;
-		cursor: pointer;
-		outline: none;
-		font-size: 13px;
-		&:hover
-		{
-			color: @gray;
-			background: lighten(@main-color, 5%);
-			outline: none;
-		}
-		option
-		{
-			background: @main-color;
 		}
 	}
 }

@@ -100,7 +100,7 @@ class Search extends Component {
 		
 		if (code.length == 15) {
 			this.props.setCode(code)
-			this.props.setNotification(null, this.props.alert)
+			//this.props.setNotification(null, this.props.alert)
 		}					
 
 		this.props.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
@@ -123,7 +123,7 @@ class Search extends Component {
 			setState(DEFAULT.SEARCH)
 
 		else if (n.length > 2)
-			action.var('CODE', { target:n, update:setState })
+			action.var('CODE', { code:'', target:n, update:setState })
 		
 		else
 			setState({ selected:false })

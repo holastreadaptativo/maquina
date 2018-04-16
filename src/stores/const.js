@@ -31,19 +31,7 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/', title:'Buscador', text:'Buscador', icon:'home', nav:[] }, 
 				            { 
-				            	path:'/variables', title:'Ingresar variables', text:'Variables', icon:'th', nav:[] }, 
-				            { 
-				            	path:'/ejercicios', title:'Crear ejercicio', text:'Ejercicios', icon:'edit', nav:['details', 'layers'] }, 
-				            { 
-				            	path:'/respuestas', title:'Crear respuestas', text:'Respuestas', icon:'list-alt', nav:['details','layers'] }, 
-				            { 
-				            	path:'/glosa', title:'Crear glosa', text:'Glosa', icon:'tasks', nav:['details','layers'] }, 
-				            { 
-				            	path:'/versiones', title:'Generar versiones', text:'Versiones', icon:'duplicate', nav:['toll', 'cloud_upload'] }/*, 
-				            { 
-				            	path:'/descargas', title:'Descargar ejercicio', text:'Descargas', icon:'download-alt', nav:['cloud_upload'] },
-				            { 
-				            	path:'/configuracion', title:'Configuración', text:'Configuración', icon:'cog', nav:[] }*/
+				            	path:'/ejercicio', title:'Ejercicio', text:'Ejercicio', icon:'th', nav:['details', 'layers', 'toll', 'cloud_upload'] }
         				]
 
 export const COLORS = 	{

@@ -2,11 +2,10 @@ header.menu
 {
 	@navh: 45px;
 	@navw: 60px;
-	@nav-color: white;
 	@nav-bg-color: #262f3d;
 	@nav-bg-hover: #19212b;
+	@nav-color: white;
 	background-color: @nav-bg-hover;
-	box-shadow: 2px 2px 3px #777;
 	color: @nav-color;
 	height: @navh;
 	padding: 0;
@@ -42,10 +41,10 @@ header.menu
 		width: auto;
 		h5
 		{
-			color: white;
-			font-size: 16px;
-			margin: 15px;
+			color: inherit;
 			cursor: default;
+			font-size: 16px;
+			margin: 14px 15px;
 			span 
 			{
 				margin: 0 10px;
@@ -60,22 +59,52 @@ header.menu
 	}
 	div.code
 	{
+		color: white;
 		height: @navh;
 		position: absolute;
 		right: @navw;
 		top: 0;
 		h5
 		{
-			color: white;
+			color: inherit;
+			cursor: default;
+			display: inline-block;
 			font-size: 12px;
 			margin: 14px 17px;
-			cursor: default;
+			margin-right: 60px;
 			text-transform: uppercase;
 			i
 			{
-				margin-left: 20px;
 				cursor: pointer;
+				margin-left: 20px;
+				position: relative;
+				z-index: 10;
 			}
+			input
+			{
+				background: lighten(@main-color, 7%);
+				border: none;
+				border-radius: 20px;
+				height: 25px;
+				padding: 6px 15px 4px;
+				position: relative;
+				top: -4px;
+				width: 250px;
+			}
+		}
+		div
+		{
+			background: lighten(@main-color, 10%);
+			border-radius: 100px;
+			display: inline-block;
+			height: 35px;
+			margin-left: 5px;
+			padding: 8px 0;
+			position: absolute;
+			right: 0;
+			text-align: center;
+			top: 5px;
+			width: 35px;
 		}
 	}
 	div.notification
@@ -148,6 +177,7 @@ header.menu
 	}
 	div.color-line
 	{
+		display: none;
 		height: 2px;
 		position: relative;
 		top: @navh;

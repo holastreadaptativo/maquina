@@ -23,7 +23,7 @@ export default class eModal extends Component {
         	<Modal show={this.props.modal} onHide={::this.handleModal} bsClass="react-modal">
         		{ this.props.children }
         		<span class={glyph('info-sign react-help')} onClick={::this.handleHelp}/>
-        		<div class={show(this.state.help ,'react-info')}>
+        		<div class={show(this.state.help, 'react-info')}>
         			<h4>Math</h4>
         			<h5>Descripción</h5>
         			<p>Math es un objeto incorporado por JavaScript que posee propiedades y métodos creados por constantes y funciones matemáticas.</p>

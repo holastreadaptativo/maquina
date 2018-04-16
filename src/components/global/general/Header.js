@@ -4,8 +4,12 @@ import { glyph, focus, show } from 'actions'
 import { Link } from 'react-router'
 
 export default class Header extends Component {
-   render() {
-        const { active, setActive, code, option, setOption } = this.props     
+    constructor() {
+        super()
+        this.state = { search:false }
+    }
+    render() {
+        const { active, setActive, code, option, setOption } = this.props, { search } = this.state   
         return(
             <header class="menu">
                 <div class="container-fluid">
@@ -13,22 +17,28 @@ export default class Header extends Component {
                     <div class="title">
                         <h5>Adaptativamente
                             <span class={glyph('education')}/>
-                            <b>{ROUTES[active].title}</b>
+                            <b class="hidden">{ROUTES[active].title}</b>
+                            <b>{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</b>
                         </h5>
                     </div>
                     <div class="code">
                         <h5>
-                        {
-                            ROUTES[active].nav.map((m, i) =>
-                                <i key={i} onClick={() => setOption(option != i ? i : null)}>{m}</i>
-                            )
-                        }
+                            <input class={show(search)} placeholder="Buscar por código..."></input>
+                            <i class={show(active != 0)} onClick={() => this.setState({ search:!search })}>search</i>
+                            <i class={show(active != 0 && !search)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
+                            {
+                                ROUTES[active].nav.map((m, i) =>
+                                    <i key={i} class={show(!search)} onClick={() => setOption(option != i ? i : null)}>{m}</i>
+                                )
+                            }
                         </h5>
-                        <h5 class="hidden">{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
+                        <div>
+                            MT
+                        </div>
                     </div>
                 </div>
                 <div class="color-line"/>
-                <nav>
+                <nav class="hidden">
                     <ul>
                     {
                         ROUTES.map((m, i) => 
@@ -57,7 +67,7 @@ class Alert extends Component {
                     <h5>{notification}
                         <b class={show(alert == 'danger')}> 
                             <span class={glyph('arrow-right')}/> 
-                            <Link to="/variables" onClick={() => setActive(1)}>Resolver</Link>
+                            <Link to="/ejercicios" onClick={() => setActive(1)}>Resolver</Link>
                         </b>
                     </h5>
                     <i>{alert == 'danger' ? 'close' : alert == 'success' ? 'check' : 'priority_high'}</i>
