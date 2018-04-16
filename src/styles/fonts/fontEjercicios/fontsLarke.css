@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "Larke Neue";
+  src: url('./LarkeNeueRegular.ttf');
+}
+@font-face {
+  font-family: "Larke Neue Thin";
+  src: url('./LarkeNeueThin.ttf');
+}
+@font-face {
+  font-family: "Larke Neue Bold";
+  src: url('./LarkeNeueBold.ttf');
+}
+@font-face {
+  font-family: "Signika-Regular";
+  src: url('./Signika-Regular.otf');
+}
+@font-face {
+  font-family: "Signika-Bold";
+  src: url('./Signika-Bold.otf');
+}
+@font-face {
+  font-family: "Signika-Light";
+  src: url('./Signika-Light.otf');
+}
+@font-face {
+  font-family: "Signika-Light";
+  src: url('./Signika-Light.otf');
+}
+@font-face {
+  font-family: "Signika-Semibold";
+  src: url('./Signika-Semibold.otf');
+}
+@font-face {
+   font-family: "digital-7";
+   src: url("./digital-7/digital-7_italic.ttf");
+}

@@ -8,7 +8,7 @@ export default class GraficoDatos extends Component {
 	constructor(props) {
 		super(props)
 		this.state = props.push ? { 
-			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'', axisTitleY:'',
+			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'Título X', axisTitleY:'Título Y',
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
 			dataTag: '0,1', withAxis: 'no', margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', fontWeight:'bold',
 			chartTags:'A, B, C, D, E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, 
@@ -22,11 +22,19 @@ export default class GraficoDatos extends Component {
 		let k = 0
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
+				<Item id={k++} title="Tipo" parent={this}>
+					<Select id="typeGraph" prefix="tipo gráfico" options={['simbólico', 'pictórico']} parent={this}/>
+				</Item>
 				<Item id={k++} title="Canvas" parent={this}>
 					<Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
 					<Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
-					<Input id="background" type="color" parent={this}/>
-					<Input id="margin" prefix="margen" postfix="px" parent={this}/>
+					<Input id="background" prefix="fondo" type="color" parent={this}/>
+				</Item>
+				<Item id={k++} title="padding" parent={this}>
+					<Input id="margin" prefix="canvas" postfix="px" parent={this}/>
+					<Input id="containerPadding" prefix="container" postfix="px" parent={this}/>
+					<Input id="chartPadding" prefix="chart" postfix="px" parent={this}/>
+					<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this}/>
 				</Item>
 				<Item id={k++} title="Títulos" parent={this}>
 					<Input id="titleColor" type="color" parent={this}/>
@@ -36,7 +44,7 @@ export default class GraficoDatos extends Component {
 				</Item>
 				<Item id={k++} title="Gráfico" parent={this}>
 					<Input id="chartBorder" prefix="borde" type="color" parent={this}/>
-					<Input id="chartColor" type="color" parent={this}/>
+					<Input id="chartColor" prefix="barras" type="color" parent={this}/>
 					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
 					<Select id="chartPosition" prefix="orientación" options={['vertical','horizontal']} parent={this}/>
 					<Input id="chartValues" prefix="valores" placeholder={'1, 2, 3, 4, 5'} parent={this}/>
