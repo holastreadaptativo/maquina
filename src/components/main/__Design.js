@@ -44,7 +44,6 @@ export default class Design extends Component {
 					}
 					</main>
 				</div>
-					<br/>
 				<div class="row">
 		        	<main class="feedback">
 		        		<article>

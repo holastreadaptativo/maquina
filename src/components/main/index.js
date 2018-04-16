@@ -1,9 +1,8 @@
-import Overview from './__Overview'
-import Functions from './__Functions'
 import Design from './__Design'
-
-import Generate from './__Generate'
-import Upload from './__Upload'
+import Download from './__Download'
+import Functions from './__Functions'
+import Overview from './__Overview'
+import Versions from './__Versions'
 
 import React, { Component } from 'react'
 import { Modal, Section } from 'components'
@@ -28,8 +27,8 @@ export class OnePage extends Component {
 			<Section style="design" condition={true} {...this.props} download={::this.download}>
 				<Functions id={k++} {...params} setState={::this.setState}/>
 				<Overview id={k++} {...params} setState={::this.setState}/>
-				<Generate id={k++} {...params} setState={::this.setState}/>
-				<Upload id={k++} {...params}/>
+				<Versions id={k++} {...params} setState={::this.setState}/>
+				<Download id={k++} {...params}/>
 				<Design {...params}/>
 				<Modal modal={this.props.modal} setState={this.props.setState}>
 					<Variables {...this.props}/>

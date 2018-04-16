@@ -3,7 +3,7 @@ import { action, show } from 'actions'
 import { Aside, Item } from 'components'
 import { LINKS } from 'stores'
 
-export default class Upload extends Component {
+export default class Download extends Component {
 	constructor() {
 		super()	
 		this.state = { active:0, files:[], len:0, name:'' }

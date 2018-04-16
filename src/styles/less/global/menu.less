@@ -1,239 +1,237 @@
-header.menu
+header
 {
-	@navh: 45px;
-	@navw: 60px;
-	@nav-bg-color: #262f3d;
-	@nav-bg-hover: #19212b;
-	@nav-color: white;
-	background-color: @nav-bg-hover;
-	color: @nav-color;
-	height: @navh;
-	padding: 0;
-	top: 0;
-	left: 0;
-	position: fixed;
-	width: 100%;
-	z-index: 999;
-	div.logo
+	&.menu
 	{
-		background-color: @main-hover;
-		background-image: linear-gradient(@sec-color, @sec-hover);
-		background-image: url('@{images}/media/logo.png');
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		border-bottom: 1px solid @hover;
-		font-size: 32px;
-		font-weight: bold;
+		background: @nav-bg-color;
+		color: @nav-color;
 		height: @navh;
 		left: 0;
-		padding-left: 18px;
-		position: absolute;
-		width: @navw;
+		padding: 0;
+		position: fixed;
 		top: 0;
-	}
-	div.title
-	{
-		height: @navh;
-		position: absolute;
-		left: @navw;
-		top: 0;
-		width: auto;
-		h5
+		width: 100%;
+		z-index: 99;
+		div.logo
 		{
-			color: inherit;
-			cursor: default;
-			font-size: 16px;
-			margin: 14px 15px;
-			span 
+			background-color: inherit;
+			background-image: url('@{images}/media/logo.png');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			border: none;
+			font-size: 32px;
+			font-weight: bold;
+			height: @navh;
+			left: 0;
+			padding-left: 18px;
+			position: absolute;
+			width: @navw;
+			top: 0;
+		}
+		div.title
+		{
+			height: @navh;
+			left: @navw;
+			position: absolute;
+			top: 0;
+			width: auto;
+			h5
 			{
-				margin: 0 10px;
+				cursor: default;
+				font-size: 16px;
+				margin: 14px 15px;
+				span 
+				{
+					margin: 0 10px;
+				}
+				b
+				{
+					font-size: 13px;
+					font-weight: normal;
+					text-transform: uppercase;
+				}
 			}
-			b
+		}
+		div.router
+		{
+			height: @navh;
+			position: absolute;
+			right: @navw;
+			top: 0;
+			h5
 			{
-				font-size: 13px;
-				font-weight: normal;
+				cursor: default;
+				display: inline-block;
+				font-size: 12px;
+				margin: 14px 17px;
+				margin-right: 60px;
 				text-transform: uppercase;
+				i
+				{
+					cursor: pointer;
+					margin-left: 20px;
+					position: relative;
+					z-index: 10;
+				}
+				input
+				{
+					background: @nav-bg-hover;
+					border: none;
+					border-radius: 20px;
+					height: 25px;
+					padding: 6px 15px 4px;
+					position: relative;
+					top: -4px;
+					width: 250px;
+				}
+				::-webkit-input-placeholder 
+				{
+				  	color: @gray;
+				}
 			}
 		}
-	}
-	div.code
-	{
-		color: white;
-		height: @navh;
-		position: absolute;
-		right: @navw;
-		top: 0;
-		h5
+		div.user
 		{
-			color: inherit;
-			cursor: default;
-			display: inline-block;
-			font-size: 12px;
-			margin: 14px 17px;
-			margin-right: 60px;
-			text-transform: uppercase;
-			i
-			{
-				cursor: pointer;
-				margin-left: 20px;
-				position: relative;
-				z-index: 10;
-			}
-			input
-			{
-				background: lighten(@main-color, 7%);
-				border: none;
-				border-radius: 20px;
-				height: 25px;
-				padding: 6px 15px 4px;
-				position: relative;
-				top: -4px;
-				width: 250px;
-			}
-		}
-		div
-		{
-			background: lighten(@main-color, 10%);
+			background: @nav-active;
 			border-radius: 100px;
 			display: inline-block;
 			height: 35px;
 			margin-left: 5px;
 			padding: 8px 0;
 			position: absolute;
-			right: 0;
+			right: @navw;
 			text-align: center;
 			top: 5px;
 			width: 35px;
 		}
-	}
-	div.notification
-	{
-		border-top: 2px solid transparent;
-		height: 45px;
-		left: @navw;
-		padding-top: 12px;
-		position: fixed;
-		text-align: center;
-		bottom: 0;
-		width: ~'calc(100vw - @{navw})';
-		h5
+		div.notification
 		{
-			font-weight: bold;
-			display: inline;
-		}
-		i
-		{
-			border-radius: 50%;
-			border: 2px solid transparent;
-			cursor: pointer;
-			font-size: 13px;
-			left: @navw/2;
-			padding: 3px;
-			position: absolute;
-			top: 10px;
-		}
-		a
-		{
-			text-transform: uppercase;
-			text-decoration: underline;
-			font-size: 12px;
-		}
-		span
-		{
-			margin: 0 5px;
-			font-size: 12px;
-		}
-		&.success
-		{
-			background: rgba(158, 207, 153, .9);
-			border-color: #2d7623;
-			color: #2d7623;
+			border-top: 2px solid transparent;
+			bottom: 0;
+			height: 45px;
+			left: @navw;
+			padding-top: 12px;
+			position: fixed;
+			text-align: center;
+			width: ~'calc(100vw - @{navw})';
+			h5
+			{
+				font-weight: bold;
+				display: inline;
+			}
 			i
 			{
+				border-radius: 50%;
+				border: 2px solid transparent;
+				cursor: pointer;
+				font-size: 13px;
+				left: @navw/2;
+				padding: 3px;
+				position: absolute;
+				top: 10px;
+			}
+			a
+			{
+				text-transform: uppercase;
+				text-decoration: underline;
+				font-size: 12px;
+			}
+			span
+			{
+				margin: 0 5px;
+				font-size: 12px;
+			}
+			&.success
+			{
+				background: rgba(158, 207, 153, .9);
 				border-color: #2d7623;
+				color: #2d7623;
+				i
+				{
+					border-color: #2d7623;
+				}
 			}
-		}
-		&.warning
-		{
-			background: rgba(249, 214, 122, .9);
-			border-color: #f08b00;
-			color: #f08b00;
-			i
+			&.warning
 			{
+				background: rgba(249, 214, 122, .9);
 				border-color: #f08b00;
+				color: #f08b00;
+				i
+				{
+					border-color: #f08b00;
+				}
+			}
+			&.danger
+			{
+				background: rgba(207, 158, 153, .9);
+				border-color: #762d23;
+				color: #762d23;
+				i
+				{
+					border-color: #762d23;
+				}
 			}
 		}
-		&.danger
+		nav /* hidden */
 		{
-			background: rgba(207, 158, 153, .9);
-			border-color: #762d23;
-			color: #762d23;
-			i
+			background-color: @nav-bg-color;
+			box-shadow: 2px 2px 3px #777;
+			color: @nav-color;
+			height: ~'calc(100vh - 45px)';
+			left: 0;
+			position: fixed;
+			top: @navh;
+			width: @navw;
+			ul
 			{
-				border-color: #762d23;
+				border-bottom: 1px solid lighten(@nav-bg-color, 20%);
+				border-top: 1px solid lighten(@nav-bg-color, 20%);
+				margin-top: 55px;
+				list-style: none;
+				li
+				{
+					border-bottom: 2px solid @nav-bg-color;
+					border-top: 2px solid @nav-bg-color;
+					color: white;
+					cursor: pointer;
+					padding: 12px 21px 10px;
+					span
+					{
+						display: inline;
+						font-size: 16px;
+						&.hover
+						{
+							background-color: @nav-bg-hover;
+							border-radius: 10px;
+							display: none;
+							font-size: 12px;
+							left: 30px;
+							padding: 4px 10px;
+							position: relative;
+							top: 0;
+						}
+					}
+					&:hover
+					{
+						background-color: lighten(@nav-bg-color, 3%);
+						span.hover
+						{
+							display: inline;
+						}
+					}
+					&.active
+					{
+						background-color: lighten(@nav-bg-color, 10%);
+					}
+				}
 			}
 		}
 	}
-	div.color-line
+	.react-line
 	{
 		display: none;
 		height: 2px;
 		position: relative;
 		top: @navh;
-	}
-	nav
-	{
-		background-color: @nav-bg-color;
-		box-shadow: 2px 2px 3px #777;
-		color: @nav-color;
-		position: fixed;
-		left: 0;
-		top: @navh;
-		height: ~'calc(100vh - 45px)';
-		width: @navw;
-		ul
-		{
-			list-style: none;
-			margin-top: 55px;
-			border-top: 1px solid lighten(@nav-bg-color, 20%);
-			border-bottom: 1px solid lighten(@nav-bg-color, 20%);
-			li
-			{
-				color: white;
-				cursor: pointer;
-				padding: 12px 21px 10px;
-				border-bottom: 2px solid @nav-bg-color;
-				border-top: 2px solid @nav-bg-color;
-				span
-				{
-					display: inline;
-					font-size: 16px;
-					&.hover
-					{
-						background-color: @nav-bg-hover;
-						border-radius: 10px;
-						font-size: 12px;
-						left: 30px;
-						padding: 4px 10px;
-						position: relative;
-						top: 0;
-						display: none;
-					}
-				}
-				&:hover
-				{
-					background-color: lighten(@nav-bg-color, 3%);
-					span.hover
-					{
-						display: inline;
-					}
-				}
-				&.active
-				{
-					background-color: lighten(@nav-bg-color, 10%);
-				}
-			}
-		}
 	}
 }

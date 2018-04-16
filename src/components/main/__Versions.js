@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { action, focus, glyph } from 'actions'
 import { Aside, Input, Item } from 'components'
 
-export default class Generate extends Component {
+export default class Versions extends Component {
 	constructor(props) {
 		super(props)
 		this.state = { active:0, fns:[], limit:props.limit, rank:[], selected:props.selected, total:props.total }
@@ -38,7 +38,6 @@ export default class Generate extends Component {
 					<Input id="selected" prefix="selección" update={setState} type="number" parent={this}/>
 					<button class="btn" onClick={::this.handleGenerate}>Generar</button>
 				</Item>
-				<br/>
 				<Item id={0} title="Selección" parent={this}>
 				{
 					[this.props.vt, ...this.props.versions].map((m, i) => 

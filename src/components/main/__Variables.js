@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { action, glyph, focus, show } from 'actions'
+import { Item, Section } from 'components'
 import { data, LABELS } from 'stores'
-import { Section, Item } from 'components'
 
 export default class Variables extends Component {
 	constructor() {
@@ -30,7 +30,7 @@ export default class Variables extends Component {
 						<Item id={0} parent={this} title="Ejercicio">
 						{
 							LABELS.CODE.map((m, i) => { let x = i < 5 ? 2 : 5; return (
-								<h5 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h5>
+								<h4 key={i}>{m}: {code.length >= 2*i + x ? code.substring(2*i, 2*i + x) : '-' }</h4>
 							)})
 						}
 						</Item>
@@ -39,7 +39,7 @@ export default class Variables extends Component {
 							{
 								variables.map(m => { 
 									if (m.var != '' && m.val != '') return (
-										<h5 key={m.id}>{action.var('FORMAT', { code, m })}</h5>
+										<h4 key={m.id}>{action.var('FORMAT', { code, m })}</h4>
 									)
 								})
 							}

@@ -35,7 +35,7 @@ export default class Functions extends Component {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
 		return (
 			<Aside id={p.id} option={p.option} title={`Funciones ${LABELS.NAME[p.path]}`}>
-				<nav class="select">
+				<nav>
 				{
 					t.map((m, i) => 
 						<li key={i} class={`col-sm-4 ${focus(p.tab == i, 'active')}`} 

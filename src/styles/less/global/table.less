@@ -1,177 +1,177 @@
-table.table
+table
 {
-	margin: 15px auto 0;
-	padding: 0;
-	width: ~'calc(100% - 30px)';
-	thead
+	&.draggable
 	{
-		color: @main-color;
-		font-size: 14px;
-		tr 
+		width: 100%;
+		tr
 		{
-			th
+			background: inherit;
+			border: 1px solid @main-color;
+			border-left-width: 2px;
+			border-right-width: 2px;
+			color: white;
+			font-size: 13px;
+			&[draggable="true"]
 			{
-				padding: 10px;
+				cursor: move;
+			    cursor: grab;
+			    cursor: -moz-grab;
+			    cursor: -webkit-grab;
+				&:hover
+				{
+					background: @main-hover;
+				}
+			    &:active 
+			    { 
+				    background: @main-active;
+				    cursor: grabbing;
+				    cursor: -moz-grabbing;
+				    cursor: -webkit-grabbing;
+				}
 			}
-		}
-	}
-	tbody
-	{
-		color: @main-color;
-		text-align: left;
-		tr 
-		{
+			&.datos
+			{
+				border-color: @c-datos;							
+			}
+			&.geometria
+			{
+				border-color: @c-geometria;
+			}
+			&.general
+			{
+				border-color: @c-general;
+			}
 			td
-			{			
-				.form-control
+			{
+				padding: 3px 5px;
+				select
 				{
-					border-radius: 0;
+					background: transparent;
+					cursor: pointer;
+					display: inline;
+					margin-left: 3px;
 				}
-				&.type
+				option
 				{
-					min-width: 120px;
-				}
-				&.var, &.vt
-				{
-					max-width: 120px;
-				}
-				h6
-				{
-					font-size: 13px;
-					font-weight: bold;
+					background: @main-hover;
 				}
 				span
 				{
 					cursor: pointer;
-					color: @info-color;
-					transition: color .1s ease;
+					display: inline;
+					padding-left: 15px;
 				}
-			}
-			&:hover
-			{
-				background-color: @gray;				
-				span
-				{
-					color: darken(@info-color, 15%);
-					&:hover
-					{
-						color: @sec-hover;
-					}
-				}
-			}
-			&.error
-			{
-				background: @sec-hover;
-				color: white;
 			}
 		}
 	}
-	tfoot
+	&.search
 	{
+		font-size: 13px;
+		text-align: left;
+		margin-top: 30px;
 		width: 100%;
-		button
+		th
 		{
-			border-radius: 0;
-			margin: 20px 20px;
-			padding: 7px 50px;
-			position: absolute;
-			right: 0;
+			font-size: 13px;
 		}
-		i
+		tbody tr
 		{
 			cursor: pointer;
-			font-size: 25px;
-			margin-top: 25px;
-			position: absolute;
-			right: 200px;
-			transition: color .3s ease;
-			&:hover
-			{
-				color: @sec-hover;
-			}
+		}
+		button.clean
+		{
+			right: ~'calc(50% - 362px)';
 		}
 	}
-}
-table.draggable
-{
-	width: 100%;
-	tr
+	&.table
 	{
-		background-color: @main-hover;
-		border: 1px solid  @color;
-		border-left-width: 2px;
-		border-right-width: 2px;
-		color: white;
-		font-size: 13px;
-		&[draggable="true"]
+		margin: 15px auto 0;
+		padding: 0;
+		width: ~'calc(100% - 30px)';
+		thead
 		{
-			cursor: move;
-		    cursor: grab;
-		    cursor: -moz-grab;
-		    cursor: -webkit-grab;
-			&:hover
+			color: @main-color;
+			font-size: 14px;
+			tr th
 			{
-				background-color: lighten(@main-color, 7%);
-			}
-		    &:active 
-		    { 
-			    cursor: grabbing;
-			    cursor: -moz-grabbing;
-			    cursor: -webkit-grabbing;
-			    background-color: darken(@sec-hover, 7%);
+				padding: 10px;
 			}
 		}
-		&.datos
+		tbody
 		{
-			border-color: @color-datos;							
-		}
-		&.geometria
-		{
-			border-color: @color-geometria;
-		}
-		&.general
-		{
-			border-color: @color-general;
-		}
-		td
-		{
-			padding: 3px 5px;
-			select
+			color: @main-color;
+			text-align: left;
+			tr 
 			{
-				background: transparent;
+				td
+				{			
+					.form-control
+					{
+						border-radius: 0;
+					}
+					&.type
+					{
+						min-width: 120px;
+					}
+					&.var, &.vt
+					{
+						max-width: 120px;
+					}
+					h6
+					{
+						font-size: 13px;
+						font-weight: bold;
+					}
+					span
+					{
+						color: @info-color;
+						cursor: pointer;
+						transition: color .1s ease;
+					}
+				}
+				&:hover
+				{
+					background-color: @gray;				
+					span
+					{
+						color: darken(@info-color, 15%);
+						&:hover
+						{
+							color: @active;
+						}
+					}
+				}
+				&.error
+				{
+					background: @active;
+					color: white;
+				}
+			}
+		}
+		tfoot
+		{
+			width: 100%;
+			button
+			{
+				border-radius: 0;
+				margin: 20px 20px;
+				padding: 7px 50px;
+				position: absolute;
+				right: 0;
+			}
+			i
+			{
 				cursor: pointer;
-				display: inline;
-				margin-left: 3px;
-			}
-			option
-			{
-				background-color: lighten(@main-color, 3%);
-			}
-			span
-			{
-				cursor: pointer;
-				display: inline;
-				padding-left: 15px;
+				font-size: 25px;
+				margin-top: 25px;
+				position: absolute;
+				right: 200px;
+				transition: color .3s ease;
+				&:hover
+				{
+					color: @active;
+				}
 			}
 		}
-	}
-}
-table.search
-{
-	margin-top: 30px;
-	text-align: left;
-	font-size: 13px;
-	width: 100%;
-	th
-	{
-		font-size: 13px;
-	}
-	tbody tr
-	{
-		cursor: pointer;
-	}
-	button.clean
-	{
-		right: ~'calc(50% - 362px)';
 	}
 }

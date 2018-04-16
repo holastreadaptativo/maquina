@@ -3,76 +3,56 @@ aside
 	background: @main-color;
 	box-shadow: -1px 0px rgba(0, 0, 0, .3);
 	color: white;
-	height: ~'calc(100vh - 45px)';
+	height: ~'calc(100vh - @{navh})';
 	position: fixed;
-	right: -320px;
+	right: -@config;
 	transition: right .3s ease;
 	top: 45px;
-	width: 300px;
+	width: @config;
 	z-index: 1000;
 	&.active
 	{
-		right: 0;
+		right: 0px;
 	}
 	h3
 	{
-		background: @main-hover;
+		background: @main-focus;
 		height: 35px;
 		margin: 0 0 20px;
 		padding: 10px;
 		font-size: 15px;
 	}
-	h4
+	nav
 	{
-	    border: 1px solid lighten(@main-color, 20%);
-	    border-left: none;
-	    border-right: none;
-		cursor: pointer;
-	    font-size: 12px;
-	    font-weight: bold;
-	    height: 25px;
-	    margin: 0 0 7px;
-	    padding: 5px 10px;
-	    transition: all .3s ease;
-		&:hover
+		margin-bottom: 50px;				
+		li
 		{
-	    	background-color: lighten(@main-color, 20%);
-	    	border-color: lighten(@main-color, 20%);
-		}
-		b
-		{
-			text-transform: uppercase;
-		}
-		span.glyphicon.close
-		{
-			display: none;
-			font-size: 12px;
-		}
-		&.active
-		{
-			background-color: lighten(@main-hover, 15%);
-			border-color: lighten(@main-hover, 15%);
-	    	color: white;
-			cursor: default;
-			span.glyphicon.close, 
+			background: @main-focus;
+			color: white;
+			cursor: pointer;
+			display: inline;
+			font-size: 13px;
+			padding: 1px 0 2px;
+			text-align: center;
+			transition: all .1s ease;
+			&:hover
 			{
-				display: initial;
-				&:hover
-				{
-					color: white;
-				}
+				background: @main-hover;
+			}
+			&.active
+			{
+				background: @active;
 			}
 		}
 	}
-	li
+	ol
 	{
-		list-style: none;
-		cursor: pointer;
-		padding-left: 10px;
-		font-size: 13px;
-		&:hover
+		color: white;
+		border-left: 30px solid @active;
+		h6
 		{
-			background: lighten(@main-color, 7%);
+			font-size: 12px;
+			padding-left: 10px;
 		}
 	}
 	a
@@ -80,23 +60,22 @@ aside
 		&.input
 		{
 			background: transparent;
-			border: 1px solid @sec-hover;
-			padding: 5px 20px;
+			border: 1px solid @active;
 			border-radius: 0;
 			color: white;
+			margin: 5px 10px;
+			padding: 5px 20px;
 			transition: all .3s ease;
 			width: ~'calc(100% - 20px)';
-			margin: 5px 10px;
 			&:hover
 			{
-				color: @gray;
-				background: lighten(@main-color, 5%);
+				background: @main-hover;
 			}
 		}
 		&.box
 		{
 			background: transparent;
-			border: 1px solid @sec-hover;
+			border: 1px solid @active;
 			padding: 30px 20px;
 			border-radius: 0;
 			color: white;
@@ -105,41 +84,37 @@ aside
 			margin: 5px 10px;
 			&:hover
 			{
-				background: lighten(@main-color, 5%);
+				background: @main-hover;
 				color: white;
 			}
 			&:active
 			{
-				background: @sec-hover;
+				background: @main-focus;
 			}
 		}
 	}	
-	ol
+	select.clone
 	{
+		background: transparent;
+		border: 1px solid @active;
+		padding: 5px 20px;
+		border-radius: 0;
 		color: white;
-		border-left: 30px solid @sec-hover;
-		h6
+		transition: all .3s ease;
+		width: ~'calc(100% - 20px)';
+		margin: 0 10px 5px;
+		cursor: pointer;
+		outline: none;
+		font-size: 13px;
+		&:hover
 		{
-			font-size: 12px;
-			padding-left: 10px;
-		}
-	}
-	nav.select
-	{
-		margin-bottom: 50px;				
-		li
-		{
-			display: inline;
-			padding: 1px 0 2px;
-			text-align: center;
 			color: white;
-			cursor: pointer;
-			font-size: 13px;
 			background: @main-hover;
-			&.active
-			{
-				background: @sec-hover;
-			}
+			outline: none;
+		}
+		option
+		{
+			background: @main-color;
 		}
 	}
 }

@@ -9,7 +9,7 @@ export default class Buscador extends Component {
 	}
 	render() {
 		return (
-			<section class="code">
+			<section class="search">
 				<Search {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
 				<Table {...this.state} setCode={this.props.setCode} setState={::this.setState}/>
 			</section>

@@ -43,7 +43,7 @@ export default class Overview extends Component {
 		let p = this.props, t = ['E', 'R', 'G']
 		return (
         	<Aside id={p.id} option={p.option} title={`Selección ${LABELS.NAME[p.path]}`}>
-				<nav class="select">
+				<nav>
 				{
 					t.map((m, i) => 
 						<li key={i} class={`col-sm-4 ${focus(p.tab == i, 'active')}`} 

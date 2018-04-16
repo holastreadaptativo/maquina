@@ -21,7 +21,7 @@ export default class Header extends Component {
                             <b>{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</b>
                         </h5>
                     </div>
-                    <div class="code">
+                    <div class="router">
                         <h5>
                             <input class={show(search)} placeholder="Buscar por código..."></input>
                             <i class={show(active != 0)} onClick={() => this.setState({ search:!search })}>search</i>
@@ -32,12 +32,12 @@ export default class Header extends Component {
                                 )
                             }
                         </h5>
-                        <div>
-                            MT
-                        </div>
                     </div>
                 </div>
-                <div class="color-line"/>
+                <div class="user">
+                    MT
+                </div>
+                <div class="react-line"/>
                 <nav class="hidden">
                     <ul>
                     {
