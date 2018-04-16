@@ -27,25 +27,21 @@ export default class Buscador extends Component {
 		this.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
 	}
 	onChange(e) {
-		let n = e.target.value, l = n.length, 
-			m = parseInt(n.substring(l - 1, l))
+		let n = e.target.value, l = n.length, m = parseInt(n.substring(l - 1, l))
 
 		if (!Number.isInteger(m)) 
 			n = e.target.value = n.substring(0, l - 1)
 		
-		this.setState({ length:n.length, temp:n })
+		this.setState({ length:n.length, search:[], temp:n })
 
-		if (n.length == 0)
+		if (n.length < 3)
 			this.setState(DEFAULT.SEARCH)
 
-		else if (n.length > 2)
+		else 
 			action.var('CODE', { code:'', target:n, update:(::this.setState) })
-		
-		else
-			this.setState({ selected:false })
 	}
 	render() {
-		const { length, selected, temp } = this.state
+		const { length, search, selected, temp } = this.state
 		return (
 			<section class="search">
 				<center>
@@ -88,7 +84,7 @@ export default class Buscador extends Component {
 					</thead>
 					<tbody>
 					{
-						this.state.search.map((m, i) => 
+						search.map((m, i) => 
 							<tr key={i} onClick={() => this.props.setCode(m.id)}>
 								<td>{i + 1}</td>
 								<td>{ m.id }</td>

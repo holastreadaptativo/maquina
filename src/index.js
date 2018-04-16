@@ -11,7 +11,8 @@ render(
 	<Router onUpdate={() => window.scrollTo(0, 0)} history={browserHistory}>
         <Route path="/" component={k.App}>
             <IndexRoute component={k.Buscador}/>
-            <Route path="/ejercicio" component={k.OnePage}/>
+            <Route path="/design" component={k.OnePage}/>
+        	<Route path="/signin" component={k.SignIn}/>
         </Route>
     </Router>
 , $('app'))

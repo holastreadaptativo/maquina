@@ -30,7 +30,7 @@ export function sendEmailVerification() {
     })
 }
 export function signOut() {
-    if (auth.currentUser) auth.signOut(); browserHistory.push('/')
+    if (auth.currentUser) auth.signOut(); browserHistory.push('/signin')
 }
 export function check(input, name) {
     if (input.length < 4) { alert(`Por favor ingrese su ${name}.`) } return input.length >= 4

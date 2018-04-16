@@ -94,6 +94,8 @@ header
 		{
 			background: @nav-active;
 			border-radius: 100px;
+			color: white;
+			cursor: pointer;
 			display: inline-block;
 			height: 35px;
 			margin-left: 5px;
@@ -101,8 +103,51 @@ header
 			position: absolute;
 			right: @navw;
 			text-align: center;
+			transition: all .2s ease;
 			top: 5px;
 			width: 35px;
+			i
+			{
+				font-size: 24px;
+				position: relative;
+				top: -3px;
+			}
+			ul
+			{
+				background: @nav-bg-hover;
+				display: none;
+				font-size: 13px;
+				list-style: none;
+				padding: 10px 0px;
+				position: absolute;
+				right: ~'calc(5px - @{navw})';
+				top: ~'calc(@{navh} - 1px)';
+				width: 150px;
+				i.nav
+				{
+					color: @nav-bg-hover;
+					font-size: 30px;
+					position: absolute;
+					margin-top: -13px;
+					right: ~'calc(@{navw} - 3px)';
+				}
+				li
+				{
+					background: inherit;
+					&:hover
+					{
+						background: @main-focus;
+					}
+				}
+			}
+			&:hover
+			{
+				background: lighten(@nav-active, 5%);
+				ul
+				{
+					display: initial;
+				}
+			}
 		}
 		div.notification
 		{

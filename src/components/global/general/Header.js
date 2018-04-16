@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ROUTES, DEFAULT } from 'stores'
-import { glyph, focus, show } from 'actions'
+import { glyph, focus, signOut, show } from 'actions'
+import { DEFAULT, ROUTES } from 'stores'
 import { Link } from 'react-router'
 
 export default class Header extends Component {
@@ -13,7 +13,7 @@ export default class Header extends Component {
             this.setState({ search:false })
     }
     render() {
-        const { active, setActive, code, option, setOption } = this.props, { search } = this.state   
+        const { active, setActive, code, option, setOption, connected, fn, ln } = this.props, { search } = this.state   
         return(
             <header class="menu">
                 <div class="container-fluid">
@@ -22,7 +22,7 @@ export default class Header extends Component {
                         <h5>Adaptativamente
                             <span class={glyph('education')}/>
                             <b class="hidden">{ROUTES[active].title}</b>
-                            <b>{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</b>
+                            <b class={show(active != 0)}>{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</b>
                         </h5>
                     </div>
                     <div class="router">
@@ -39,7 +39,12 @@ export default class Header extends Component {
                     </div>
                 </div>
                 <div class="user">
-                    MT
+                    {connected ? fn.charAt(0) + ln.charAt(0) : <i>perm_identity</i>}
+                    <ul>
+                        <i class="nav">arrow_drop_up</i>
+                        <li>Configuración</li>
+                        <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
+                    </ul>
                 </div>
                 <div class="react-line"/>
                 <nav class="hidden">

@@ -1,17 +1,27 @@
 import React, { Component } from 'react'
+import { auth, data, uid, users, DEFAULT } from 'stores'
 import { browserHistory } from 'react-router'
 import { action, focus } from 'actions'
-import { data, DEFAULT } from 'stores'
 import { Header } from 'components'
 
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { active:0, modal:false, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode),
-			alert:'danger', notification:null, setNotification:(::this.setNotification), variables:[], functions:[], answers: [], versions:[], feedback:[]	
+		this.state = { connected:false, fn:'', ln:'', modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
+			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode),
+			alert:'danger', notification:null, setNotification:(::this.setNotification)	
 		}
 	}
 	componentWillMount() {
+		auth.onAuthStateChanged(() => {
+			if (auth.currentUser)
+				users.child(uid()).once('value').then(user => {
+					if (user.exists()) {
+						this.setState({ connected:true, fn:user.val().fn, ln:user.val().ln })
+	  				}
+	  			})
+			else { this.setState({ connected:false }); browserHistory.push('/signin') }
+		})
 		this.onCodeChanged(this.state.code)
 	}
 	componentWillUnmount() {
@@ -24,7 +34,7 @@ export class App extends Component {
 		data.child(this.state.code).off()
 		this.onCodeChanged(code)
 		this.setState({ code:code, active:1 })
-		browserHistory.push('/ejercicio')
+		browserHistory.push('/design')
 	}
 	setNotification(message, alert) {
 		this.setState({ notification:message, alert:alert })

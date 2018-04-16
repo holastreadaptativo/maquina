@@ -31,7 +31,7 @@ export const ROUTES = 	[
 				            { 
 				            	path:'/', title:'Buscador', text:'Buscador', icon:'home', nav:[] }, 
 				            { 
-				            	path:'/ejercicio', title:'Ejercicio', text:'Ejercicio', icon:'th', nav:['details', 'layers', 'toll', 'cloud_upload'] }
+				            	path:'/design', title:'Ejercicio', text:'Ejercicio', icon:'th', nav:['details', 'layers', 'toll', 'cloud_upload'] }
         				]
 
 export const COLORS = 	{
