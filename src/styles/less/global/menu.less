@@ -114,18 +114,18 @@ header
 			}
 			ul
 			{
-				background: @nav-bg-hover;
+				background: @main-color;
 				display: none;
 				font-size: 13px;
 				list-style: none;
-				padding: 10px 0px;
+				padding: 7px 0px;
 				position: absolute;
 				right: ~'calc(5px - @{navw})';
 				top: ~'calc(@{navh} - 1px)';
 				width: 150px;
 				i.nav
 				{
-					color: @nav-bg-hover;
+					color: @main-color;
 					font-size: 30px;
 					position: absolute;
 					margin-top: -13px;
@@ -134,9 +134,10 @@ header
 				li
 				{
 					background: inherit;
+					margin: 2px 0px;
 					&:hover
 					{
-						background: @main-focus;
+						background: @main-hover;
 					}
 				}
 			}
