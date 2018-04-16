@@ -14,12 +14,14 @@ export class App extends Component {
 	}
 	componentWillMount() {
 		auth.onAuthStateChanged(() => {
-			if (auth.currentUser)
+			if (auth.currentUser) {
+				browserHistory.push('/')
 				users.child(uid()).once('value').then(user => {
 					if (user.exists()) {
 						this.setState({ connected:true, fn:user.val().fn, ln:user.val().ln })
 	  				}
 	  			})
+	  		}
 			else { this.setState({ connected:false }); browserHistory.push('/signin') }
 		})
 		this.onCodeChanged(this.state.code)

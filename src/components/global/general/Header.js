@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { glyph, focus, signOut, show } from 'actions'
+import { browserHistory, Link } from 'react-router'
 import { DEFAULT, ROUTES } from 'stores'
-import { Link } from 'react-router'
 
 export default class Header extends Component {
     constructor() {
@@ -17,7 +17,7 @@ export default class Header extends Component {
         return(
             <header class="menu">
                 <div class="container-fluid">
-                    <div class="logo"></div>
+                    <div class="logo" onClick={() => { setActive(0); browserHistory.push('/') }}/>
                     <div class="title">
                         <h5>Adaptativamente
                             <span class={glyph('education')}/>
@@ -47,6 +47,17 @@ export default class Header extends Component {
                         <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
                     </ul>
                 </div>
+                <Alert {...this.props}/>
+            </header>
+        )
+    }
+}
+
+class Alert extends Component {
+    render() {
+        const { active, alert, notification, setActive } = this.props
+        return (            
+           <div>         
                 <div class="react-line"/>
                 <nav class="hidden">
                     <ul>
@@ -62,27 +73,18 @@ export default class Header extends Component {
                     }
                     </ul>
                 </nav>
-                <Alert {...this.props}/>
-            </header>
-        )
-    }
-}
-
-class Alert extends Component {
-    render() {
-        const { active, alert, notification, setActive } = this.props
-        return (            
-            <div class={show(active > 1 && notification, `notification ${alert}`)}>
-                <div class="container">
-                    <h5>{notification}
-                        <b class={show(alert == 'danger')}> 
-                            <span class={glyph('arrow-right')}/> 
-                            <Link to="/ejercicios" onClick={() => setActive(1)}>Resolver</Link>
-                        </b>
-                    </h5>
-                    <i>{alert == 'danger' ? 'close' : alert == 'success' ? 'check' : 'priority_high'}</i>
+                <div class={show(active > 1 && notification, `notification ${alert}`)}>
+                    <div class="container">
+                        <h5>{notification}
+                            <b class={show(alert == 'danger')}> 
+                                <span class={glyph('arrow-right')}/> 
+                                <Link to="/ejercicios" onClick={() => setActive(1)}>Resolver</Link>
+                            </b>
+                        </h5>
+                        <i>{alert == 'danger' ? 'close' : alert == 'success' ? 'check' : 'priority_high'}</i>
+                    </div>
                 </div>
-            </div>
+           </div>
         )
     }
 }
