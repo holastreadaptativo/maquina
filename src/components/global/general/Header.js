@@ -8,6 +8,10 @@ export default class Header extends Component {
         super()
         this.state = { search:false }
     }
+    handleKeyPress(e) {
+        if (e.charCode == 13)
+            this.setState({ search:false })
+    }
     render() {
         const { active, setActive, code, option, setOption } = this.props, { search } = this.state   
         return(
@@ -23,7 +27,7 @@ export default class Header extends Component {
                     </div>
                     <div class="router">
                         <h5>
-                            <input class={show(search)} placeholder="Buscar por código..."></input>
+                            <input class={show(search)} placeholder="Buscar por código..." onKeyPress={::this.handleKeyPress} maxLength="15"></input>
                             <i class={show(active != 0)} onClick={() => this.setState({ search:!search })}>search</i>
                             <i class={show(active != 0 && !search)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
                             {

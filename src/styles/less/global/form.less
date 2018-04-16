@@ -177,11 +177,19 @@ form
 				border-bottom-color: @google;
 			}
 		}
-		button:hover
+		button.btn 
 		{
-			background-color: #fafafa;
-			border-color: #f1f1f1;
-			color: @main-color;
+			&:hover
+			{
+				background: #fafafa;
+				border-color: #f1f1f1;
+				box-shadow: none;
+				color: @main-color;
+			}
+			&:active
+			{
+				background: @gray;
+			}
 		}
 		::-webkit-input-placeholder 
 		{
