@@ -89,7 +89,7 @@ section
 		}
 		main.preview
 		{
-			background: white;
+			background: inherit;
 			height: ~'calc(100vh - 2*@{margin})';
 			left: @config;
 			overflow-y: auto;
@@ -150,6 +150,10 @@ section
 				margin: 42px 10px 20px;
 				overflow-x: hidden;
 				overflow-y: auto;
+			}
+			&.vars
+			{
+				border-bottom: 20px solid white;
 			}
 		}
 		ul.checklist

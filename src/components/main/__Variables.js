@@ -46,7 +46,7 @@ export default class Variables extends Component {
 							</Item>
 						</div>
 					</main>
-					<main class="preview">
+					<main class="preview vars">
 						<Table code={code} checked={checked} variables={variables} check={::this.check}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
 					</main>
