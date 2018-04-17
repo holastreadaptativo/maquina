@@ -1,27 +1,41 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { glyph, random } from 'actions'
+import { glyph, random, show } from 'actions'
+import { users } from 'stores'
 
 export default class Config extends Component {
 	constructor() {
 		super()
-		this.state = { avatar:[], selected:random(0, 17) }
+		this.state = { active:0, avatar:[], selected:random(0, 17), people:[] }
 	}
 	componentWillMount() {
 		let avatar = []
-		for (let i = 0; i < 3; i++)
+		users.on('value', snap => {
+			let people = []
+			snap.forEach(user => {
+				if (user.val().email.includes('adaptativamente')) {
+					people.push({ ...user.val() })
+					this.setState({ people })
+				}
+			})
+		})
+		for (let i = 0; i < 3; i++) {
 			for (let j = 0, k = 6 * i; j < 6; j++, k++) {
 				avatar.push({backgroundPosition:`${-j*76 - 1}px ${-i*81 - 1}px`, visibility:`${k < 17 ? 'initial': 'hidden'}`})
 				this.setState({ avatar })
 			}
+		}
+	}
+	handleRemove() {
+
 	}
     render() {
-    	const { avatar, selected } = this.state, { fn, ln, email } = this.props.user
+    	const { active, avatar, people, selected } = this.state, { fn, ln, email } = this.props.user
         return (        	
             <section class="config">
             	<center>
-            		<main class="content">
-	            		<form class="signin config">
+            		<main class={show(active == 0, 'content')}>
+            			<form class="signin config">
 	            			<h2>Configuración</h2>
 	            			<label>Nombre</label>
 	            			<input class="form-control" defaultValue={fn.concat(' ', ln)} type="text" disabled></input>
@@ -37,8 +51,74 @@ export default class Config extends Component {
 	            				</o>
 	            			)
 	            		}
-	            		<span class={glyph('remove close')} onClick={browserHistory.goBack}/>
+	            		<form class="signin config">
+	            			<label>Cambiar Contraseña</label>
+	            			<input class="form-control" type="password"></input>
+	            			<button class="form-control" type="submit">Guardar</button>
+	            		</form>
 	            	</main>
+	            	<main class={show(active == 1, 'content')}>
+	            		<form class="signin config">
+	            			<h2>Nuevo Usuario</h2>
+	            			<label>Nombre</label>
+	            			<input class="form-control" type="text"></input>
+	            			<label>Apellido</label>
+	            			<input class="form-control" type="text"></input>
+	            			<label>Correo electrónico</label>
+	            			<input class="form-control" type="email"></input>
+	            			<label>Contraseña</label>
+	            			<input class="form-control" type="password"></input>
+	            			<button class="form-control" type="submit">Registrar</button>
+	            			<h6>© {(new Date()).getFullYear()} Adaptativamente</h6>
+	            		</form>
+	            	</main>
+	            	<main class={show(active == 2, 'content')}>
+	            		<form class="signin config">
+	            			<h2>Permisos</h2>
+	            		</form>
+	            		<table class="admin">
+	            			<thead>
+	            				<tr>
+	            					<th>#</th>
+	            					<th>Nombre</th>
+	            					<th>Correo</th>
+	            					<th>Rol</th>
+	            					<th></th>
+	            				</tr>
+	            			</thead>
+	            			<tbody>
+	            			{
+	            				people.map((m, i) => 
+	            					<tr key={i}>
+	            						<td><h6>{i+1}</h6></td>
+	            						<td>{m.fn} {m.ln}</td>
+	            						<td>{m.email}</td>
+	            						<td>
+	            							<select defaultValue={m.rol} disabled>
+	            								<option value="admin">Administrador</option>
+	            								<option value="dev">Desarrollador</option>
+	            								<option value="editor">Editor</option>
+	            							</select>
+	            						</td>
+	            						<td>
+	            							<h6><button class={glyph('remove')} onClick={() => this.handleRemove(m)} title="Eliminar" disabled/></h6>
+	            						</td>
+	            					</tr>
+	            				)
+	            			}
+	            			</tbody>
+	            		</table>
+	            	</main>
+            		<div class="nav">
+	                    <span class={glyph('option-vertical config')}/>
+	                    <ul>
+	                        <i class="nav">arrow_drop_up</i>
+	                        <li onClick={() => this.setState({ active:0 })}>Perfil</li>
+	                        <li onClick={() => this.setState({ active:1 })}>Registro</li>
+	                        <li onClick={() => this.setState({ active:2 })}>Permisos</li>
+	                        <li onClick={browserHistory.goBack}>Volver</li>
+	                    </ul>
+	                </div>
             	</center>
 	            <div class="react-bg"/>
             </section>

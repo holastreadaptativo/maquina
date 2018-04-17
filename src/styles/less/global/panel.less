@@ -224,13 +224,76 @@ section
 					border-color: @nav-active;
 				}
 			}
-			span.close
+			button.glyphicon
 			{
-				color: #ddd;
+				background: transparent;
+				border: none;
+			}
+		}
+		div.nav
+		{
+			background: inherit;
+			color: white;
+			cursor: pointer;
+			display: inline-block;
+			margin-left: 5px;
+			padding: 8px 0;
+			position: absolute;
+			text-align: center;
+			transition: all .2s ease;
+			right: ~'calc((100% - 800px)/2 + 15px)';
+			top: ~'calc(10vh + 7px)';
+			z-index: 10;
+			span.config
+			{
+				color: #777;
+				font-size: 18px;
+			}
+			i
+			{
+				font-size: 24px;
+				position: relative;
+				top: -3px;
+			}
+			ul
+			{
+				background: #eee;
+				color: black;
+				display: none;
+				font-size: 13px;
+				list-style: none;
+				padding: 7px 0px;
 				position: absolute;
-				right: ~'calc((100% - 800px)/2 + 10px)';
-				top: ~'calc(10vh + 10px)';
-				z-index: 1000000000;
+				right: -5px;
+				top: ~'calc(@{navh} - 5px)';
+				width: 150px;
+				i.nav
+				{
+					color: #eee;
+					font-size: 30px;
+					margin-top: -13px;
+					position: absolute;
+					right: 0;
+				}
+				li
+				{
+					background: inherit;
+					color: inherit;
+					margin: 2px 0px;
+					width: 150px;
+					a
+					{
+						color: inherit;
+					}
+					&:hover
+					{
+						background: #d6d6d6;
+					}
+				}
+			}
+			&:hover ul
+			{
+				display: initial;
 			}
 		}
 		.react-bg
