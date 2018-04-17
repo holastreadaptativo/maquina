@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { FUNCIONES, Aside, Item, Modal } from 'components'
 import { action, focus, show } from 'actions'
-import { DEFAULT, LABELS } from 'stores'
+import { DEFAULT } from 'stores'
 
 export default class Functions extends Component {
 	constructor() {
@@ -34,7 +34,7 @@ export default class Functions extends Component {
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
 		return (
-			<Aside id={p.id} option={p.option} title={`Funciones ${LABELS.NAME[p.path]}`}>
+			<Aside id={p.id} option={p.option} title="Funciones">
 				<nav>
 				{
 					t.map((m, i) => 

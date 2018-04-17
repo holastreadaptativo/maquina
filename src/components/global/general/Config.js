@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { glyph, random, show } from 'actions'
+import { glyph, random, show, signUp } from 'actions'
 import { users } from 'stores'
 
 export default class Config extends Component {
@@ -54,21 +54,21 @@ export default class Config extends Component {
 	            		<form class="signin config">
 	            			<label>Cambiar Contraseña</label>
 	            			<input class="form-control" type="password"></input>
-	            			<button class="form-control" type="submit">Guardar</button>
+	            			<button class="form-control" type="submit" onClick={e => e.preventDefault()}>Guardar</button>
 	            		</form>
 	            	</main>
 	            	<main class={show(active == 1, 'content')}>
 	            		<form class="signin config">
 	            			<h2>Nuevo Usuario</h2>
 	            			<label>Nombre</label>
-	            			<input class="form-control" type="text"></input>
+	            			<input id="signup-fn" class="form-control" type="text"></input>
 	            			<label>Apellido</label>
-	            			<input class="form-control" type="text"></input>
+	            			<input id="signup-ln" class="form-control" type="text"></input>
 	            			<label>Correo electrónico</label>
-	            			<input class="form-control" type="email"></input>
+	            			<input id="signup-email" class="form-control" type="email"></input>
 	            			<label>Contraseña</label>
-	            			<input class="form-control" type="password"></input>
-	            			<button class="form-control" type="submit">Registrar</button>
+	            			<input id="signup-pass" class="form-control" type="password"></input>
+	            			<button class="form-control" type="submit" onClick={signUp}>Registrar</button>
 	            			<h6>© {(new Date()).getFullYear()} Adaptativamente</h6>
 	            		</form>
 	            	</main>
