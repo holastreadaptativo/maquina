@@ -1,34 +1,65 @@
 import React, { Component } from 'react'
-import { ROUTES, DEFAULT } from 'stores'
-import { glyph, focus, show } from 'actions'
-import { Link } from 'react-router'
+import { glyph, focus, signOut, show } from 'actions'
+import { browserHistory, Link } from 'react-router'
+import { DEFAULT, ROUTES } from 'stores'
 
 export default class Header extends Component {
-   render() {
-        const { active, setActive, code, option, setOption } = this.props     
+    constructor() {
+        super()
+        this.state = { search:false }
+    }
+    handleKeyPress(e) {
+        if (e.charCode == 13)
+            this.setState({ search:false })
+    }
+    render() {
+        const { active, setActive, code, setCode, option, setOption, connected, fn, ln } = this.props, { search } = this.state   
         return(
             <header class="menu">
                 <div class="container-fluid">
-                    <div class="logo"></div>
+                    <div class="logo" onClick={() => { setActive(0); browserHistory.push('/') }}/>
                     <div class="title">
                         <h5>Adaptativamente
                             <span class={glyph('education')}/>
-                            <b>{ROUTES[active].title}</b>
+                            <b class="hidden">{ROUTES[active].title}</b>
+                            <b class={show(active != 0)}>{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</b>
                         </h5>
                     </div>
-                    <div class="code">
+                    <div class="router">
                         <h5>
-                        {
-                            ROUTES[active].nav.map((m, i) =>
-                                <i key={i} onClick={() => setOption(option != i ? i : null)}>{m}</i>
-                            )
-                        }
+                            <input class={show(active != 0 && search)} placeholder="Buscar por código..." onKeyPress={::this.handleKeyPress} maxLength="15"></input>
+                            <i class={show(active != 0)} onClick={() => this.setState({ search:!search })}>search</i>
+                            <i class={show(active != 0 && !search)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
+                            {
+                                ROUTES[active].nav.map((m, i) =>
+                                    <i key={i} class={show(!search)} onClick={() => setOption(option != i ? i : null)}>{m}</i>
+                                )
+                            }
                         </h5>
-                        <h5 class="hidden">{code != DEFAULT.CODE ? `ID: ${code}` : 'MODO DE PRUEBA'}</h5>
                     </div>
                 </div>
-                <div class="color-line"/>
-                <nav>
+                <div class="user">
+                    {connected ? fn.charAt(0) + ln.charAt(0) : <i>perm_identity</i>}
+                    <ul>
+                        <i class="nav">arrow_drop_up</i>
+                        <li onClick={() => { setCode(DEFAULT.CODE) }}>Desarrollador</li>
+                        <li>Configuración</li>
+                        <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
+                    </ul>
+                </div>
+                <Alert {...this.props}/>
+            </header>
+        )
+    }
+}
+
+class Alert extends Component {
+    render() {
+        const { active, alert, notification, setActive } = this.props
+        return (            
+           <div>         
+                <div class="react-line"/>
+                <nav class="hidden">
                     <ul>
                     {
                         ROUTES.map((m, i) => 
@@ -42,27 +73,18 @@ export default class Header extends Component {
                     }
                     </ul>
                 </nav>
-                <Alert {...this.props}/>
-            </header>
-        )
-    }
-}
-
-class Alert extends Component {
-    render() {
-        const { active, alert, notification, setActive } = this.props
-        return (            
-            <div class={show(active > 1 && notification, `notification ${alert}`)}>
-                <div class="container">
-                    <h5>{notification}
-                        <b class={show(alert == 'danger')}> 
-                            <span class={glyph('arrow-right')}/> 
-                            <Link to="/variables" onClick={() => setActive(1)}>Resolver</Link>
-                        </b>
-                    </h5>
-                    <i>{alert == 'danger' ? 'close' : alert == 'success' ? 'check' : 'priority_high'}</i>
+                <div class={show(active > 1 && notification, `notification ${alert}`)}>
+                    <div class="container">
+                        <h5>{notification}
+                            <b class={show(alert == 'danger')}> 
+                                <span class={glyph('arrow-right')}/> 
+                                <Link to="/ejercicios" onClick={() => setActive(1)}>Resolver</Link>
+                            </b>
+                        </h5>
+                        <i>{alert == 'danger' ? 'close' : alert == 'success' ? 'check' : 'priority_high'}</i>
+                    </div>
                 </div>
-            </div>
+           </div>
         )
     }
 }

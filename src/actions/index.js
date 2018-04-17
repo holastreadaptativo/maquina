@@ -29,7 +29,7 @@ export function replace(i, v, t) {
 	return i
 }
 
-export function show(b, c) { return `${b ? c : 'hidden'}` }
+export function show(b, c) { return `${b ? c ? c : '' : 'hidden'}` }
 
 export function shuffle(a, t = 10) {
     for (let i = 0; i < t; i++)

@@ -1,288 +1,220 @@
-section.editor
+section
 {
-	@margin: 40px;
-	@config: 300px;
-	background: white;
-	height: ~'calc(100vh - 2*@{margin})';
-	width: ~'calc(100vw - 2*@{margin})';
-	margin: @margin;
-	main.config
+	&.editor
 	{
-		width: @config;
-		height: 100%;
-		background: @main-color;
-		position: relative;
-		top: 0;
-		left: 0;
-		h3 
+		background: white;
+		height: ~'calc(100vh - 2*@{margin})';
+		left: @margin;
+		position: absolute;
+		top: @margin;
+		width: ~'calc(100vw - 2*@{margin})';
+		main.config
 		{
-			background: @main-hover;
-			color: white;
-			height: 50px;
-			padding: 15px 10px;
-			margin-bottom: 20px;
-			font-size: 18px;
-		}
-		nav.select
-		{
-			margin-bottom: 50px;				
-			li
+			background: @main-color;
+			height: 100%;
+			left: 0;
+			overflow-y: auto;
+			position: absolute;
+			top: 0;
+			width: @config;
+			h3 
 			{
-				display: inline;
-				padding: 1px 0 2px;
-				text-align: center;
+				background: @main-focus;
 				color: white;
-				cursor: pointer;
-				font-size: 13px;
-				background: @main-hover;
-				&.active
-				{
-					background: @sec-hover;
-				}
+				font-size: 18px;
+				height: 50px;
+				margin: 0 0 20px;
+				padding: 15px 10px;
 			}
-		}
-		details
-		{
-			color: white;
-			margin: 0;
-			padding-top: 7px;
-			summary
+			nav
 			{
-				background: @main-hover;
-				border: none;
-				cursor: pointer;
-				font-size: 12px;
-				font-weight: bold;
-				margin: 0;
-				outline: none;
-				padding: 1px 0 0;
-				text-transform: uppercase;
-			}
-			ul
-			{
-				max-height: 180px;
-				overflow-x: hidden;
-				overflow-y: auto;
+				margin-bottom: 50px;				
 				li
 				{
-					background: lighten(@main-color, 3%);
-					border: 2px solid @main-color;
-					border-width: 3px 0px 2px;
+					background: @main-focus;
+					color: white;
+					cursor: pointer;
+					display: inline;
 					font-size: 13px;
-					list-style: none;
-					padding: 0 10px;
+					padding: 1px 0 2px;
+					text-align: center;
+					transition: all .1s ease;
 					&:hover
 					{
-						background: lighten(@main-color, 6%);
+						background: @main-hover;
+					}
+					&.active
+					{
+						background: @active;
+					}
+				}
+			}
+			details
+			{
+				color: white;
+				margin: 0;
+				padding-top: 7px;
+				summary
+				{
+					background: @main-focus;
+					border: none;
+					cursor: pointer;
+					font-size: 12px;
+					font-weight: bold;
+					margin: 0;
+					outline: none;
+					padding: 1px 0 0;
+					text-transform: uppercase;
+				}
+				ul
+				{
+					max-height: 180px;
+					overflow-x: hidden;
+					overflow-y: auto;
+					li
+					{
+						border: 2px solid @main-color;
+						border-width: 3px 0px 2px;
+						font-size: 13px;
+						list-style: none;
+						margin-top: 2px;
+						padding: 0 10px;
+						&:hover
+						{
+							background: @main-hover;
+						}
 					}
 				}
 			}
 		}
-	}
-	main.preview
-	{
-		width: ~'calc(100vw - 2*@{margin} - @{config})';
-		height: ~'calc(100vh - 2*@{margin})';
-		background: white;
-		position: absolute;
-		top: @margin;
-		left: @margin + @config;
-		.canvas
+		main.preview
 		{
-			margin-top: 42px;
-			canvas
+			background: white;
+			height: ~'calc(100vh - 2*@{margin})';
+			left: @config;
+			overflow-y: auto;
+			position: absolute;
+			top: 0;
+			width: ~'calc(100vw - 2*@{margin} - @{config})';
+			.canvas
 			{
-				max-width: 100%;
+				margin-top: 42px;
+				canvas
+				{
+					max-width: 100%;
+				}
+			}
+			.options
+			{
+				margin: 42px 10px 20px;
+				padding: 5px 15px;
+				h5 b
+				{
+					text-transform: uppercase;
+				}
+				li
+				{
+					list-style: none;
+					input
+					{
+						margin-right: 10px;
+					}
+				}	
+				.error, .feed
+				{
+					margin-top: 30px;
+				}
+				input[type="text"], select
+				{
+					border-radius: 50px;
+					font-size: 13px;
+					min-width: 200px;
+					padding: 0 10px;
+				}
+				textarea
+				{
+					border-radius: 5px;
+					height: 200px;
+					font-size: 13px;
+					padding: 5px 10px;
+					resize: none;
+					width: 400px;
+				}
+				label
+				{
+					font-weight: normal;
+				}
+			}
+			.textarea
+			{
+				margin: 42px 10px 20px;
+				overflow-x: hidden;
+				overflow-y: auto;
 			}
 		}
-		.textarea
+		ul.checklist
 		{
-			margin: 42px 10px 20px;
-			overflow-x: hidden;
-			overflow-y: auto;
-		}
-		.options
-		{
-			margin: 42px 10px 20px;
-			padding: 5px 15px;
-			h5 b
+			color: #222;
+			font-size: 13px;
+			list-style: none;
+			margin: 10px 20px 20px;
+			span
 			{
+				margin-left: 5px;
+				margin-right: 10px;
+				&.glyphicon-ok
+				{
+					color: green;
+				}
+				&.glyphicon-remove
+				{
+					color: red;
+				}
+			}
+			li.title
+			{
+				margin-bottom: 5px;
+			}
+		}
+		header
+		{
+			height: 30px;
+			left: @config;
+			padding: 15px 10px;
+			position: absolute;
+			top: 0;
+			width:  ~'calc(100vw - 2*@{margin} - @{config})';
+			h5
+			{
+				color: @main-hover;
+				display: inline;
+				font-size: 15px;
+				font-weight: bold;
+				margin: 0;
+				margin-right: 300px;
 				text-transform: uppercase;
 			}
-			li
+		}
+		footer
+		{
+			bottom: 10px;
+			left: @config;
+			position: absolute;
+			width:  ~'calc(100vw - 2*@{margin} - @{config})';
+			z-index: 10;
+			h6
 			{
-				list-style: none;
-				input
+				display: inline;
+				font-size: 13px;
+				font-weight: bold;
+				margin-left: 10px;
+				margin-right: 10px;
+				i
 				{
-					margin-right: 10px;
+					font-size: 15px;
+					margin-right: 7px;
 				}
-			}	
-			.error, .feed
-			{
-				margin-top: 30px;
-			}
-			input[type="text"], select
-			{
-				border-radius: 50px;
-				font-size: 13px;
-				min-width: 200px;
-				padding: 0 10px;
-			}
-			textarea
-			{
-				border-radius: 5px;
-				height: 200px;
-				font-size: 13px;
-				padding: 5px 10px;
-				resize: none;
-				width: 400px;
-			}
-			label
-			{
-				font-weight: normal;
 			}
 		}
 	}
-	header
-	{
-		position: absolute;
-		top: @margin;
-		left: @margin + @config;
-		width:  ~'calc(100vw - 2*@{margin} - @{config})';
-		height: 30px;
-		padding: 15px 10px;
-		h5
-		{
-			color: @main-hover;
-			font-weight: bold;
-			text-transform: uppercase;
-			margin: 0;
-			font-size: 15px;
-			display: inline;
-			margin-right: 300px;
-		}
-	}
-	footer
-	{
-		position: absolute;
-		bottom: @margin + 10px;
-		left: @margin + @config;
-		width:  ~'calc(100vw - 2*@{margin} - @{config})';
-		z-index: 10;
-		h6
-		{
-			display: inline;
-			margin-left: 10px;
-			margin-right: 10px;
-			font-size: 13px;
-			font-weight: bold;
-			i
-			{
-				font-size: 15px;
-				margin-right: 7px;
-			}
-		}
-	}
-}
-.react-modal
-{
-	@margin: 40px;
-	@config: 300px;
-	background: rgba(0, 0, 0, .9);
-	height: 100vh;
-	left: 0;
-	outline: none;	
-	position: absolute;
-	top: 0;
-	width: 100vw;
-	z-index: 999999;
-}
-.react-info
-{
-	@margin: 40px;
-	background: #fafafa;
-	border: 1px solid #777;
-	color: black;
-	height: ~'calc(100vh - 4*@{margin})';
-	padding: 10px;
-	overflow-y: auto;
-	position: fixed;
-	right: 2*@margin;
-	top: 2*@margin;
-	width: ~'calc(100vw - 4*@{margin} - 300px)';
-	z-index: 99;
-	h4
-	{
-		font-size: 20px;
-		font-weight: bold;
-		margin: 5px 0;
-		text-align: center;
-	}
-	h5
-	{
-		font-size: 14px;
-		font-weight: bold;
-		margin-top: 10px;
-		text-transform: uppercase;
-		padding: 0 20px;
-	}
-	h6, p
-	{
-		font-size: 13px;
-		margin: 0 0 5px;
-	}
-	p
-	{
-		padding: 0 20px 15px;
-	}
-	table
-	{
-		font-size: 13px;
-		margin: 0 20px 25px;
-		td
-		{
-			min-width: 160px;
-		}
-	}
-}
-.react-submit
-{
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
-	background: @main-color;
-	color: white;
-	width: 150px;
-	height: 40px;
-	transition: all .3s ease;
-	cursor: pointer;
-	padding: 3px 0;
-	margin: 0;
-	z-index: 1;
-	border-radius: 0;
-	&:hover
-	{
-		background: @main-hover;
-		color: white;
-	}
-}
-.react-close
-{
-	position: absolute;
-	top: 50px;
-	right: 50px;
-	color: @main-color;
-	font-size: 18px;
-	cursor: pointer;
-	z-index: 1;
-}
-.react-help
-{
-	position: absolute;
-	top: 50px;
-	right: 90px;
-	color: @main-color;
-	font-size: 18px;
-	cursor: pointer;
-	z-index: 1;
 }

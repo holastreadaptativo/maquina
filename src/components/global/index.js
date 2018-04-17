@@ -2,17 +2,18 @@ export Input from './forms/Input'
 export Select from './forms/Select'
 export Text from './forms/Text'
 
-export Header from './general/Header'
 export Footer from './general/Footer'
+export Header from './general/Header'
 export Section from './general/Section'
-export Modal from './general/Modal'
+export SignIn from './general/SignIn'
 
 export Item from './group/Item'
 export Tabs from './group/Tabs'
 
-export Well from './panel/Well'
-export Panel from './panel/Panel'
 export Aside from './panel/Aside'
+export Modal from './panel/Modal'
+export Panel from './panel/Panel'
+export Well from './panel/Well'
 
 import React, { Component } from 'react'
 import SplitPane from 'react-split-pane'
