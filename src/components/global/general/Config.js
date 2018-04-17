@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { glyph } from 'actions'
+import { glyph, random } from 'actions'
 
 export default class Config extends Component {
 	constructor() {
 		super()
-		this.state = { avatar:[], selected:5 }
+		this.state = { avatar:[], selected:random(0, 17) }
 	}
 	componentWillMount() {
 		let avatar = []

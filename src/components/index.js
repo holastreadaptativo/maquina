@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { auth, data, uid, users, DEFAULT } from 'stores'
 import { browserHistory } from 'react-router'
-import { action, focus } from 'actions'
+import { action, focus, show } from 'actions'
 import { Header } from 'components'
 
 export class App extends Component {
@@ -63,11 +63,11 @@ export class App extends Component {
 	render() {  
         return (
       		<div class={`react-app ${focus(this.state.option != null, 'slim')}`}>
-      			<div class="react-bg"/>
       			<Header {...this.state} setState={::this.setState}/>
       			{  
       				React.cloneElement( this.props.children, { ...this.state, setState:(::this.setState) } ) 
       			}
+      			<div class={show(this.state.active, 'react-main')}/>
       		</div>
     	)
   	}
