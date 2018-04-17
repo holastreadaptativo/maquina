@@ -7,7 +7,7 @@ import { Header } from 'components'
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { connected:false, fn:'', ln:'', modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
+		this.state = { connected:false, modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
 			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode),
 			alert:'danger', notification:null, setNotification:(::this.setNotification)	
 		}
@@ -18,7 +18,7 @@ export class App extends Component {
 				browserHistory.push('/')
 				users.child(uid()).once('value').then(user => {
 					if (user.exists()) {
-						this.setState({ connected:true, fn:user.val().fn, ln:user.val().ln })
+						this.setState({ connected:true, user:user.val() })
 	  				}
 	  			})
 	  		}

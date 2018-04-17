@@ -11,19 +11,6 @@
 	position: relative;
 	transition: all .3s ease;
     z-index: 1;
-	.react-bg
-	{	
-		//background-image: url('@{images}/media/overview.png');
-		background-position: right 0;
-		background-repeat: no-repeat;
-		background-size: 110vh;
-    	height: 100vh;
-    	margin: -5px 0;
-    	opacity: .9;
-		position: fixed;
-    	width: 100vw;
-    	z-index: -1;
-	}
 	.react-line
 	{
     	background: linear-gradient(to right, @c-medicion, @c-algebra, @c-numeracion, @c-datos, @c-geometria);
@@ -41,6 +28,18 @@
 			}	
 		}
 	}
+}
+.react-bg
+{
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-top: 2px dotted white;
+	height: 200/3vh;
+	position: absolute;
+	top: 100/3vh;
+	width: 100vw;
+	z-index: -1;
 }
 .react-modal
 {

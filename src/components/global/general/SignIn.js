@@ -22,7 +22,7 @@ export default class SignIn extends Component {
 	            		<h6>© {(new Date()).getFullYear()} Adaptativamente</h6>
 	            	</form>
 				</center>
-				<div class="bg"/>
+				<div class="react-bg"/>
             </section>
         )
     }

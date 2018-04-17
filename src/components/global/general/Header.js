@@ -13,7 +13,7 @@ export default class Header extends Component {
             this.setState({ search:false })
     }
     render() {
-        const { active, setActive, code, setCode, option, setOption, connected, fn, ln } = this.props, { search } = this.state   
+        const { active, setActive, code, setCode, option, setOption, connected, user } = this.props, { search } = this.state  
         return(
             <header class="menu">
                 <div class="container-fluid">
@@ -39,11 +39,11 @@ export default class Header extends Component {
                     </div>
                 </div>
                 <div class="user">
-                    {connected ? fn.charAt(0) + ln.charAt(0) : <i>perm_identity</i>}
+                    {connected ? user.fn.charAt(0).concat(user.ln.charAt(0)) : <i>perm_identity</i>}
                     <ul>
                         <i class="nav">arrow_drop_up</i>
                         <li onClick={() => { setCode(DEFAULT.CODE) }}>Desarrollador</li>
-                        <li>Configuración</li>
+                        <li><Link to="/config">Configuración</Link></li>
                         <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
                     </ul>
                 </div>
