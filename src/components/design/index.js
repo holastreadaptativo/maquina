@@ -6,7 +6,9 @@ export const FUNCIONES = [
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto },
 		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput }
 	]},
-	{ name:'Numeración', tag:'numeracion', fns:[]},
+	{ name:'Numeración', tag:'numeracion', fns:[
+		{ id:'' }
+	]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
 	{ name:'Medición', tag:'medicion', fns:[]},
 	{ name:'Geometría', tag:'geometria', fns:[

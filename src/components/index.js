@@ -8,7 +8,7 @@ export class App extends Component {
   	constructor() {
 		super()
 		this.state = { connected:false, modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
-			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode),
+			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:'0', setCode:(::this.setCode),
 			alert:'danger', notification:null, setNotification:(::this.setNotification)	
 		}
 	}
@@ -58,7 +58,8 @@ export class App extends Component {
 
 			if (r.hasChild('versions')) { action.ver('READ', state) }
 			else { this.setState({ versions:[] }) }
-		})
+		})	
+		DEFAULT.FNS.forEach(path => action.exe('CHECK', { code, path }))
     }
 	render() {  
         return (

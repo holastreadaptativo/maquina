@@ -25,8 +25,13 @@ export default class Header extends Component {
 
         this.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
     }
+    handleSearch(e) {
+        this.handleSubmit(e)
+        this.setState({ bar:!this.state.bar })
+    }
     onChange(e) {
-        let n = e.target.value, l = n.length, m = parseInt(n.substring(l - 1, l))
+        let n = e.target.value, l = n.length, 
+            m = parseInt(n.substring(l - 1, l))
 
         if (!Number.isInteger(m)) 
             n = e.target.value = n.substring(0, l - 1)
@@ -56,7 +61,7 @@ export default class Header extends Component {
                         <h5>
                             <input ref="search" class={show(active != 0 && bar)} placeholder="Buscar por código..." onChange={::this.onChange} 
                                 onKeyPress={::this.handleKeyPress} maxLength="15"></input>
-                            <i class={show(active != 0)} onClick={() => this.setState({ bar:!bar })}>search</i>
+                            <i class={show(active != 0)} onClick={::this.handleSearch}>search</i>
                             <i class={show(active != 0 && !bar)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
                             {
                                 ROUTES[active].nav.map((m, i) =>

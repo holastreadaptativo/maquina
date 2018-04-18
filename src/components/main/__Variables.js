@@ -17,9 +17,12 @@ export default class Variables extends Component {
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
 	}
+	check() {
+		const { code } = this.props, { variables } = this.state
+		action.var('CHECK', { code, update:(::this.setState), variables });
+	}
 	render() {
-		const { checked, variables } = this.state
-		const { code, setActive } = this.props
+		const { checked, variables } = this.state, { code, setActive } = this.props
 		return (
 			<Section style="variables" condition={false} {...this.props}>
 				<section class="editor">
@@ -53,11 +56,6 @@ export default class Variables extends Component {
 				</section>
 			</Section>
 		)
-	}
-	check() {
-		const { code } = this.props, { variables } = this.state
-		action.var('CHECK', { code, update:(::this.setState), variables })
-		// this.props.setNotification(!this.state.checked[0][6] ? 'Error en el ingreso de variables' : null, 'danger')
 	}
 }
 
@@ -98,6 +96,25 @@ class Table extends Component {
 	constructor() {
 		super()
 		this.state = { backup:null }
+	}
+	handleCreate(e) {
+		e.preventDefault()
+		const { code, check } = this.props
+		action.var('CREATE', { code, check })
+	}
+	handleUpdate(input, id) {
+		const { code, check } = this.props
+		action.var('UPDATE', { code, check, id, input })
+	}
+	handleRemove(item) {
+		const { code, check, variables } = this.props, id = item.id
+		action.var('DELETE', { code, check, id, variables })
+		this.setState({ backup:item })
+	}
+	handleRestore() {
+		const { code, check } = this.props, { backup } = this.state
+		action.var('RESTORE', { backup, code, check })
+		this.setState({ backup:null })
 	}
 	render() {
 		let error = this.props.checked[1]
@@ -146,24 +163,5 @@ class Table extends Component {
 				</tfoot>
 			</table>
 		)
-	}
-	handleCreate(e) {
-		e.preventDefault()
-		const { code, check } = this.props
-		action.var('READ', { check, code })
-	}
-	handleUpdate(input, id) {
-		const { code, check } = this.props
-		action.var('UPDATE', { check, code, id, input })
-	}
-	handleRemove(item) {
-		const { code, check, variables } = this.props, id = item.id
-		action.var('DELETE', { code, check, id, variables })
-		this.setState({ backup:item })
-	}
-	handleRestore() {
-		const { code, check } = this.props, { backup } = this.state
-		action.var('RESTORE', { backup, code, check })
-		this.setState({ backup:null })
 	}
 }
