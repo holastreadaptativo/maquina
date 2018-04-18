@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
+import { compare, replace, show } from 'actions'
 import { data, DEVICES, LABELS } from 'stores'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
-import { compare, show } from 'actions'
 import { Tabs } from 'components'
-import { replace } from 'actions'
 
 export default class eEditor extends Component {
 	constructor(props) {

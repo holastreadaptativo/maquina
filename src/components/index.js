@@ -58,8 +58,9 @@ export class App extends Component {
 
 			if (r.hasChild('versions')) { action.ver('READ', state) }
 			else { this.setState({ versions:[] }) }
-		})	
-		DEFAULT.FNS.forEach(path => action.exe('CHECK', { code, path }))
+		})
+		if (code != '0')
+			DEFAULT.FNS.forEach(path => action.exe('CHECK', { code, path }))
     }
 	render() {  
         return (
