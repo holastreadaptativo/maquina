@@ -10,9 +10,12 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'Título X', axisTitleY:'Título Y',
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			dataTag: '0,1', withAxis: 'no', margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7, 5, 6, 8, 4', fontWeight:'bold',
-			chartTags:'A, B, C, D, E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:0, 
-			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:1, fontSize:14, limitVal:'0,1', projectionVal:'0,1', highlightBar:''
+			dataTag: '0,1', /*withAxis: 'no',*/ margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,5,6,8,4', fontWeight:'bold',
+			chartTags:'A,B,C,D,E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:1, 
+			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'', highlightBar:'0,1,1,1',
+			// Nuevos parámetros
+			typeGraph: ''/*pictorico*/, chartType: '', pictoImg: '', captVal: '', captText: '', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
+			showTags: true, showValues: true
 		} : props.params
 	}
 	componentDidUpdate() {
