@@ -39,7 +39,7 @@ export function insertarInput(config) {
 }
 export const ME = { 
 	toString:(n) => {
-		let e = Math.floor(n)
+		let e = Math.floor(Number(n))
 
 	    if (e == 0) return 'cero'
 	    else return Millones(e)
@@ -75,7 +75,7 @@ export const ME = {
 		            }
 		        case 2:
 		            switch(u) {
-		                case 0: return 'venti';
+		                case 0: return 'veinte';
 		                default: return 'venti' + Unidades(u)
 		            }
 		        case 3: return DecenasY('treinta', u)

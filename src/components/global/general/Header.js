@@ -8,6 +8,12 @@ export default class Header extends Component {
         super()
         this.state = { ...DEFAULT.SEARCH, bar:false }
     }
+    componentWillReceiveProps(next) {
+        const p = next.location.pathname, { location, setActive } = this.props
+        if (location.pathname != p && (p == '/' || p == '/design')) {
+            if (p == '/') setActive(0); else if (p == '/design') setActive(1)
+        }
+    }
     handleKeyPress(e) {
         if (e.charCode == 13) {  
             this.handleSubmit(e)

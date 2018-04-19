@@ -17,7 +17,8 @@ export function money(m) {
 export function random(i, f) { return Math.floor(Math.random(0, 1) * (f - i) + i) }
 
 export function replace(i, v, t) {
-	v.forEach(m => { i = i.toString().replace(`$${m.var}`, `${t ? m.vt : m.val}`) })
+	for (let k = 0; k < 10; k++)
+		v.forEach(m => { i = i.toString().replace(`$${m.var}`, `${t ? m.vt : m.val}`) })
 	return i
 }
 

@@ -1,4 +1,4 @@
-import $, { exe, random, shuffle, stringify } from 'actions'
+import $, { exe, random, shuffle, stringify, ME } from 'actions'
 import { data, src, LINKS } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
@@ -105,17 +105,23 @@ export function ver(action, state) {
 				}
 			}
 			function evalfn(elem, fns) {
-				let aux = fns.slice(0), stop = Math.pow(aux.length, 2), copy = elem.slice(0)
+				let aux = fns.slice(0), stop = Math.pow(aux.length, 3), copy = elem.slice(0)
 
 				while (aux.length && stop) 
 				{
 					stop--
 					let m = aux.shift(), xy = m.val
 					copy.forEach(n => {
-						xy = xy.replace(n.var, n.val)
+						xy = xy.replace(`$${n.var}`, n.val)
 					})
-					if (!xy.match(/[a-zA-Z]/))
-						copy.push({ var:m.var, val:Number(eval(xy)), rank:0 })
+					if (!xy.match(/[$]/)) {
+						if (!xy.includes('ME.'))
+							copy.push({ var:m.var, val:Number(eval(xy)), rank:0 })
+						else {
+							let f = xy.substring(3, xy.length), g = f.split('('), h = g[1].split(')')
+							copy.push({ var:m.var, val:ME[g[0]](Number(eval(h[0]))), rank:0 })
+						}
+					}
 					else {
 						m.val = xy
 						aux.push(m)
@@ -194,7 +200,7 @@ export function ver(action, state) {
 				})
 				doc += `<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">`
 				doc += '<header><h2 id="title"></h2></header><section id="content" class="container-fluid design"></section>'
-				doc += '<footer><div id="help" class="help"><span>Consulta</span></div><button id="submit"></button></footer></body></html>'
+				doc += '<footer><div id="help" class="help"><span>Consulta</span></div><button id="submit">Enviar</button></footer></body></html>'
 
 				let a = document.createElement('a'), url = URL.createObjectURL(new Blob([doc], {type:'text/html'}))
 				a.href = url; a.download = `${name}.html`; document.body.appendChild(a); a.click()

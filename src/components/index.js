@@ -62,10 +62,10 @@ export class App extends Component {
 		if (code != '0')
 			DEFAULT.FNS.forEach(path => action.exe('CHECK', { code, path }))
     }
-	render() {  
+	render() { 
         return (
       		<div class={`react-app ${focus(this.state.option != null, 'slim')}`}>
-      			<Header {...this.state} setState={::this.setState}/>
+      			<Header {...this.props} {...this.state} setState={::this.setState}/>
       			{  
       				React.cloneElement( this.props.children, { ...this.state, setState:(::this.setState) } ) 
       			}

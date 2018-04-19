@@ -5,17 +5,14 @@ import { Aside, Input, Item } from 'components'
 export default class Versions extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { active:0, fns:[], limit:props.limit, rank:[], selected:props.selected, total:props.total }
-	}
-	componentWillMount() {
-		let fns = []
-		this.props.variables.forEach(m => {
-			if (m.type == 'funcion') { fns.push(m); this.setState({ fns }) }
-		})
+		this.state = { active:0, limit:props.limit, rank:[], selected:props.selected, total:props.total }
 	}
 	handleGenerate(e) {
 		e.preventDefault()
-		const { code, limit, selected, variables } = this.props, { fns } = this.state
+		const { code, limit, selected, variables } = this.props; let fns = []
+		variables.forEach(m => {
+			if (m.type == 'funcion') { fns.push(m); this.setState({ fns }) }
+		})
 		action.ver('CREATE', { code, fns, limit, selected, variables })
 	}
 	handleSelect(m, i) {
@@ -24,7 +21,7 @@ export default class Versions extends Component {
 	handleRemove(m, i) {
 		const { code, versions } = this.props, { id } = m
 		if (confirm('¿Quieres eliminar esta versión?')) {
-			this.props.setState({ vars:versions[i - 2].vars, active:i - 1 })
+			this.props.setState({ vars:versions[i - 1].vars, active:i })
 			action.ver('DELETE', { code, id })
 		}
 	}

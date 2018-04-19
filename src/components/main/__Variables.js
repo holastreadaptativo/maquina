@@ -134,7 +134,7 @@ class Table extends Component {
 									{
 										n != 'type' ?									
 										<input id={`${n}-${m.id}`} class="form-control" defaultValue={m[n]}
-											onChange={() => this.handleUpdate(n, m.id)} type="text"></input>
+											onBlur={() => this.handleUpdate(n, m.id)} type="text"></input>
 										: 
 										<select id={`${n}-${m.id}`} class="form-control" defaultValue={m[n]}
 											onChange={() => this.handleUpdate(n, m.id)}>
