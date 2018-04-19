@@ -38,7 +38,7 @@ export class OnePage extends Component {
 				<Download id={k++} {...params}/>
 				<Design {...params}/>
 				<Modal modal={this.props.modal} setState={this.props.setState}>
-					<Variables {...this.props}/>
+					<Variables {...this.props} setState={this.props.setState}/>
 				</Modal>
 			</Section>
 		)

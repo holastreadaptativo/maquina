@@ -9,20 +9,23 @@ export default class Variables extends Component {
 		this.state = { active:0, checked:[[], []], variables:[] }
 	}
 	componentWillMount() {
-		const { code } = this.props
-		data.child(`${code}/variables`).on('value', () => {
-			action.var('READ', { code, check:true, update:(::this.setState) })
-		})
+		 const { code } = this.props
+		 data.child(`${code}/variables`).on('value', () => {
+		 	action.var('READ', { code, check:true, update:(::this.setState) })
+		 })
 	}
 	componentWillUnmount() {
 		data.child(`${this.props.code}/variables`).off()
 	}
 	check() {
-		const { code } = this.props, { variables } = this.state
-		action.var('CHECK', { code, update:(::this.setState), variables });
+		const { code, variables } = this.props
+		action.var('CHECK', { code, update:(::this.setState), variables })
+	}
+	close() {
+		this.props.setState({ modal:false })
 	}
 	render() {
-		const { checked, variables } = this.state, { code, setActive } = this.props
+		const { checked } = this.state, { code, setActive, variables } = this.props
 		return (
 			<Section style="variables" condition={false} {...this.props}>
 				<section class="editor">
@@ -52,6 +55,7 @@ export default class Variables extends Component {
 					<main class="preview vars">
 						<Table code={code} checked={checked} variables={variables} check={::this.check}/>
 						<Check checked={checked} variables={variables} setActive={setActive}/>
+						<article><button class="btn-save" onClick={::this.close}>Guardar</button></article>
 					</main>
 				</section>
 			</Section>

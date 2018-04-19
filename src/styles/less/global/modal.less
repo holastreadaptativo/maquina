@@ -154,6 +154,23 @@ section
 			&.vars
 			{
 				border-bottom: 20px solid white;
+				button.btn-save
+				{
+					background: @main-color;
+					border-color: @main-hover;
+					border-radius: 0;
+					color: white;
+			    	margin-right: 20px;
+					position: relative;
+					padding: 8px 50px;
+					top: 0;
+					vertical-align: baseline;
+					&:hover, &:active, &:focus
+					{
+						background: @main-focus !important;
+						border-color: @main-focus !important;
+					}
+				}
 			}
 		}
 		ul.checklist
