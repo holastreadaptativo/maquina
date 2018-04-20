@@ -14,8 +14,9 @@ export default class GraficoDatos extends Component {
 			chartTags:'A,B,C,D,E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:1, 
 			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'', highlightBar:'0,1,1,1',
 			// Nuevos parámetros
-			typeGraph: ''/*pictorico*/, chartType: '', pictoImg: '', captVal: '', captText: '', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
-			showTags: true, showValues: true
+			typeGraph: ''/*pictorico*/, chartType: '', captVal: '1', captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
+			showTags: true, showValues: true,
+			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg'
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -26,7 +27,7 @@ export default class GraficoDatos extends Component {
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Tipo" parent={this}>
-					<Select id="typeGraph" prefix="tipo gráfico" options={['simbólico', 'pictórico']} parent={this}/>
+					<Select id="chartType" prefix="tipo gráfico" options={['simbólico', 'pictórico']} parent={this}/>
 				</Item>
 				<Item id={k++} title="Canvas" parent={this}>
 					<Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
