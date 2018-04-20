@@ -37,6 +37,9 @@ export function insertarInput(config) {
 		}	
 	}
 }
+export function insertarTabla(config) {
+	alert(config)	
+}
 export const ME = { 
 	toString:(n) => {
 		let e = Math.floor(Number(n))

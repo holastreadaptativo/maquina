@@ -45,5 +45,4 @@ export class OnePage extends Component {
 	}
 }
 
-export Editor from './Editor'
 export Buscador from './Buscador'
