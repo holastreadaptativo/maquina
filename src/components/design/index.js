@@ -3,9 +3,9 @@ import * as components from './general'
 
 export const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[
-		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto },
 		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput },
-		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla }
+		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla },
+		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[
 		{ id:'' }

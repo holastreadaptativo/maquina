@@ -62,7 +62,7 @@ export class Editor extends Component {
 					<div class={show(compare(fn, 'Insertar Input'), 'options')}>
 						<InputEditor {...this.props}/>
 					</div>
-					<div class={show(compare(fn, 'Insertar Tabla'), 'options')}>
+					<div class={show(compare(fn, 'Insertar Tabla'), 'editable')}>
 						<TableEditor {...this.props}/>
 					</div>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
