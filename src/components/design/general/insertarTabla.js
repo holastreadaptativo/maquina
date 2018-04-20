@@ -7,7 +7,7 @@ export default class InsertarTabla extends Component {
 		this.state = props.push ? { active:0, cols:2, rows:2 } : props.params
 	}
 	render() {
-		let k = 0;
+		let k = 0
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Tabla" parent={this}>
