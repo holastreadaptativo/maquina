@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { auth, data, uid, users, DEFAULT } from 'stores'
 import { browserHistory } from 'react-router'
-import { action, focus } from 'actions'
+import { action, focus, show } from 'actions'
 import { Header } from 'components'
 
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { connected:false, fn:'', ln:'', modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
-			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:DEFAULT.CODE, setCode:(::this.setCode),
+		this.state = { connected:false, modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
+			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:'0', setCode:(::this.setCode),
 			alert:'danger', notification:null, setNotification:(::this.setNotification)	
 		}
 	}
@@ -18,7 +18,7 @@ export class App extends Component {
 				browserHistory.push('/')
 				users.child(uid()).once('value').then(user => {
 					if (user.exists()) {
-						this.setState({ connected:true, fn:user.val().fn, ln:user.val().ln })
+						this.setState({ connected:true, user:user.val() })
 	  				}
 	  			})
 	  		}
@@ -59,20 +59,23 @@ export class App extends Component {
 			if (r.hasChild('versions')) { action.ver('READ', state) }
 			else { this.setState({ versions:[] }) }
 		})
+		if (code != '0')
+			DEFAULT.FNS.forEach(path => action.exe('CHECK', { code, path }))
     }
-	render() {  
+	render() { 
         return (
       		<div class={`react-app ${focus(this.state.option != null, 'slim')}`}>
-      			<div class="react-bg"/>
-      			<Header {...this.state} setState={::this.setState}/>
+      			<Header {...this.props} {...this.state} setState={::this.setState}/>
       			{  
       				React.cloneElement( this.props.children, { ...this.state, setState:(::this.setState) } ) 
       			}
+      			<div class={show(this.state.active, 'react-main')}/>
       		</div>
     	)
   	}
 }
 
 export * from './design'
+export * from './editor'
 export * from './global'
 export * from './main'

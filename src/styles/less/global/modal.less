@@ -89,14 +89,15 @@ section
 		}
 		main.preview
 		{
-			background: white;
+			background: inherit;
 			height: ~'calc(100vh - 2*@{margin})';
 			left: @config;
+			overflow-x: hidden;
 			overflow-y: auto;
 			position: absolute;
 			top: 0;
 			width: ~'calc(100vw - 2*@{margin} - @{config})';
-			.canvas
+			div.canvas
 			{
 				margin-top: 42px;
 				canvas
@@ -104,7 +105,7 @@ section
 					max-width: 100%;
 				}
 			}
-			.options
+			div.options
 			{
 				margin: 42px 10px 20px;
 				padding: 5px 15px;
@@ -145,11 +146,38 @@ section
 					font-weight: normal;
 				}
 			}
-			.textarea
+			div.textarea
 			{
 				margin: 42px 10px 20px;
 				overflow-x: hidden;
 				overflow-y: auto;
+			}
+			div.editable
+			{
+				margin: 42px 10px 20px;
+				overflow-x: hidden;
+				overflow-y: auto;
+			}
+			&.vars
+			{
+				border-bottom: 20px solid white;
+				button.btn-save
+				{
+					background: @main-color;
+					border-color: @main-hover;
+					border-radius: 0;
+					color: white;
+			    	margin-right: 20px;
+					position: relative;
+					padding: 8px 50px;
+					top: 0;
+					vertical-align: baseline;
+					&:hover, &:active, &:focus
+					{
+						background: @main-focus !important;
+						border-color: @main-focus !important;
+					}
+				}
 			}
 		}
 		ul.checklist

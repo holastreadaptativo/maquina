@@ -3,10 +3,13 @@ import * as components from './general'
 
 export const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[
-		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto },
-		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput }
+		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput },
+		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla },
+		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
-	{ name:'Numeración', tag:'numeracion', fns:[]},
+	{ name:'Numeración', tag:'numeracion', fns:[
+		{ id:'' }
+	]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
 	{ name:'Medición', tag:'medicion', fns:[]},
 	{ name:'Geometría', tag:'geometria', fns:[

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import $, { action, glyph, focus, show } from 'actions'
+import { action, glyph, focus, show } from 'actions'
 import { DEFAULT, LABELS } from 'stores'
 
 export default class Buscador extends Component {
@@ -10,7 +10,7 @@ export default class Buscador extends Component {
 	handleClear(e) {
 		e.preventDefault()
 		this.setState(DEFAULT.SEARCH)
-		$('search-code').value = ''
+		this.refs.code.value = ''
 	}
 	handleKeyPress(e) {
 		if (e.charCode == 13)
@@ -18,16 +18,16 @@ export default class Buscador extends Component {
 	}
 	handleSubmit(e) {
 		e.preventDefault()
-		let code = $('search-code').value
+		let code = this.refs.code.value
 		
-		if (code.length == 15) {
-			this.props.setCode(code); //this.props.setNotification(null, this.props.alert)
-		}					
+		if (code.length == 15)
+			this.props.setCode(code)
 
 		this.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
 	}
 	onChange(e) {
-		let n = e.target.value, l = n.length, m = parseInt(n.substring(l - 1, l))
+		let n = e.target.value, l = n.length, 
+			m = parseInt(n.substring(l - 1, l))
 
 		if (!Number.isInteger(m)) 
 			n = e.target.value = n.substring(0, l - 1)
@@ -51,7 +51,7 @@ export default class Buscador extends Component {
 							<span class="input-group-addon">
 								<span class={glyph('search')}/>
 							</span>
-							<input id="search-code" type="text" class="form-control" placeholder="15 caracteres" 
+							<input id="search-code" ref="code" type="text" class="form-control" placeholder="15 caracteres" 
 								onChange={::this.onChange} maxLength="15"></input>
 							<span class="input-group-btn">
 								<button class="btn btn-default" onClick={::this.handleSubmit}>Buscar</button>

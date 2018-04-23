@@ -7,10 +7,10 @@ export default class Item extends Component {
 		if (!update) parent.setState({ active:id }); else update(id)
 	}
 	render() {
-		const { id, parent, title } = this.props
+		const { hide, id, parent, title } = this.props
 		let selected = parent.state.active == id
 		return (
-			<form class="control">
+			<form class={show(!hide, 'control')}>
 				<div class="form-inline">
 					<h5 class={focus(selected, 'active')} onClick={::this.update}>
 						{title} <i class={glyph(`chevron-${selected ? 'up' : 'down'}`)}/>

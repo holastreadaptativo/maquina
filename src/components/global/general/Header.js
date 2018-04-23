@@ -1,19 +1,57 @@
 import React, { Component } from 'react'
-import { glyph, focus, signOut, show } from 'actions'
+import { action, glyph, focus, signOut, show } from 'actions'
 import { browserHistory, Link } from 'react-router'
 import { DEFAULT, ROUTES } from 'stores'
 
 export default class Header extends Component {
     constructor() {
         super()
-        this.state = { search:false }
+        this.state = { ...DEFAULT.SEARCH, bar:false }
+    }
+    componentWillReceiveProps(next) {
+        const p = next.location.pathname, { location, setActive } = this.props
+        if (location.pathname != p && (p == '/' || p == '/design')) {
+            if (p == '/') setActive(0); else if (p == '/design') setActive(1)
+        }
     }
     handleKeyPress(e) {
-        if (e.charCode == 13)
-            this.setState({ search:false })
+        if (e.charCode == 13) {  
+            this.handleSubmit(e)
+        }
+    }
+    handleSubmit(e) {
+        e.preventDefault()
+        let code = this.refs.search.value
+        
+        if (code.length == 15) {
+            this.props.setCode(code)
+            this.refs.search.value = ''
+            this.setState({ bar:false })
+        }                   
+
+        this.setState({ code:code, selected:code != DEFAULT.CODE && code.length > 2 })
+    }
+    handleSearch(e) {
+        this.handleSubmit(e)
+        this.setState({ bar:!this.state.bar })
+    }
+    onChange(e) {
+        let n = e.target.value, l = n.length, 
+            m = parseInt(n.substring(l - 1, l))
+
+        if (!Number.isInteger(m)) 
+            n = e.target.value = n.substring(0, l - 1)
+        
+        this.setState({ length:n.length, search:[], temp:n })
+
+        if (n.length < 3)
+            this.setState(DEFAULT.SEARCH)
+
+        else 
+            action.var('CODE', { code:'', target:n, update:(::this.setState) })
     }
     render() {
-        const { active, setActive, code, setCode, option, setOption, connected, fn, ln } = this.props, { search } = this.state   
+        const { active, setActive, code, setCode, option, setOption, connected, user } = this.props, { bar } = this.state  
         return(
             <header class="menu">
                 <div class="container-fluid">
@@ -27,23 +65,24 @@ export default class Header extends Component {
                     </div>
                     <div class="router">
                         <h5>
-                            <input class={show(active != 0 && search)} placeholder="Buscar por código..." onKeyPress={::this.handleKeyPress} maxLength="15"></input>
-                            <i class={show(active != 0)} onClick={() => this.setState({ search:!search })}>search</i>
-                            <i class={show(active != 0 && !search)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
+                            <input ref="search" class={show(active != 0 && bar)} placeholder="Buscar por código..." onChange={::this.onChange} 
+                                onKeyPress={::this.handleKeyPress} maxLength="15"></input>
+                            <i class={show(active != 0)} onClick={::this.handleSearch}>search</i>
+                            <i class={show(active != 0 && !bar)} onClick={() => this.props.setState({ modal:true })}>dashboard</i>
                             {
                                 ROUTES[active].nav.map((m, i) =>
-                                    <i key={i} class={show(!search)} onClick={() => setOption(option != i ? i : null)}>{m}</i>
+                                    <i key={i} class={show(!bar)} onClick={() => setOption(option != i ? i : null)}>{m}</i>
                                 )
                             }
                         </h5>
                     </div>
                 </div>
                 <div class="user">
-                    {connected ? fn.charAt(0) + ln.charAt(0) : <i>perm_identity</i>}
+                    {connected ? user.fn.charAt(0).concat(user.ln.charAt(0)) : <i>perm_identity</i>}
                     <ul>
                         <i class="nav">arrow_drop_up</i>
                         <li onClick={() => { setCode(DEFAULT.CODE) }}>Desarrollador</li>
-                        <li>Configuración</li>
+                        <li><Link to="/config">Configuración</Link></li>
                         <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
                     </ul>
                 </div>

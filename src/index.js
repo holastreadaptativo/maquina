@@ -13,6 +13,7 @@ render(
             <IndexRoute component={k.Buscador}/>
             <Route path="/design" component={k.OnePage}/>
         	<Route path="/signin" component={k.SignIn}/>
+        	<Route path="/config" component={k.Config}/>
         </Route>
     </Router>
 , $('app'))

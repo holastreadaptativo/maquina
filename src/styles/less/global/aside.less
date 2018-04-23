@@ -57,7 +57,7 @@ aside
 	}
 	a
 	{
-		&.input
+		&.input, &.box
 		{
 			background: transparent;
 			border: 1px solid @active;
@@ -70,27 +70,17 @@ aside
 			&:hover
 			{
 				background: @main-hover;
-			}
-		}
-		&.box
-		{
-			background: transparent;
-			border: 1px solid @active;
-			padding: 30px 20px;
-			border-radius: 0;
-			color: white;
-			transition: all .3s ease;
-			width: ~'calc(50% - 20px)';
-			margin: 5px 10px;
-			&:hover
-			{
-				background: @main-hover;
 				color: white;
 			}
 			&:active
 			{
 				background: @main-focus;
 			}
+		}
+		&.box
+		{
+			padding: 30px 20px;
+			width: ~'calc(50% - 20px)';
 		}
 	}	
 	select.clone

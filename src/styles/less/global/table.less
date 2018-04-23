@@ -122,6 +122,13 @@ table
 						font-size: 13px;
 						font-weight: bold;
 					}
+					input
+					{
+						min-width: 0;
+						max-width: 100vw;
+						background: @main-active;
+						color: white;
+					}
 					span
 					{
 						color: @info-color;
@@ -171,6 +178,37 @@ table
 				{
 					color: @active;
 				}
+			}
+		}
+	}
+	&.admin
+	{	
+		margin-top: -10px;
+		width: 85%;
+		thead tr
+		{			
+			border-bottom: 2px solid #ddd;
+			font-size: 12px;
+			height: 35px;
+			text-transform: uppercase;
+		}
+		tbody tr
+		{
+			background: white;
+			font-size: 13px;
+			height: 30px;
+			td
+			{
+				min-width: 20px;
+			}
+			h6
+			{
+				font-size: 13px;
+				font-weight: bold;
+			}
+			&:hover
+			{
+				background: #fcfcfc;
 			}
 		}
 	}

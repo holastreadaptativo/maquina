@@ -7,19 +7,26 @@ import Versions from './__Versions'
 import React, { Component } from 'react'
 import { Modal, Section } from 'components'
 import { action } from 'actions'
+import { DEFAULT } from 'stores'
 
 import Variables from './__Variables'
 
 export class OnePage extends Component {
-	constructor(props) {
-		super(props)
-		this.state = { active:0, limit:32, section:'functions', selected:128, tab:0, total:8192, vars:[], vt:[] }
+	constructor() {
+		super()
+		this.state = DEFAULT.EXE
 	}
 	componentWillMount() {
-		action.ver('CHECK', { code:this.props.code, update:(::this.setState) })
+		this.refresh(this.props.code)
+	}
+	componentWillReceiveProps(next) {
+		if (next.code != this.props.code) this.refresh(next.code)
 	}
 	download() {
-		action.ver('DOWNLOAD', { ...this.props, vt:this.state.vt })
+		action.ver('DOWNLOAD', { ...this.props, vt:this.props.vt })
+	}
+	refresh(code) {
+		action.ver('CHECK', { code, update:(::this.setState) })
 	}
 	render() {
 		let k = 0; const { section } = this.state, params = { ...this.props, ...this.state, path:section }
@@ -31,12 +38,11 @@ export class OnePage extends Component {
 				<Download id={k++} {...params}/>
 				<Design {...params}/>
 				<Modal modal={this.props.modal} setState={this.props.setState}>
-					<Variables {...this.props}/>
+					<Variables {...this.props} setState={this.props.setState}/>
 				</Modal>
 			</Section>
 		)
 	}
 }
 
-export Editor from './Editor'
 export Buscador from './Buscador'

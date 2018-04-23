@@ -13,9 +13,12 @@ export function signIn(e) { e.preventDefault(); auth.signOut()
         else {  alert(err.message) }
     })
 }
-export function signUp() {   
-    let email = $('rest_email').value, pass = $('password').value
-    return dbs.createUserWithEmailAndPassword(email, pass)
+export function signUp(e) { e.preventDefault()
+    let email = $('signup-email').value, pass = $('signup-pass').value, fn = $('signup-fn').value, ln = $('signup-ln').value
+    dbs.createUserWithEmailAndPassword(email, pass).then(user => {
+        users.child(user.uid).update({ email, fn, ln, rol:'editor' }); alert('Usuario registrado correctamente')
+        $('signup-email').value = $('signup-pass').value = $('signup-fn').value = $('signup-ln').value = ''
+    }, error => { alert(error.message) })
 }
 export function sendPasswordReset(e) { e.preventDefault()   
   let email = $('forgot-email').value

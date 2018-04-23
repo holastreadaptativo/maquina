@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { FUNCIONES, Aside, Modal } from 'components'
+import { FUNCIONES, Aside, Item, Modal } from 'components'
 import { action, focus, glyph } from 'actions'
 import { DEFAULT, LABELS } from 'stores'
 
 export default class Overview extends Component {
 	constructor() {
 		super()
-		this.state = { modal:false, drag:'', fn:'', id:'', params:'', tag:'general' }
+		this.state = { active:0, modal:false, drag:'', fn:'', id:'', params:'', tag:'general' }
 	}
 	handleChange(e) {
 	    e.preventDefault()
@@ -42,7 +42,7 @@ export default class Overview extends Component {
 	render() {
 		let p = this.props, t = ['E', 'R', 'G']
 		return (
-        	<Aside id={p.id} option={p.option} title={`Selección ${LABELS.NAME[p.path]}`}>
+        	<Aside id={p.id} option={p.option} title="Selección">
 				<nav>
 				{
 					t.map((m, i) => 
@@ -51,34 +51,36 @@ export default class Overview extends Component {
 					)
 				}
 				</nav>
-				<table class="draggable">
-					<tbody>
-					{
-						p[p.path].map((m, i) => { 
-							let k = 0, d = `${m.id}-/${i}-/`
-								return (
-									<tr key={i} id={d.concat(k++)} class={m.tag} onDrop={::this.handleChange} onDragOver={e => e.preventDefault()} 
-										draggable="true" onDragStart={e => { this.setState({ drag:e.target.id }) }}>
-										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
-										<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
-										<td>	
-											<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
-											{ 
-												LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) 
-											}
-											</select>
-										</td>
-										<td>
-											<span class={glyph('pencil')} onClick={() => this.handleSelect(m.name, m.params, m.id, m.tag)}/>
-											<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
-										</td>
-									</tr>
-								)
-							}
-						)
-					}
-					</tbody>
-				</table>
+				<Item id={this.state.active} title="Actualizar" parent={this}>
+					<table class="draggable">
+						<tbody>
+						{
+							p[p.path].map((m, i) => { 
+								let k = 0, d = `${m.id}-/${i}-/`
+									return (
+										<tr key={i} id={d.concat(k++)} class={m.tag} onDrop={::this.handleChange} onDragOver={e => e.preventDefault()} 
+											draggable="true" onDragStart={e => { this.setState({ drag:e.target.id }) }}>
+											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
+											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
+											<td>	
+												<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
+												{ 
+													LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) 
+												}
+												</select>
+											</td>
+											<td>
+												<span class={glyph('pencil')} onClick={() => this.handleSelect(m.name, m.params, m.id, m.tag)}/>
+												<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
+											</td>
+										</tr>
+									)
+								}
+							)
+						}
+						</tbody>
+					</table>
+				</Item>
 			    <Modal modal={this.state.modal} setState={::this.setState}>{ this.getComponent() }</Modal>
 			</Aside>
 		)
