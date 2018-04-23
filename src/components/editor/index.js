@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { data, DEVICES, LABELS } from 'stores'
-import { compare, show } from 'actions'
+import $, { compare, show } from 'actions'
 import { Tabs } from 'components'
 
 export class Editor extends Component {
@@ -12,7 +12,9 @@ export class Editor extends Component {
 		const { store } = this.props
 		if (!store.push) {
 			data.child(`${store.code}/${store.path}/${store.id}`).child('width').once('value').then(snap => {
-				this.setState({ md:snap.val().md, sm:snap.val().sm, xs:snap.val().xs })
+				const { md, sm, xs } = snap.val(), devices = [md, sm, xs]
+				DEVICES.forEach((m, i) => { $(m.col).value = devices[i] })
+				this.setState({ md, sm, xs })
 			})
 		}
 	}
@@ -25,7 +27,7 @@ export class Editor extends Component {
 		if (this.props.store.push)
 			this.props.store.setState({ [e.target.id]:e.target.value })
 		else
-			this.setState({ [e.target.id]:e.target.value, edited:true })
+			this.setState({ [e.target.id]:Number(e.target.value), edited:true })
 	}
 	render() {
 		const { active, md, sm, xs } = this.state, { params, store } = this.props, { add, fn, path, push, tag, update, variables } = store

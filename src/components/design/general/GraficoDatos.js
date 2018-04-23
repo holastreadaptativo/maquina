@@ -10,13 +10,11 @@ export default class GraficoDatos extends Component {
 		this.state = props.push ? { 
 			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'Título X', axisTitleY:'Título Y',
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			dataTag: '1,0,0,1,1', /*withAxis: 'no',*/ margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', fontWeight:'bold',
+			dataTag: '1,0,0,1,1', margin:'70, 90', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', fontWeight:'bold',
 			chartTags:'A,B,C,D,E', titleValue:'', titleSize:22, titleColor:'#006400', titleTop:35, chartBorder:COLORS['datos'], scaleMax:1, 
 			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:1, fontSize:14, limitVal:'2,5', projectionVal:'1,0,0', highlightBar:'0,1,0,1',
-			// Nuevos parámetros
-			typeGraph: ''/*pictorico*/, chartType: '', captVal: '1', captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
-			showTags: true, showValues: true,
-			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg'
+			typeGraph: '', chartType: '', captVal: '1', captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
+			showTags: true, showValues: true, pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg'
 		} : props.params
 	}
 	componentDidUpdate() {
