@@ -7,7 +7,8 @@ export function graficoDatos(config)
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop, fontSize,
         scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withArrowsX, withArrowsY, limitVal, projectionVal, highlightBar, fontFamily,
         /* Nuevos parámetros */
-        chartType, pictoImg, captVal, captText, caption, rotateTags, rotateValues, barSeparation, showTags, showValues
+        chartType, pictoImg, captVal, captText, caption, rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
+        highlightBarColor, canvasPadding, containerPadding, chartPadding, innerChartPadding
     } = params
 
     if (!container) return
@@ -32,13 +33,17 @@ export function graficoDatos(config)
         //     style: `border: ${borderWidth}px solid ${borderColor}; border-radius: ${borderRadius}px; background-color: ${backgroundColor};`
         // })
     }
-
-
+    let canvasPadAux = {
+        top: 10,//eval(canvasPadding ? canvasPadding.split(',')[0] : 0) >= 5 ? 5 : eval(canvasPadding ? canvasPadding.split(',')[0]),
+        right: 10,//eval(canvasPadding ? canvasPadding.split(',')[1] : 0),
+        bottom: 10,//eval(canvasPadding ? canvasPadding.split(',')[2] : 0),
+        left: 10,//eval(canvasPadding ? canvasPadding.split(',')[3] : 0),
+    }
     let c = container
 
-    let mainScaleInterval, mainScaleMin, mainScaleMax, mainMaxValue, mainMinValue, mainLenVal, mainLenTags, mainFontFamily
-
-    mainFontFamily = 'Arial'
+    let mainScaleInterval, mainScaleMin, mainScaleMax, mainMaxValue,
+    mainMinValue, mainLenVal, mainLenTags,
+    mainFontWeight = 'bold' // eval(datos.attr("fuenteAncho")) == 0 ? 'bold': 'normal'
     mainMaxValue = eval(Math.max(...chartValues.split(',')))
     mainMinValue = eval(Math.min(...chartValues.split(',')))
     mainScaleInterval = eval(scaleInterval > 1 ? scaleInterval > mainMaxValue ? mainMaxValue : scaleInterval : 1)
@@ -62,8 +67,8 @@ export function graficoDatos(config)
             alignX: 'center',
             alignY: 'top',
             font: {
-                family: mainFontFamily,
-                weight: 'bold',
+                family: fontFamily,
+                weight: titleWeight,
                 color: titleColor,
                 size: eval(titleSize)
             },
@@ -78,10 +83,10 @@ export function graficoDatos(config)
             alignX: 'center',
             alignY: 'bottom',
             font: {
-                family: mainFontFamily,
-                weight: 'bold',
+                family: fontFamily,
+                weight: titleWeight,
                 color: titleColor,
-                size: eval(titleSize)*0.8
+                size: Math.round(eval(titleSize)*0.8)
             },
             color: titleColor,
             move: {
@@ -95,10 +100,10 @@ export function graficoDatos(config)
             alignX: 'center',
             alignY: 'top',
             font: {
-                family: mainFontFamily,
-                weight: 'bold',
+                family: fontFamily,
+                weight: titleWeight,
                 color: titleColor,
-                size: eval(titleSize)*0.8
+                size: Math.round(eval(titleSize)*0.8)
             },
             color: titleColor,
             move: { moveY: 0,moveX: 0 },
@@ -106,16 +111,16 @@ export function graficoDatos(config)
         }
     }
     state.font = {
-        family: mainFontFamily,
-        weight: 400,
-        size: eval(fontSize),
+        family: fontFamily,
+        weight: fontWeight,
+        size: fontSize,
         color: fontColor,
         align: 'left' // end, right, center, start, left
     }
     state.canvas = {
         height: c.height,
         width: c.width,
-        padding: { top: c.height*0.02, right: 0, bottom: c.height*0.01, left: c.height*0.02 },
+        padding: { top: c.height*(0. + canvasPadAux.top), right: 0, bottom: c.height*0.01, left: c.height*0.02},
         //margin: { top: 0, right: 0, bottom: 0, left: 0 }
     }
     state.canvas.position = {
@@ -154,12 +159,12 @@ export function graficoDatos(config)
                 value: ' = ' + captVal + ' ' + captText,
                 show: caption,
                 font: {
-                    size: eval(fontSize),
+                    size: fontSize,
                     color: '#262626',
-                    family: mainFontFamily,
+                    family: fontFamily,
                     alignX: 'right',
                     alignY: 'middle',
-                    weight: 'normal'
+                    weight: titleWeight
                 },
                 leyendaImgSize: fontSize*2,
             }
@@ -169,7 +174,6 @@ export function graficoDatos(config)
         config: {
             dataTags: dataTag.split(','),
             hightLightBar: highlightBar,
-            guideLines: {color: lineColor, width: 1},
             girarTextos: {tags: rotateTags, values: rotateValues},
             lines: {
                 limitLines: limitVal.split(","),
@@ -182,16 +186,13 @@ export function graficoDatos(config)
             width: 1, // 3 valores {0: grande, 1: mediana, 2: pequeña},
             border: {
                 color: chartBorder,
-                width: 2
+                width: borderBars
             },
-            margin: 30/100,
             color: chartColor, //#c4440980,#1fbc0780,#09ba9c80,#a208ba80
-            highlight: {
-                color: '#93939380'
-            },
+            highlight: {color: '#93939380'},
             padding: 1 // {0: grande, 1: mediana, 2: pequeña},
         },
-        show: {tags: showTags, values: showValues}
+        show: {tags: showTags, values: showValues, origen: true}
     }
 
     let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0
@@ -627,6 +628,8 @@ export function graficoDatos(config)
         const { x0, y0, x1, y1 } = innerChart.position
         ctx.save()
         let girarTexto = chart.config.girarTextos.tags
+        ctx.font = font.weight + ' ' + font.size + 'px ' + font.family
+        ctx.fillStyle = font.color
         for (let i = 0; i < data.lenTag; i++) {
             if (chart.tags[i]) {
                 if (chart.orientation == 'vertical') {
@@ -638,8 +641,6 @@ export function graficoDatos(config)
                     let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
                     ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + a/2 + 2)
                     girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
-                    ctx.fillStyle = font.color
-                    ctx.font = font.size + 'px ' + font.family
                     ctx.fillText(chart.tags[i], 0,girarTexto > 0 ? 5 : 0)
                     ctx.restore()
                     ctx.save()
@@ -651,8 +652,6 @@ export function graficoDatos(config)
                     let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
                     ctx.translate(chart.position.x0 - 10, y1 - data.innerChart.height/data.lenTag/2 - data.innerChart.height/data.lenTag*i - a/2)
                     girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
-                    ctx.fillStyle = font.color
-                    ctx.font = font.size + 'px ' + font.family
                     ctx.fillText(chart.tags[i], 0, 0)
                     ctx.restore()
                     ctx.save()
@@ -668,44 +667,42 @@ export function graficoDatos(config)
         const { ctx, chart, scale, font, innerChart } = state
         const { x0, y0, x1, y1} = innerChart.position
         ctx.save()
-        ctx.font = font.size + 'px ' + font.family
+        ctx.font = font.fontWeight + ' ' + font.size + 'px ' + font.family
         ctx.fillStyle = font.color
         if (chart.orientation == 'vertical') {
-            ctx.textAlign = 'right'
-            ctx.textBaseline = 'middle'
-            //let minValAxis = scale.value > 1 && scale.min > 0 ? 1 : 0
-            //let minValAxis2 = scale.value >= 1 && scale.min > 0 ? 1 : 0
-            for (let i = 0; i <= data.chartDivisions; i ++) {
-                if (i === 0) {
-                    ctx.fillText(0,chart.position.x0 - 5, y1)
-                } else {
-                    ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
-                }
-            }
-            if (scale.min > 0) {
+                ctx.textAlign = 'right'
                 ctx.textBaseline = 'middle'
-                ctx.translate(chart.position.x0+1, y1 - data.innerChart.height/(data.chartDivisions)/3)
-                ctx.rotate(70*Math.PI/180)
-                ctx.fillText('//', 0, 0)
-                ctx.translate(-(chart.position.x0+1), +(y1 - data.innerChart.height/(data.chartDivisions)/3))
-                ctx.rotate(-70*Math.PI/180)
-            }
+                for (let i = 0; i <= data.chartDivisions; i ++) {
+                        if (i === 0) {
+                            chart.show.origen && ctx.fillText(0,chart.position.x0 - 5, y1)
+                        } else {
+                                ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
+                        }
+                }
+                if (scale.min > 0) {
+                        ctx.textBaseline = 'middle'
+                        ctx.translate(chart.position.x0+1, y1 - data.innerChart.height/(data.chartDivisions)/3)
+                        ctx.rotate(70*Math.PI/180)
+                        ctx.fillText('//', 0, 0)
+                        ctx.translate(-(chart.position.x0+1), +(y1 - data.innerChart.height/(data.chartDivisions)/3))
+                        ctx.rotate(-70*Math.PI/180)
+                }
         } else {
-            ctx.textAlign = 'center'
-            ctx.textBaseline = 'top'
-            for (let i = 0; i <= data.chartDivisions; i ++) {
-                if (i === 0) {
-                    ctx.fillText(0,x0, chart.position.y1 + 5)
-                } else {
-                    ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'top'
+                for (let i = 0; i <= data.chartDivisions; i ++) {
+                        if (i === 0) {
+                            chart.show.origen && ctx.fillText(0,x0, chart.position.y1 + 5)
+                        } else {
+                                ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
+                        }
                 }
-            }
-            if (scale.min > 0) {
-                ctx.textBaseline = 'middle'
-                ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3, chart.position.y1)
-                ctx.fillText('//',0, 0)
-                ctx.translate(-(chart.position.x0+5), -(y1 - data.innerChart.height/(data.chartDivisions)/3))
-            }
+                if (scale.min > 0) {
+                        ctx.textBaseline = 'middle'
+                        ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3, chart.position.y1)
+                        ctx.fillText('//',0, 0)
+                        ctx.translate(-(chart.position.x0+5), -(y1 - data.innerChart.height/(data.chartDivisions)/3))
+                }
         }
         ctx.restore()
         ctx.save()
@@ -715,7 +712,7 @@ export function graficoDatos(config)
     function insGuias(state) {
         const { ctx, chart, scale } = state
         ctx.save()
-        if (chart.config.guideLines.width > 0) {
+        if (scale.width > 0) {
             ctx.lineWidth = scale.width
             ctx.strokeStyle = scale.color
             ctx.beginPath()
