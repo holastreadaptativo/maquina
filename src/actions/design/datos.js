@@ -174,14 +174,14 @@ export function graficoDatos(config)
             lines: {
                 limitLines: limitVal.split(","),
                 projectionLines: projectionVal.split(","),
-                color: 'red', width: 2
+                color: lineColor, width: lineWidth
             }
         },
         bars: {
             separation: barSeparation ? (barSeparation)/100: 50/100,
             width: 1, // 3 valores {0: grande, 1: mediana, 2: pequeña},
             border: {
-                color: '#ba070780',
+                color: chartBorder,
                 width: 2
             },
             margin: 30/100,
@@ -266,8 +266,8 @@ export function graficoDatos(config)
         ctx.save()
         state.chart.config.hightLightBar != '' && resaltarBarras(state)
         insTitulos(state)
-        insChart(state)
-        state.scale.width > 0 && insGuides(state)
+        insGrafico(state)
+        state.scale.width > 0 && insGuias(state)
         if (type == 'pictorico') {
             datosPictoricos(state)
         } else {
@@ -275,9 +275,9 @@ export function graficoDatos(config)
         }
         config.lines.limitLines != '' && limitarColumnas(state)
         config.lines.projectionLines != '' && proyectarColumnas(state)
-        state.chart.show.tags && insTags(state)
-        state.chart.show.values && insValues(state)
-        state.chart.config.dataTags && insDataTagsBars(state)
+        state.chart.show.tags && insEtiquetas(state)
+        state.chart.show.values && insValores(state)
+        state.chart.config.dataTags && insEtqDatos(state)
         ctx.restore()
         ctx.save()
     }
@@ -449,19 +449,19 @@ export function graficoDatos(config)
         ctx.save()
         let titleHorizontal = 'titleY'
         let titleVertical = 'titleX'
-        insMainTitle(state)
+        insTitPrinc(state)
         if (chart.orientation == 'vertical') {
             titleHorizontal = 'titleX'
             titleVertical = 'titleY'
         }
-        insTitleX(state, titleHorizontal)
-        insTitleY(state, titleVertical)
+        insTituloX(state, titleHorizontal)
+        insTituloY(state, titleVertical)
         ctx.restore()
         ctx.save()
     }
     
     // Main Title
-    function insMainTitle(state) {
+    function insTitPrinc(state) {
         const { ctx, chart, canvas } = state
         const { mainTitle, titleX, titleY } = state.titles
         ctx.save()
@@ -478,7 +478,7 @@ export function graficoDatos(config)
     }
     
     // Title X
-    function insTitleX(state, title) {
+    function insTituloX(state, title) {
         const { ctx, chart, canvas } = state
         const { mainTitle, titleX, titleY } = state.titles
         ctx.save()
@@ -496,7 +496,7 @@ export function graficoDatos(config)
     }
     
     // Title Y
-    function insTitleY(state, title) {
+    function insTituloY(state, title) {
         const { ctx, chart, canvas } = state
         const { mainTitle, titleX, titleY } = state.titles
         ctx.save()
@@ -515,7 +515,7 @@ export function graficoDatos(config)
     }
     
     //insertar Chart
-    function insChart(state) {
+    function insGrafico(state) {
         const { ctx } = state
         const { x0, y0, x1, y1 } = state.chart.position
         const { width, height } = state.chart
@@ -590,7 +590,7 @@ export function graficoDatos(config)
     } // End insFlechas
     
     // Insertar dataTags
-    function insDataTagsBars(state) {
+    function insEtqDatos(state) {
         const { ctx, chart, font, innerChart, scale } = state
         const { values, tags } = chart
         const { x0, y0, x1, y1 } = innerChart.position
@@ -599,14 +599,14 @@ export function graficoDatos(config)
         ctx.font = 'bold ' + font.size + 'px ' + font.family
         let barMargin, newBarWidth, delta
         for (let i = 0; i < data.lenTag; i++) {
-            if (chart.config.dataTags[i] == 0 && chart.values[i] && chart.tags[i]) {
+            if (chart.values[i] && chart.tags[i] && chart.config.dataTags[i] === '0') {
                 if (chart.orientation == 'vertical') {
                     barMargin = (data.innerChart.width/data.lenTag)*chart.bars.separation
                     newBarWidth = (data.innerChart.width/data.lenTag) - barMargin
                     delta = (newBarWidth + barMargin)
                     ctx.textAlign = 'center'
                     ctx.textBaseline = 'bottom'
-                    ctx.fillText(chart.values[i], x0 + delta/2 +  delta*i, y1 - 10 - (data.innerChart.height/data.chartDivisions)*(((chart.values[i]) - scale.min)/scale.value))
+                    ctx.fillText(chart.values[i], x0 + delta/2 +  delta*i, y1 - 4 - (data.innerChart.height/data.chartDivisions)*(((chart.values[i]) - scale.min)/scale.value))
                 } else {
                     barMargin = (data.innerChart.height/data.lenTag)*chart.bars.separation
                     newBarWidth = (data.innerChart.height/data.lenTag) - barMargin
@@ -622,7 +622,7 @@ export function graficoDatos(config)
     }
     
     // Insertar Tags
-    function insTags(state) {
+    function insEtiquetas(state) {
         const { ctx, font, chart, innerChart } = state
         const { x0, y0, x1, y1 } = innerChart.position
         ctx.save()
@@ -636,7 +636,7 @@ export function graficoDatos(config)
                     ctx.textBaseline = girarTexto > 0 ? 'middle' : 'top'
                     // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a"
                     let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
-                    ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + 100/font.size + a/2)
+                    ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + a/2 + 2)
                     girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
                     ctx.fillStyle = font.color
                     ctx.font = font.size + 'px ' + font.family
@@ -664,7 +664,7 @@ export function graficoDatos(config)
     }
     
     //Insertar Values
-    function insValues(state) {
+    function insValores(state) {
         const { ctx, chart, scale, font, innerChart } = state
         const { x0, y0, x1, y1} = innerChart.position
         ctx.save()
@@ -712,12 +712,12 @@ export function graficoDatos(config)
     }
     
     // Insertar líneas guías
-    function insGuides(state) {
+    function insGuias(state) {
         const { ctx, chart, scale } = state
         ctx.save()
         if (chart.config.guideLines.width > 0) {
             ctx.lineWidth = scale.width
-            ctx.strokeStyle = chart.config.guideLines.color
+            ctx.strokeStyle = scale.color
             ctx.beginPath()
             for (let i = 0; i <= data.chartDivisions; i ++) {
                 if (chart.orientation == 'vertical') {
@@ -809,20 +809,24 @@ export function graficoDatos(config)
         ctx.save()
         if (chart.config.lines.width > 0 && lines.projectionLines != '' ) {
             ctx.lineWidth = lines.width
-            ctx.strokeStyle = 'green'//lines.color
-            ctx.setLineDash([10, 5]);
+            ctx.strokeStyle = lines.color
+            ctx.setLineDash([10,5]);
             ctx.beginPath()
             for (let i = 0; i < data.lenVal; i ++) {
                 if (lines.projectionLines[i] == 0) {
                     if (chart.type == 'pictorico') {}
                     if (chart.orientation == 'vertical') {
+                        let barMargin = (data.innerChart.width/data.lenTag)*chart.bars.separation
+                        let newBarWidth = (data.innerChart.width/data.lenTag) - barMargin
                         let barHeightAux = (data.innerChart.height/data.chartDivisions)
                         ctx.moveTo(chart.position.x0 + chart.axis.width/2, chart.position.y1 - chart.axis.width/2 - barHeightAux*(chart.values[i]-scale.min)/scale.value)
-                        ctx.lineTo(chart.position.x1 - chart.axis.width, chart.position.y1 - chart.axis.width/2 - barHeightAux*(chart.values[i]-scale.min)/scale.value)
+                        ctx.lineTo(innerChart.position.x0 + chart.axis.width/2 + barMargin/2 + newBarWidth + (newBarWidth + barMargin)*i, chart.position.y1 - chart.axis.width/2 - barHeightAux*(chart.values[i]-scale.min)/scale.value)
                     } else {
+                        let barMargin = (data.innerChart.height/data.lenTag)*chart.bars.separation
+                        let newBarWidth = (data.innerChart.height/data.lenTag) - barMargin
                         let barHeightAux = (data.innerChart.width/data.chartDivisions)
                         ctx.moveTo(chart.position.x0 + chart.axis.width/2 + barHeightAux*(chart.values[i]-scale.min)/scale.value, chart.position.y1 - chart.axis.width/2)
-                        ctx.lineTo(chart.position.x0 + chart.axis.width/2 + barHeightAux*(chart.values[i]-scale.min)/scale.value, chart.position.y1 - barHeightAux/2 - (innerChart.position.y1 - chart.position.y1) - chart.axis.width*2 - data.innerChart.height/data.lenTag*(i+1))
+                        ctx.lineTo(chart.position.x0 + chart.axis.width/2 + barHeightAux*(chart.values[i]-scale.min)/scale.value, innerChart.position.y1 - chart.axis.width/2 - barMargin/2 - (newBarWidth + barMargin)*i - newBarWidth)
                     }
                 }
             }
