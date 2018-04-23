@@ -33,7 +33,7 @@ export default class Overview extends Component {
 	}
 	handleWidth(e) {
 		const { code, path } = this.props, { id, value } = e.target
-		action.exe('WIDTH', { code, id, path, value })
+		action.exe('WIDTH', { code, id:id.split('::')[1], path, value })
 	}
 	getComponent() {
 		let FX = null
@@ -65,7 +65,7 @@ export default class Overview extends Component {
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
 											<td>
-												<select defaultValue={m.width.md} id={m.id} onChange={::this.handleWidth}>
+												<select defaultValue={m.width.md} id={`${p.path}::${m.id}`} onChange={::this.handleWidth}>
 												{ 
 													LABELS.SIZE.map((m, i) => <option key={i} value={m}>{Math.round(250/3*m, 2)/10+'%'}</option> ) 
 												}
