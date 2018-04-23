@@ -22,7 +22,6 @@ export default class Overview extends Component {
 	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
 	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
 
-	    console.log('inicial: ' + i + ' - final: ' + f)
 	    if (drag.length > 1)
 	    	action.exe('SWITCH', { code, i, f, path })
 	}
