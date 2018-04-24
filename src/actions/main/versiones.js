@@ -186,7 +186,6 @@ export function ver(action, state) {
 		}
 		case 'DOWNLOAD': {
 			const { answers, feedback, functions, versions, vt } = state, v = [...versions, vt]
-			console.log(vt)
 			answers.forEach(m => { delete m.json }); feedback.forEach(m => { delete m.json }); functions.forEach(m => { delete m.json })
 			let e = stringify(functions), r = stringify(answers), g = stringify(feedback), s = code.substring(10, 15)
 
