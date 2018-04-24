@@ -7,9 +7,9 @@ import { Header } from 'components'
 export class App extends Component {
   	constructor() {
 		super()
-		this.state = { connected:false, modal:false, variables:[], functions:[], answers: [], versions:[], feedback:[], 
+		this.state = { connected:false, modal:false, user:null, variables:[], functions:[], answers: [], versions:[], feedback:[], 
 			active:0, setActive:(::this.setActive), option:null, setOption:(::this.setOption), code:'0', setCode:(::this.setCode),
-			alert:'danger', notification:null, setNotification:(::this.setNotification)	
+			alert:'danger', notification:null, setNotification:(::this.setNotification)
 		}
 	}
 	componentWillMount() {
@@ -22,7 +22,10 @@ export class App extends Component {
 	  				}
 	  			})
 	  		}
-			else { this.setState({ connected:false }); browserHistory.push('/signin') }
+			else { 
+				this.setState({ connected:false, user:null })
+				browserHistory.push('/signin') 
+			}
 		})
 		this.onCodeChanged(this.state.code)
 	}
