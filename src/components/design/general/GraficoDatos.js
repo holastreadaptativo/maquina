@@ -17,7 +17,7 @@ export default class GraficoDatos extends Component {
 			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
 			typeGraph: ''/*pictorico*/, chartType: '', captVal: '1', captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
 			showTags: true, showValues: true, titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
-			containerPadding: '10, 10, 10 ,10', chartPadding: '10, 10, 10 ,10', innerChartPadding: '10, 10, 10 ,10',
+			containerPadding: '0,0,0,0', chartPadding: '10,10,30,10', innerChartPadding: '20,55',
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -51,11 +51,10 @@ export default class GraficoDatos extends Component {
 					<Input id="axisTitleY" prefix="título Y" placeholder={'Eje Y'} parent={this}/>
 				</Item>
 				<Item id={k++} title="padding" parent={this}>
-					<Input id="margin" prefix="canvas" postfix="px" parent={this}/>
 					<Input id="canvasPadding" prefix="canvas" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
-					<Input id="containerPadding" prefix="container" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
+					{/*<Input id="containerPadding" prefix="container" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />*/}
 					<Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
-					<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
+					<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'x,y'} />
 				</Item>
 				<Item id={k++} title="Gráfico" parent={this}>
 					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>

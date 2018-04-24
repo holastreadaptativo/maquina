@@ -33,22 +33,40 @@ export function graficoDatos(config)
         //     style: `border: ${borderWidth}px solid ${borderColor}; border-radius: ${borderRadius}px; background-color: ${backgroundColor};`
         // })
     }
-    let canvasPadAux = {
-        top: 10,//eval(canvasPadding ? canvasPadding.split(',')[0] : 0) >= 5 ? 5 : eval(canvasPadding ? canvasPadding.split(',')[0]),
-        right: 10,//eval(canvasPadding ? canvasPadding.split(',')[1] : 0),
-        bottom: 10,//eval(canvasPadding ? canvasPadding.split(',')[2] : 0),
-        left: 10,//eval(canvasPadding ? canvasPadding.split(',')[3] : 0),
+    let paddingAux = {
+        canvas: {
+            top: eval(canvasPadding ? canvasPadding.split(',')[0] : 0),
+            right: eval(canvasPadding ? canvasPadding.split(',')[1] : 0),
+            bottom: eval(canvasPadding ? canvasPadding.split(',')[2] : 0),
+            left: eval(canvasPadding ? canvasPadding.split(',')[3] : 0),
+        },
+        container: {
+            top: eval(containerPadding ? containerPadding.split(',')[0] : 0),
+            right: eval(containerPadding ? containerPadding.split(',')[1] : 0),
+            bottom: eval(containerPadding ? containerPadding.split(',')[2] : 0),
+            left: eval(containerPadding ? containerPadding.split(',')[3] : 0),
+        },
+        chart: {
+            top: eval(chartPadding ? chartPadding.split(',')[0] : 20),
+            right: eval(chartPadding ? chartPadding.split(',')[1] : 10),
+            bottom: eval(chartPadding ? chartPadding.split(',')[2] : 50),
+            left: eval(chartPadding ? chartPadding.split(',')[3] : 20),
+        },
+        innerChart: {
+            x: eval(innerChartPadding ? innerChartPadding.split(',')[0] : 10),
+            y: eval(innerChartPadding ? innerChartPadding.split(',')[1] : 10),
+        },
     }
     let c = container
 
     let mainScaleInterval, mainScaleMin, mainScaleMax, mainMaxValue,
     mainMinValue, mainLenVal, mainLenTags,
     mainFontWeight = 'bold' // eval(datos.attr("fuenteAncho")) == 0 ? 'bold': 'normal'
-    mainMaxValue = eval(Math.max(...chartValues.split(',')))
-    mainMinValue = eval(Math.min(...chartValues.split(',')))
+    mainMaxValue = eval(Math.max(...values))
+    mainMinValue = eval(Math.min(...values))
     mainScaleInterval = eval(scaleInterval > 1 ? scaleInterval > mainMaxValue ? mainMaxValue : scaleInterval : 1)
     mainScaleMin = eval(scaleMin > 0 ? scaleMin > mainMinValue ? mainMinValue : scaleMin : 0)
-    mainLenVal = chartValues.split(',').length
+    mainLenVal = values.length
     mainLenTags = chartTags.split(',').length
     mainScaleMax = eval(scaleMax > mainMaxValue ? scaleMax : mainMaxValue)
     
@@ -120,8 +138,12 @@ export function graficoDatos(config)
     state.canvas = {
         height: c.height,
         width: c.width,
-        padding: { top: c.height*(0. + canvasPadAux.top), right: 0, bottom: c.height*0.01, left: c.height*0.02},
-        //margin: { top: 0, right: 0, bottom: 0, left: 0 }
+        padding: {
+            top: c.height*(paddingAux.canvas.top/1000),
+            right: c.height*(paddingAux.canvas.right/1000),
+            bottom: c.height*(paddingAux.canvas.bottom/1000),
+            left: c.height*(paddingAux.canvas.left/1000)
+        },
     }
     state.canvas.position = {
         x0: state.canvas.padding.left,
@@ -142,8 +164,12 @@ export function graficoDatos(config)
             width: 0,
             height: 0,
             innerPadding: {x: 0, y: 0},
-            padding: { top: c.height*0.02, right: c.width*0.02, bottom: c.height*0.05, left: c.width*0.02 }
-            //margin: { top: 0, right: 0, bottom: 0, left: 0 }
+            padding: {
+                top: c.height*(paddingAux.chart.top/1000),
+                right: c.height*(paddingAux.chart.right/1000),
+                bottom: c.height*(paddingAux.chart.bottom/1000),
+                left: c.height*(paddingAux.chart.left/1000)
+            }
         },
         axis: {
             width: axisWidth,
@@ -169,7 +195,7 @@ export function graficoDatos(config)
                 leyendaImgSize: fontSize*2,
             }
         },
-        values: chartValues.split(','),
+        values: values,
         tags: chartTags.split(','),
         config: {
             dataTags: dataTag.split(','),
@@ -228,14 +254,15 @@ export function graficoDatos(config)
         x1: state.container.position.x1 - (state.chart.style.padding.right),
         y1: state.container.position.y1 - (state.chart.style.padding.bottom) - state.font.size/2 - tagWordSizeX
     }
-    state.chart.style.innerPadding.x = (state.chart.position.x1 - state.chart.position.x0)*0.01
-    state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)*0.1
+    state.chart.style.innerPadding.x = (state.chart.position.x1 - state.chart.position.x0)*(paddingAux.innerChart.x/1000)
+    state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)**(paddingAux.innerChart.y/100)
 
     state.chart.bars.margin = state.chart.style.innerPadding.x
 
     state.chart.image.height = (state.chart.position.y1 - state.chart.position.y0)*0.3
     
     state.innerChart = {}
+    //*(paddingAux.canvas.top/1000)
     state.innerChart.position = {
         x0: state.chart.position.x0 + state.chart.style.innerPadding.x + state.chart.style.padding.left,
         y0: state.chart.position.y0 + state.chart.style.innerPadding.y,
