@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FUNCIONES, Aside, Item, Modal } from 'components'
-import { action, focus, glyph } from 'actions'
+import { action, focus, glyph, show } from 'actions'
 import { DEFAULT, LABELS } from 'stores'
 
 export default class Overview extends Component {
@@ -47,7 +47,7 @@ export default class Overview extends Component {
 				<nav>
 				{
 					t.map((m, i) => 
-						<li key={i} class={`col-sm-4 ${focus(p.tab == i, 'active')}`} 
+						<li key={i} class={`col-sm-${12/t.length} ${focus(p.tab == i, 'active')}`} 
 							onClick={() => p.setState({ section:DEFAULT.FNS[i], tab:i }) }>{m}</li>
 					)
 				}
@@ -56,11 +56,12 @@ export default class Overview extends Component {
 					<table class="draggable">
 						<tbody>
 						{
-							p[p.path].map((m, i) => { 
-								let k = 0, d = `${m.id}-/${i}-/`
+							DEFAULT.FNS.map(n => 
+								p[n].map((m, i) => { 
+									let k = 0, d = `${m.id}-/${i}-/${n}`
 									return (
-										<tr key={i} id={d.concat(k++)} class={m.tag} onDrop={::this.handleSwitch} onDragOver={e => e.preventDefault()} 
-											draggable="true" onDragStart={e => { this.setState({ drag:e.target.id }) }}>
+										<tr key={i} id={d.concat(k++)} class={show(p.path == n, m.tag)} onDrop={::this.handleSwitch} draggable="true"
+											onDragOver={e => e.preventDefault()} onDragStart={e => { this.setState({ drag:e.target.id }) }}>
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
 											<td>
@@ -75,8 +76,8 @@ export default class Overview extends Component {
 												<span class={glyph('trash')} onClick={() => this.handleRemove(m.id)}/>
 											</td>
 										</tr>
-									)
-								}
+									)}
+								)
 							)
 						}
 						</tbody>
