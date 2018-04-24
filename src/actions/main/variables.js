@@ -47,7 +47,7 @@ export function cod(action, state) {
 		}
 		case 'CODE': {
 			const { target } = state	
-			data.once('value').then(snap => {
+			data.limitToLast(20).once('value').then(snap => {
 				let search = []
 				snap.forEach(c => {
 					if (c.key.toString().includes(target)) {

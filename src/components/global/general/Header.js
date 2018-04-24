@@ -81,7 +81,7 @@ export default class Header extends Component {
                     {connected ? user.fn.charAt(0).concat(user.ln.charAt(0)) : <i>perm_identity</i>}
                     <ul>
                         <i class="nav">arrow_drop_up</i>
-                        <li onClick={() => { setCode(DEFAULT.CODE) }}>Desarrollador</li>
+                        <li class={show(user != null && user.rol == 'dev')} onClick={() => { setCode(DEFAULT.CODE) }}>Desarrollador</li>
                         <li><Link to="/config">Configuración</Link></li>
                         <li onClick={() => { setActive(0); signOut() }}>Cerrar Sesión</li>
                     </ul>

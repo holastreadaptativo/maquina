@@ -10,7 +10,7 @@ export default class Config extends Component {
 	}
 	componentWillMount() {
 		let avatar = []
-		users.on('value', snap => {
+		users.orderByChild('rol').on('value', snap => {
 			let people = []
 			snap.forEach(user => {
 				if (user.val().email.includes('adaptativamente')) {
@@ -30,7 +30,7 @@ export default class Config extends Component {
 
 	}
     render() {
-    	const { active, avatar, people, selected } = this.state, { fn, ln, email } = this.props.user
+    	const { active, avatar, people, selected } = this.state, { fn, ln, email, rol } = this.props.user
         return (        	
             <section class="config">
             	<center>
@@ -114,7 +114,7 @@ export default class Config extends Component {
 	                    <ul>
 	                        <i class="nav">arrow_drop_up</i>
 	                        <li onClick={() => this.setState({ active:0 })}>Perfil</li>
-	                        <li onClick={() => this.setState({ active:1 })}>Registro</li>
+	                        <li onClick={() => this.setState({ active:1 })} class={show(rol != 'editor')}>Registro</li>
 	                        <li onClick={() => this.setState({ active:2 })}>Permisos</li>
 	                        <li onClick={browserHistory.goBack}>Volver</li>
 	                    </ul>

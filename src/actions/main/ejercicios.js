@@ -50,23 +50,7 @@ export function exe(action, state) {
 			})	
 			break
 		}
-		case 'PRINT': {
-			const { variables, versions, vt } = state
-			state[path].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
-				FUNCIONES[j].fns[k].action({ container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt })
-			}) 	
-			break
-		}
-		case 'CLONE': {
-			const { target } = state
-			base.once('value').then(snap => {
-				let ref = base.push(), position = snap.val().count
-				ref.update({ ...JSON.parse(target), date:date(), position }).then(() => { base.update({ count:position + 1 }) })
-			})	
-			break
-		}
-		case 'MOVE': {
+		case 'SWITCH': {
 			const { i, f } = state
 			if (i < f) {
 		    	base.once('value').then(snap => {
@@ -85,6 +69,22 @@ export function exe(action, state) {
 		    		})
 		    	})
 		    }
+			break
+		}
+		case 'PRINT': {
+			const { variables, versions, vt } = state
+			state[path].forEach((m, i) => {
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
+				FUNCIONES[j].fns[k].action({ container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt })
+			}) 	
+			break
+		}
+		case 'CLONE': {
+			const { target } = state
+			base.once('value').then(snap => {
+				let ref = base.push(), position = snap.val().count
+				ref.update({ ...JSON.parse(target), date:date(), position }).then(() => { base.update({ count:position + 1 }) })
+			})	
 			break
 		}
 		case 'CHECK': {
