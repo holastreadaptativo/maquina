@@ -17,7 +17,7 @@ export default class GraficoDatos extends Component {
 			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
 			typeGraph: ''/*pictorico*/, chartType: '', captVal: '1', captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 50, 
 			showTags: true, showValues: true, titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
-			containerPadding: '0,0,0,0', chartPadding: '10,10,30,10', innerChartPadding: '20,55',
+			containerPadding: '0,0,0,0', chartPadding: '10,10,30,10', innerChartPadding: '20,55'
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -56,9 +56,12 @@ export default class GraficoDatos extends Component {
 					<Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
 					<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'x,y'} />
 				</Item>
-				<Item id={k++} title="Gráfico" parent={this}>
-					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
+				<Item id={k++} title="Valores" parent={this}>
 					<Input id="chartValues" prefix="valores" placeholder={'1, 2, 3, 4, 5'} parent={this}/>
+				</Item>
+				<Item id={k++} title="Etiquetas" parent={this}>
+					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
+					<Input id="rotateTags" prefix="inclinación" postFix={'°'} placeholder={'0° a 90°'} type="number" parent={this}/>
 				</Item>
 				<Item id={k++} title="barras" parent={this}>
 					<Input id="borderBars" prefix="borde" type="number" min="0" max="20" parent={this}/>

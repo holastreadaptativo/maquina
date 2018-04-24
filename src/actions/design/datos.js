@@ -208,7 +208,7 @@ export function graficoDatos(config)
             }
         },
         bars: {
-            separation: barSeparation ? (barSeparation)/100: 50/100,
+            separation: barSeparation ? 1 - (barSeparation)/100: 1 - 60/100,
             width: 1, // 3 valores {0: grande, 1: mediana, 2: pequeña},
             border: {
                 color: chartBorder,
