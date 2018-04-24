@@ -176,7 +176,7 @@ export function ver(action, state) {
 					$('total').value = total; $('limit').value = limit; $('selected').value = selected
 				}
 			})
-			data.child(`${code}/variables`).once('value').then(snap => {
+			data.child(`${code}/variables`).on('value', snap => {
 				let vars = []
 				snap.forEach(v => {
 					vars.push({ var:v.val().var, val:v.val().vt }); update({ vars, vt:{ id:'vt', vars } })
@@ -186,16 +186,17 @@ export function ver(action, state) {
 		}
 		case 'DOWNLOAD': {
 			const { answers, feedback, functions, versions, vt } = state, v = [...versions, vt]
+			console.log(vt)
 			answers.forEach(m => { delete m.json }); feedback.forEach(m => { delete m.json }); functions.forEach(m => { delete m.json })
 			let e = stringify(functions), r = stringify(answers), g = stringify(feedback), s = code.substring(10, 15)
 
 			v.forEach(m => {
-				let doc = '<!doctype html>', name=`${s}_${m.id}`			
+				let doc = '<!doctype html>', name=`${s}_${m.id}`, file=`${code}_${m.id}`
 				doc += `<html lang="es"><head><meta charset="utf-8"><title>${name}</title>`
-				LINKS.forEach(m => {
-					switch (m.type) {
-						case 'script': { doc += `<script type="text/javascript" src="${m.url}"></script>`; break }
-						case 'link': { doc += `<link rel="stylesheet" type="text/css" href="${m.url}">`; break }
+				LINKS.forEach(l => {
+					switch (l.type) {
+						case 'script': { doc += `<script type="text/javascript" src="${l.url}"></script>`; break }
+						case 'link': { doc += `<link rel="stylesheet" type="text/css" href="${l.url}">`; break }
 					}
 				})
 				doc += `<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">`
@@ -203,7 +204,7 @@ export function ver(action, state) {
 				doc += '<footer><div id="help" class="help"><span>Consulta</span></div><button id="submit">Enviar</button></footer></body></html>'
 
 				let a = document.createElement('a'), url = URL.createObjectURL(new Blob([doc], {type:'text/html'}))
-				a.href = url; a.download = `${name}.html`; document.body.appendChild(a); a.click()
+				a.href = url; a.download = `${file}.html`; document.body.appendChild(a); a.click()
 				setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url) }, 0)
 			})
 			break

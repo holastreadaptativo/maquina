@@ -17,7 +17,7 @@ export default class InsertarTabla extends Component {
 		for (let i = 0; i < rows; i++) {
 			table.push([])
 			for (let j = 0; j < cols; j++) {
-				table[i].push(<div class={`form-control`} type="text" onClick={''}></div>)
+				table[i].push(<div class={`form-control ${1}`} type="text" onClick={''}></div>)
 			}
 		}
 		return table

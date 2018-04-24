@@ -7,9 +7,7 @@ export const FUNCIONES = [
 		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla },
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
-	{ name:'Numeración', tag:'numeracion', fns:[
-		{ id:'' }
-	]},
+	{ name:'Numeración', tag:'numeracion', fns:[]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
 	{ name:'Medición', tag:'medicion', fns:[]},
 	{ name:'Geometría', tag:'geometria', fns:[
