@@ -23,7 +23,8 @@ export class OnePage extends Component {
 		if (next.code != this.props.code) this.refresh(next.code)
 	}
 	download() {
-		action.ver('DOWNLOAD', { ...this.props, vt:this.props.vt })
+		this.refresh(this.props.code)
+		action.ver('DOWNLOAD', { ...this.props, vt:this.state.vt })
 	}
 	refresh(code) {
 		action.ver('CHECK', { code, update:(::this.setState) })
