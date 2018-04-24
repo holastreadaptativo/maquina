@@ -221,10 +221,15 @@ export function graficoDatos(config)
         show: {tags: showTags, values: showValues, origen: true}
     }
 
-    let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0
+    let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0, maxWord = 0, maxWordIndex;
     state.ctx.font = `${state.font.size}px ${state.font.family}`
-    let maxWord = 0
-    state.chart.tags.map( el => { if (maxWord < el.length) {maxWord = el}})
+    state.chart.tags.map( (el,index) => {
+        if(el.length >= maxWord) {
+         maxWord = el.length
+         maxWordIndex = index
+        }
+    })
+    maxWord = state.chart.tags[maxWordIndex]
 
     if (state.chart.orientation == 'vertical') {
         tagWordSizeX = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(maxWord).width
