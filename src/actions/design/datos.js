@@ -7,8 +7,8 @@ export function graficoDatos(config)
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, fontSize,
         scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withArrowsX, withArrowsY, limitVal, projectionVal, highlightBar, fontFamily,
         /* Nuevos parámetros */
-        chartType, pictoImg, captVal, captText, caption, rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
-        canvasPadding, containerPadding, chartPadding, innerChartPadding
+        chartType, pictoImg, /*captVal,*/ captText, caption, rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
+        canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, titleXYSize, dobLinesSize, dobLinesGradient
     } = params
 
     if (!container) return
@@ -68,11 +68,11 @@ export function graficoDatos(config)
     let state = {}
     state.ctx = c.getContext('2d')
     state.scale = {
-        value: mainScaleInterval,
+        value: eval(mainScaleInterval),
         width: scaleWidth,
         color: scaleColor,
-        min: mainScaleMin >= mainScaleMax ? mainMinValue : mainScaleMin,
-        max: mainScaleMax <= mainScaleMin ? mainMaxValue : mainScaleMax
+        min: eval(mainScaleMin >= mainScaleMax ? mainMinValue : mainScaleMin),
+        max: eval(mainScaleMax <= mainScaleMin ? mainMaxValue : mainScaleMax)
     }
     state.titles = {
         mainTitle: {
@@ -99,7 +99,7 @@ export function graficoDatos(config)
                 family: fontFamily,
                 weight: titleWeight,
                 color: titleColor,
-                size: Math.round(eval(titleSize)*0.8)
+                size: eval(titleXYSize)
             },
             color: titleColor,
             move: {
@@ -116,7 +116,7 @@ export function graficoDatos(config)
                 family: fontFamily,
                 weight: titleWeight,
                 color: titleColor,
-                size: Math.round(eval(titleSize)*0.8)
+                size: eval(titleXYSize)
             },
             color: titleColor,
             move: { moveY: 0,moveX: 0 },
@@ -177,7 +177,7 @@ export function graficoDatos(config)
         image: {
             src: pictoImg,
             caption: {
-                value: ' = ' + captVal + ' ' + captText,
+                value: ' = ' + scaleInterval + ' ' + captText,
                 show: caption,
                 font: {
                     size: fontSize,
@@ -213,7 +213,16 @@ export function graficoDatos(config)
             highlight: {color: '#93939380'},
             padding: 1 // {0: grande, 1: mediana, 2: pequeña},
         },
-        show: {tags: showTags, values: showValues, origen: true}
+        show: {
+            tags: showTags === 'si' ? true : false,
+            values: showValues === 'si' ? true : false,
+            origen: showOrigin === 'si' ? true : false,
+            dobLinesOrigin: {
+                size: dobLinesSize,
+                gradient: dobLinesGradient
+            },
+            valuesSeparator: valuesSeparator
+        }
     }
 
     let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0, maxWord = 0, maxWordIndex;
@@ -235,7 +244,12 @@ export function graficoDatos(config)
     }
 
     state.container = {
-        padding: { top: state.titles.mainTitle.font.size, right: 10, bottom: state.titles.titleX.font.size + c.height*0.02, left:10 + state.titles.titleY.font.size }
+        padding: {
+            top: c.height*paddingAux.container.top/1000 + state.titles.mainTitle.font.size + 10,
+            right: c.width*paddingAux.container.right/1000,
+            bottom: c.height*paddingAux.container.bottom/1000 + state.titles.titleX.font.size + 10,
+            left: c.width*paddingAux.container.left/1000 + state.titles.titleY.font.size + 10
+        }
     }
 
     state.container.position = { 
@@ -255,7 +269,7 @@ export function graficoDatos(config)
         y1: state.container.position.y1 - (state.chart.style.padding.bottom) - state.font.size/2 - tagWordSizeX
     }
     state.chart.style.innerPadding.x = (state.chart.position.x1 - state.chart.position.x0)*(paddingAux.innerChart.x/1000)
-    state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)**(paddingAux.innerChart.y/100)
+    state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)*(paddingAux.innerChart.y/1000)
 
     state.chart.bars.margin = state.chart.style.innerPadding.x
 
@@ -284,8 +298,15 @@ export function graficoDatos(config)
             height: state.innerChart.position.y1 - state.innerChart.position.y0
         }
     }
-    data.chartDivisions = (state.scale.max - state.scale.min)/state.scale.value
-
+    let chartDivisionsNumber = ((state.scale.max - state.scale.min)/state.scale.value)
+    if (chartDivisionsNumber >= 50) {
+        data.chartDivisions = 50
+        state.scale.value = state.scale.max / data.chartDivisions
+    } else {
+        data.chartDivisions = chartDivisionsNumber
+    }
+    // console.log(state)
+    // console.log(data)
     initEx(state)
 
     function initEx(state) {
@@ -296,10 +317,12 @@ export function graficoDatos(config)
         insTitulos(state)
         insGrafico(state)
         scale.width > 0 && insGuias(state)
-        if (type == 'pictorico') {
-            datosPictoricos(state)
-        } else {
-            datosSimbolicos(state)
+        if (chart.values.length > 0) {
+            if (type == 'pictorico') {
+                datosPictoricos(state)
+            } else {
+                datosSimbolicos(state)
+            }
         }
         config.lines.limitLines != '' && limitarColumnas(state)
         config.lines.projectionLines != '' && proyectarColumnas(state)
@@ -323,7 +346,7 @@ export function graficoDatos(config)
     
     // Insertar Leyenda
     function insLeyenda(state) {
-        const { ctx, container, chart, innerChart } = state
+        const { ctx, container, chart, innerChart, font } = state
         const { caption } = chart.image
         const { width, height } = data.innerChart
         ctx.save()
@@ -337,13 +360,21 @@ export function graficoDatos(config)
         ctx.font = `bold ${caption.font.size}px ${caption.font.family}`
         ctx.fillStyle = caption.font.color
         let captTextW = ctx.measureText(captText).width
-        //let captTextH = ctx.measureText(captText).height        
+        let captBox = 0.2
+        ctx.fillStyle = '#fff'
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)'
+        ctx.rect(innerChart.position.x1 - imgW - captTextW - imgW*captBox/2, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
+        ctx.stroke()
+        ctx.fill()
+        //let captTextH = ctx.measureText(captText).height
+        ctx.beginPath()        
+        ctx.fillStyle = font.color
         if (chart.orientation == 'vertical') {
             ctx.textAlign = 'right'
             ctx.textBaseline = 'middle'
-            ctx.fillText(captText, chart.position.x1, container.position.y0 + imgH/2)
+            ctx.fillText(captText, chart.position.x1 - captTextW*0.2 , container.position.y0 + imgH/2)
             img.onload = function() {
-                ctx.drawImage(img,chart.position.x1 - imgW - captTextW, container.position.y0, imgW,imgH)
+                ctx.drawImage(img,chart.position.x1 - imgW - captTextW*1.2, container.position.y0, imgW,imgH)
             }
         } else {
             ctx.textAlign = 'right'
@@ -353,13 +384,8 @@ export function graficoDatos(config)
                 ctx.drawImage(img,chart.position.x1 - imgW - captTextW, container.position.y0, imgW,imgH)
             }
         }
-        let captBox = 0.2
-        ctx.fillStyle = 'rgba(0,0,0,0.2)'
-        ctx.strokeStyle = 'rgba(0,0,0,0.3)'
-        ctx.rect(innerChart.position.x1 - imgW - captTextW - imgW*captBox/2, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
         ctx.stroke()
         ctx.fill()
-    
         ctx.restore()
         ctx.save()
     }
@@ -629,14 +655,14 @@ export function graficoDatos(config)
                     delta = (newBarWidth + barMargin)
                     ctx.textAlign = 'center'
                     ctx.textBaseline = 'bottom'
-                    ctx.fillText(values[i], x0 + delta/2 +  delta*i, y1 - 4 - (data.innerChart.height/data.chartDivisions)*(((values[i]) - scale.min)/scale.value))
+                    ctx.fillText(values[i], x0 + delta/2 +  delta*i, y1 - (data.innerChart.height/data.chartDivisions)*(((values[i]) - scale.min)/scale.value))
                 } else {
                     barMargin = (data.innerChart.height/data.lenTag)*chart.bars.separation
                     newBarWidth = (data.innerChart.height/data.lenTag) - barMargin
                     delta = (newBarWidth + barMargin)
                     ctx.textAlign = 'left'
                     ctx.textBaseline = 'middle'
-                    ctx.fillText(values[i], x0 + 10 + (data.innerChart.width/data.chartDivisions)*(((values[i]) - scale.min)/scale.value), y1 - delta/2 - delta*i)
+                    ctx.fillText(values[i], x0 + 5 + (data.innerChart.width/data.chartDivisions)*(((values[i]) - scale.min)/scale.value), y1 - delta/2 - delta*i)
                 }
             }
         }
@@ -692,39 +718,58 @@ export function graficoDatos(config)
         ctx.font = font.fontWeight + ' ' + font.size + 'px ' + font.family
         ctx.fillStyle = font.color
         if (chart.orientation == 'vertical') {
-                ctx.textAlign = 'right'
-                ctx.textBaseline = 'middle'
-                for (let i = 0; i <= data.chartDivisions; i ++) {
-                        if (i === 0) {
-                            chart.show.origen && ctx.fillText(0,chart.position.x0 - 5, y1)
-                        } else {
-                                ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
-                        }
+            ctx.textAlign = 'right'
+            ctx.textBaseline = 'middle'
+            for (let i = 0; i <= data.chartDivisions; i ++) {
+                let valorImprimir = scale.min + scale.value*i
+                valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                if (i === 0) {
+                    chart.show.origen && ctx.fillText(0,chart.position.x0 - 5, y1)
+                } else {
+                        ctx.fillText(valorImprimir,chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
                 }
-                if (scale.min > 0) {
-                        ctx.textBaseline = 'middle'
-                        ctx.translate(chart.position.x0+1, y1 - data.innerChart.height/(data.chartDivisions)/3)
-                        ctx.rotate(70*Math.PI/180)
-                        ctx.fillText('//', 0, 0)
-                        ctx.translate(-(chart.position.x0+1), +(y1 - data.innerChart.height/(data.chartDivisions)/3))
-                        ctx.rotate(-70*Math.PI/180)
-                }
+            }
+            if (scale.min > 0) {
+                //ctx.textBaseline = 'middle'
+                ctx.strokeStyle = 'black'
+                let lineSize = data.innerChart.width*(chart.show.dobLinesOrigin.size/1000)
+                let angle = chart.show.dobLinesOrigin.gradient
+                ctx.beginPath()
+                ctx.translate(chart.position.x0, y1 - data.innerChart.height/(data.chartDivisions)/3)
+                ctx.rotate(-angle*Math.PI/180)
+                ctx.moveTo(-lineSize,0)
+                ctx.lineTo(lineSize,0)
+                ctx.stroke()
+                ctx.restore()
+                ctx.beginPath()
+                ctx.translate(chart.position.x0, y1 - data.innerChart.height/(data.chartDivisions)/3 - 5)
+                ctx.rotate(-angle*Math.PI/180)
+                ctx.moveTo(-lineSize,0)
+                ctx.lineTo(lineSize,0)
+                ctx.stroke()
+                ctx.restore()
+                //ctx.fillText('//', 0, 0)
+                //ctx.translate(-(chart.position.x0+1), +(y1 - data.innerChart.height/(data.chartDivisions)/3))
+                //ctx.rotate(-30*Math.PI/180)
+            }
         } else {
-                ctx.textAlign = 'center'
-                ctx.textBaseline = 'top'
-                for (let i = 0; i <= data.chartDivisions; i ++) {
-                        if (i === 0) {
-                            chart.show.origen && ctx.fillText(0,x0, chart.position.y1 + 5)
-                        } else {
-                                ctx.fillText(scale.min + (scale.max - scale.min)/data.chartDivisions*(i),x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
-                        }
+            ctx.textAlign = 'center'
+            ctx.textBaseline = 'top'
+            for (let i = 0; i <= data.chartDivisions; i ++) {
+                let valorImprimir = scale.min + scale.value*i
+                valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                if (i === 0) {
+                    chart.show.origen && ctx.fillText(0,x0, chart.position.y1 + 5)
+                } else {
+                        ctx.fillText(valorImprimir,x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
                 }
-                if (scale.min > 0) {
-                        ctx.textBaseline = 'middle'
-                        ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3, chart.position.y1)
-                        ctx.fillText('//',0, 0)
-                        ctx.translate(-(chart.position.x0+5), -(y1 - data.innerChart.height/(data.chartDivisions)/3))
-                }
+            }
+            if (scale.min > 0) {
+                ctx.textBaseline = 'middle'
+                ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3, chart.position.y1)
+                ctx.fillText('//',0, 0)
+                ctx.translate(-(chart.position.x0+5), -(y1 - data.innerChart.height/(data.chartDivisions)/3))
+            }
         }
         ctx.restore()
         ctx.save()
@@ -853,5 +898,25 @@ export function graficoDatos(config)
         ctx.closePath()
         ctx.restore()
         ctx.save()
+    }
+
+    // formatear números
+    function formatearNumeros(valor, tipoSeparador) {
+        switch (tipoSeparador) {
+            case 'punto':
+                tipoSeparador = '.'
+                break;
+            case 'coma':
+                tipoSeparador = ','
+            break;
+            case 'espacio':
+                tipoSeparador = ' '
+            break;
+        
+            default:
+                tipoSeparador = ''
+                break;
+        }
+        return valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, tipoSeparador);
     }
 }
