@@ -4,3 +4,5 @@ export InsertarTexto from './InsertarTexto'
 
 export GraficoDatos from './GraficoDatos'
 export PlanoCartesiano from './PlanoCartesiano'
+
+export RectaNumerica from './GraficoDatos'
