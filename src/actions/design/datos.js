@@ -99,13 +99,10 @@ export function graficoDatos(config)
                 family: fontFamily,
                 weight: titleWeight,
                 color: titleColor,
-                size: eval(titleXYSize)
+                size: Math.round(eval(titleXYSize))
             },
             color: titleColor,
-            move: {
-                moveY: 0,
-                moveX: 0
-            },
+            move: { moveY: 0, moveX: 0 },
             padding: 0
         },
         titleY: {
@@ -116,10 +113,10 @@ export function graficoDatos(config)
                 family: fontFamily,
                 weight: titleWeight,
                 color: titleColor,
-                size: eval(titleXYSize)
+                size: Math.round(eval(titleXYSize))
             },
             color: titleColor,
-            move: { moveY: 0,moveX: 0 },
+            move: { moveY: 0, moveX: 0 },
             padding: 0
         }
     }
@@ -717,24 +714,25 @@ export function graficoDatos(config)
         ctx.save()
         ctx.font = font.fontWeight + ' ' + font.size + 'px ' + font.family
         ctx.fillStyle = font.color
+        let lineSize = data.innerChart.width*(chart.show.dobLinesOrigin.size/1000)
+        let angle = chart.show.dobLinesOrigin.gradient
         if (chart.orientation == 'vertical') {
             ctx.textAlign = 'right'
             ctx.textBaseline = 'middle'
             for (let i = 0; i <= data.chartDivisions; i ++) {
                 let valorImprimir = scale.min + scale.value*i
-                valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                if (chart.show.valuesSeparator != '') {
+                    valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                }
                 if (i === 0) {
                     chart.show.origen && ctx.fillText(0,chart.position.x0 - 5, y1)
                 } else {
-                        ctx.fillText(valorImprimir,chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
+                    ctx.fillText(valorImprimir,chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
                 }
             }
             if (scale.min > 0) {
-                //ctx.textBaseline = 'middle'
-                ctx.strokeStyle = 'black'
-                let lineSize = data.innerChart.width*(chart.show.dobLinesOrigin.size/1000)
-                let angle = chart.show.dobLinesOrigin.gradient
                 ctx.beginPath()
+                ctx.strokeStyle = font.color
                 ctx.translate(chart.position.x0, y1 - data.innerChart.height/(data.chartDivisions)/3)
                 ctx.rotate(-angle*Math.PI/180)
                 ctx.moveTo(-lineSize,0)
@@ -742,33 +740,45 @@ export function graficoDatos(config)
                 ctx.stroke()
                 ctx.restore()
                 ctx.beginPath()
+                ctx.strokeStyle = font.color
                 ctx.translate(chart.position.x0, y1 - data.innerChart.height/(data.chartDivisions)/3 - 5)
                 ctx.rotate(-angle*Math.PI/180)
                 ctx.moveTo(-lineSize,0)
                 ctx.lineTo(lineSize,0)
                 ctx.stroke()
                 ctx.restore()
-                //ctx.fillText('//', 0, 0)
-                //ctx.translate(-(chart.position.x0+1), +(y1 - data.innerChart.height/(data.chartDivisions)/3))
-                //ctx.rotate(-30*Math.PI/180)
             }
         } else {
             ctx.textAlign = 'center'
             ctx.textBaseline = 'top'
             for (let i = 0; i <= data.chartDivisions; i ++) {
                 let valorImprimir = scale.min + scale.value*i
-                valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                if (chart.show.valuesSeparator != '') {
+                    valorImprimir = formatearNumeros(valorImprimir, chart.show.valuesSeparator)
+                }
                 if (i === 0) {
                     chart.show.origen && ctx.fillText(0,x0, chart.position.y1 + 5)
                 } else {
-                        ctx.fillText(valorImprimir,x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
+                    ctx.fillText(valorImprimir,x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
                 }
             }
             if (scale.min > 0) {
-                ctx.textBaseline = 'middle'
+                ctx.beginPath()
+                ctx.strokeStyle = font.color
                 ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3, chart.position.y1)
-                ctx.fillText('//',0, 0)
-                ctx.translate(-(chart.position.x0+5), -(y1 - data.innerChart.height/(data.chartDivisions)/3))
+                ctx.rotate(-angle*Math.PI/180)
+                ctx.moveTo(0,lineSize)
+                ctx.lineTo(0,-lineSize)
+                ctx.stroke()
+                ctx.restore()
+                ctx.beginPath()
+                ctx.strokeStyle = font.color
+                ctx.translate(x0 + data.innerChart.height/(data.chartDivisions)/3 + 5, chart.position.y1)
+                ctx.rotate(-angle*Math.PI/180)
+                ctx.moveTo(0,-lineSize)
+                ctx.lineTo(0,lineSize)
+                ctx.stroke()
+                ctx.restore()
             }
         }
         ctx.restore()

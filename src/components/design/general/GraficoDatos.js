@@ -12,7 +12,7 @@ export default class GraficoDatos extends Component {
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
 			dataTag: '1,1,1,1,1', /*withAxis: 'no',*/ chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', fontWeight:'normal',
 			chartTags:'A,B,C,D,E', titleValue:'Título Principal', titleSize:22, titleColor:'#006400', chartBorder:COLORS['datos'], scaleMax:1, 
-			scaleMin:0, scaleInterval:1, scaleColor:COLORS['datos'], scaleWidth:0.5, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', highlightBar:'1,1,1,1,1',
+			scaleMin:0, scaleInterval:1, scaleColor:'rgba(229, 229, 229,0.8)', scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', highlightBar:'1,1,1,1,1',
 			// Nuevos parámetros
 			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
 			typeGraph: ''/*pictorico*/, chartType: '', /*captVal: '1',*/ captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 60, 
@@ -63,8 +63,6 @@ export default class GraficoDatos extends Component {
 					<Select id="showOrigin" prefix="Mostrar 0" options={yesNoOptions} parent={this}/>
 					<Input id="chartValues" prefix="valores" placeholder={'1, 2, 3, 4, 5'} parent={this}/>
 					<Select id="valuesSeparator" prefix="separador" options={valuesSeparatorOptions} parent={this}/>
-					<Input id="dobLinesSize" prefix="doblelínea" type="number" min="1" max="100" parent={this}/>
-					<Input id="dobLinesGradient" prefix="inclinación" type="number" min="1" max="100" parent={this}/>
 				</Item>
 				<Item id={k++} title="Etiquetas" parent={this}>
 					<Select id="showTags" prefix="Mostrar" options={yesNoOptions} parent={this}/>
@@ -84,6 +82,8 @@ export default class GraficoDatos extends Component {
 					<Input id="scaleWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
 					<Input id="scaleMax" prefix="máximo" type="number" parent={this}/>
 					<Input id="scaleMin" prefix="mínimo" type="number" parent={this}/>
+					<Input id="dobLinesSize" prefix="doblelínea" type="number" min="1" max="100" parent={this}/>
+					<Input id="dobLinesGradient" prefix="inclinación" type="number" min="1" max="100" parent={this}/>
 				</Item>
 				<Item id={k++} title="Ejes" parent={this}>
 					<Input id="axisColor" type="color" parent={this}/>
