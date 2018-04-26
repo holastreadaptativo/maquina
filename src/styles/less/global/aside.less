@@ -4,6 +4,7 @@ aside
 	box-shadow: -1px 0px rgba(0, 0, 0, .3);
 	color: white;
 	height: ~'calc(100vh - @{navh})';
+	margin-right: -1px;
 	position: fixed;
 	right: -@config;
 	transition: right .3s ease;
@@ -17,10 +18,23 @@ aside
 	h3
 	{
 		background: @main-focus;
+		font-size: 15px;
 		height: 35px;
 		margin: 0 0 20px;
 		padding: 10px;
-		font-size: 15px;
+		width: 100%;
+		i
+		{
+			color: @main-hover;
+			cursor: pointer;
+			position: absolute;
+			right: 10px;
+			transition: all .3s ease;
+			&:hover
+			{
+				color: @sec-color;
+			}
+		}
 	}
 	nav
 	{

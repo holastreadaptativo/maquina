@@ -222,7 +222,7 @@ export function graficoDatos(config)
         }
     }
 
-    let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0, maxWord = 0, maxWordIndex;
+    let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0/*, valueWordSizeX = 0*/, maxWord = 0, maxWordIndex;
     state.ctx.font = `${state.font.size}px ${state.font.family}`
     state.chart.tags.map( (el,index) => {
         if(el.length >= maxWord) {
