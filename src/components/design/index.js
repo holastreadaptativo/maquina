@@ -15,5 +15,9 @@ export const FUNCIONES = [
 	]},
 	{ name:'Datos', tag:'datos', fns:[
 		{ id:'Gráfico Datos', component:components.GraficoDatos, action:actions.graficoDatos }
-	]}
+	]},
+	{ name:'Recta Numérica', tag:'rectasNumericas', fns:[
+			{ id:'Recta Numérica Mixta', component:components.RectaNumerica, action:actions.rectNumMixtaFn }
+		]
+	}
 ]

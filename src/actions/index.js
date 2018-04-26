@@ -9,6 +9,7 @@ export * from './design/datos'
 export * from './design/general'
 export * from './design/geometria'
 export * from './design/numeracion'
+export * from './design/rectasNumericas'
 
 import * as fn from 'actions'
 
