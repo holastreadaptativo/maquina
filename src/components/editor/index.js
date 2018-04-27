@@ -34,7 +34,7 @@ export class Editor extends Component {
 		const { background, borderColor, borderRadius, borderStyle, borderWidth, height, width } = params
 		let onSave = push ? add : update, devices = [md, sm, xs], general = compare(tag, 'general')
 		return (
-        	<section class="editor">
+        	<section class="editor" onContextMenu={e => e.preventDefault()}>
         		<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
