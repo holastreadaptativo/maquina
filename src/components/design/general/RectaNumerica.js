@@ -11,11 +11,12 @@ export default class RectaNumerica extends Component {
       rectType: 'mixta', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
       borderWidth:0, borderColor:'#006400', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
       titleColor: '#EE4223', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
-      chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '6', rectValuesCen: '7',
-      valuesSeparator: '', axisColor: '#E58433', withArrows: 'si', axisWidth: 5, fontColor: '#8B1013', fontSize:14, 
+      chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '6', rectValuesCent: '7',
+      valuesSeparator: 'coma', axisColor: '#E58433', withArrows: 'si', axisWidth: 5, fontColor: '#8B1013', fontSize:14, 
       fontFamily: 'Larke Neue Thin', fontWeight: 'normal', 
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
-      lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg'
+      lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
+      scaleDivisions: 10, scaleValue: 1, scaleWidth: 4, scaleColor: '#E58433', scaleLength: 15
 
     } : props.params
   }
@@ -25,7 +26,7 @@ export default class RectaNumerica extends Component {
   render() {
     let k = 0, rectTypeOptions = ['enteros', 'decimal', 'decimal eje', 'mixta'], rectOrientationOpt = ['vertical','horizontal'],
         borderCanvas=['solid','dashed','dotted','double'], fontWeightOptions=['normal', 'bold'],
-        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions=['normal','punto','coma','espacio'], 
+        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions=['coma','punto'], 
         yesNoOptions=['no', 'si']
     return (
       <Editor params={this.state} store={this.props} parent={this}>
@@ -54,10 +55,17 @@ export default class RectaNumerica extends Component {
           <Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
           {/*<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'x,y'} />*/}
         </Item>
+        <Item id={k++} title="Escala" parent={this}>
+          <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this}/>
+          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this}/>
+          <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
+          <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
+          <Input id="scaleColor" prefix="color" type="color" parent={this}/>
+        </Item>
         <Item id={k++} title="Valores" parent={this}>
-          <Input id="rectValuesUnit" prefix="unidad" placeholder={'$a'} parent={this}/>
-          <Input id="rectValuesDec" prefix="decimal" placeholder={'$b'} parent={this}/>
-          <Input id="rectValuesCent" prefix="centesimal" placeholder={'$c'} parent={this}/>
+          <Input id="rectValuesUnit" prefix="unidad" type="number" placeholder={'$a'} parent={this}/>
+          <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this}/>
+          <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this}/>
           <Select id="valuesSeparator" prefix="separador" options={valuesSeparatorOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Ejes" parent={this}>

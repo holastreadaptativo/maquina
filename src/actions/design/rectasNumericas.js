@@ -6,8 +6,8 @@ export function rectNumMixtaFn(config) {
   const { 
     rectType, rectOrientation, background, borderWidth, borderColor, borderStyle, borderRadius, titleValue,
     titleColor, titleSize, titleWeight, canvasPadding, containerPadding, chartPadding, /*innerChartPadding,*/ rectValuesUnit,
-    rectValuesDec, rectValuesCen, valuesSeparator, axisColor, withArrows, axisWidth, fontColor, fontSize, fontFamily, fontWeight, 
-    pictoImg, lupaImg
+    rectValuesDec, rectValuesCent, valuesSeparator, axisColor, withArrows, axisWidth, fontColor, fontSize, fontFamily, fontWeight, 
+    pictoImg, lupaImg, scaleDivisions, scaleValue, scaleWidth, scaleColor, scaleLength
   } = params
 
   let canvasPaddingAux = {}, containerPaddingAux = {}, chartPaddingAux = {}, innerChartPaddingAux = {}
@@ -36,16 +36,24 @@ export function rectNumMixtaFn(config) {
   let vars = vt ? variables : versions
   let valuesUnit = replace(rectValuesUnit, vars, vt)
   let valuesDec = replace(rectValuesDec, vars, vt)
-  let valuesCen = replace(rectValuesCen, vars, vt)
+  let valuesCent= replace(rectValuesCent, vars, vt)
 
   let state = {
 
   }
   state.ctx = c.getContext('2d')
+  state.typeRect = rectType
+  state.scale = {
+    divisions: eval(scaleDivisions) + 1,
+    value: eval(scaleValue),
+    width: eval(scaleWidth),
+    color: scaleColor,
+    length: eval(scaleLength)
+  }
   state.font = {
     family: fontFamily,
     weight: fontWeight,
-    size: fontSize,
+    size: eval(fontSize),
     color: fontColor,
     align: 'left' // end, right, center, start, left
   }
@@ -103,7 +111,7 @@ export function rectNumMixtaFn(config) {
       left: c.width*(chartPaddingAux.left/1000)
     },
     axis: {
-      width: axisWidth,
+      width: eval(axisWidth),
       color: axisColor,
       arrows: withArrows == 'si' ? true : false,
       arrowColor: axisColor
@@ -113,9 +121,10 @@ export function rectNumMixtaFn(config) {
       src: pictoImg
     },
     values: { 
-      valuesUnit: valuesUnit,
-      valuesDec: valuesDec,
-      valuesCen: valuesCen
+      valuesUnit: eval(valuesUnit),
+      valuesDec: eval(valuesDec),
+      valuesCent: eval(valuesCent),
+      valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
   }
   state.chart.position = {
@@ -125,11 +134,16 @@ export function rectNumMixtaFn(config) {
     y1: state.container.position.y1 - state.chart.padding.bottom
   }
 
+  let mainData = {
+    pointsData: ptosPrincipales(state),
+    centerChartY: state.chart.position.y0 + (state.chart.position.y1 - state.chart.position.y0 + state.chart.axis.width)/2
+  }
+
   
   drawRects(state, state.canvas, 'red')
   drawRects(state, state.container, 'blue')
   drawRects(state, state.chart, 'green')
-  initFn(state)
+  initFn(state, mainData)
 
 }
 
@@ -145,9 +159,31 @@ function drawRects(state, el, color) {
   ctx.save()
 }
 
-function initFn(state) {
+function initFn(state, mainData) {
+  const { chart, scale } = state
   insTitPrinc(state)
-  insEjePrincipal(state)
+  chart.axis.width > 0 && insEjePrincipal(state, mainData)
+  scale.divisions >=1 && scale.width >= 1 && insEscala(state, mainData)
+  insValores(state, mainData)
+}
+
+// retornar punto inicial y final del gráfico
+function ptosPrincipales(state) {
+  const { ctx, chart, scale } = state
+  const { x0, x1 } = chart.position
+  ctx.save()
+  let chartWidth = (x1 - x0)
+  let widthSegment = chartWidth/(scale.divisions < 1 ? 1 : (scale.divisions + 1))
+  let startingPoint = x0 + widthSegment
+  let endingPoint = x1 - widthSegment
+  return {
+    segment: widthSegment,
+    initPoint: startingPoint,
+    endingPoint: endingPoint
+  }
+  ctx.restore()
+  ctx.save()
+
 }
 
 // Main Title
@@ -167,33 +203,110 @@ function insTitPrinc(state) {
   ctx.save()
 }
 
-// Insertar eje Principal
-function insEjePrincipal(state) {
+// Insertar Eje Principal
+function insEjePrincipal(state, mainData) {
   const { ctx, chart, canvas } = state
   const { x0, x1 } = chart.position
+  const { centerChartY } = mainData
   ctx.save()
-  let centerChartY = (canvas.position.y1 - canvas.position.y0)/2
-  ctx.lineWidth = chart.axis.width
+  ctx.lineWidth = chart.axis.width - 1
   ctx.strokeStyle = chart.axis.color
-
   let arrowsLenght = canvas.height*0.02
-
   ctx.lineCap="round";
   ctx.lineJoin="round";
+  if (chart.axis.arrows) {
+    ctx.beginPath()
+    ctx.moveTo(x0 + arrowsLenght, centerChartY - arrowsLenght)
+    ctx.lineTo(x0, centerChartY)
+    ctx.lineTo(x0 + arrowsLenght, centerChartY + arrowsLenght)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(x1 - arrowsLenght, centerChartY - arrowsLenght)
+    ctx.lineTo(x1, centerChartY)
+    ctx.lineTo(x1 - arrowsLenght, centerChartY + arrowsLenght)
+    ctx.stroke()
+  }
   ctx.beginPath()
-  ctx.moveTo(x0 + arrowsLenght, centerChartY - arrowsLenght)
-  ctx.lineTo(x0, centerChartY)
-  ctx.lineTo(x0 + arrowsLenght, centerChartY + arrowsLenght)
-  ctx.stroke()
-  ctx.beginPath()
+  ctx.lineWidth = chart.axis.width
   ctx.moveTo(x0, centerChartY)
   ctx.lineTo(x1, centerChartY)
   ctx.stroke()
-  ctx.beginPath()
-  ctx.moveTo(x1 - arrowsLenght, centerChartY - arrowsLenght)
-  ctx.lineTo(x1, centerChartY)
-  ctx.lineTo(x1 - arrowsLenght, centerChartY + arrowsLenght)
-  ctx.stroke()
+  ctx.restore()
+  ctx.save()
+}
+
+// Insertar Escala
+function insEscala(state, mainData) {
+  const { ctx, scale, font, chart } = state
+  const { pointsData, centerChartY } = mainData
+  ctx.save()
+  ctx.lineWidth = scale.width
+  ctx.strokeStyle = scale.color
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  for (let i = 0; i < scale.divisions; i++) {
+    let xPos = pointsData.initPoint + pointsData.segment*i
+    let yPos = centerChartY
+    ctx.beginPath()
+    //ctx.moveTo(pointsData.initPoint + pointsData.segment*i, centerChartY)
+    ctx.moveTo(xPos, yPos - scale.length)
+    ctx.lineTo(xPos, yPos + scale.length)
+    ctx.stroke()
+    ctx.closePath()
+  }
+  ctx.restore()
+  ctx.save()
+}
+
+// Insertar Valores
+function insValores1(state, mainData) {
+  const { ctx, scale, font, chart } = state
+  const { pointsData, centerChartY } = mainData
+  ctx.save()
+  for (let i = 0; i < scale.divisions; i++) {
+    let xPos = pointsData.initPoint + pointsData.segment*i
+    let yPos = centerChartY
+    ctx.fillStyle = font.color
+    ctx.font = `${font.weight} ${font.size}px ${font.family}`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    if (i === 0) {
+      if (state.typeRect == "mixta") {
+        ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
+        ctx.fillText(chart.values.valuesUnit, xPos - ctx.measureText(chart.values.valuesUnit).width/2, yPos + scale.length*1.1)
+        ctx.font = `${font.weight} ${(font.size)*0.8}px ${font.family}`
+        ctx.fillText(chart.values.valuesDec+'0', xPos + ctx.measureText('100').width/2, yPos + scale.length*1.1)
+        ctx.strokeStyle = chart.axis.color
+        ctx.lineWidth = chart.axis.width/2
+        ctx.moveTo(xPos, yPos + scale.length*1.1 + font.size)
+        ctx.lineTo(xPos + ctx.measureText('100').width, yPos + scale.length*1.1 + font.size)
+        ctx.stroke()
+        ctx.fillText('100', xPos + ctx.measureText('100').width/2, yPos + scale.length*1.1 + font.size + chart.axis.width/2)
+        ctx.font = `${font.weight} ${(font.size)}px ${font.family}`
+      }
+      state.typeRect == "decimal" && ctx.fillText(chart.values.valuesUnit, xPos, yPos + scale.length*1.1)
+    } else if (i === scale.divisions-1) {
+      if (state.typeRect == "mixta") {
+        ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
+        ctx.fillText(chart.values.valuesUnit, xPos - ctx.measureText(chart.values.valuesUnit).width/2, yPos + scale.length*1.1)
+        ctx.font = `${font.weight} ${(font.size)*0.8}px ${font.family}`
+        ctx.fillText(chart.values.valuesDec+1+'0', xPos + ctx.measureText('100').width/2, yPos + scale.length*1.1)
+        ctx.strokeStyle = chart.axis.color
+        ctx.lineWidth = chart.axis.width/2
+        ctx.moveTo(xPos, yPos + scale.length*1.1 + font.size)
+        ctx.lineTo(xPos + ctx.measureText('100').width, yPos + scale.length*1.1 + font.size)
+        ctx.stroke()
+        ctx.fillText('100', xPos + ctx.measureText('100').width/2, yPos + scale.length*1.1 + font.size + chart.axis.width/2)
+        ctx.font = `${font.weight} ${(font.size)}px ${font.family}`
+      }
+      state.typeRect == "decimal" && ctx.fillText(chart.values.valuesUnit + 1, xPos, yPos + scale.length*1.1)
+    } else {
+      ctx.font = `${font.weight} ${(font.size)*0.8}px ${font.family}`
+      state.typeRect == "mixta" && ctx.fillText(chart.values.valuesUnit + chart.values.valuesSeparator + i +'0', xPos, yPos + scale.length*1.1)
+      state.typeRect == "decimal" && ctx.fillText(chart.values.valuesUnit + chart.values.valuesSeparator + i +'0', xPos, yPos + scale.length*1.1)
+    }
+    ctx.closePath()
+  }
   ctx.restore()
   ctx.save()
 }
