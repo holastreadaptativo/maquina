@@ -2,21 +2,19 @@ import React, { Component } from 'react'
 
 export default class TableEditor extends Component {
 	render () {
-		const { cols, rows } = this.props.params
-		let arr = []
-		for (let i = 0; i < rows; i++) {
-			arr.push([])
-			for (let j = 0; j < cols; j++)
-				arr[i].push(<input class="form-control" type="text"></input>)
-		}
+		const { table } = this.props.params
 		return (
 			<table class="table table-condensed">
 				<tbody>
 				{
-					arr.map((n, k) => 
-						<tr key={k}>
+					table.map((m, i) => 
+						<tr key={i}>
 						{ 
-							arr[k].map((m, i) => <td key={i}>{m}</td>) 
+							m.value.map((n, j) => 
+								<td key={j}>
+									<input class={`form-control ${n.type}`} type="text" placeholder={this.getPlaceholder(n.type)}></input>
+								</td>
+							)
 						}
 						</tr>
 					)
@@ -24,5 +22,12 @@ export default class TableEditor extends Component {
 				</tbody>
 			</table>
 		)
+	}
+	getPlaceholder(type) {
+		switch(type) {
+			case 'input': { return 'Respuesta' }
+			case 'image': { return 'URL de la imagen' }
+			case 'text': { return 'Completar texto' }
+		}
 	}
 }

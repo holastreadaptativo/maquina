@@ -8,34 +8,83 @@ export default class InsertarTabla extends Component {
 	}
 	componentWillMount() {
 		if (this.props.push) {
-			this.setState({ table:this.getTable() })
+			const { cols, rows } = this.state
+			let table = []
+			for (let i = 0; i < rows; i++) {
+				table.push({ id:i, value:[] })
+				for (let j = 0; j < cols; j++) {
+					table[i].value.push({ id:j, value:'', type:'text' })
+				}
+			}
+			this.setState({ table })
 		}
 	}
-	getTable() {
+	update(state, id) {
+		let table = this.state.table, diff = state[id] - this.state[id]
 		const { cols, rows } = this.state
-		let table = []
-		for (let i = 0; i < rows; i++) {
-			table.push([])
-			for (let j = 0; j < cols; j++) {
-				table[i].push(<div class={`form-control ${1}`} type="text" onClick={''}></div>)
+		if (id == 'rows') {
+			if (diff > 0) {
+				for (let k = 0; k < diff; k++) {
+					let i = table.length
+					table.push({ id:table.length, value:[] })
+					for (let j = 0; j < cols; j++) {
+						table[i].value.push({ id:j, value:'', type:'text' })
+					}
+				}
+			} else {
+				table = table.slice(0, table.length + diff)
+			}
+		} else {
+			if (diff > 0) {
+				for (let i = 0; i < rows; i++) {
+					let j = table[i].value.length
+					for (let k = 0; k < diff; k++)
+						table[i].value.push({ id:j + k, value:'', type:'text' })
+				}
+			} else {
+				for (let i = 0; i < rows; i++) {
+					table[i].value = table[i].value.slice(0, table[i].value.length + diff)
+				}
 			}
 		}
-		return table
+		this.setState({ ...state, table })
+	}
+	changeType(i, j) {
+		let table = this.state.table
+		switch(table[i].value[j].type) {
+			case 'text': {
+				table[i].value[j].type = 'image'
+				break
+			}
+			case 'image': {
+				table[i].value[j].type = 'input'
+				break
+			}
+			case 'input': {
+				table[i].value[j].type = 'text'
+				break
+			}
+		}
+		this.setState({ table })
 	}
 	render() {
-		let k = 0, table = this.getTable()
+		let k = 0; const { table } = this.state
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Tabla" parent={this}>
-					<Input id="rows" prefix="filas" type="number" parent={this}/>
-					<Input id="cols" prefix="columnas" type="number" parent={this}/>
+					<Input id="rows" prefix="filas" type="number" update={s => ::this.update(s, 'rows')} parent={this}/>
+					<Input id="cols" prefix="columnas" type="number" update={s => ::this.update(s, 'cols')} parent={this}/>
 					<table class="table table-condensed config">
 						<tbody>
 						{
-							table.map((n, j) => 
-								<tr key={j}>
+							table.map((m, i) => 
+								<tr key={i}>
 								{ 
-									table[j].map((m, i) => <td key={i}>{m}</td>) 
+									m.value.map((n, j) => 
+										<td key={j}>
+											<div class={`form-control ${n.type}`} onClick={() => ::this.changeType(i, j)}></div>
+										</td>
+									)
 								}
 								</tr>
 							)

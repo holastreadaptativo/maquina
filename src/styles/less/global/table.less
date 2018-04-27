@@ -125,8 +125,23 @@ table
 					input
 					{
 						color: @main-color;
+						font-size: 13px;
 						max-width: 100vw;
 						min-width: 0;
+						&.image
+						{
+							border-color: lighten(@main-hover, 10%);
+							border-width: 3px;
+						}
+						&.input
+						{
+							border-color: @active;
+							border-width: 3px;
+						}
+						&.text
+						{
+							border-color: darkgray;
+						}
 					}
 					span
 					{
@@ -227,6 +242,14 @@ table
 					min-width: 15px;
 					height: 15px;
 					padding: 0;
+					&.image
+					{
+						background: lighten(@main-hover, 10%);
+					}
+					&.input
+					{
+						background: @active;
+					}
 				}
 			}
 			&:hover

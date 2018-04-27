@@ -37,8 +37,8 @@ export function insertarInput(config) {
 		}	
 	}
 }
-export function insertarTabla(config) {
-	alert(config)	
+export function insertarTabla() {
+	//alert(config)	
 }
 export const ME = { 
 	toString:(n) => {
