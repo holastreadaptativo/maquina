@@ -22,6 +22,8 @@
 }
 #app h6.app
 {
+	font-weight: bold;
+	letter-spacing: .7px;
 	line-height: 16px;
 	text-align: center;
 }
