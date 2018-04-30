@@ -16,7 +16,7 @@ export default class RectaNumerica extends Component {
       fontFamily: 'Larke Neue Thin', fontWeight: 'normal', 
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
       lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
-      scaleDivisions: 10, scaleValue: 1, scaleWidth: 4, scaleColor: '#E58433', scaleLength: 15
+      scaleDivisions: 10, scaleValue: 1, scaleWidth: 4, scaleColor: '#E58433', scaleLength: 15, showValues: 'todos', showLens: 'no'
 
     } : props.params
   }
@@ -25,9 +25,9 @@ export default class RectaNumerica extends Component {
   }
   render() {
     let k = 0, rectTypeOptions = ['enteros', 'decimal', 'decimal eje', 'mixta'], rectOrientationOpt = ['vertical','horizontal'],
-        borderCanvas=['solid','dashed','dotted','double'], fontWeightOptions=['normal', 'bold'],
-        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions=['coma','punto'], 
-        yesNoOptions=['no', 'si']
+        borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
+        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
+        yesNoOptions = ['no', 'si'], showValuesOptions = ['todos','valores','valor','valor + punto','punto','figura','ninguno']
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
@@ -36,6 +36,7 @@ export default class RectaNumerica extends Component {
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
+          <Select id="showLens" prefix="lupa" options={yesNoOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Borde" parent={this}>
           <Input id="borderWidth" prefix="ancho" postfix="px" type="number" parent={this}/>	
@@ -61,6 +62,7 @@ export default class RectaNumerica extends Component {
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
           <Input id="scaleColor" prefix="color" type="color" parent={this}/>
+          <Select id="showValues" prefix="mostrar" options={showValuesOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Valores" parent={this}>
           <Input id="rectValuesUnit" prefix="unidad" type="number" placeholder={'$a'} parent={this}/>
