@@ -7,8 +7,10 @@ export function graficoDatos(config)
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, fontSize,
         scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withArrowsX, withArrowsY, limitVal, projectionVal, highlightBar, fontFamily,
         /* Nuevos parámetros */
-        chartType, pictoImg, /*captVal,*/ captText, caption, rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
-        canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, titleXYSize, dobLinesSize, dobLinesGradient
+        chartType, pictoImg, /*captVal,*/ captText, /*caption,*/ rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
+        canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, titleXYSize, dobLinesSize, dobLinesGradient,
+        // Nuevos Parámetros 03/05
+        showCaption, showValCapt, captBg, captBorder, captBorderWidth, showAxisX, showAxisY
     } = params
 
     if (!container) return
@@ -174,8 +176,10 @@ export function graficoDatos(config)
         image: {
             src: pictoImg,
             caption: {
-                value: ' = ' + scaleInterval + ' ' + captText,
-                show: caption,
+                border: {color: captBorder, width: captBorderWidth},
+                background: captBg,
+                value: showValCapt === 'si' ? ' = ' + scaleInterval + ' ' + captText : '   ' + captText,
+                show: showCaption === 'si' ? true : false ,
                 font: {
                     size: fontSize,
                     color: '#262626',
@@ -333,7 +337,7 @@ export function graficoDatos(config)
     // Generar Gráfico Datos Histograma
     function datosPictoricos(state){
         insPictoricos(state)
-        insLeyenda(state)
+        state.chart.image.caption.show && insLeyenda(state)
     }
     
     // Generar Gráfico Datos Histograma
@@ -358,31 +362,28 @@ export function graficoDatos(config)
         ctx.fillStyle = caption.font.color
         let captTextW = ctx.measureText(captText).width
         let captBox = 0.2
-        ctx.fillStyle = '#fff'
-        ctx.strokeStyle = 'rgba(0,0,0,0.3)'
-        ctx.rect(innerChart.position.x1 - imgW - captTextW - imgW*captBox/2, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
-        ctx.stroke()
+        ctx.beginPath()
+        ctx.fillStyle = caption.background
+        ctx.rect(innerChart.position.x1 - imgW - captTextW - imgW*captBox, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
         ctx.fill()
+        ctx.closePath()
+        ctx.beginPath()
+        ctx.strokeStyle = caption.border.color
+        ctx.lineWidth = caption.border.width
+        ctx.strokeRect(innerChart.position.x1 - imgW - captTextW - imgW*captBox, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
+        ctx.closePath()
         //let captTextH = ctx.measureText(captText).height
         ctx.beginPath()        
         ctx.fillStyle = font.color
-        if (chart.orientation == 'vertical') {
-            ctx.textAlign = 'right'
-            ctx.textBaseline = 'middle'
-            ctx.fillText(captText, chart.position.x1 - captTextW*0.2 , container.position.y0 + imgH/2)
-            img.onload = function() {
-                ctx.drawImage(img,chart.position.x1 - imgW - captTextW*1.2, container.position.y0, imgW,imgH)
-            }
-        } else {
-            ctx.textAlign = 'right'
-            ctx.textBaseline = 'middle'
-            ctx.fillText(captText, chart.position.x1, container.position.y0 + imgH/2)
-            img.onload = function() {
-                ctx.drawImage(img,chart.position.x1 - imgW - captTextW, container.position.y0, imgW,imgH)
-            }
+        ctx.textAlign = 'right'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(captText, chart.position.x1 - captTextW*0.3, container.position.y0 + imgH/2)
+        img.onload = function() {
+            ctx.drawImage(img,chart.position.x1 - imgW - captTextW*1.3, container.position.y0, imgW,imgH)
         }
         ctx.stroke()
         ctx.fill()
+        ctx.closePath()
         ctx.restore()
         ctx.save()
     }
@@ -727,7 +728,9 @@ export function graficoDatos(config)
                 if (i === 0) {
                     chart.show.origen && ctx.fillText(0,chart.position.x0 - 5, y1)
                 } else {
+                    ctx.beginPath()
                     ctx.fillText(valorImprimir,chart.position.x0 - 5, y1 - (data.innerChart.height/(data.chartDivisions))*(i))
+                    ctx.closePath()
                 }
             }
             if (scale.min > 0) {
@@ -738,6 +741,7 @@ export function graficoDatos(config)
                 ctx.moveTo(-lineSize,0)
                 ctx.lineTo(lineSize,0)
                 ctx.stroke()
+                ctx.closePath()
                 ctx.restore()
                 ctx.beginPath()
                 ctx.strokeStyle = font.color
@@ -746,6 +750,7 @@ export function graficoDatos(config)
                 ctx.moveTo(-lineSize,0)
                 ctx.lineTo(lineSize,0)
                 ctx.stroke()
+                ctx.closePath()
                 ctx.restore()
             }
         } else {
@@ -759,7 +764,9 @@ export function graficoDatos(config)
                 if (i === 0) {
                     chart.show.origen && ctx.fillText(0,x0, chart.position.y1 + 5)
                 } else {
+                    ctx.beginPath()
                     ctx.fillText(valorImprimir,x0 + (data.innerChart.width/(data.chartDivisions))*(i), chart.position.y1 + 5)
+                    ctx.closePath()
                 }
             }
             if (scale.min > 0) {
@@ -770,6 +777,7 @@ export function graficoDatos(config)
                 ctx.moveTo(0,lineSize)
                 ctx.lineTo(0,-lineSize)
                 ctx.stroke()
+                ctx.closePath()
                 ctx.restore()
                 ctx.beginPath()
                 ctx.strokeStyle = font.color
@@ -778,6 +786,7 @@ export function graficoDatos(config)
                 ctx.moveTo(0,-lineSize)
                 ctx.lineTo(0,lineSize)
                 ctx.stroke()
+                ctx.closePath()
                 ctx.restore()
             }
         }
@@ -792,8 +801,8 @@ export function graficoDatos(config)
         if (scale.width > 0) {
             ctx.lineWidth = scale.width
             ctx.strokeStyle = scale.color
-            ctx.beginPath()
             for (let i = 0; i <= data.chartDivisions; i ++) {
+                ctx.beginPath()
                 if (chart.orientation == 'vertical') {
                     ctx.moveTo(chart.position.x0 + chart.axis.width/2, chart.position.y1 - chart.axis.width/2 - data.innerChart.height/data.chartDivisions*(i))
                     ctx.lineTo(chart.position.x1 - chart.axis.width, chart.position.y1 - chart.axis.width/2 - data.innerChart.height/data.chartDivisions*(i))
@@ -801,9 +810,9 @@ export function graficoDatos(config)
                     ctx.moveTo(chart.position.x0 + chart.axis.width/2 + data.innerChart.width/data.chartDivisions*(i), chart.position.y1 - chart.axis.width/2)
                     ctx.lineTo(chart.position.x0 + chart.axis.width/2 + data.innerChart.width/data.chartDivisions*(i), chart.position.y0 + chart.axis.width)
                 }
+                ctx.stroke()
+                ctx.closePath()
             }
-            ctx.stroke()
-            ctx.closePath()
         }
         ctx.restore()
         ctx.save()

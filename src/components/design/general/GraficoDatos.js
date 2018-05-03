@@ -12,13 +12,15 @@ export default class GraficoDatos extends Component {
 			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
 			dataTag: '1,1,1,1,1', /*withAxis: 'no',*/ chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', fontWeight:'normal',
 			chartTags:'A,B,C,D,E', titleValue:'Título Principal', titleSize:22, titleColor:'#006400', chartBorder:COLORS['datos'], scaleMax:1, 
-			scaleMin:0, scaleInterval:1, scaleColor:'rgba(229, 229, 229,0.8)', scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', highlightBar:'1,1,1,1,1',
+			scaleMin:0, scaleInterval:1, scaleColor:'#f2f2f2', scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', highlightBar:'1,1,1,1,1',
 			// Nuevos parámetros
 			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
-			typeGraph: ''/*pictorico*/, chartType: '', /*captVal: '1',*/ captText: 'helado', caption: false, rotateTags: 0, rotateValues: 0, barSeparation: 60, 
+			typeGraph: ''/*pictorico*/, chartType: '', /*captVal: '1',*/ captText: 'helado', /*caption: false,*/ rotateTags: 0, rotateValues: 0, barSeparation: 60, 
 			showTags: 'si', showValues: 'si', showOrigin: 'si', titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
 			containerPadding: '0,0,0,10', chartPadding: '20,10,40,10', innerChartPadding: '30,60', valuesSeparator: 'normal', titleXYSize: 18, dobLinesSize: '10',
-			dobLinesGradient: 30
+			dobLinesGradient: 30,
+			// Nuevos Parámetros 03/05
+			showCaption: 'si', showValCapt: 'si', captBg: '#ffffff', captBorder: '#dedede', captBorderWidth: '2', showAxisX: 'si', showAxisY: 'si'
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -86,10 +88,12 @@ export default class GraficoDatos extends Component {
 					<Input id="dobLinesGradient" prefix="inclinación" type="number" min="1" max="100" parent={this}/>
 				</Item>
 				<Item id={k++} title="Ejes" parent={this}>
+					<Select id="showAxisX" prefix="eje x" options={yesNoOptions} parent={this}/>
+					<Select id="showAxisY" prefix="eje y" options={yesNoOptions} parent={this}/>
+					<Input id="axisWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
 					<Input id="axisColor" type="color" parent={this}/>
 					<Select id="withArrowsX" prefix="flecha x" options={yesNoOptions} parent={this}/>
 					<Select id="withArrowsY" prefix="flecha y" options={yesNoOptions} parent={this}/>
-					<Input id="axisWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
 				</Item>
 				<Item id={k++} title="Lineas" parent={this}>
 					<Input id="lineColor" type="color" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
@@ -104,10 +108,15 @@ export default class GraficoDatos extends Component {
 					<Select id="fontFamily" prefix="tipo" options={fontFamilyOptions} parent={this}/>
 					<Select id="fontWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
 				</Item>
-				<Item id={k++} title="Pictoricos" parent={this}>
-					<Input id="pictoImg" prefix="imagen" type="text" parent={this}/>
+				<Item id={k++} title="Leyenda" parent={this}>
+					<Select id="showCaption" prefix="mostrar" options={yesNoOptions} parent={this}/>
+					<Input id="pictoImg" prefix="url imagen" type="text" parent={this}/>
 					{/*<Input id="captVal" prefix="valor" postfix="px" type="number" parent={this}/>*/}
-					<Input id="captText" prefix="text" type="text" parent={this}/>
+					<Select id="showValCapt" prefix="mostrar valor" options={yesNoOptions} parent={this}/>
+					<Input id="captText" prefix="texto" type="text" parent={this}/>
+					<Input id="captBg" prefix="fondo" type="color" parent={this}/>
+					<Input id="captBorder" prefix="borde color" type="color" parent={this}/>
+					<Input id="captBorderWidth" prefix="borde ancho" type="number" parent={this}/>
 				</Item>
 			</Editor>
 		)
