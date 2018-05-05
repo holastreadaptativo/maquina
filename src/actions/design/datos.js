@@ -166,6 +166,8 @@ export function graficoDatos(config)
             }
         },
         axis: {
+            showAxisX: showAxisX === 'si' || showAxisX === '' || showAxisX === undefined ? true : false,
+            showAxisY: showAxisY === 'si' || showAxisY === '' || showAxisY === undefined ? true : false,
             width: axisWidth,
             color: axisColor,
             arrowX: withArrowsX == 'si' ? true: false,
@@ -211,7 +213,7 @@ export function graficoDatos(config)
                 width: borderBars
             },
             color: chartColor, //#c4440980,#1fbc0780,#09ba9c80,#a208ba80
-            highlight: {color: '#93939380'},
+            highlight: {color: '#d4e6c080'},
             padding: 1 // {0: grande, 1: mediana, 2: pequeña},
         },
         show: {
@@ -564,10 +566,10 @@ export function graficoDatos(config)
     
     //insertar Chart
     function insGrafico(state) {
-        const { ctx } = state
+        const { ctx, chart } = state
         const { x0, y0, x1, y1 } = state.chart.position
         ctx.save()
-        insEjes(state, x0, y0, x1, y1)
+        chart.axis.width > 0 && insEjes(state, x0, y0, x1, y1)
         insFlechas(state, x0, y0, x1, y1)
         ctx.restore()
         ctx.save()
@@ -580,16 +582,20 @@ export function graficoDatos(config)
         ctx.save()
         ctx.lineWidth = axis.width
         ctx.strokeStyle = axis.color
-        ctx.beginPath()
-        ctx.moveTo(x0,y0)
-        ctx.lineTo(x0,y1)
-        ctx.stroke()
-        ctx.closePath()
-        ctx.beginPath()
-        ctx.moveTo(x0,y1)
-        ctx.lineTo(x1,y1)
-        ctx.stroke()
-        ctx.closePath()
+        if (axis.showAxisX) {
+            ctx.beginPath()
+            ctx.moveTo(x0,y1)
+            ctx.lineTo(x1,y1)
+            ctx.stroke()
+            ctx.closePath()
+        }
+        if (axis.showAxisY) {
+            ctx.beginPath()
+            ctx.moveTo(x0,y0)
+            ctx.lineTo(x0,y1)
+            ctx.stroke()
+            ctx.closePath()
+        }
         ctx.restore()
         ctx.save()
     } // End insEjes
@@ -608,7 +614,7 @@ export function graficoDatos(config)
         let width = auxWidth < auxHeight ? auxWidth : auxHeight
         let deltaLength = width*0.025
         let deltaIncl = deltaLength*0.7
-        if (axis.arrowX) {
+        if (axis.arrowY) {
             ctx.beginPath()
             ctx.moveTo(x0 - deltaIncl,y0 + deltaLength)
             ctx.lineTo(x0,y0)
@@ -620,7 +626,7 @@ export function graficoDatos(config)
             ctx.closePath()
             ctx.stroke()
         }
-        if (axis.arrowY) {
+        if (axis.arrowX) {
             ctx.beginPath()
             ctx.moveTo(x1 - deltaLength,y1 + deltaIncl)
             ctx.lineTo(x1,y1)
@@ -646,21 +652,31 @@ export function graficoDatos(config)
         ctx.font = 'bold ' + font.size + 'px ' + font.family
         let barMargin, newBarWidth, delta
         for (let i = 0; i < data.lenTag; i++) {
-            if (values[i] && tags[i] && chart.config.dataTags[i] === '0') {
-                if (chart.orientation == 'vertical') {
-                    barMargin = (data.innerChart.width/data.lenTag)*chart.bars.separation
-                    newBarWidth = (data.innerChart.width/data.lenTag) - barMargin
-                    delta = (newBarWidth + barMargin)
-                    ctx.textAlign = 'center'
-                    ctx.textBaseline = 'bottom'
-                    ctx.fillText(values[i], x0 + delta/2 +  delta*i, y1 - (data.innerChart.height/data.chartDivisions)*(((values[i]) - scale.min)/scale.value))
-                } else {
-                    barMargin = (data.innerChart.height/data.lenTag)*chart.bars.separation
-                    newBarWidth = (data.innerChart.height/data.lenTag) - barMargin
-                    delta = (newBarWidth + barMargin)
-                    ctx.textAlign = 'left'
-                    ctx.textBaseline = 'middle'
-                    ctx.fillText(values[i], x0 + 5 + (data.innerChart.width/data.chartDivisions)*(((values[i]) - scale.min)/scale.value), y1 - delta/2 - delta*i)
+            if (chart.config.dataTags[i]) {
+                if (values[i] && tags[i] && chart.config.dataTags[i] !== '1') {
+                    if (chart.orientation == 'vertical') {
+                        barMargin = (data.innerChart.width/data.lenTag)*chart.bars.separation
+                        newBarWidth = (data.innerChart.width/data.lenTag) - barMargin
+                        delta = (newBarWidth + barMargin)
+                        ctx.textAlign = 'center'
+                        ctx.textBaseline = 'bottom'
+                        if (chart.config.dataTags[i] === '0') {
+                            ctx.fillText(values[i], x0 + delta/2 +  delta*i, y1 - (data.innerChart.height/data.chartDivisions)*(((values[i]) - scale.min)/scale.value))
+                        } else {
+                            ctx.fillText(chart.config.dataTags[i], x0 + delta/2 +  delta*i, y1 - (data.innerChart.height/data.chartDivisions)*(((values[i]) - scale.min)/scale.value))
+                        }
+                    } else {
+                        barMargin = (data.innerChart.height/data.lenTag)*chart.bars.separation
+                        newBarWidth = (data.innerChart.height/data.lenTag) - barMargin
+                        delta = (newBarWidth + barMargin)
+                        ctx.textAlign = 'left'
+                        ctx.textBaseline = 'middle'
+                        if (chart.config.dataTags[i] === '0') {
+                            ctx.fillText(values[i], x0 + 5 + (data.innerChart.width/data.chartDivisions)*(((values[i]) - scale.min)/scale.value), y1 - delta/2 - delta*i)
+                        } else {
+                            ctx.fillText(chart.config.dataTags[i], x0 + 5 + (data.innerChart.width/data.chartDivisions)*(((values[i]) - scale.min)/scale.value), y1 - delta/2 - delta*i)
+                        }
+                    }
                 }
             }
         }
@@ -679,17 +695,25 @@ export function graficoDatos(config)
         for (let i = 0; i < data.lenTag; i++) {
             if (chart.tags[i]) {
                 if (chart.orientation == 'vertical') {
-                    ctx.save()
-                    // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a" y ctx.textAlign = girarTexto > 0 ? 'right' : 'center'
-                    ctx.textAlign = girarTexto > 0 ? 'center' : 'center'
-                    ctx.textBaseline = girarTexto > 0 ? 'middle' : 'top'
-                    // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a"
-                    let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
-                    ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + a/2 + 2)
-                    girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
-                    ctx.fillText(chart.tags[i], 0,girarTexto > 0 ? 5 : 0)
-                    ctx.restore()
-                    ctx.save()
+                    if (!chart.tags[i].includes('http')) {
+                        ctx.save()
+                        // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a" y ctx.textAlign = girarTexto > 0 ? 'right' : 'center'
+                        ctx.textAlign = girarTexto > 0 ? 'center' : 'center'
+                        ctx.textBaseline = girarTexto > 0 ? 'middle' : 'top'
+                        // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a"
+                        let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
+                        ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + a/2 + 2)
+                        girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
+                        ctx.fillText(chart.tags[i], 0,girarTexto > 0 ? 5 : 0)
+                        ctx.restore()
+                        ctx.save()
+                    } else {
+                        let img = new Image()
+                        img.src = chart.tags[i]
+                        img.onload = function() {
+                            ctx.drawImage(img, x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i) - img.width/2, chart.position.y1 + 2)
+                        }
+                    }
                 } else {
                     ctx.save()
                     ctx.textAlign = 'right'
