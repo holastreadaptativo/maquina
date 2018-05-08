@@ -20,7 +20,8 @@ export default class GraficoDatos extends Component {
 			containerPadding: '0,0,0,10', chartPadding: '20,10,40,10', innerChartPadding: '30,60', valuesSeparator: 'normal', titleXYSize: 18, dobLinesSize: '10',
 			dobLinesGradient: 30,
 			// Nuevos Parámetros 03/05
-			showCaption: 'si', showValCapt: 'si', captBg: '#ffffff', captBorder: '#dedede', captBorderWidth: '2', showAxisX: 'si', showAxisY: 'si'
+			showCaption: 'si', showValCapt: 'si', captBg: '#ffffff', captBorder: '#dedede', captBorderWidth: '2', showAxisX: 'si', showAxisY: 'si',
+			heightImgTag: '40'
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -70,6 +71,7 @@ export default class GraficoDatos extends Component {
 					<Select id="showTags" prefix="Mostrar" options={yesNoOptions} parent={this}/>
 					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
 					<Input id="rotateTags" prefix="inclinación" postFix={'°'} placeholder={'0° a 90°'} type="number" parent={this}/>
+					<Input id="heightImgTag" prefix="alto" postFix={'px'} placeholder={'imagen etiqueta'} type="number" parent={this}/>
 				</Item>
 				<Item id={k++} title="barras" parent={this}>
 					<Input id="borderBars" prefix="borde" type="number" min="0" max="20" parent={this}/>
@@ -99,7 +101,7 @@ export default class GraficoDatos extends Component {
 					<Input id="lineColor" type="color" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
 					<Input id="lineWidth" prefix="grosor" postfix="px" type="number" parent={this}/>
 					<Input id="dataTag" prefix="etiquetas" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
-					<Input id="limitVal" prefix="limites" type="text" placeholder={'$a, $b, $c'} parent={this}/>
+					<Input id="limitVal" prefix="limites" type="text" placeholder={'2,5,3'} parent={this}/>
 					<Input id="projectionVal" prefix="proyectar" type="text" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
 				</Item>
 				<Item id={k++} title="Fuente" parent={this}>

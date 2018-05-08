@@ -10,7 +10,7 @@ export function graficoDatos(config)
         chartType, pictoImg, /*captVal,*/ captText, /*caption,*/ rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
         canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, titleXYSize, dobLinesSize, dobLinesGradient,
         // Nuevos Parámetros 03/05
-        showCaption, showValCapt, captBg, captBorder, captBorderWidth, showAxisX, showAxisY
+        showCaption, showValCapt, captBg, captBorder, captBorderWidth, showAxisX, showAxisY, heightImgTag
     } = params
 
     if (!container) return
@@ -180,8 +180,9 @@ export function graficoDatos(config)
             caption: {
                 border: {color: captBorder, width: captBorderWidth},
                 background: captBg,
-                value: showValCapt === 'si' ? ' = ' + scaleInterval + ' ' + captText : '   ' + captText,
-                show: showCaption === 'si' ? true : false ,
+                value: scaleInterval,
+                text: captText,
+                show: {showCaption: showCaption === 'si' ? true : false, showCaptVal: showValCapt === 'si' ? true : false},
                 font: {
                     size: fontSize,
                     color: '#262626',
@@ -195,6 +196,7 @@ export function graficoDatos(config)
         },
         values: values,
         tags: chartTags.split(','),
+        heightImgTag: c.height*(eval(heightImgTag)/1000),
         config: {
             dataTags: dataTag.split(','),
             hightLightBar: highlightBar,
@@ -228,6 +230,14 @@ export function graficoDatos(config)
         }
     }
 
+    let imgInTags = false
+    state.chart.tags.map( (tag) => {
+        if (tag.includes("http")) {
+            imgInTags = true
+        }
+        return
+    })
+
     let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0, maxWord = 0, maxWordIndex;
     state.ctx.font = `${state.font.size}px ${state.font.family}`
     state.chart.tags.map( (el,index) => {
@@ -238,20 +248,34 @@ export function graficoDatos(config)
     })
     maxWord = state.chart.tags[maxWordIndex]
 
-    if (state.chart.orientation == 'vertical') {
-        tagWordSizeX = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(maxWord).width
-        valueWordSizeY = state.scale.max > mainMaxValue ? state.ctx.measureText(state.scale.max).width : state.ctx.measureText(mainMaxValue).width 
+    let tagImgHeightV = 0
+    let tagSizeLength = 0
+    let tagImgHeightH = 0
+    if (!imgInTags) {
+        if (state.chart.orientation == 'vertical') {
+            tagWordSizeX = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(maxWord).width
+            valueWordSizeY = state.scale.max > mainMaxValue ? state.ctx.measureText(state.scale.max).width : state.ctx.measureText(mainMaxValue).width 
+        } else {
+            tagWordSizeY = Math.cos(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(maxWord).width
+            //valueWordSizeX = state.ctx.measureText(Math.max(...state.chart.values)).width
+        }
     } else {
-        tagWordSizeY = Math.cos(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(maxWord).width
-        //valueWordSizeX = state.ctx.measureText(Math.max(...state.chart.values)).width
+        if (state.chart.orientation === 'vertical') {
+            tagImgHeightV = state.chart.heightImgTag
+            state.ctx.font = state.font.size + 'px ' + state.font.family
+            tagSizeLength = state.ctx.measureText(Math.max(...state.chart.values)).width
+        } else {
+            tagImgHeightH = state.chart.heightImgTag
+            tagSizeLength = state.ctx.measureText(Math.max(...state.chart.values)).width > tagImgHeightH ? state.ctx.measureText(Math.max(...state.chart.values)).width : tagImgHeightH
+        }
     }
-
+    
     state.container = {
         padding: {
             top: c.height*paddingAux.container.top/1000 + state.titles.mainTitle.font.size + 10,
             right: c.width*paddingAux.container.right/1000,
-            bottom: c.height*paddingAux.container.bottom/1000 + state.titles.titleX.font.size + 10,
-            left: c.width*paddingAux.container.left/1000 + state.titles.titleY.font.size + 10
+            bottom: c.height*paddingAux.container.bottom/1000 + state.titles.titleX.font.size + 10 + tagImgHeightV,
+            left: c.width*paddingAux.container.left/1000 + state.titles.titleY.font.size + 10 + tagImgHeightH + tagSizeLength
         }
     }
 
@@ -265,12 +289,14 @@ export function graficoDatos(config)
     if(state.chart.image.caption.show) {
         state.chart.style.padding.top += state.chart.image.caption.leyendaImgSize
     }
+
     state.chart.position = { 
         x0: state.container.position.x0 + state.chart.style.padding.left + tagWordSizeY + valueWordSizeY,
         y0: state.container.position.y0 + state.chart.style.padding.top,
         x1: state.container.position.x1 - (state.chart.style.padding.right),
         y1: state.container.position.y1 - (state.chart.style.padding.bottom) - state.font.size/2 - tagWordSizeX
     }
+    
     state.chart.style.innerPadding.x = (state.chart.position.x1 - state.chart.position.x0)*(paddingAux.innerChart.x/1000)
     state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)*(paddingAux.innerChart.y/1000)
 
@@ -339,7 +365,7 @@ export function graficoDatos(config)
     // Generar Gráfico Datos Histograma
     function datosPictoricos(state){
         insPictoricos(state)
-        state.chart.image.caption.show && insLeyenda(state)
+        state.chart.image.caption.show.showCaption && insLeyenda(state)
     }
     
     // Generar Gráfico Datos Histograma
@@ -359,29 +385,29 @@ export function graficoDatos(config)
         let imgSize = 0.15
         let imgW = height > width ? width*imgSize : data.innerChart.height*imgSize
         let imgH = imgW
-        let captText = caption.value
+        let captText = caption.show.showCaptVal ? ' = ' + caption.value + ' ' + caption.text : ' ' + caption.text
         ctx.font = `bold ${caption.font.size}px ${caption.font.family}`
         ctx.fillStyle = caption.font.color
         let captTextW = ctx.measureText(captText).width
-        let captBox = 0.2
+        let captBox = caption.show.showCaptVal ? 0.5 : 0.2
         ctx.beginPath()
         ctx.fillStyle = caption.background
-        ctx.rect(innerChart.position.x1 - imgW - captTextW - imgW*captBox, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
+        ctx.rect(chart.position.x1, container.position.y0 - imgH*0.2, -(imgW*1.2 + captTextW), imgH + imgH*0.2)
         ctx.fill()
         ctx.closePath()
         ctx.beginPath()
         ctx.strokeStyle = caption.border.color
         ctx.lineWidth = caption.border.width
-        ctx.strokeRect(innerChart.position.x1 - imgW - captTextW - imgW*captBox, container.position.y0 - imgH*captBox/2, (imgW + captTextW)*(captBox+1), imgH*(captBox+1))
+        ctx.strokeRect(chart.position.x1, container.position.y0 - imgH*0.2, -(imgW*1.2 + captTextW + 10), imgH + imgH*0.2)
         ctx.closePath()
         //let captTextH = ctx.measureText(captText).height
         ctx.beginPath()        
         ctx.fillStyle = font.color
         ctx.textAlign = 'right'
         ctx.textBaseline = 'middle'
-        ctx.fillText(captText, chart.position.x1 - captTextW*0.3, container.position.y0 + imgH/2)
+        ctx.fillText(captText, chart.position.x1 - 10, container.position.y0 + imgH/2)
         img.onload = function() {
-            ctx.drawImage(img,chart.position.x1 - imgW - captTextW*1.3, container.position.y0, imgW,imgH)
+            ctx.drawImage(img,chart.position.x1 - imgW - captTextW - 10, container.position.y0 - imgH*0.1, imgW,imgH)
         }
         ctx.stroke()
         ctx.fill()
@@ -695,8 +721,8 @@ export function graficoDatos(config)
         for (let i = 0; i < data.lenTag; i++) {
             if (chart.tags[i]) {
                 if (chart.orientation == 'vertical') {
+                    ctx.save()
                     if (!chart.tags[i].includes('http')) {
-                        ctx.save()
                         // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a" y ctx.textAlign = girarTexto > 0 ? 'right' : 'center'
                         ctx.textAlign = girarTexto > 0 ? 'center' : 'center'
                         ctx.textBaseline = girarTexto > 0 ? 'middle' : 'top'
@@ -705,24 +731,38 @@ export function graficoDatos(config)
                         ctx.translate(x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i), chart.position.y1 + a/2 + 2)
                         girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
                         ctx.fillText(chart.tags[i], 0,girarTexto > 0 ? 5 : 0)
-                        ctx.restore()
-                        ctx.save()
                     } else {
                         let img = new Image()
                         img.src = chart.tags[i]
+                        let imgSize = state.chart.heightImgTag
                         img.onload = function() {
-                            ctx.drawImage(img, x0+ (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i) - img.width/2, chart.position.y1 + 2)
+                            let xPosImg = x0 + (data.innerChart.width/data.lenTag)/2 + (data.innerChart.width/data.lenTag)*(i) - imgSize/2
+                            let yPosImg = chart.position.y1 + 10
+                            ctx.drawImage(img, xPosImg, yPosImg, imgSize, imgSize)
                         }
                     }
+                    ctx.restore()
+                    ctx.save()
                 } else {
                     ctx.save()
-                    ctx.textAlign = 'right'
-                    ctx.textBaseline = 'middle'
-                    // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a"
-                    let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
-                    ctx.translate(chart.position.x0 - 10, y1 - data.innerChart.height/data.lenTag/2 - data.innerChart.height/data.lenTag*i - a/2)
-                    girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
-                    ctx.fillText(chart.tags[i], 0, 0)
+                    if (!chart.tags[i].includes('http')) {
+                        ctx.textAlign = 'right'
+                        ctx.textBaseline = 'middle'
+                        // si se quiere que el final de la letra quede centrado con respecto a la barra eliminar "a"
+                        let a = Math.sin(state.chart.config.girarTextos.tags*Math.PI/180)*state.ctx.measureText(chart.tags[i]).width
+                        ctx.translate(chart.position.x0 - 10, y1 - data.innerChart.height/data.lenTag/2 - data.innerChart.height/data.lenTag*i - a/2)
+                        girarTexto > 0 && ctx.rotate(-girarTexto*Math.PI/180)
+                        ctx.fillText(chart.tags[i], 0, 0)
+                    } else {
+                        let img = new Image()
+                        img.src = chart.tags[i]
+                        let imgSize = state.chart.heightImgTag
+                        img.onload = function() {
+                            let xPosImg = chart.position.x0 - 10 - imgSize
+                            let yPosImg = y1 - data.innerChart.height/data.lenTag/2 - data.innerChart.height/data.lenTag*i - imgSize/2
+                            ctx.drawImage(img, xPosImg, yPosImg, imgSize, imgSize)
+                        }
+                    }
                     ctx.restore()
                     ctx.save()
                 }
