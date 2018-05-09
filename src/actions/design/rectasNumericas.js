@@ -175,7 +175,7 @@ function drawRects(state, el, color) {
 }
 
 function initFn(state, mainData) {
-  const { chart, scale } = state
+  const { chart } = state
   insTitPrinc(state)
   chart.axis.width > 0 && insEjePrincipal(state, mainData)
   insValores(state, mainData)
@@ -218,7 +218,7 @@ function insTitPrinc(state) {
 
 // Insertar Eje Principal
 function insEjePrincipal(state, mainData) {
-  const { ctx, chart, canvas, scale } = state
+  const { ctx, chart, scale } = state
   const { x0, x1 } = chart.position
   const { centerChartY } = mainData
   ctx.save()
@@ -491,7 +491,7 @@ function mostrarArcos(state, mainData) {
 
 // Mostrar Mini Escala
 function mostrarMiniEscala(state, mainData) {
-  const { ctx, chart, canvas, scale } = state
+  const { ctx, chart, scale } = state
   const { x0, x1 } = chart.position
   const { centerChartY } = mainData
   ctx.save()

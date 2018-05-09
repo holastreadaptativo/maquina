@@ -230,6 +230,14 @@ export function graficoDatos(config)
         }
     }
 
+    let imgInTags = false
+    state.chart.tags.map( (tag) => {
+        if (tag.includes('http')) {
+            imgInTags = true
+        }
+        return
+    })
+
     let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0/*, valueWordSizeX = 0*/, maxWord = 0, maxWordIndex;
     state.ctx.font = `${state.font.size}px ${state.font.family}`
     state.chart.tags.map( (el,index) => {
@@ -367,7 +375,7 @@ export function graficoDatos(config)
     
     // Insertar Leyenda
     function insLeyenda(state) {
-        const { ctx, container, chart, innerChart, font } = state
+        const { ctx, container, chart, /*innerChart,*/ font } = state
         const { caption } = chart.image
         const { width, height } = data.innerChart
         ctx.save()
@@ -381,7 +389,7 @@ export function graficoDatos(config)
         ctx.font = `bold ${caption.font.size}px ${caption.font.family}`
         ctx.fillStyle = caption.font.color
         let captTextW = ctx.measureText(captText).width
-        let captBox = caption.show.showCaptVal ? 0.5 : 0.2
+        //let captBox = caption.show.showCaptVal ? 0.5 : 0.2
         ctx.beginPath()
         ctx.fillStyle = caption.background
         ctx.rect(chart.position.x1, container.position.y0 - imgH*0.2, -(imgW*1.2 + captTextW), imgH + imgH*0.2)

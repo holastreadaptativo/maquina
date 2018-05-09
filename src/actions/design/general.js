@@ -37,11 +37,7 @@ export function insertarInput(config) {
 		}	
 	}
 }
-<<<<<<< HEAD
-export function insertarTabla(config) {
-=======
 export function insertarTabla() {
->>>>>>> ed1ff70644f896dbd2e6d3c58c325c32b77ecab3
 	//alert(config)	
 }
 export const ME = { 
