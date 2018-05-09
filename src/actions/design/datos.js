@@ -230,19 +230,7 @@ export function graficoDatos(config)
         }
     }
 
-<<<<<<< HEAD
-    let imgInTags = false
-    state.chart.tags.map( (tag) => {
-        if (tag.includes("http")) {
-            imgInTags = true
-        }
-        return
-    })
-
-    let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0, valueWordSizeX = 0, maxWord = 0, maxWordIndex;
-=======
     let tagWordSizeX = 0, tagWordSizeY = 0, valueWordSizeY = 0/*, valueWordSizeX = 0*/, maxWord = 0, maxWordIndex;
->>>>>>> ed1ff70644f896dbd2e6d3c58c325c32b77ecab3
     state.ctx.font = `${state.font.size}px ${state.font.family}`
     state.chart.tags.map( (el,index) => {
         if(el.length >= maxWord) {
