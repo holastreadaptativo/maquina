@@ -8,11 +8,13 @@ section
 		position: absolute;
 		top: @margin;
 		width: ~'calc(100vw - 2*@{margin})';
+		.nobar();
 		main.config
 		{
 			background: @main-color;
 			height: 100%;
 			left: 0;
+			overflow-x: hidden;
 			overflow-y: auto;
 			position: absolute;
 			top: 0;

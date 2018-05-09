@@ -34,7 +34,7 @@ export class Editor extends Component {
 		const { background, borderColor, borderRadius, borderStyle, borderWidth, height, width } = params
 		let onSave = push ? add : update, devices = [md, sm, xs], general = compare(tag, 'general')
 		return (
-        	<section class="editor">
+        	<section class="editor" onContextMenu={e => e.preventDefault()}>
         		<main class="config">
 					<div class="title">
 						<h3>Configuración</h3>
@@ -56,16 +56,16 @@ export class Editor extends Component {
 							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
 					</div>
 					<div class={show(active == 0 && compare(fn, 'Insertar Texto'), 'textarea')}>
-						<TextEditor {...this.props} text="content"/>
+						{fn == 'Insertar Texto' && <TextEditor {...this.props} text="content"/>}
 					</div>
 					<div class={show(active == 1 && path == 'answers' && !general, 'textarea')}>
 						<TextEditor {...this.props} text="feedback"/>
 					</div>
 					<div class={show(compare(fn, 'Insertar Input'), 'options')}>
-						<InputEditor {...this.props}/>
+						{fn == 'Insertar Input' && <InputEditor {...this.props}/>}
 					</div>
 					<div class={show(compare(fn, 'Insertar Tabla'), 'editable')}>
-						<TableEditor {...this.props}/>
+						{fn == 'Insertar Tabla' && <TableEditor {...this.props}/>}
 					</div>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</main>

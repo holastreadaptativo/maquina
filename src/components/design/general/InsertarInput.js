@@ -26,7 +26,6 @@ export default class InsertInput extends Component {
 					<Input id="error2" prefix="error 2" type="number" hide={i < 3} parent={this}/> 
 					<Input id="error3" prefix="error 3" type="number" hide={i < 3} parent={this}/> 
 					<Input id="error4" prefix="error 4" type="number" hide={i < 4} parent={this}/>
-
 				</Item>
 				<Item id={k++} title="Feedback" parent={this}>
 					<Input id="feed0" prefix="genérico" parent={this}/>

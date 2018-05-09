@@ -8,7 +8,7 @@ export default class SignIn extends Component {
             	<center>
 	            	<form class="signin">
 	            		<h2>Inicia Sesión</h2>
-	            		<div class="input-group">
+	            		<div>
 	            			<label>Correo electrónico</label>
 	            			<input id="signin-email" class="form-control" type="email"></input>
 	            		</div>

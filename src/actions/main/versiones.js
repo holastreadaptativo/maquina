@@ -1,5 +1,5 @@
 import $, { exe, random, shuffle, stringify, ME } from 'actions'
-import { data, src, LINKS } from 'stores'
+import { data, src, DEFAULT, LINKS } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
 export function ver(action, state) {
@@ -164,9 +164,7 @@ export function ver(action, state) {
 			break
 		}
 		case 'PRINT': {
-			exe(action, { ...state, path:'functions' })
-			exe(action, { ...state, path:'answers' })
-			exe(action, { ...state, path:'feedback' })
+			DEFAULT.FNS.forEach(path => exe(action, { ...state, path }))
 			break
 		}
 		case 'CHECK': {

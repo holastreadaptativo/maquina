@@ -15,20 +15,20 @@ export default class Versions extends Component {
 		})
 		action.ver('CREATE', { code, fns, limit, selected, variables })
 	}
-	handleSelect(m, i) {
-		this.props.setState({ vars:m.vars, active:i })
-	}
 	handleRemove(m, i) {
 		const { code, versions } = this.props, { id } = m
 		if (confirm('¿Quieres eliminar esta versión?')) {
-			this.props.setState({ vars:versions[i - 1].vars, active:i })
+			this.props.setState({ vars:versions[i - 1].vars, active:i - 1 })
 			action.ver('DELETE', { code, id })
 		}
+	}
+	handleSelect(m, i) {
+		this.props.setState({ vars:m.vars, active:i })
 	}
 	render() {
 		const { active, id, option, setState, versions, vt } = this.props
         return (
-			<Aside id={id} option={option} title="Versiones">
+			<Aside id={id} option={option} title="Versiones" parent={this}>
 				<Item id={0} title="Generar" parent={this}>
 					<Input id="total" prefix="máximo" update={setState} type="number" parent={this} disabled/>
 					<Input id="limit" prefix="intentos" update={setState} type="number" parent={this}/>

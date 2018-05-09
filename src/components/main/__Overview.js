@@ -7,7 +7,7 @@ export default class Overview extends Component {
 	constructor() {
 		super()
 		this.state = { active:0, modal:false, drag:'', fn:'', id:'', params:'', tag:'general' }
-	}	
+	}
 	handleRemove(id) {
 		const { code, path } = this.props
 		if (confirm('¿Estas seguro de borrar la función?'))
@@ -43,7 +43,7 @@ export default class Overview extends Component {
 	render() {
 		let p = this.props, t = ['E', 'R', 'G']
 		return (
-        	<Aside id={p.id} option={p.option} title="Selección">
+        	<Aside id={p.id} option={p.option} title="Selección" parent={this}>
 				<nav>
 				{
 					t.map((m, i) => 

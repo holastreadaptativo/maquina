@@ -34,7 +34,7 @@ export default class Functions extends Component {
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
 		return (
-			<Aside id={p.id} option={p.option} title="Funciones">
+			<Aside id={p.id} option={p.option} title="Funciones" parent={this}>
 				<nav>
 				{
 					t.map((m, i) => 

@@ -19,7 +19,7 @@ export default class Download extends Component {
 	render() {
 		const { len, name } = this.state; let k = 0
         return (
-			<Aside id={this.props.id} option={this.props.option} title="Archivos JS y CSS">
+			<Aside id={this.props.id} option={this.props.option} title="Archivos JS y CSS" parent={this}>
 				<Item id={k} title="Descargar" parent={this}>
 					<a class="btn box" href={LINKS[2].url} download>JS</a>
 					<a class="btn box" href={LINKS[1].url} download>CSS</a>
