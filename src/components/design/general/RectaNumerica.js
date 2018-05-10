@@ -18,7 +18,8 @@ export default class RectaNumerica extends Component {
       lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
       scaleDivisions: 10, scaleValue: 1, scaleWidth: 4, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'no',
       showAllValues: 'no', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
-      alignLens:'punto'
+      alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: 'no', showMiniPointValue: 'no',
+      showMiniFigValue: 'no'
 
     } : props.params
   }
@@ -26,7 +27,7 @@ export default class RectaNumerica extends Component {
     rectasNumericas.rectNumMixtaFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta centesimal'], rectOrientationOpt = ['vertical','horizontal'],
+    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'], rectOrientationOpt = ['vertical','horizontal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si']
@@ -75,6 +76,12 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Mini Escala" parent={this}>
           <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniAllValues" prefix="valores" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniTheValue" prefix="valor" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniPointValue" prefix="punto" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniFigValue" prefix="figura" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Escala" parent={this}>
           <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this}/>
