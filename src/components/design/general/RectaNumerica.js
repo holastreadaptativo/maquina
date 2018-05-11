@@ -9,8 +9,8 @@ export default class RectaNumerica extends Component {
     super(props)
     this.state = props.push ? { 
       rectType: 'mixta', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
-      borderWidth:0, borderColor:'#006400', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
-      titleColor: '#EE4223', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
+      borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
+      titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
       chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '6', rectValuesCent: '7',
       valuesSeparator: 'coma', axisColor: '#E58433', withArrows: 'si', axisWidth: 5, fontColor: '#8B1013', fontSize:14, 
       fontFamily: 'Larke Neue Thin', fontWeight: 'normal', 
@@ -18,7 +18,8 @@ export default class RectaNumerica extends Component {
       lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
       scaleDivisions: 10, scaleValue: 1, scaleWidth: 4, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'no',
       showAllValues: 'no', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
-      alignLens:'punto'
+      alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: 'no', showMiniPointValue: 'no',
+      showMiniFigValue: 'no', showMiniGuides: 'no'
 
     } : props.params
   }
@@ -26,7 +27,7 @@ export default class RectaNumerica extends Component {
     rectasNumericas.rectNumMixtaFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta centesimal'], rectOrientationOpt = ['vertical','horizontal'],
+    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'], rectOrientationOpt = ['vertical','horizontal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si']
@@ -34,7 +35,7 @@ export default class RectaNumerica extends Component {
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
           <Select id="rectType" prefix="recta" options={rectTypeOptions} parent={this}/>
-          <Select id="rectOrientation" prefix="orientación" options={rectOrientationOpt} parent={this}/>
+          {/*<Select id="rectOrientation" prefix="orientación" options={rectOrientationOpt} parent={this}/>*/}
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
@@ -75,6 +76,13 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Mini Escala" parent={this}>
           <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniAllValues" prefix="valores" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniTheValue" prefix="valor" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniPointValue" prefix="punto" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniFigValue" prefix="figura" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniGuides" prefix="guías" options={yesNoOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Escala" parent={this}>
           <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this}/>
@@ -95,14 +103,6 @@ export default class RectaNumerica extends Component {
           <Select id="fontFamily" prefix="tipo" options={fontFamilyOptions} parent={this}/>
           <Select id="fontWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
         </Item>
-        {
-          /*
-          <Item id={k++} title="Pictoricos" parent={this}>
-            <Input id="pictoImg" prefix="imagen" type="text" parent={this}/>
-            <Input id="lupaImg" prefix="lupa" type="text" parent={this}/>
-          </Item>
-          */
-        }
       </Editor>
     )
   }
