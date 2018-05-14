@@ -49,9 +49,9 @@ export function rectNumMixtaFn(config) {
   state.scale = {
     divisions: eval(scaleDivisions) + 1,
     value: eval(scaleValue) === 0 ? 1 : eval(scaleValue),
-    width: eval(scaleWidth),
+    width: c.width < 500 ? eval(scaleWidth)*0.6 : eval(scaleWidth),
     color: scaleColor,
-    length: eval(scaleLength)
+    length: c.width < 500 ? eval(scaleLength)*0.7 : eval(scaleLength)
   }
   state.show = {
     showExValues: showExValues === 'si' ? true : false,
@@ -74,7 +74,7 @@ export function rectNumMixtaFn(config) {
   state.font = {
     family: fontFamily,
     weight: fontWeight,
-    size: eval(fontSize),
+    size: c.width < 500 ? eval(fontSize)*0.6 : eval(fontSize),
     color: fontColor,
     align: 'left' // end, right, center, start, left
   }
@@ -132,7 +132,7 @@ export function rectNumMixtaFn(config) {
       left: c.width*(chartPaddingAux.left/1000)
     },
     axis: {
-      width: eval(axisWidth),
+      width: c.width < 500 ? eval(axisWidth)*0.6 : eval(axisWidth),
       color: axisColor,
       arrows: withArrows == 'si' ? true : false,
       arrowColor: axisColor
@@ -144,7 +144,7 @@ export function rectNumMixtaFn(config) {
     },
     values: { 
       valuesUnit: eval(valuesUnit),
-      valuesDec: eval(valuesDec),
+      valuesDec: eval(valuesDec) >= scaleDivisions ? scaleDivisions : eval(valuesDec),
       valuesCent: eval(valuesCent),
       valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
@@ -200,7 +200,7 @@ function ptosPrincipales(state) {
   const { x0, x1 } = chart.position
   ctx.save()
   let chartWidth = (x1 - x0)
-  let widthSegment = chartWidth/(scale.divisions < 1 ? 1 : (scale.divisions + 1))
+  let widthSegment = chartWidth/(scale.divisions < 1 ? 1 : (scale.divisions+1))
   let startingPoint = x0 + widthSegment
   let endingPoint = x1 - widthSegment
   ctx.restore()
@@ -380,7 +380,7 @@ function mostrarValores(state, mainData) {
           chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
           ctx.font = `${font.weight} ${font.size}px ${font.family}`
           let lineL = typeRect !== 'mixta centesimal' ? ctx.measureText('00').width : ctx.measureText('000').width
-          let denVal = typeRect !== 'mixta centesimal' ? 10 : 100
+          let denVal = typeRect !== 'mixta centesimal' ? (scale.divisions-1) : (scale.divisions-1)*10
           let numMult = typeRect !== 'mixta centesimal' ? 1 : 10
           ctx.textBaseline = 'bottom'
           ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
@@ -394,6 +394,8 @@ function mostrarValores(state, mainData) {
           ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
           ctx.stroke()
           ctx.closePath()
+          if (eval(valuesDec) <= eval(scale.divisions)) {
+          }
         }
       }
     }
@@ -413,7 +415,7 @@ function mostrarValor(state, mainData) {
   ctx.textBaseline = 'top'
   let xPos = pointsData.initPoint + pointsData.segment*chart.values.valuesDec
   let yPos = centerChartY
-  let distImg = show.showFigValue ? scale.length*2.5 : 0
+  let distImg = (typeRect === 'enteros' || typeRect === 'mixta') && show.showFigValue ? scale.length*2.5 : 0
   if (typeRect === 'enteros' || typeRect === 'decimal' || typeRect === 'centesimal') {
     ctx.font = `${font.weight} ${font.size*1.5}px ${font.family}`
     let valPoint = typeRect === 'centesimal' ? chart.values.valuesUnit + chart.values.valuesSeparator + chart.values.valuesDec +'0' : chart.values.valuesUnit + chart.values.valuesSeparator + chart.values.valuesDec
@@ -423,21 +425,21 @@ function mostrarValor(state, mainData) {
     //let enteroX = ctx.measureText('0').width/2
     let enteroX = ctx.measureText('0').width/2
     let decNumbDist = chart.values.valuesUnit === 0 ? -enteroX : 0
-    chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
+    chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1 + distImg)
     ctx.font = `${font.weight} ${font.size}px ${font.family}`
     let lineL = typeRect !== 'mixta centesimal' ? ctx.measureText('00').width : ctx.measureText('000').width
-    let denVal = typeRect !== 'mixta centesimal' ? 10 : 100
+    let denVal = typeRect !== 'mixta centesimal' ? (scale.divisions-1) : (scale.divisions-1)*10
     let numMult = typeRect !== 'mixta centesimal' ? 1 : 10
     ctx.textBaseline = 'bottom'
-    ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
+    ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5 + distImg)
     ctx.textBaseline = 'top'
-    ctx.fillText((chart.values.valuesDec)*numMult, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)
+    ctx.fillText((chart.values.valuesDec)*numMult, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + distImg)
     ctx.beginPath()
     ctx.strokeStyle = chart.axis.color
     ctx.lineWidth = chart.axis.width/2
     ctx.lineCap = 'round'
-    ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
-    ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
+    ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1 + distImg)
+    ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1 + distImg)
     ctx.stroke()
     ctx.closePath()
   }
@@ -480,7 +482,7 @@ function mostrarPuntoValor(state, mainData) {
 
 // Mostrar Figura Valor
 function mostrarFigValor(state, mainData) {
-  const { ctx, scale, font, chart, show, typeRect } = state
+  const { ctx, scale, /*font,*/ chart, /*show,*/ typeRect } = state
   const { pointsData, centerChartY } = mainData
   ctx.save()
   ctx.beginPath()
@@ -494,7 +496,7 @@ function mostrarFigValor(state, mainData) {
     ctx.strokeStyle = '#dbac04'
     let diamondW = scale.length*1.5
     let diamondH = diamondW*1.3
-    if (typeRect === 'enteros' || typeRect === 'decimal' || typeRect === 'mixta') {
+    if (typeRect === 'enteros' || typeRect === 'mixta') {
       if (chart.values.valuesDec === i) {
         ctx.moveTo(xPos, yPos + scale.length*1.5)
         ctx.lineTo(xPos + diamondW/2, yPos + diamondH/2 + scale.length*1.5)
@@ -505,7 +507,7 @@ function mostrarFigValor(state, mainData) {
         //   ctx.drawImage(img, xPos - img.width/2, yPos + scale.length*1.2 + imgHeight);
         // }
       }
-    } else if (typeRect === 'centesimal' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
+    } else if (typeRect === 'decimal' || typeRect === 'centesimal' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
       if (chart.values.valuesDec === i) {
         for (let j = 0; j < 10; j++) {
           if (chart.values.valuesCent === j) {
@@ -572,7 +574,7 @@ function mostrarArcos(state, mainData) {
 
 // Mostrar Mini Escala
 function mostrarMiniEscala(state, mainData) {
-  const { ctx, chart, scale, show } = state
+  const { ctx, chart, /*scale,*/ show } = state
   const { x0, x1 } = chart.position
   const { centerChartY } = mainData
   ctx.save()
@@ -581,7 +583,7 @@ function mostrarMiniEscala(state, mainData) {
   let xPosFin = x1 - lineLength
   let centerY = centerChartY*2.2
   generarEje(state, xPosInit, xPosFin, centerY)
-  generarEscala(state, xPosInit, xPosFin, centerY, scale.divisions)
+  generarEscala(state, xPosInit, xPosFin, centerY, 11)
   show.showMiniExValues && mostrarValExtMini(state, xPosInit, xPosFin, centerY)
   show.showMiniAllValues && mostratValoresMini(state, xPosInit, xPosFin, centerY)
   show.showMiniTheValue && mostratElValorMini(state, xPosInit, xPosFin, centerY)
@@ -615,7 +617,7 @@ function mostrarMiniEscala(state, mainData) {
   }
 
   function mostraFigValorMini(state, xPosIni, xPosFin, posY) {
-    const { ctx, scale, font, chart, show } = state
+    const { ctx, scale, /*font, show,*/ chart } = state
     ctx.save()
     ctx.beginPath()
     let segment = (xPosFin - xPosIni)/12
@@ -682,7 +684,7 @@ function mostrarMiniEscala(state, mainData) {
       chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1 + distImg)
       ctx.font = `${font.weight} ${font.size*0.8}px ${font.family}`
       let lineL = ctx.measureText('00').width
-      let denVal = 100
+      let denVal = (scale.divisions-1)*10
       let numMult = 10
       ctx.textBaseline = 'bottom'
       ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5 + distImg)
@@ -724,7 +726,7 @@ function mostrarMiniEscala(state, mainData) {
           chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
           ctx.font = `${font.weight} ${font.size*0.8}px ${font.family}`
           let lineL = ctx.measureText('00').width
-          let denVal = 100
+          let denVal = (scale.divisions-1)*10
           let numMult = 10
           ctx.textBaseline = 'bottom'
           ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
@@ -771,7 +773,7 @@ function mostrarMiniEscala(state, mainData) {
           chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.2)
           ctx.font = `${font.weight} ${font.size}px ${font.family}`
           let lineL = ctx.measureText('00').width
-          let denVal = 100
+          let denVal = (scale.divisions-1)*10
           let numMult = 10
           ctx.textBaseline = 'bottom'
           ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.2 + font.size*2.5)
