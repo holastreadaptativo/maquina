@@ -369,9 +369,21 @@ function mostrarValores(state, mainData) {
     if (i > 0 && i < scale.divisions - 1) {
       if (i !== valuesDec) {
         if (typeRect === 'enteros' || typeRect === 'decimal' || typeRect === 'centesimal') {
-          console.log(scale.divisions)
           ctx.font = `${font.weight} ${font.size*1.5}px ${font.family}`
-          let valToShow = typeRect === 'decimal' ? valuesUnit + valuesSeparator + i : typeRect === 'enteros' ? valuesUnit + valuesSeparator + i : valuesUnit + valuesSeparator + i +'0'
+          let valToShow
+          let multiplyNumber = 1
+          if (typeRect === 'enteros') { 
+            if (scale.divisions-1 === 1) {
+              multiplyNumber = 5
+            } else if (scale.divisions-1 === 5) {
+              multiplyNumber = 2
+            }
+            valToShow = valuesUnit + valuesSeparator + i*multiplyNumber
+          } else if (typeRect === 'decimal') {
+            valToShow = valuesUnit + valuesSeparator + i
+          } else {
+            valToShow = valuesUnit + valuesSeparator + i +'0'
+          }
           ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
         } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
           ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
@@ -408,6 +420,7 @@ function mostrarValores(state, mainData) {
 // Mostrar Valor 
 function mostrarValor(state, mainData) {
   const { ctx, scale, font, chart, typeRect, show } = state
+  const { valuesUnit, valuesSeparator, valuesDec } = chart.values
   const { pointsData, centerChartY } = mainData
   ctx.save()
   ctx.fillStyle = font.color
@@ -418,15 +431,30 @@ function mostrarValor(state, mainData) {
   let yPos = centerChartY
   let distImg = (typeRect === 'enteros' || typeRect === 'mixta') && show.showFigValue ? scale.length*2.5 : 0
   if (typeRect === 'enteros' || typeRect === 'decimal' || typeRect === 'centesimal') {
+    let valToShow
+    let multiplyNumber = 1
+    if (typeRect === 'enteros') {
+      if (scale.divisions === 3) {
+        multiplyNumber = 5
+      } else if (scale.divisions-1 === 5) {
+        multiplyNumber = 2
+      }
+      valToShow = valuesUnit + valuesSeparator + eval(valuesDec)*multiplyNumber
+    } else if (typeRect === 'decimal') {
+      valToShow = valuesUnit + valuesSeparator + valuesDec
+    } else {
+      valToShow = valuesUnit + valuesSeparator + valuesDec +'0'
+    }
     ctx.font = `${font.weight} ${font.size*1.5}px ${font.family}`
-    let valPoint = typeRect === 'centesimal' ? chart.values.valuesUnit + chart.values.valuesSeparator + chart.values.valuesDec +'0' : chart.values.valuesUnit + chart.values.valuesSeparator + chart.values.valuesDec
-    ctx.fillText(valPoint, xPos, yPos + scale.length*1.1 + distImg)
+    //let valPoint = typeRect === 'centesimal' ? valuesUnit + valuesSeparator + valuesDec +'0' : valuesUnit + valuesSeparator + valuesDec
+    //ctx.fillText(valPoint, xPos, yPos + scale.length*1.1 + distImg)
+    ctx.fillText(valToShow, xPos, yPos + scale.length*1.1 + distImg)
   } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
     ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
     //let enteroX = ctx.measureText('0').width/2
     let enteroX = ctx.measureText('0').width/2
-    let decNumbDist = chart.values.valuesUnit === 0 ? -enteroX : 0
-    chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1 + distImg)
+    let decNumbDist = valuesUnit === 0 ? -enteroX : 0
+    valuesUnit !== 0 && ctx.fillText(valuesUnit, xPos - enteroX, yPos + scale.length*1.1 + distImg)
     ctx.font = `${font.weight} ${font.size}px ${font.family}`
     let lineL = typeRect !== 'mixta centesimal' ? ctx.measureText('00').width : ctx.measureText('000').width
     let denVal = typeRect !== 'mixta centesimal' ? (scale.divisions-1) : (scale.divisions-1)*10
@@ -434,7 +462,7 @@ function mostrarValor(state, mainData) {
     ctx.textBaseline = 'bottom'
     ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5 + distImg)
     ctx.textBaseline = 'top'
-    ctx.fillText((chart.values.valuesDec)*numMult, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + distImg)
+    ctx.fillText((valuesDec)*numMult, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + distImg)
     ctx.beginPath()
     ctx.strokeStyle = chart.axis.color
     ctx.lineWidth = chart.axis.width/2
