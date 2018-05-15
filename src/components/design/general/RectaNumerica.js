@@ -27,15 +27,15 @@ export default class RectaNumerica extends Component {
     rectasNumericas.rectNumMixtaFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'], rectOrientationOpt = ['vertical','horizontal'],
+    let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si']
+        const { rectType } = this.state
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
           <Select id="rectType" prefix="recta" options={rectTypeOptions} parent={this}/>
-          {/*<Select id="rectOrientation" prefix="orientación" options={rectOrientationOpt} parent={this}/>*/}
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
@@ -62,7 +62,7 @@ export default class RectaNumerica extends Component {
           <Input id="rectValuesUnit" prefix="unidad" type="number" placeholder={'$a'} parent={this}/>
           <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this}/>
           <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this}/>
-          <Select id="valuesSeparator" prefix="separador" options={valuesSeparatorOptions} parent={this}/>
+          <Select id="valuesSeparator" prefix="separador" hide={rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
           <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
@@ -74,7 +74,7 @@ export default class RectaNumerica extends Component {
           <Select id="alignLens" prefix="alinear" options={['punto','segmento']} parent={this}/>
           <Select id="showArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
         </Item>
-        <Item id={k++} title="Mini Escala" parent={this}>
+        <Item id={k++} title="Mini Escala" parent={this} hide={rectType === 'mixta' || rectType === 'enteros'}>
           <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this}/>
           <Select id="showMiniExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
           <Select id="showMiniAllValues" prefix="valores" options={yesNoOptions} parent={this}/>
@@ -86,7 +86,7 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Escala" parent={this}>
           <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this}/>
-          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this}/>
+          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} hide={rectType === 'decimal' || rectType === 'centesimal'}/>
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
           <Input id="scaleColor" prefix="color" type="color" parent={this}/>

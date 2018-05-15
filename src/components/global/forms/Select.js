@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { show } from 'actions'
 
 export default class Select extends Component {
 	update() {
@@ -6,8 +7,9 @@ export default class Select extends Component {
 		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
 	}
 	render() {
+		const { hide } = this.props
 		return (
-			<div class="input-group">
+			<div class={show(!hide, 'input-group')}>
 				<span class="input-group-addon prefix">{this.props.prefix}</span>
 				<select ref="input" class={`form-control select ${this.props.class}`} defaultValue={this.props.parent.state[this.props.id]} 
 					onChange={::this.update}>{ this.props.options.map((m, i) => <option key={i} value={m}>{m}</option> ) }

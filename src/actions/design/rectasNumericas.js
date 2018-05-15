@@ -47,7 +47,7 @@ export function rectNumMixtaFn(config) {
   state.ctx = c.getContext('2d')
   state.typeRect = rectType
   state.scale = {
-    divisions: eval(scaleDivisions) + 1,
+    divisions: eval(scaleDivisions) > eval(rectValuesDec) ? eval(scaleDivisions) + 1 : eval(rectValuesDec) + 2,
     value: eval(scaleValue) === 0 ? 1 : eval(scaleValue),
     width: c.width < 500 ? eval(scaleWidth)*0.6 : eval(scaleWidth),
     color: scaleColor,
@@ -144,7 +144,7 @@ export function rectNumMixtaFn(config) {
     },
     values: { 
       valuesUnit: eval(valuesUnit),
-      valuesDec: eval(valuesDec) >= scaleDivisions ? scaleDivisions : eval(valuesDec),
+      valuesDec: eval(valuesDec) >= state.scale.divisions ? state.scale.divisions : eval(valuesDec),
       valuesCent: eval(valuesCent),
       valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
@@ -563,10 +563,10 @@ function mostrarArcos(state, mainData) {
     ctx.strokeStyle = font.color
     ctx.lineWidth = Math.round(scale.width/2)
     ctx.beginPath()
-    ctx.arc(xPos + pointsData.segment/2,yPos,pointsData.segment/2,220*Math.PI/180,320*Math.PI/180)
-    ctx.moveTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180), (yPos) - (pointsData.segment/2)*Math.sin(40*Math.PI/180) - pointsData.segment*0.15)
-    ctx.lineTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180), (yPos) - (pointsData.segment/2)*Math.sin(40*Math.PI/180))
-    ctx.lineTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180) - pointsData.segment*0.15, (yPos) - (pointsData.segment/2)*Math.sin(40*Math.PI/180))
+    ctx.arc(xPos + pointsData.segment/2,yPos - scale.length/2,pointsData.segment/2,220*Math.PI/180,320*Math.PI/180)
+    ctx.moveTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180), (yPos - scale.length/2) - (pointsData.segment/2)*Math.sin(40*Math.PI/180) - pointsData.segment*0.15)
+    ctx.lineTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180), (yPos - scale.length/2) - (pointsData.segment/2)*Math.sin(40*Math.PI/180))
+    ctx.lineTo(xPos + pointsData.segment/2 + (pointsData.segment/2)*Math.cos(40*Math.PI/180) - pointsData.segment*0.15, (yPos - scale.length/2) - (pointsData.segment/2)*Math.sin(40*Math.PI/180))
     ctx.stroke()
     ctx.closePath()
   }
