@@ -11,7 +11,7 @@ export default class PlanoCartesiano extends Component {
 			height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0,
 			borderColor:COLORS['border'], borderRadius:20, borderWidth:3, borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, imageDisplay:'none',
 			fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', axisWidth:3, axisDisplay:'none', fontSize:'auto', fontWeight:'bold', 
-			gridType:'simbólico'
+			gridType:'simbólico', exerType:'traslación', line:0
 		} : props.params
 	}
 	componentDidUpdate() {

@@ -301,11 +301,10 @@ export function graficoDatos(config)
     state.chart.style.innerPadding.y = (state.chart.position.y1 - state.chart.position.y0)*(paddingAux.innerChart.y/1000)
 
     state.chart.bars.margin = state.chart.style.innerPadding.x
-
     state.chart.image.height = (state.chart.position.y1 - state.chart.position.y0)*0.3
-    
     state.innerChart = {}
     //*(paddingAux.canvas.top/1000)
+
     state.innerChart.position = {
         x0: state.chart.position.x0 + state.chart.style.innerPadding.x + state.chart.style.padding.left,
         y0: state.chart.position.y0 + state.chart.style.innerPadding.y,
@@ -313,7 +312,7 @@ export function graficoDatos(config)
         y1: state.chart.position.y1 - state.chart.axis.width/2
     }
 
-    if(state.chart.orientation != 'vertical') {
+    if (state.chart.orientation != 'vertical') {
         state.innerChart.position.y1 -= state.chart.style.innerPadding.y/2
         state.innerChart.position.x0 = state.chart.position.x0 + state.chart.axis.width/2
         state.innerChart.position.x1 = state.chart.position.x1 - state.chart.style.innerPadding.x - state.chart.style.padding.right - state.chart.axis.width
@@ -327,7 +326,7 @@ export function graficoDatos(config)
             height: state.innerChart.position.y1 - state.innerChart.position.y0
         }
     }
-    let chartDivisionsNumber = ((state.scale.max - state.scale.min)/state.scale.value)
+    let chartDivisionsNumber = (state.scale.max - state.scale.min)/state.scale.value
     if (chartDivisionsNumber >= 50) {
         data.chartDivisions = 50
         state.scale.value = state.scale.max / data.chartDivisions

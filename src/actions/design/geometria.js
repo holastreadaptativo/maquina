@@ -1,23 +1,17 @@
+export function planoCartesiano(config) 
+{
+	const { container, params } = config
+	const { exerType } = params
 
+	generarPlanoCartesiano(container, params)
 
-
-
-
-
-
-
-
-
-
-
-export function planoCartesiano(config) {
-		const { container, params } = config
-		generarPlanoCartesiano(container, params)
+	if (exerType == 'traslación') {		
 		generarCuadradosUnidos(container, params)
-		//geometria.generarPlanoCartesiano(canvas, this.state)
-		//geometria.dividirPlanoCartesiano(canvas, this.state)
-   		//geometria.reflejarCuadrado(canvas, this.state)  
+	} else {
+		dividirPlanoCartesiano(container, params)
+		reflejarCuadrado(container, params)  
 	}
+}
 
 function generarPlanoCartesiano(canvas, state) {
 
