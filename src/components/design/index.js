@@ -7,7 +7,9 @@ export const FUNCIONES = [
 		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla },
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
-	{ name:'Numeración', tag:'numeracion', fns:[]},
+	{ name:'Numeración', tag:'numeracion', fns:[
+		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumMixtaFn }	
+	]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
 	{ name:'Medición', tag:'medicion', fns:[]},
 	{ name:'Geometría', tag:'geometria', fns:[
@@ -15,9 +17,5 @@ export const FUNCIONES = [
 	]},
 	{ name:'Datos', tag:'datos', fns:[
 		{ id:'Gráfico Datos', component:components.GraficoDatos, action:actions.graficoDatos }
-	]},
-	{ name:'Numeración', tag:'rectasNumericas', fns:[
-			{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumMixtaFn }
-		]
-	}
+	]}
 ]

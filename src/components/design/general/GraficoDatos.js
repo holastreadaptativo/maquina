@@ -16,7 +16,7 @@ export default class GraficoDatos extends Component {
 			// Nuevos parámetros
 			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
 			typeGraph: ''/*pictorico*/, chartType: '', /*captVal: '1',*/ captText: 'helado', /*caption: false,*/ rotateTags: 0, rotateValues: 0, barSeparation: 60, 
-			showTags: 'si', showValues: 'si', showOrigin: 'si', titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
+			showTags: 'si', showValues: 'si', showOrigin: 'no', titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
 			containerPadding: '0,0,0,10', chartPadding: '20,10,40,10', innerChartPadding: '30,60', valuesSeparator: 'normal', titleXYSize: 18, dobLinesSize: '10',
 			dobLinesGradient: 30,
 			// Nuevos Parámetros 03/05
@@ -62,22 +62,22 @@ export default class GraficoDatos extends Component {
 					<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'x,y'} />
 				</Item>
 				<Item id={k++} title="Valores" parent={this}>
-					<Select id="showValues" prefix="Mostrar" options={yesNoOptions} parent={this}/>
-					<Select id="showOrigin" prefix="Mostrar 0" options={yesNoOptions} parent={this}/>
+					<Select id="showValues" prefix="mostrar" options={yesNoOptions} parent={this}/>
+					<Select id="showOrigin" prefix="mostrar 0" options={yesNoOptions} parent={this}/>
 					<Input id="chartValues" prefix="valores" placeholder={'1, 2, 3, 4, 5'} parent={this}/>
 					<Select id="valuesSeparator" prefix="separador" options={valuesSeparatorOptions} parent={this}/>
 				</Item>
 				<Item id={k++} title="Etiquetas" parent={this}>
-					<Select id="showTags" prefix="Mostrar" options={yesNoOptions} parent={this}/>
+					<Select id="showTags" prefix="mostrar" options={yesNoOptions} parent={this}/>
 					<Input id="chartTags" prefix="etiquetas" placeholder={'A, B, C, D, E'} parent={this}/>
 					<Input id="rotateTags" prefix="inclinación" postFix={'°'} placeholder={'0° a 90°'} type="number" parent={this}/>
-					<Input id="heightImgTag" prefix="alto" postFix={'px'} placeholder={'imagen etiqueta'} type="number" parent={this}/>
+					<Input id="heightImgTag" prefix="alto" postfix={'%'} placeholder={'imagen etiqueta'} type="number" parent={this}/>
 				</Item>
 				<Item id={k++} title="barras" parent={this}>
-					<Input id="borderBars" prefix="borde" type="number" min="0" max="20" parent={this}/>
+					<Input id="borderBars" prefix="borde" type="number" postfix="px" min="0" max="20" parent={this}/>
 					<Input id="chartBorder" prefix="borde" type="color" parent={this}/>
 					<Input id="chartColor" prefix="color" type="color" parent={this}/>
-					<Input id="barSeparation" prefix="ancho" type="number" min="1" max="100" parent={this}/>
+					<Input id="barSeparation" prefix="ancho" postfix="%" type="number" min="1" max="100" parent={this}/>
 					<Input id="highlightBar" prefix="resaltar" placeholder={'0, 1, 0, 0, 1'} parent={this}/>
 				</Item>
 				<Item id={k++} title="Escala" parent={this}>

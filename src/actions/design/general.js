@@ -37,8 +37,27 @@ export function insertarInput(config) {
 		}	
 	}
 }
-export function insertarTabla() {
-	//alert(config)	
+export function insertarTabla(config) {
+	const { container, params, variables, versions, vt } = config, { table } = params, vars = vt ? variables : versions
+
+	if (container) {
+		let r = '<table class="table table-condensed"><tbody>'			
+		table.forEach((m, i) => {
+			r += `<tr key="${i}">`
+			m.value.forEach((n, j) => {
+				r += `<td key="${j}">`
+				r += n.type == 'input' ? `<input class="form-control" type="text" placeholder="Respuesta" value="${n.value.answer}"></input>` :
+					n.type == 'image' ? `<img src="${n.value.url}" height="50px"/>` : `<h6>${n.value.text}</h6>`
+				r += '</td>'
+			})
+			r += '</tr>'
+		})
+		r += '</tbody></table>'
+		container.innerHTML = r
+
+		if (false)
+			alert(vars)
+	}
 }
 export const ME = { 
 	toString:(n) => {

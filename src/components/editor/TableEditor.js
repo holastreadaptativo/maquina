@@ -13,7 +13,7 @@ export default class TableEditor extends Component {
 							m.value.map((n, j) => 
 								<td key={j}>
 									<input class={`form-control ${n.type}`} type="text" placeholder={this.getPlaceholder(n.type)} 
-									value={this.getValue(n.type, n.value)}/>
+									value={this.getValue(n.type, n.value)} disabled/>
 								</td>
 							)
 						}

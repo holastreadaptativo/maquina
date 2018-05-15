@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+
+
 export function planoCartesiano(config) {
 		const { container, params } = config
 		generarPlanoCartesiano(container, params)
