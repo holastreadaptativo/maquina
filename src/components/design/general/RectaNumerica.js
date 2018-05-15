@@ -11,7 +11,7 @@ export default class RectaNumerica extends Component {
       rectType: 'mixta', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
       titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
-      chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '6', rectValuesCent: '7',
+      chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '1', rectValuesCent: '7',
       valuesSeparator: 'coma', axisColor: '#E58433', withArrows: 'si', axisWidth: 5, fontColor: '#8B1013', fontSize:14, 
       fontFamily: 'Larke Neue Thin', fontWeight: 'normal', 
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
@@ -30,7 +30,7 @@ export default class RectaNumerica extends Component {
     let k = 0, rectTypeOptions = ['enteros', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
-        yesNoOptions = ['no', 'si']
+        yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10]
         const { rectType } = this.state
     return (
       <Editor params={this.state} store={this.props} parent={this}>
@@ -85,8 +85,9 @@ export default class RectaNumerica extends Component {
           <Select id="showMiniGuides" prefix="guías" options={yesNoOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Escala" parent={this}>
-          <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this}/>
-          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} hide={rectType === 'decimal' || rectType === 'centesimal'}/>
+          <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} hide={true}/>
+          <Select id="scaleDivisions" prefix="divisiones" options={scaleDivisionsOptions} parent={this} hide={rectType !== 'enteros'}/>
+          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} hide={rectType === 'enteros'}/>
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
           <Input id="scaleColor" prefix="color" type="color" parent={this}/>

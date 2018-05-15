@@ -369,8 +369,9 @@ function mostrarValores(state, mainData) {
     if (i > 0 && i < scale.divisions - 1) {
       if (i !== valuesDec) {
         if (typeRect === 'enteros' || typeRect === 'decimal' || typeRect === 'centesimal') {
+          console.log(scale.divisions)
           ctx.font = `${font.weight} ${font.size*1.5}px ${font.family}`
-          let valToShow = typeRect === 'enteros' || typeRect === 'decimal' ? valuesUnit + valuesSeparator + i : valuesUnit + valuesSeparator + i +'0'
+          let valToShow = typeRect === 'decimal' ? valuesUnit + valuesSeparator + i : typeRect === 'enteros' ? valuesUnit + valuesSeparator + i : valuesUnit + valuesSeparator + i +'0'
           ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
         } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
           ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
