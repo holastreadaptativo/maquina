@@ -1,39 +1,178 @@
+//import { replace } from 'actions'
+
 export function planoCartesiano(config) 
 {
 	const { container, params } = config
-	const { exerType } = params
+	const { exerciseType, cols, rows } = params
 
-	generarPlanoCartesiano(container, params)
+	if (!container) return
+	let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
+        width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
 
-	if (exerType == 'traslación') {		
-		generarCuadradosUnidos(container, params)
-	} else {
+    container.height = height
+    container.width = width
+
+    let state = {
+    	ctx: container.getContext('2d'),
+    	h: height/rows, w: width/cols, 
+    	height, width, params
+    }
+
+	generarPlanoCartesiano(state)
+
+	if (exerciseType == 'traslación') {		
+		unirFigurasGeometricas(state)
+	} 
+	else {
 		dividirPlanoCartesiano(container, params)
-		reflejarCuadrado(container, params)  
+		reflejarCuadrado(container, params)
 	}
 }
 
-function generarPlanoCartesiano(canvas, state) {
+function generarPlanoCartesiano(state) {
+	const { ctx, height, width, h, w, params } = state
 
-	canvas.width = state.width; canvas.height = state.height
-	let ctx = canvas.getContext('2d'), w = state.width/state.cols, h = state.height/state.rows
-	ctx.clearRect(0, 0, state.width, state.height)
-
+	ctx.clearRect(0, 0, width, height)
 	ctx.beginPath()
 
-	for (let x = w; x < state.width; x += w) {
-     	ctx.moveTo(x, 0); ctx.lineTo(x, state.height)
+	for (let x = w; x < width; x += w) {
+     	ctx.moveTo(x, 0)
+     	ctx.lineTo(x, height)
 	}
-	for (let y = h; y < state.height; y += h) {
-    	ctx.moveTo(0, y); ctx.lineTo(state.width, y)
+	for (let y = h; y < height; y += h) {
+    	ctx.moveTo(0, y)
+    	ctx.lineTo(width, y)
 	}	
 
-	ctx.strokeStyle = state.gridColor
-	ctx.lineWidth = state.gridWidth
+	ctx.strokeStyle = params.gridColor
+	ctx.lineWidth = params.gridWidth
 
 	ctx.stroke()
 	ctx.closePath()
 }
+
+function generarFigurasGeometricas(state) {
+
+}
+
+function unirFigurasGeometricas(state) {
+	const { ctx, height, width, h, w, params } = state, headlen = w/3, rad = Math.PI/180, red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)'
+	let fx = params.px1*w, fy = (params.rows - params.py1 - 1)*h, tx = params.px2*w, ty = (params.rows - params.py2 - 1)*h
+
+	ctx.beginPath()
+	ctx.fillStyle = red
+	ctx.fillRect(fx, fy, w, h)	
+
+	ctx.fillStyle = blue
+	ctx.fillRect(tx, ty, w, h)
+	ctx.closePath()
+
+	ctx.beginPath()
+
+	let k = fx < tx ? 1 : -1, i = fy < ty ? 1 : -1
+	for (let x = fx, a = Math.atan2(0, w); k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
+	{
+		let img = new Image()
+		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
+		if (k == 1) {
+			img.onload = () => { 
+				ctx.drawImage(img, x + w/10, fy - h/(2.5), w*.8, h/3)
+			}
+		} else {
+			if (i != 1) {
+				img.onload = () => { 
+					ctx.save()
+					ctx.translate(x - w/10, fy + h/(2.5))
+					ctx.rotate(rad*180)
+					ctx.drawImage(img, 0, 0, w*.8, h/3)
+					ctx.restore()
+					ctx.save()
+				}
+			} else {
+				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
+				img.onload = () => { 
+					ctx.save()
+					ctx.translate(x + w/10 - w, fy - h/(2.5))
+					ctx.drawImage(img, 0, 0, w*.8, h/3)
+					ctx.restore()
+					ctx.save()
+				}
+			}
+		}
+	}
+	for (let y = fy, a = Math.atan2(h, 0); i*y < i*ty; y += i*h) {
+		let img = new Image()
+		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
+		if (i == 1) {  
+			if (k == 1) {
+				if (i*y > i*ty) { return false }
+				img.onload = () => { 
+					ctx.save()
+					ctx.translate(tx + w/(2.5), y + h/10)  
+					ctx.rotate(rad*90)
+					ctx.drawImage(img, 0, 0, w*.8, h/3)
+					ctx.restore()
+					ctx.save()
+				}             
+			} else {
+				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
+				img.onload = () => { 
+					ctx.save()
+					ctx.translate(tx - w/(2.5), y - h/10 + h)  
+					ctx.rotate(rad*270)
+					ctx.drawImage(img, 0, 0, w*.8, h/3)
+					ctx.restore()
+					ctx.save()
+				}
+			}
+		} else {                 
+			img.onload = () => { 
+				ctx.save()
+				ctx.translate(tx - w/(2.5), y - h/10)  
+				ctx.rotate(rad*270)
+				ctx.drawImage(img, 0, 0, w*.8, h/3)
+				ctx.restore()
+				ctx.save()
+			}
+		}
+	}
+
+	ctx.closePath()
+	ctx.restore()
+	ctx.save()
+}
+
+// function generarCuadradosUnidos(canvas, state) {
+
+// let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
+// let w = state.width/(state.cols + 1), h = state.height/(state.rows + 1), headlen = w*1/6, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
+
+// ctx.beginPath()
+
+// ax = state.iniciox1*w; //Math.floor(Math.random()*state.cols)*w
+// ay = (state.rows - state.inicioy1 - state.imageHeight + 1)*h; //Math.floor(Math.random()*state.rows)*h
+// bx = state.finx1*w //Math.floor(Math.random()*state.cols)*w
+// by = (state.rows - state.finy1 - state.imageHeight + 1)*h //Math.floor(Math.random()*state.rows)*h
+
+// if (state.image3 && state.image4 && state.image3 != "" && state.image4 != "") {
+// 		let img3 = new Image();
+// 		img3.src = state.image3;
+// 		img3.onload = function() { 
+// 				ctx.drawImage(img3, ax, ay, state.imageWidth*w, state.imageHeight*h);
+// 		}
+// 		let img4 = new Image();
+// 		img4.src = state.image4;
+// 		img4.onload = function() { 
+// 				ctx.drawImage(img4, bx, by, state.imageWidth*w, state.imageHeight*h);
+// 		}
+// } else {
+// 		ctx.fillStyle = red;
+// 		ctx.fillRect(ax, ay, state.imageWidth*w, state.imageHeight*h);
+// 		ctx.fillStyle = blue;
+// 		ctx.fillRect(bx, by, state.imageWidth*w, state.imageHeight*h);
+// }
+
+
 
 export function dividirPlanoCartesiano(canvas, state) {
 
@@ -122,57 +261,10 @@ export function reflejarCuadrado(canvas, state) {
 	ctx.closePath()
 }
 
-function generarCuadradosUnidos(canvas, state) {
-
-	let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
-	let w = state.width/state.cols, h = state.height/state.rows, headlen = w/3, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
-
-	ctx.beginPath()
-	ctx.fillStyle = red
-	ax = Math.floor(Math.random()*state.cols)*w
-	ay = Math.floor(Math.random()*state.rows)*h
-	ctx.fillRect(ax, ay, w, h)	
-
-	ctx.fillStyle = blue
-	bx = Math.floor(Math.random()*state.cols)*w
-	by = Math.floor(Math.random()*state.rows)*h
-	ctx.fillRect(bx, by, w, h)
-	ctx.closePath()
-
-	if (ax < bx) { fx = ax; tx = bx; fy = ay; ty = by; } 
-   	else { fx = bx; tx = ax; fy = by; ty = ay; }
-
-   	ctx.beginPath()
-	ctx.strokeStyle = green
-	for (let x = fx, a = Math.atan2(0, w); x < tx; x += w) {
-		ctx.moveTo(x, fy); ctx.arc(x + w/2, fy + h/2 - 3, 220/320*w, 220*rad, 320*rad, false)
-		ctx.lineTo(x + w - headlen * Math.cos(a + Math.PI/24), fy - headlen * Math.sin(a + Math.PI/24))
-		ctx.moveTo(x + w, fy)
-		ctx.lineTo(x + w - headlen * Math.cos(a + Math.PI/2), fy - headlen * Math.sin(a + Math.PI/2))
-	}
-	let i = fy < ty ? 1 : -1
-	for (let y = fy, a = Math.atan2(h, 0); i*y < i*ty; y += i*h) {
-		ctx.moveTo(tx, y + i*h)
-		ctx.moveTo(tx, y + i*h)
-		ctx.lineTo(tx - headlen * Math.cos(a + i*Math.PI/2), y + i*h - i*headlen * Math.sin(a + i*Math.PI/2)) 
-		ctx.moveTo(tx, y + i*h)
-		ctx.lineTo(tx - headlen * Math.cos(a + i*Math.PI/24), y + i*h - i*headlen * Math.sin(a + i*Math.PI/24))
-		ctx.moveTo(tx, y); ctx.arc(tx - i*w/2 + i*3, y + i*h/2, 220/320*w, (i > 0 ? 310 : 130)*rad, (i > 0 ? 50 : 230)*rad, false)
-	}
-	ctx.stroke()
-	ctx.closePath()
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////
 
+//  function planoCartesianoX() { 
 
-// function planoCartesianoX() { 
-
-// 	let clase = $(".plano-r1").attr('class','text-center')  
-// 	clase.each((index, item) => {
-// 			$(item).find(".txtRef").remove();
-// 			let id = $(item).attr("id").split('htmlPlano')[1]
-// 			let plano = $("#htmlPlano"+id)     
 // 			let state = {
 // 					height:Number.parseInt(plano.attr("alto")),
 // 					width:Number.parseInt(plano.attr("ancho")),
@@ -431,132 +523,7 @@ function generarCuadradosUnidos(canvas, state) {
 // ctx.closePath()
 // }
 
-// function generarCuadradosUnidos(canvas, state) {
 
-// let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
-// let w = state.width/(state.cols + 1), h = state.height/(state.rows + 1), headlen = w*1/6, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
-
-// ctx.beginPath()
-
-// ax = state.iniciox1*w; //Math.floor(Math.random()*state.cols)*w
-// ay = (state.rows - state.inicioy1 - state.imageHeight + 1)*h; //Math.floor(Math.random()*state.rows)*h
-// bx = state.finx1*w //Math.floor(Math.random()*state.cols)*w
-// by = (state.rows - state.finy1 - state.imageHeight + 1)*h //Math.floor(Math.random()*state.rows)*h
-
-// if (state.image3 && state.image4 && state.image3 != "" && state.image4 != "") {
-// 		let img3 = new Image();
-// 		img3.src = state.image3;
-// 		img3.onload = function() { 
-// 				ctx.drawImage(img3, ax, ay, state.imageWidth*w, state.imageHeight*h);
-// 		}
-// 		let img4 = new Image();
-// 		img4.src = state.image4;
-// 		img4.onload = function() { 
-// 				ctx.drawImage(img4, bx, by, state.imageWidth*w, state.imageHeight*h);
-// 		}
-// } else {
-// 		ctx.fillStyle = red;
-// 		ctx.fillRect(ax, ay, state.imageWidth*w, state.imageHeight*h);
-// 		ctx.fillStyle = blue;
-// 		ctx.fillRect(bx, by, state.imageWidth*w, state.imageHeight*h);
-// }
-
-// ctx.closePath()
-// ctx.save()
-
-// fx = ax; tx = bx; 
-// fy = ay; ty = by; 
-
-// if (fx < tx) {
-// 		//fx += state.imageWidth*w
-// 		//tx += state.imageWidth*w
-// }
-
-// // Generar Flechas
-// if (state.hasArrow == 1) {
-// 		ctx.beginPath()
-// 		ctx.strokeStyle = state.arrowColor
-// 		ctx.lineWidth = 1 //state.arrowWidth
-
-// 		//https://goo.gl/SuHQRH     
-// 		// FLechas Horizontales
-// 		let k = fx < tx ? 1 : -1, i = fy < ty ? 1 : -1
-// 		for (let x = fx, a = Math.atan2(0, w); k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
-// 		{
-// 				let img = new Image()
-// 				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
-// 				if (k == 1) {
-// 					img.onload = function() { 
-// 						ctx.drawImage(img, x + w/10, fy - h/(2.5), w*.8, h/3)
-// 					}
-// 				} else {
-// 						if (i != 1) {
-// 								img.onload = function() { 
-// 										ctx.save()
-// 										ctx.translate(x - w/10, fy + h/(2.5))
-// 										ctx.rotate(rad*180)
-// 										ctx.drawImage(img, 0, 0, w*.8, h/3)
-// 										ctx.restore()
-// 										ctx.save()
-// 								}
-// 						} else {
-// 								img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
-// 								img.onload = function() { 
-// 										ctx.save()
-// 										ctx.translate(x + w/10 - w, fy - h/(2.5))
-// 										ctx.drawImage(img, 0, 0, w*.8, h/3)
-// 										ctx.restore()
-// 										ctx.save()
-// 								}
-// 						}
-// 				}
-// 		}
-// 		// FLechas Verticales
-// 		for (let y = fy, a = Math.atan2(h, 0); i*y < i*ty; y += i*h) {
-// 				let img = new Image()
-// 				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
-// 				if (i == 1) {  
-// 						if (k == 1) {
-// 							if (i*y > i*ty /*- i*h*/) {
-// 								return false;
-// 							}
-// 								img.onload = function() { 
-// 										ctx.save()
-// 										ctx.translate(tx + w/(2.5), y + h/10)  
-// 										ctx.rotate(rad*90)
-// 										ctx.drawImage(img, 0, 0, w*.8, h/3)
-// 										ctx.restore()
-// 										ctx.save()
-// 								}             
-// 						} else {
-// 								img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
-// 								img.onload = function() { 
-// 										ctx.save()
-// 										ctx.translate(tx - w/(2.5), y - h/10 + h)  
-// 										ctx.rotate(rad*270)
-// 										ctx.drawImage(img, 0, 0, w*.8, h/3)
-// 										ctx.restore()
-// 										ctx.save()
-// 								}
-// 						}
-// 				} else {                 
-// 						img.onload = function() { 
-// 								ctx.save()
-// 								ctx.translate(tx - w/(2.5), y - h/10)  
-// 								ctx.rotate(rad*270)
-// 								ctx.drawImage(img, 0, 0, w*.8, h/3)
-// 								ctx.restore()
-// 								ctx.save()
-// 						}
-// 				}
-// 		}
-		
-// 		ctx.stroke()
-// 		ctx.closePath()
-// 		ctx.restore()
-// 		ctx.save()
-// }    
-// }
 
 // function generarCoordenadas(canvas, state) {
 

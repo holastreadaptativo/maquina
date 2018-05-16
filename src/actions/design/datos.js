@@ -3,36 +3,21 @@ import { replace } from 'actions'
 export function graficoDatos(config) 
 {
     const { container, params, variables, versions, vt } = config
-    const { axisColor, axisWidth, background, fontColor, /*extra,*/ lineColor, lineWidth, chartBorder,
-        chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, fontSize,
-        scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, dataTag, withArrowsX, withArrowsY, limitVal, projectionVal, highlightBar, fontFamily,
-        /* Nuevos parámetros */
-        chartType, pictoImg, /*captVal,*/ captText, /*caption,*/ rotateTags, rotateValues, barSeparation, showTags, showValues, titleWeight, fontWeight, borderBars,
-        canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, titleXYSize, dobLinesSize, dobLinesGradient,
-        // Nuevos Parámetros 03/05
-        showCaption, showValCapt, captBg, captBorder, captBorderWidth, showAxisX, showAxisY, heightImgTag
+    const { axisColor, axisWidth, background, fontColor, lineColor, lineWidth, chartBorder, chartPosition, chartColor, chartValues, chartTags, dataTag, 
+        titleValue, titleSize, titleColor, axisTitleX, axisTitleY, fontSize, scaleMax, scaleMin, scaleInterval, scaleColor, scaleWidth, withArrowsX, 
+        withArrowsY, limitVal, projectionVal, highlightBar, fontFamily, chartType, pictoImg, captText, rotateTags, rotateValues, barSeparation, showTags, 
+        showValues, titleWeight, fontWeight, borderBars, canvasPadding, containerPadding, chartPadding, innerChartPadding, valuesSeparator, showOrigin, 
+        titleXYSize, dobLinesSize, dobLinesGradient, showCaption, showValCapt, captBg, captBorder, captBorderWidth, showAxisX, showAxisY, heightImgTag 
     } = params
 
     if (!container) return
     let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
         width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
 
-    container.width = width
     container.height = height
+    container.width = width
 
-    let vars = vt ? variables : versions
-    let values = replace(chartValues, vars, vt).split(',')
-
-    styleCanvasCont()
-    function styleCanvasCont() {
-        let borderColor = borderColor
-        borderColor = borderColor != '' ? borderColor : 'transparent'
-        let borderRadius = borderRadius
-        borderRadius = borderRadius > 0 ? borderRadius : 0
-        // $(board).attr({
-        //     style: `border: ${borderWidth}px solid ${borderColor}; border-radius: ${borderRadius}px; background-color: ${backgroundColor};`
-        // })
-    }
+    let vars = vt ? variables : versions, values = replace(chartValues, vars, vt).split(','), c = container
     let paddingAux = {
         canvas: {
             top: eval(canvasPadding ? canvasPadding.split(',')[0] : 0),
@@ -57,12 +42,9 @@ export function graficoDatos(config)
             y: eval(innerChartPadding ? innerChartPadding.split(',')[1] : 10)
         }
     }
-    let c = container
 
-    let mainScaleInterval, mainScaleMin, mainScaleMax, mainMaxValue,
-    mainMinValue
-    mainMaxValue = eval(Math.max(...values))
-    mainMinValue = eval(Math.min(...values))
+    let mainScaleInterval, mainScaleMin, mainScaleMax, mainMaxValue, mainMinValue
+    mainMaxValue = eval(Math.max(...values)); mainMinValue = eval(Math.min(...values))
     mainScaleInterval = eval(scaleInterval > 1 ? scaleInterval > mainMaxValue ? mainMaxValue : scaleInterval : 1)
     mainScaleMin = eval(scaleMin > 0 ? scaleMin > mainMinValue ? mainMinValue : scaleMin : 0)
     mainScaleMax = eval(scaleMax > mainMaxValue ? scaleMax : mainMaxValue)
@@ -70,11 +52,11 @@ export function graficoDatos(config)
     let state = {}
     state.ctx = c.getContext('2d')
     state.scale = {
-        value: eval(mainScaleInterval),
-        width: scaleWidth,
         color: scaleColor,
+        max: eval(mainScaleMax <= mainScaleMin ? mainMaxValue : mainScaleMax),
         min: eval(mainScaleMin >= mainScaleMax ? mainMinValue : mainScaleMin),
-        max: eval(mainScaleMax <= mainScaleMin ? mainMaxValue : mainScaleMax)
+        value: eval(mainScaleInterval),
+        width: scaleWidth
     }
     state.titles = {
         mainTitle: {
