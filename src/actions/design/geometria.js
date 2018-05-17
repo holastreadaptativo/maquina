@@ -1,25 +1,26 @@
-//import { replace } from 'actions'
+import { replace } from 'actions'
 
 export function planoCartesiano(config) 
 {
-	const { container, params } = config
+	const { container, params, variables, versions, vt } = config
 	const { exerciseType, cols, rows, px1, px2, py1, py2 } = params
 
 	if (!container) return
 	let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
         width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width,
         h = height/rows, w = width/cols
+    let vars = vt ? variables : versions
 
     container.height = height
     container.width = width
 
     let state = {
-    	ctx: container.getContext('2d'), fx: px1*w, fy: (rows - py1 - 1)*h, tx: px2*w, ty: (rows - py2 - 1)*h,
+    	ctx: container.getContext('2d'), h, w, height, width, params, 
+    	fx: r(px1)*w, fy: (rows - r(py1) - 1)*h, tx: r(px2)*w, ty: (rows - r(py2) - 1)*h,
     	arrow: {
     		right: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg',
     		left: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
-    	},
-    	h, w, height, width, params
+    	}
     }
 
 	generarPlanoCartesiano(state)
@@ -31,6 +32,10 @@ export function planoCartesiano(config)
 	else {
 		dividirPlanoCartesiano(container, params)
 		reflejarCuadrado(container, params)
+	}
+
+	function r(v) {
+		return replace(v, vars, vt)
 	}
 }
 
@@ -88,13 +93,12 @@ function generarFigurasGeometricas(state) {
 }
 
 function unirFigurasGeometricas(state) {
-	const { ctx, h, w, params, fx, fy, tx, ty, arrow } = state, rad = Math.PI/180
+	const { ctx, h, w, fx, fy, tx, ty, arrow } = state, rad = Math.PI/180
 
 	ctx.beginPath()
 
 	let k = fx < tx ? 1 : -1, i = fy < ty ? 1 : -1
-	for (let x = fx; k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
-	{
+	for (let x = fx; k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) {
 		let img = new Image()
 		img.src = arrow.right
 		if (k == 1) {
@@ -148,7 +152,7 @@ function unirFigurasGeometricas(state) {
 					ctx.save()
 				}
 			}
-		} else {                 
+		} else { 
 			img.onload = () => { 
 				ctx.save()
 				ctx.translate(tx - w/(2.5), y - h/10)  
@@ -164,6 +168,11 @@ function unirFigurasGeometricas(state) {
 	ctx.restore()
 	ctx.save()
 }
+
+
+
+
+
 
 
 

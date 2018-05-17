@@ -51,10 +51,10 @@ export default class PlanoCartesiano extends Component {
 					<Input id="img2" prefix="imagen 2" parent={this} postfix="url"/>
 				</Item>
 				<Item id={k++} title="Posición" parent={this}>
-					<Input id="px1" type="number" prefix="posición x1" parent={this}/>
-					<Input id="py1" type="number" prefix="posición y1" parent={this}/>
-					<Input id="px2" type="number" prefix="posición x2" parent={this}/>
-					<Input id="py2" type="number" prefix="posición y2" parent={this}/>
+					<Input id="px1" prefix="posición x1" parent={this}/>
+					<Input id="py1" prefix="posición y1" parent={this}/>
+					<Input id="px2" prefix="posición x2" parent={this}/>
+					<Input id="py2" prefix="posición y2" parent={this}/>
 				</Item>
 				<Item id={k++} title="Fuente" parent={this}>
 					<Input id="fontColor" type="color" parent={this}/>
