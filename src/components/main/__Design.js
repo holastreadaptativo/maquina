@@ -52,7 +52,8 @@ export default class Design extends Component {
 								<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 								{
 									m.tag != 'general' ? 
-									<canvas id={`${LABELS.CONT[feed]}-${i}`} style={{background:m.params.background}}></canvas> :
+									<canvas id={`${LABELS.CONT[feed]}-${i}`} style={{background:m.params.background, borderRadius:m.params.borderRadius,
+										border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`}}></canvas> :
 									<div id={`${LABELS.CONT[feed]}-${i}`} class="general"></div>
 								}
 								</div>

@@ -107,7 +107,8 @@ export function exe(action, state) {
 					<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 					{
 						m.tag != 'general' ? 
-						<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background}}></canvas> :
+						<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background, borderRadius:m.params.borderRadius,
+							border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`}}></canvas> :
 						<div id={`${container}-${i}`} class="general"></div>
 					}
 					</div>
