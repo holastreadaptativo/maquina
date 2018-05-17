@@ -82,8 +82,8 @@ export default class RectaNumerica extends Component {
           <Input id="showPointValue" prefix="punto" type="text" placeholder={'$a,$b,$c'} parent={this}/>
           <Select id="showPointValue" prefix="punto" options={yesNoOptions} parent={this} hide={true}/>
           <Select id="showFigValue" prefix="figura" options={yesNoOptions} parent={this}/>
-          <Select id="showLens" prefix="lupa" options={yesNoOptions} parent={this}/>
-          <Select id="alignLens" prefix="alinear" options={['punto','segmento']} parent={this}/>
+          <Select id="showLens" prefix="lupa" options={yesNoOptions} parent={this} hide={rectType === 'enteros'}/>
+          <Select id="alignLens" prefix="alinear" options={['punto','segmento']} parent={this} hide={rectType === 'enteros'}/>
         </Item>
         <Item id={k++} title="Arcos" parent={this} /*hide={rectType === 'mixta' || rectType === 'enteros con decimales'}*/>
           <Select id="showArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
