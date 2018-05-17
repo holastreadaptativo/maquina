@@ -15,6 +15,10 @@ export function planoCartesiano(config)
 
     let state = {
     	ctx: container.getContext('2d'), fx: px1*w, fy: (rows - py1 - 1)*h, tx: px2*w, ty: (rows - py2 - 1)*h,
+    	arrow: {
+    		right: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg',
+    		left: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
+    	},
     	h, w, height, width, params
     }
 
@@ -84,7 +88,7 @@ function generarFigurasGeometricas(state) {
 }
 
 function unirFigurasGeometricas(state) {
-	const { ctx, h, w, params, fx, fy, tx, ty } = state, rad = Math.PI/180
+	const { ctx, h, w, params, fx, fy, tx, ty, arrow } = state, rad = Math.PI/180
 
 	ctx.beginPath()
 
@@ -92,7 +96,7 @@ function unirFigurasGeometricas(state) {
 	for (let x = fx; k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
 	{
 		let img = new Image()
-		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
+		img.src = arrow.right
 		if (k == 1) {
 			img.onload = () => { 
 				ctx.drawImage(img, x + w/10, fy - h/(2.5), w*.8, h/3)
@@ -108,7 +112,7 @@ function unirFigurasGeometricas(state) {
 					ctx.save()
 				}
 			} else {
-				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
+				img.src = arrow.left
 				img.onload = () => { 
 					ctx.save()
 					ctx.translate(x + w/10 - w, fy - h/(2.5))
@@ -121,7 +125,7 @@ function unirFigurasGeometricas(state) {
 	}
 	for (let y = fy; i*y < i*ty; y += i*h) {
 		let img = new Image()
-		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
+		img.src = arrow.right
 		if (i == 1) {  
 			if (k == 1) {
 				if (i*y > i*ty) { return false }
@@ -134,7 +138,7 @@ function unirFigurasGeometricas(state) {
 					ctx.save()
 				}             
 			} else {
-				img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_izq.svg'
+				img.src = arrow.left
 				img.onload = () => { 
 					ctx.save()
 					ctx.translate(tx - w/(2.5), y - h/10 + h)  
@@ -161,35 +165,11 @@ function unirFigurasGeometricas(state) {
 	ctx.save()
 }
 
-// function generarCuadradosUnidos(canvas, state) {
 
-// let ctx = canvas.getContext('2d'), red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)', green = 'darkgreen'
-// let w = state.width/(state.cols + 1), h = state.height/(state.rows + 1), headlen = w*1/6, ax, ay, bx, by, fx, fy, tx, ty, rad = Math.PI/180
 
-// ctx.beginPath()
 
-// ax = state.iniciox1*w; //Math.floor(Math.random()*state.cols)*w
-// ay = (state.rows - state.inicioy1 - state.imageHeight + 1)*h; //Math.floor(Math.random()*state.rows)*h
-// bx = state.finx1*w //Math.floor(Math.random()*state.cols)*w
-// by = (state.rows - state.finy1 - state.imageHeight + 1)*h //Math.floor(Math.random()*state.rows)*h
 
-// if (state.image3 && state.image4 && state.image3 != "" && state.image4 != "") {
-// 		let img3 = new Image();
-// 		img3.src = state.image3;
-// 		img3.onload = function() { 
-// 				ctx.drawImage(img3, ax, ay, state.imageWidth*w, state.imageHeight*h);
-// 		}
-// 		let img4 = new Image();
-// 		img4.src = state.image4;
-// 		img4.onload = function() { 
-// 				ctx.drawImage(img4, bx, by, state.imageWidth*w, state.imageHeight*h);
-// 		}
-// } else {
-// 		ctx.fillStyle = red;
-// 		ctx.fillRect(ax, ay, state.imageWidth*w, state.imageHeight*h);
-// 		ctx.fillStyle = blue;
-// 		ctx.fillRect(bx, by, state.imageWidth*w, state.imageHeight*h);
-// }
+
 
 
 

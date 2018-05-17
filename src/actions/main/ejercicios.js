@@ -108,7 +108,7 @@ export function exe(action, state) {
 					{
 						m.tag != 'general' ? 
 						<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background, borderRadius:m.params.borderRadius,
-							border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`}}></canvas> :
+							border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`, margin:'0 auto'}}></canvas> :
 						<div id={`${container}-${i}`} class="general"></div>
 					}
 					</div>
