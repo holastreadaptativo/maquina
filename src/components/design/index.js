@@ -8,7 +8,7 @@ export const FUNCIONES = [
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[
-		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumMixtaFn }	
+		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[]},
 	{ name:'Medición', tag:'medicion', fns:[]},
