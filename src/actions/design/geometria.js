@@ -3,24 +3,25 @@
 export function planoCartesiano(config) 
 {
 	const { container, params } = config
-	const { exerciseType, cols, rows } = params
+	const { exerciseType, cols, rows, px1, px2, py1, py2 } = params
 
 	if (!container) return
 	let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
-        width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
+        width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width,
+        h = height/rows, w = width/cols
 
     container.height = height
     container.width = width
 
     let state = {
-    	ctx: container.getContext('2d'),
-    	h: height/rows, w: width/cols, 
-    	height, width, params
+    	ctx: container.getContext('2d'), fx: px1*w, fy: (rows - py1 - 1)*h, tx: px2*w, ty: (rows - py2 - 1)*h,
+    	h, w, height, width, params
     }
 
 	generarPlanoCartesiano(state)
 
-	if (exerciseType == 'traslación') {		
+	if (exerciseType == 'traslación') {	
+		generarFigurasGeometricas(state)	
 		unirFigurasGeometricas(state)
 	} 
 	else {
@@ -52,25 +53,43 @@ function generarPlanoCartesiano(state) {
 }
 
 function generarFigurasGeometricas(state) {
+	const { ctx, h, w, params, fx, fy, tx, ty } = state, { img1, img2, figureType } = params,
+		red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)'
 
+	if (img1 && img1 != '' && figureType == 'images') {
+		drawImage(fx, fy, 1*w, 1*h, img1, red)
+
+		if (img2 && img2 != '') { drawImage(tx, ty, 1*w, 1*h, img2, blue) } 
+		else { drawImage(tx, ty, 1*w, 1*h, img1, blue) }
+	} 
+	else {
+		fillRect(fx, fy, w, h, red)
+		fillRect(tx, ty, w, h, blue)
+	}
+
+	function fillRect(x, y, w, h, color) {
+		ctx.beginPath()
+		ctx.fillStyle = color
+		ctx.fillRect(x, y, w, h)
+		ctx.closePath()
+	}
+	function drawImage(x, y, w, h, src, color) {
+		ctx.beginPath()
+		let image = new Image()
+		image.src = src
+		image.onload = () => { ctx.drawImage(image, x, y, w, h) }
+		image.onerror = () => { fillRect(x, y, w, h, color) }
+		ctx.closePath()
+	}
 }
 
 function unirFigurasGeometricas(state) {
-	const { ctx, height, width, h, w, params } = state, headlen = w/3, rad = Math.PI/180, red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)'
-	let fx = params.px1*w, fy = (params.rows - params.py1 - 1)*h, tx = params.px2*w, ty = (params.rows - params.py2 - 1)*h
-
-	ctx.beginPath()
-	ctx.fillStyle = red
-	ctx.fillRect(fx, fy, w, h)	
-
-	ctx.fillStyle = blue
-	ctx.fillRect(tx, ty, w, h)
-	ctx.closePath()
+	const { ctx, h, w, params, fx, fy, tx, ty } = state, rad = Math.PI/180
 
 	ctx.beginPath()
 
 	let k = fx < tx ? 1 : -1, i = fy < ty ? 1 : -1
-	for (let x = fx, a = Math.atan2(0, w); k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
+	for (let x = fx; k*x < k*(tx + (k < 1 ? 1 : 0)); x += k*w) 
 	{
 		let img = new Image()
 		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
@@ -100,7 +119,7 @@ function unirFigurasGeometricas(state) {
 			}
 		}
 	}
-	for (let y = fy, a = Math.atan2(h, 0); i*y < i*ty; y += i*h) {
+	for (let y = fy; i*y < i*ty; y += i*h) {
 		let img = new Image()
 		img.src = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/Simbolos/flecha_tras_der.svg'
 		if (i == 1) {  

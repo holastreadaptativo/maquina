@@ -11,7 +11,7 @@ export default class PlanoCartesiano extends Component {
 			height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0, borderColor:COLORS['border'], borderRadius:20, borderWidth:3, 
 			borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, imageDisplay:'none', fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#bb0000', 
 			axisWidth:3, axisDisplay:'none', fontSize:'auto', fontWeight:'bold', gridType:'simbólico', exerciseType:'traslación', line:0, figureType:'default', 
-			px1:2, py1:7, px2:7, py2:2
+			px1:2, py1:7, px2:7, py2:2, img1:'', img2:''
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -46,7 +46,11 @@ export default class PlanoCartesiano extends Component {
 					<Select id="axisDisplay" prefix="mostrar" options={['si','no']} parent={this}/>
 				</Item>
 				<Item id={k++} title="Figuras" parent={this}>
-					<Select id="figureType" prefix="tipo" options={['default','imágenes']} parent={this}/>
+					<Select id="figureType" prefix="tipo" options={['default','images']} parent={this}/>
+					<Input id="img1" prefix="imagen 1" parent={this} postfix="url"/>
+					<Input id="img2" prefix="imagen 2" parent={this} postfix="url"/>
+				</Item>
+				<Item id={k++} title="Posición" parent={this}>
 					<Input id="px1" type="number" prefix="posición x1" parent={this}/>
 					<Input id="py1" type="number" prefix="posición y1" parent={this}/>
 					<Input id="px2" type="number" prefix="posición x2" parent={this}/>
