@@ -5,13 +5,13 @@ export function rectNumFn(config) {
   const { container, params, variables, versions, vt } = config
 
   const { 
-    rectType, rectOrientation, background, borderWidth, borderColor, borderStyle, borderRadius, titleValue,
+    rectType, rectOrientation, /*background, borderWidth, borderColor, borderStyle, borderRadius,*/ titleValue,
     titleColor, titleSize, titleWeight, canvasPadding, containerPadding, chartPadding, /*innerChartPadding,*/ rectValuesUnit,
     rectValuesDec, rectValuesCent, valuesSeparator, axisColor, withArrows, axisWidth, fontColor, fontSize, fontFamily, fontWeight, 
     pictoImg, lupaImg, scaleDivisions, scaleValue, scaleWidth, scaleColor, scaleLength, showExValues,
     showAllValues, showTheValue, showPointValue, showFigValue, showLens, showArcs, showMiniScale, alignLens,
     showMiniArcs, showMiniExValues, showMiniAllValues, showMiniTheValue, showMiniPointValue, showMiniFigValue, showMiniGuides,
-    arcsDirection, initArcPt, endArcPt, selectValuesToShow,
+    arcsDirection, initArcPt, endArcPt, selectValuesToShow, wichPointValue
   } = params
 
   let canvasPaddingAux = {}, containerPaddingAux = {}, chartPaddingAux = {}/*, innerChartPaddingAux = {}*/
@@ -55,12 +55,15 @@ export function rectNumFn(config) {
   state.show = {
     showExValues: showExValues === 'si' ? true : false,
     showAllValues: {
-      showAllValues: showAllValues === 'todos' ? true : false,
-      selectValuesToShow: selectValuesToShow.split(','),
+      showAllValues: showAllValues,
+      selectValuesToShow: selectValuesToShow.split(',')
     },
     showTheValue: showTheValue === 'si' ? true : false,
-    showPointValue: showPointValue.split(','),//showPointValue === 'si' ? true : false,
-    showFigValue: showFigValue === 'si' ? true : false,
+    showPointValue: {
+      showPointValue: showPointValue !== 'no' ? true : false,
+      wichPointValue: wichPointValue.split(',')
+  },
+    showFigValue: showFigValue, // === 'si' ? true : false,
     showLens: showLens === 'si' ? true : false,
     alignLens: alignLens === 'punto' ? true : false,
     showArcs: {
@@ -335,8 +338,8 @@ function insElementos(state, mainData) {
     showExValues && mostrarValoresExtremos(state, mainData)
     showAllValues && mostrarValores(state, mainData)
     showTheValue && mostrarValor(state, mainData)
-    showPointValue && mostrarPuntoValor(state, mainData)
-    showFigValue && mostrarFigValor(state, mainData)
+    showPointValue.showPointValue && mostrarPuntoValor(state, mainData)
+    showFigValue !== 'no' && mostrarFigValor(state, mainData)
     showLens && mostrarLupa(state, mainData)
     showArcs.showArcs && mostrarArcos(state, mainData)
     if (typeRect !== 'enteros' || typeRect !== 'enteros con decimales' || typeRect !== 'mixta') {
@@ -376,7 +379,7 @@ function mostrarValoresExtremos(state, mainData) {
 // Mostrar Todos los Valores
 function mostrarValores(state, mainData) {
   const { ctx, scale, font, chart, typeRect, show } = state
-  const { valuesUnit, valuesSeparator, valuesDec } = chart.values
+  const { valuesUnit, valuesSeparator/*, valuesDec*/ } = chart.values
   const { pointsData, centerChartY } = mainData
   ctx.save()
   for (let i = 0; i < scale.divisions; i++) {
@@ -406,27 +409,65 @@ function mostrarValores(state, mainData) {
         } else {
           valToShow = valuesUnit + valuesSeparator + i +'0'
         }
-        show.showAllValues.showAllValues ? ctx.fillText(valToShow, xPos, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
+        if (show.showAllValues.showAllValues === 'mostrar') {
+          show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
+        } else if (show.showAllValues.showAllValues === 'ocultar') {
+          show.showAllValues.selectValuesToShow[i] !== '1' && ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
+        } else {
+          ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
+        }
+        //show.showAllValues.showAllValues ? ctx.fillText(valToShow, xPos, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText(valToShow, xPos, yPos + scale.length*1.1)
       } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
         ctx.font = `${font.weight} ${font.size*2}px ${font.family}`
         //let enteroX = ctx.measureText('0').width/2
         let enteroX = ctx.measureText('0').width/2
         let decNumbDist = chart.values.valuesUnit === 0 ? -enteroX : 0
-        show.showAllValues.showAllValues ? chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
+        if (show.showAllValues.showAllValues === 'mostrar') {
+          show.showAllValues.selectValuesToShow[i] === '1' && chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
+        } else if (show.showAllValues.showAllValues === 'ocultar') {
+          show.showAllValues.selectValuesToShow[i] !== '1' && chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
+        } else {
+          chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
+        }
+        //show.showAllValues.showAllValues ? chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && chart.values.valuesUnit !== 0 && ctx.fillText(chart.values.valuesUnit, xPos - enteroX, yPos + scale.length*1.1)
         ctx.font = `${font.weight} ${font.size}px ${font.family}`
         let lineL = typeRect !== 'mixta centesimal' ? ctx.measureText('00').width : ctx.measureText('000').width
         let denVal = typeRect !== 'mixta centesimal' ? (scale.divisions-1) : (scale.divisions-1)*10
         let numMult = typeRect !== 'mixta centesimal' ? 1 : 10
         ctx.textBaseline = 'bottom'
-        show.showAllValues.showAllValues ? ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
+        if (show.showAllValues.showAllValues === 'mostrar') {
+          show.showAllValues.selectValuesToShow[i] === '1'  && ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
+        } else if (show.showAllValues.showAllValues === 'ocultar') {
+          show.showAllValues.selectValuesToShow[i] !== '1'  && ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
+        } else {
+          ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
+        }
+        //show.showAllValues.showAllValues ? ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.fillText(denVal, xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1 + font.size*2.5)
         ctx.textBaseline = 'top'
-        show.showAllValues.showAllValues ? ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)
+        if (show.showAllValues.showAllValues === 'mostrar') {
+          show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)          
+        } else if (show.showAllValues.showAllValues === 'ocultar') {
+          show.showAllValues.selectValuesToShow[i] !== '1' && ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)
+        } else {
+          ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)
+        }
+        //show.showAllValues.showAllValues ? ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1) : show.showAllValues.selectValuesToShow[i] === '1' && ctx.fillText((i*numMult), xPos + lineL/2 + decNumbDist, yPos + scale.length*1.1)
         ctx.beginPath()
         ctx.strokeStyle = chart.axis.color
         ctx.lineWidth = chart.axis.width/2
         ctx.lineCap = 'round'
-        show.showAllValues.showAllValues ? ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
-        show.showAllValues.showAllValues ? ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
+        if (show.showAllValues.showAllValues === 'mostrar') {
+          show.showAllValues.selectValuesToShow[i] === '1'  && ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
+          show.showAllValues.selectValuesToShow[i] === '1'  && ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
+        } else if (show.showAllValues.showAllValues === 'ocultar') {
+          show.showAllValues.selectValuesToShow[i] !== '1'  && ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
+          show.showAllValues.selectValuesToShow[i] !== '1'  && ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
+        } else {
+          ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
+          ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
+        }
+        //show.showAllValues.showAllValues ? ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.moveTo(xPos + decNumbDist, yPos + scale.length*1.1 + font.size*1.1)
+        //show.showAllValues.showAllValues ? ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1) : show.showAllValues.selectValuesToShow[i] === '1'  && ctx.lineTo(xPos + decNumbDist + lineL, yPos + scale.length*1.1 + font.size*1.1)
         ctx.stroke()
         ctx.closePath()
       }
@@ -505,7 +546,7 @@ function mostrarPuntoValor(state, mainData) {
     let xPos = pointsData.initPoint + pointsData.segment*i
     if (typeRect === 'enteros con decimales' || typeRect === 'mixta') {
       ctx.beginPath()
-      show.showPointValue[i] === '1' && ctx.arc(xPos, centerChartY, scale.length/2,0,360*Math.PI/180)
+      show.showPointValue.wichPointValue[i] === '1' && ctx.arc(xPos, centerChartY, scale.length/2,0,360*Math.PI/180)
       ctx.fill()
       ctx.stroke()
       // if (chart.values.valuesDec === i) {
@@ -534,7 +575,7 @@ function mostrarPuntoValor(state, mainData) {
 
 // Mostrar Figura Valor
 function mostrarFigValor(state, mainData) {
-  const { ctx, scale, /*font,*/ chart, /*show,*/ typeRect } = state
+  const { ctx, scale, /*font,*/ chart, show, typeRect } = state
   const { pointsData, centerChartY } = mainData
   ctx.save()
   ctx.beginPath()
@@ -548,13 +589,14 @@ function mostrarFigValor(state, mainData) {
     ctx.strokeStyle = '#dbac04'
     let diamondW = scale.length*1.5
     let diamondH = diamondW*1.3
+    let yDist = show.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
     if (typeRect === 'enteros con decimales' || typeRect === 'mixta') {
       if (chart.values.valuesDec === i) {
-        ctx.moveTo(xPos, yPos + scale.length*1.5)
-        ctx.lineTo(xPos + diamondW/2, yPos + diamondH/2 + scale.length*1.5)
-        ctx.lineTo(xPos, yPos + diamondH + scale.length*1.5)
-        ctx.lineTo(xPos - diamondW/2, yPos + diamondH/2 + scale.length*1.5)
-        ctx.lineTo(xPos, yPos + scale.length*1.5)
+        ctx.moveTo(xPos, yPos + yDist)
+        ctx.lineTo(xPos + diamondW/2, yPos + diamondH/2 + yDist)
+        ctx.lineTo(xPos, yPos + diamondH + yDist)
+        ctx.lineTo(xPos - diamondW/2, yPos + diamondH/2 + yDist)
+        ctx.lineTo(xPos, yPos + yDist)
         // img.onload = function() {
         //   ctx.drawImage(img, xPos - img.width/2, yPos + scale.length*1.2 + imgHeight);
         // }
@@ -563,11 +605,11 @@ function mostrarFigValor(state, mainData) {
       if (chart.values.valuesDec === i) {
         for (let j = 0; j < 10; j++) {
           if (chart.values.valuesCent === j) {
-            ctx.moveTo(xPos + (pointsData.segment/10)*j, yPos + scale.length*1.5)
-            ctx.lineTo(xPos + (pointsData.segment/10)*j + diamondW/2, yPos + diamondH/2 + scale.length*1.5)
-            ctx.lineTo(xPos + (pointsData.segment/10)*j, yPos + diamondH + scale.length*1.5)
-            ctx.lineTo(xPos + (pointsData.segment/10)*j - diamondW/2, yPos + diamondH/2 + scale.length*1.5)
-            ctx.lineTo(xPos + (pointsData.segment/10)*j, yPos + scale.length*1.5)
+            ctx.moveTo(xPos + (pointsData.segment/10)*j, yPos + yDist)
+            ctx.lineTo(xPos + (pointsData.segment/10)*j + diamondW/2, yPos + diamondH/2 + yDist)
+            ctx.lineTo(xPos + (pointsData.segment/10)*j, yPos + diamondH + yDist)
+            ctx.lineTo(xPos + (pointsData.segment/10)*j - diamondW/2, yPos + diamondH/2 + yDist)
+            ctx.lineTo(xPos + (pointsData.segment/10)*j, yPos + yDist)
             // img.onload = function() {
             //   ctx.drawImage(img, xPos + (pointsData.segment/10)*j - img.width/2, yPos + scale.length*1.2 + imgHeight);
             // }
@@ -606,7 +648,7 @@ function mostrarLupa(state, mainData) {
 
 // Mostrar Arcos
 function mostrarArcos(state, mainData) {
-  const { ctx, scale, font, chart, show } = state
+  const { ctx, scale, font, /*chart,*/ show } = state
   const { arcsDirection, initArcPt, endArcPt } = show.showArcs
   const { pointsData, centerChartY } = mainData
   ctx.save()

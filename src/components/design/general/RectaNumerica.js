@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Item, Select, Editor, Switch } from 'components'
+import { Input, Item, Select, Editor/*, Switch*/ } from 'components'
 import * as numeracion from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'
@@ -17,9 +17,10 @@ export default class RectaNumerica extends Component {
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
       lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
       scaleDivisions: 10, scaleValue: 1, scaleWidth: 3, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'si',
-      showAllValues: 'todos', showTheValue: 'no', showPointValue: '0,0,0,1,0,0,1,0,1,0', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
+      showAllValues: 'todos', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
       alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: 'no', showMiniPointValue: 'no',
       showMiniFigValue: 'no', showMiniGuides: 'no', arcsDirection: 'derecha', initArcPt: 0, endArcPt: 1, selectValuesToShow: '1,1,1,0,1,0,0,0,0,1',
+      wichPointValue: '1,1,1,0,1,0,0,0,0,1'
 
     } : props.params
   }
@@ -27,12 +28,13 @@ export default class RectaNumerica extends Component {
     numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
+    const { rectType, showAllValues, showArcs, showPointValue } = this.state
+
     let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
-        yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['derecha','izquierda'],
-        showTheValuesOpt = ['todos','escoger']
-        const { rectType, showAllValues } = this.state
+        yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['no','derecha','izquierda'],
+        showTheValuesOpt = ['todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
@@ -70,26 +72,24 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Valores" parent={this}>
           <Input id="rectValuesUnit" prefix="unidad" type="number" placeholder={'$a'} parent={this}/>
-          <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this}/>
-          <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this}/>
-          <Select id="valuesSeparator" prefix="separador" hide={rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
-        </Item>
-        <Item id={k++} title="Mostrar" parent={this}>
+          <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this} hide={rectType === 'enteros'}/>
+          <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this} hide={rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'mixta'}/>
+          <Select id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
           <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
           {/*<Select id="showTheValue" prefix="valor" options={yesNoOptions} parent={this}/>*/}
           <Select id="showAllValues" prefix="valores" options={showTheValuesOpt} parent={this}/>
           <Input id="selectValuesToShow" prefix="escoger" type="text" placeholder={'1,0,1,0'} parent={this} hide={showAllValues === 'todos'}/>
-          <Input id="showPointValue" prefix="punto" type="text" placeholder={'$a,$b,$c'} parent={this}/>
-          <Select id="showPointValue" prefix="punto" options={yesNoOptions} parent={this} hide={true}/>
-          <Select id="showFigValue" prefix="figura" options={yesNoOptions} parent={this}/>
+        </Item>
+        <Item id={k++} title="Mostrar" parent={this}>
+          <Select id="showPointValue" prefix="punto" options={showPointValueOpt} parent={this}/>
+          <Input id="wichPointValue" prefix="punto" type="text" placeholder={'$a,$b,$c'} parent={this}  hide={showPointValue === 'no'} />
+          <Select id="showFigValue" prefix="figura" options={showFigValueOpt} parent={this}/>
           <Select id="showLens" prefix="lupa" options={yesNoOptions} parent={this} hide={rectType === 'enteros'}/>
           <Select id="alignLens" prefix="alinear" options={['punto','segmento']} parent={this} hide={rectType === 'enteros'}/>
-        </Item>
-        <Item id={k++} title="Arcos" parent={this} /*hide={rectType === 'mixta' || rectType === 'enteros con decimales'}*/>
-          <Select id="showArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
-          <Select id="arcsDirection" prefix="dirección" options={arcsDirectionOptions} parent={this}/>
-          <Input id="initArcPt" prefix="desde" type="number" parent={this}/>
-          <Input id="endArcPt" prefix="hasta" type="number" parent={this}/>
+          <Select id="showArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
+          {/*<Select id="arcsDirection" prefix="dirección" options={arcsDirectionOptions} parent={this}/>*/}
+          <Input id="initArcPt" prefix="desde" type="number" parent={this} hide={showArcs === 'no'}/>
+          <Input id="endArcPt" prefix="hasta" type="number" parent={this} hide={showArcs === 'no'}/>
         </Item>
         <Item id={k++} title="Mini Escala" parent={this} hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'enteros con decimales'}>
           <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this}/>
