@@ -1,13 +1,13 @@
 import * as db from 'firebase'
 
-let config = {
+const config = {
     apiKey: 'AIzaSyAGlyYXF_gp4UsyXM_6yT5hnaZpm1YbUU8',
     authDomain: 'maquina-d0d32.firebaseapp.com',
     databaseURL: 'https://maquina-d0d32.firebaseio.com',
     projectId: 'maquina-d0d32',
     storageBucket: 'maquina-d0d32.appspot.com',
     messagingSenderId: '245000417064'
- }
+}
 
 const firebase = db.initializeApp(config)
 

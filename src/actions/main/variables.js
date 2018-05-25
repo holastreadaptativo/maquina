@@ -98,7 +98,7 @@ export function cod(action, state) {
 						}
 
 					}
-					if (val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
+					if (val.includes('$') || val.includes('+') || val.includes('-') || val.includes('*') || val.includes('/') || val.includes('Math')) {
 						let value = val.split('')
 						value.forEach((m, i) => {
 							value[i] = m.replace(/[*+()-/,]/g, '@')
@@ -108,7 +108,7 @@ export function cod(action, state) {
 							if (arr[k].trim() != '') {
 								let ok = false
 								for (let j = 0; j < variables.length; j++) {
-									if (arr[k].trim() == variables[j].var || arr[k].includes('Math') || Number.isInteger(parseInt(arr[k]))) {
+									if (arr[k].trim() == variables[j].var || arr[k].includes('Math') || Number.isInteger(parseInt(arr[k])) || arr[k].includes('$')) {
 										ok = true; break
 									}
 								} if (!ok) {

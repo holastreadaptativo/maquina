@@ -95,7 +95,7 @@ export function planoCartesiano(config)
 					else { drawImage(x4, y4, 1*w, 1*h, img1, blue) }
 				}
 			}
-		} 
+		}
 		else {
 			fillRect(x1, y1, w, h, red)
 			fillRect(x2, y2, w, h, blue)
