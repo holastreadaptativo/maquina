@@ -8,7 +8,7 @@ export function ver(action, state) {
 		case 'CREATE': {
 			const { fns, limit, selected, variables } = state
 			let matrix = getmtx(fns, variables), total = matrix.length
-			matrix = shuffle(matrix).slice(0, limit)
+			matrix = filter(variables, shuffle(matrix).slice(0, 10*limit)).slice(0, limit)
 		
 			let gen = matrix.slice(0, selected), box = [], bup = matrix.slice(selected)
 			for (let i = 0; i < selected; i++) {
@@ -24,7 +24,8 @@ export function ver(action, state) {
 					box[i][j] = Number(sum.toFixed(5))
 				}
 			}
-			base.set({ box, bup, gen, total, limit:Math.min(limit, total), selected:Math.min(limit, selected) })
+			
+			base.set({ box, bup, gen, limit, selected, total })
 
 			function getmtx(fns, variables) {
 				let aux = variables.slice(0), vars = [], matrix = []; num = 1
@@ -128,6 +129,21 @@ export function ver(action, state) {
 					}
 				}
 				return copy
+			}
+			function filter(vars, matrix) {
+				let versions = []
+				matrix.forEach(m => {
+					let check = true, r = ''
+					for (let i = 0; i < vars.length; i++) { 
+						r = vars[i].res
+						if (r != '') {
+							m.forEach(n => { r = r.replace(`$${n.var}`, n.val) })
+							if (!eval(r)) { check = false; break }
+						}
+					}
+					if (check) versions.push(m)
+				})
+				return versions
 			}
 			break
 		}

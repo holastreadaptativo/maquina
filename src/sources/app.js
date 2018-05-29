@@ -133,8 +133,7 @@ function insertarInput(config) {
 		container.innerHTML = `<form id="answer" feed="${feed0}" type="${inputType}">${c}</form>`
 	}
 }
-function graficoDatos(config) 
-{
+function graficoDatos(config) {
     const { container, params, variables, versions, vt } = config
     const { axisColor, axisWidth, borderColor, borderRadius, borderWidth, background, fontColor, extra, lineColor, lineWidth, chartBorder,
         chartPosition, chartColor, chartValues, chartTags, titleValue, titleSize, titleColor, axisTitleX, axisTitleY, margin, titleTop, fontSize,
