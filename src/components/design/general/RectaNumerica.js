@@ -8,11 +8,7 @@ export default class RectaNumerica extends Component {
   constructor(props) {
     super(props)
     this.state = props.push ? { 
-<<<<<<< HEAD
-      rectType: 'enteros', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
-=======
       active:0, rectType: 'mixta', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
->>>>>>> dev
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
       titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
       chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '1', rectValuesCent: '7',
