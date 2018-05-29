@@ -8,7 +8,7 @@ export default class RectaNumerica extends Component {
   constructor(props) {
     super(props)
     this.state = props.push ? { 
-      rectType: 'mixta', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
+      rectType: 'enteros', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
       titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
       chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0', rectValuesUnit: '5', rectValuesDec: '1', rectValuesCent: '7',
@@ -19,8 +19,9 @@ export default class RectaNumerica extends Component {
       scaleDivisions: 10, scaleValue: 1, scaleWidth: 3, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'si',
       showAllValues: 'todos', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
       alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: '5.71', showMiniPointValue: 'no',
-      showMiniGuides: 'no', initArcPt: '5.26', endArcPt: '5.71', selectValuesToShow: '1,1,1,0,1,0,0,0,0,1',
-      wichPointValue: '5.15,5.87,5.66', rectValues: '5.38', wichFigValues: '5.15,5.87,5.66', showMiniFig: 'no', wichMiniFigValues: '5.87,5.66'
+      showMiniGuides: 'no', initArcPt: '5.26', endArcPt: '5.71', selectValuesToShow: '1,1,1,0,1,0,0,0,0,1', wichPointValue: '5.15,5.87,5.66',
+      rectValues: '5.38', wichFigValues: '5.15,5.87,5.66', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', initArcPtMini: '5.72',
+      endArcPtMini: '5.76'
 
     } : props.params
   }
@@ -28,7 +29,7 @@ export default class RectaNumerica extends Component {
     numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniFig } = this.state
+    const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniFig, showMiniArcs } = this.state
 
     let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
@@ -98,7 +99,9 @@ export default class RectaNumerica extends Component {
           <Select id="showMiniPointValue" prefix="punto" options={yesNoOptions} parent={this}/>
           <Select id="showMiniFig" prefix="figura" options={showFigValueOpt} parent={this}/>
           <Input id="wichMiniFigValues" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showMiniFig === 'no'} />
-          <Select id="showMiniArcs" prefix="arcos" options={yesNoOptions} parent={this}/>
+          <Select id="showMiniArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
+          <Input id="initArcPtMini" prefix="desde" type="text" parent={this} hide={showMiniArcs === 'no'}/>
+          <Input id="endArcPtMini" prefix="hasta" type="text" parent={this} hide={showMiniArcs === 'no'}/>
           <Select id="showMiniGuides" prefix="guías" options={yesNoOptions} parent={this}/>
           <Select id="showLens" prefix="lupa" options={yesNoOptions} parent={this} hide={rectType === 'enteros'}/>
           <Select id="alignLens" prefix="alinear" options={['punto','segmento']} parent={this} hide={rectType === 'enteros'}/>

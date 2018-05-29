@@ -11,7 +11,8 @@ export function rectNumFn(config) {
     pictoImg, lupaImg, scaleDivisions, scaleValue, scaleWidth, scaleColor, scaleLength, showExValues,
     showAllValues, showTheValue, showPointValue, showFigValue, showLens, showArcs, showMiniScale, alignLens,
     showMiniArcs, showMiniExValues, showMiniAllValues, showMiniTheValue, showMiniPointValue, showMiniGuides,
-    initArcPt, endArcPt, selectValuesToShow, wichPointValue, rectValues, wichFigValues, showMiniFig, wichMiniFigValues
+    initArcPt, endArcPt, selectValuesToShow, wichPointValue, rectValues, wichFigValues, showMiniFig, wichMiniFigValues,
+    initArcPtMini, endArcPtMini
   } = params
 
   let canvasPaddingAux = {}, containerPaddingAux = {}, chartPaddingAux = {}/*, innerChartPaddingAux = {}*/
@@ -121,7 +122,11 @@ export function rectNumFn(config) {
       showMiniFig: showMiniFig === 'no' ? false : showMiniFig,
       wichMiniFigValues: valuesValidation(wichMiniFigValues)
     },
-    showMiniArcs: showMiniArcs === 'si' ? true: false,
+    showMiniArcs: {
+      show: showMiniArcs !== 'no' ? showMiniArcs : false,
+      initArcPtMini: valuesValidation(initArcPtMini),
+      endArcPtMini: valuesValidation(endArcPtMini)
+    },
     showMiniGuides: showMiniGuides === 'si' ? true: false
   }
   state.font = {
@@ -237,17 +242,6 @@ export function rectNumFn(config) {
 
 }
 
-function drawRects(state, el, color) {
-  const { ctx } = state
-  ctx.save()
-  ctx.beginPath()
-  ctx.strokeStyle = color
-  ctx.rect(el.position.x0, el.position.y0, el.position.x1 - el.position.x0, el.position.y1 - el.position.y0)
-  ctx.stroke()
-  ctx.restore()
-  ctx.save()
-}
-
 function ptosPrincipales(state) {
   const { chart, show } = state
   const { x0, y0, x1, y1 } = chart.position
@@ -276,18 +270,30 @@ function ptosPrincipalesMini(state) {
   }
 }
 
+// Dibuja los espacios definidos, container, chart
+function drawRects(state, el, color) {
+  const { ctx } = state
+  ctx.save()
+  ctx.beginPath()
+  ctx.strokeStyle = color
+  ctx.rect(el.position.x0, el.position.y0, el.position.x1 - el.position.x0, el.position.y1 - el.position.y0)
+  ctx.stroke()
+  ctx.restore()
+  ctx.save()
+}
+
+// Inicializa la graficación de la recta
 function init(state, mainData) {
-  const { show } = state
-  // Insertar Título
-  state.titles.mainTitle.title !== '' && insTitPrinc(state)
-  // Insertar Eje Principal
-   insEjePrincipal(state, mainData)
-  // Insertar Mini EJe
-  show.showMiniScale && insEjeMini(state, mainData)
+  const { show, typeRect } = state
+  state.titles.mainTitle.title !== '' && insertarTitPrinc(state)
+  insertarEjePrincipal(state, mainData)
+  if (typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales' && show.showMiniScale) {
+    insertarEjeMini(state, mainData)
+  }
 }
 
 // Main Title
-function insTitPrinc(state) {
+function insertarTitPrinc(state) {
   const { ctx, canvas } = state
   const { mainTitle } = state.titles
   ctx.save()
@@ -303,7 +309,7 @@ function insTitPrinc(state) {
   ctx.save()
 }
 
-function insEjePrincipal(state, mainData) {
+function insertarEjePrincipal(state, mainData) {
   const { ctx, typeRect, scale, chart, show } = state
   const { pointsData } = mainData
   ctx.save()
@@ -312,27 +318,12 @@ function insEjePrincipal(state, mainData) {
   let centroY = pointsData.centroY
   chart.axis.width > 0 && generarEje(state, xIni, xFin, centroY)
   scale.width > 0 && scale.length > 0 && generarEscala(state, xIni, xFin, centroY, scale.divisions)
-  if (typeRect !== 'enteros' && typeRect !== 'mixta') {
-    scale.width > 0 && scale.length > 0 && generarEscalaDec(state, xIni, xFin, centroY, scale.divisions)
+  if (typeRect !== 'enteros' && typeRect !== 'mixta' && scale.width > 0 && scale.length > 0) {
+    generarEscalaDec(state, xIni, xFin, centroY, scale.divisions)
   }
   chart.values.rectValues !== '' && show.showPointValue.showPointValue && mostrarPuntos(state, xIni, xFin, centroY, scale.divisions)
   chart.values.rectValues !== '' && show.showFigValue.showFigValue && mostrarFigura(state, xIni, xFin, centroY, scale.divisions)
-  show.showArcs.showArcs && mostrarArcos(state, xIni, xFin, centroY, scale.divisions, show.showArcs.showArcsValues.initArcPt.valuesDec, show.showArcs.showArcsValues.endArcPt.valuesDec)
-  ctx.restore()
-  ctx.save()
-}
-
-function insEjeMini(state, mainData) {
-  const { ctx, show } = state
-  const { pointsDataMini } = mainData
-  ctx.save()
-  let xIni = pointsDataMini.xIni
-  let xFin = pointsDataMini.xFin
-  let centroY = pointsDataMini.centroY
-  generarEje(state, xIni, xFin, centroY)
-  generarEscala(state, xIni, xFin, centroY, 11)
-  show.showMiniPointValue && mostrarPuntosMini(state, xIni, xFin, centroY, 11)
-  show.showMiniFigure.showMiniFig && mostrarFigMini(state, xIni, xFin, centroY, 11)  
+  show.showArcs.showArcs && mostrarArcos(state, xIni, xFin, centroY, scale.divisions, show.showArcs.showArcsValues.initArcPt.valuesDec, show.showArcs.showArcsValues.endArcPt.valuesDec, show.showArcs.showArcs)
   ctx.restore()
   ctx.save()
 }
@@ -367,7 +358,6 @@ function generarEje(state, xIni, xFin, centroY) {
   ctx.save()
 }
 
-// Generar Escala
 function generarEscala(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale } = state
   ctx.save()
@@ -389,7 +379,6 @@ function generarEscala(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-// Generar Escala Decimal
 function generarEscalaDec(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale, typeRect } = state
   ctx.save()
@@ -417,7 +406,6 @@ function generarEscalaDec(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-// Mostrar Puntos
 function mostrarPuntos(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale, show, typeRect, font } = state
   const { decValue, centValue } = show.showPointValue
@@ -457,7 +445,6 @@ function mostrarPuntos(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-// Mostrar Figura
 function mostrarFigura(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale, show, typeRect, font } = state
   const { decValue, centValue } = show.showFigValue
@@ -508,12 +495,10 @@ function mostrarFigura(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-// Mostrar Arcos
-function mostrarArcos(state, xIni, xFin, centroY, divisiones, initPoint, endPoint) {
+function mostrarArcos(state, xIni, xFin, centroY, divisiones, initPoint, endPoint, arcDirect) {
   const { ctx, scale, font, show } = state
-  const { showArcs } = show.showArcs
   ctx.save()
-  let arcsDirectionAux = showArcs === 'derecha' ? true : false
+  let arcsDirectionAux = arcDirect === 'derecha' ? true : false
   let segment = (xFin - xIni)/(divisiones+1)
   for (let i = initPoint; i < endPoint; i++) {
     let xPos = xIni + segment*i
@@ -532,7 +517,22 @@ function mostrarArcos(state, xIni, xFin, centroY, divisiones, initPoint, endPoin
   }
 }
 
-// Mostrar Punto Mini
+function insertarEjeMini(state, mainData) {
+  const { ctx, show } = state
+  const { pointsDataMini } = mainData
+  ctx.save()
+  let xIni = pointsDataMini.xIni
+  let xFin = pointsDataMini.xFin
+  let centroY = pointsDataMini.centroY
+  generarEje(state, xIni, xFin, centroY)
+  generarEscala(state, xIni, xFin, centroY, 11)
+  show.showMiniPointValue && mostrarPuntosMini(state, xIni, xFin, centroY, 11)
+  show.showMiniFigure.showMiniFig && mostrarFigMini(state, xIni, xFin, centroY, 11)
+  show.showMiniArcs.show && mostrarArcos(state, xIni, xFin, centroY, 11, show.showMiniArcs.initArcPtMini.valuesCent, show.showMiniArcs.endArcPtMini.valuesCent, show.showMiniArcs.show)
+  ctx.restore()
+  ctx.save()
+}
+
 function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale, show, typeRect, font } = state
   const { valuesCent } = show.showMiniTheValue
@@ -556,7 +556,6 @@ function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-// Mostrar Figura Mini
 function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
   const { ctx, scale, show, typeRect, font } = state
   const { showMiniTheValue } = show
@@ -589,4 +588,12 @@ function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
   })
   ctx.restore()
   ctx.save()
+}
+
+function mostrarValoresEnteros(state, xIni, xFin, centroY, divisiones) {
+
+}
+
+function mostrarValores(state, xIni, xFin, centroY, divisiones) {
+  
 }
