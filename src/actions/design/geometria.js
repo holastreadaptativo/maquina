@@ -24,15 +24,18 @@ export function planoCartesiano(config)
     	}
     }
 
-    generarPlanoCartesiano(state)		
-	generarFigurasGeometricas(state)
+    generarPlanoCartesiano(state)
+    generarFigurasGeometricas(state)
 
-	if (params.exerciseType == 'traslación') {		
-		unirFigurasGeometricas(state)
-	} 
-	else {
-		dividirPlanoCartesiano(state)
-	}
+    if (params.gridType == 'simbólico') 
+    {
+    	if (params.exerciseType == 'traslación') { 
+    		unirFigurasGeometricas(state) 
+    	}
+		else { 
+			dividirPlanoCartesiano(state) 
+		}
+    }
 
 	function generarPlanoCartesiano(state) {
 		const { ctx, params, height, width, h, w, margin, p } = state
@@ -76,16 +79,16 @@ export function planoCartesiano(config)
 	}
 	function generarFigurasGeometricas(state) {
 		const { ctx, h, w, x1, y1, x2, y2, x3, x4, y3, y4 } = state, red = 'rgba(200, 0, 0, 0.5)', blue = 'rgba(0, 0, 200, 0.5)',
-			{ img1, img2, img3, img4, figureType, figureSize } = params
+			{ img1, img2, img3, img4, figureType, figureSize, exerciseType, gridType } = params
 			
-		if (img1 && img1 != '' && figureType == 'images') {
+		if (img1 && img1 != '' && (figureType == 'images' || gridType == 'pictórico')) {
 			drawImage(x1, y1, 1*w, 1*h, img1, red)
 
-			if (figureType == 'traslación' || figureSize >= 2) {
+			if (exerciseType == 'traslación' || figureSize >= 2) {
 				if (img2 && img2 != '') { drawImage(x2, y2, 1*w, 1*h, img2, blue) } 
 				else { drawImage(x2, y2, 1*w, 1*h, img1, blue) }
 			} 
-			if (figureType == 'reflexión') {
+			if (exerciseType == 'reflexión') {
 				if (figureSize >= 3) {
 					if (img3 && img3 != '') { drawImage(x3, y3, 1*w, 1*h, img3, red) } 
 					else { drawImage(x3, y3, 1*w, 1*h, img1, red) }
