@@ -1,5 +1,8 @@
 import * as actions from 'actions'
-import * as components from './general'
+import * as general from './general'
+import * as canvas from './canvas'
+
+const components = { ...general, ...canvas }
 
 export const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[
