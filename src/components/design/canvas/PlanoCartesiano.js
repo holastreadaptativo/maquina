@@ -8,7 +8,7 @@ export default class PlanoCartesiano extends Component {
 	constructor(props) {
 		super(props)
 		this.state = props.push ? { 
-			height:320, width:320, background:COLORS['background'], rows:10, cols:10, active:0, borderColor:COLORS['border'], borderRadius:10, borderWidth:2, 
+			active:0, height:320, width:320, background:COLORS['background'], rows:10, cols:10, borderColor:COLORS['border'], borderRadius:10, borderWidth:2, 
 			borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, imageDisplay:'none', fontColor:COLORS['geometria'], fontFamily:'arial', axisColor:'#ffa500', 
 			axisWidth:3, axisOrientation:'vertical', fontSize:'auto', fontWeight:'bold', gridType:'simbólico', exerciseType:'traslación', line:0, figureType:'default', 
 			px1:2, py1:7, px2:7, py2:2, px3:5, py3:4, px4:3, py4:8, img1:'', img2:'', img3:'', img4:'', figureSize:2, axisTags:'si', exerciseImg:'imágenes'

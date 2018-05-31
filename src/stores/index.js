@@ -22,6 +22,6 @@ export const images = storage.ref('images')
 export const src = storage.ref('src')
 
 export function uid() { return auth.currentUser.uid }
-export const dbs = db.initializeApp(config, 'Secondary').auth()
+export const dbs = db.initializeApp(config, 'secondary').auth()
 
 export * from './const'

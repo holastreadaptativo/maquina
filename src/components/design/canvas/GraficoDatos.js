@@ -8,20 +8,17 @@ export default class GraficoDatos extends Component {
 	constructor(props) {
 		super(props)
 		this.state = props.push ? { 
-			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'Título X', axisTitleY:'Título Y',
-			borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], lineColor:'#006400', lineWidth:2, 
-			dataTag: '1,1,1,1,1', /*withAxis: 'no',*/ chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', fontWeight:'normal',
-			chartTags:'A,B,C,D,E', titleValue:'Título Principal', titleSize:22, titleColor:'#006400', chartBorder:COLORS['datos'], scaleMax:1, 
-			scaleMin:0, scaleInterval:1, scaleColor:'#f2f2f2', scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', highlightBar:'1,1,1,1,1',
-			// Nuevos parámetros
-			pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg',
-			typeGraph: ''/*pictorico*/, chartType: '', /*captVal: '1',*/ captText: 'helado', /*caption: false,*/ rotateTags: 0, rotateValues: 0, barSeparation: 60, 
-			showTags: 'si', showValues: 'si', showOrigin: 'no', titleWeight: 'normal', fontFamily: 'Larke Neue Thin', borderBars: 2, canvasPadding: '0,0,0,0',
-			containerPadding: '0,0,0,10', chartPadding: '20,10,40,10', innerChartPadding: '30,60', valuesSeparator: 'normal', titleXYSize: 18, dobLinesSize: '10',
-			dobLinesGradient: 30,
-			// Nuevos Parámetros 03/05
-			showCaption: 'si', showValCapt: 'si', captBg: '#ffffff', captBorder: '#dedede', captBorderWidth: '2', showAxisX: 'si', showAxisY: 'si',
-			heightImgTag: '40'
+			active:0, background:COLORS['background'], height:450, width:720, axisColor:COLORS['datos'], axisWidth:2, axisTitleX:'Título X', 
+			axisTitleY:'Título Y', borderColor:'#006400', borderRadius:20, borderWidth:0, borderStyle:'solid', fontColor:COLORS['datos'], 
+			lineColor:'#006400', lineWidth:2, dataTag:'1,1,1,1,1', chartPosition:'vertical', chartColor:COLORS['datos'], chartValues:'7,1,6,8,4', 
+			fontWeight:'normal', chartTags:'A,B,C,D,E', titleValue:'Título Principal', titleSize:22, titleColor:'#006400', chartBorder:COLORS['datos'], 
+			scaleMax:1, scaleMin:0, scaleInterval:1, scaleColor:'#f2f2f2', scaleWidth:1, fontSize:14, limitVal:'', projectionVal:'1,1,1,1,1', 
+			highlightBar:'1,1,1,1,1', pictoImg:'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_4/OA-24/cubo_medicion.svg', 
+			typeGraph:'', chartType:'', captText:'helado', rotateTags:0, rotateValues:0, barSeparation:60, showTags:'si', showValues:'si', 
+			showOrigin:'no', titleWeight:'normal', fontFamily:'Larke Neue Thin', borderBars:2, canvasPadding:'0,0,0,0', containerPadding:'0,0,0,10', 
+			hartPadding:'20,10,40,10', innerChartPadding:'30,60', valuesSeparator:'normal', titleXYSize:18, dobLinesSize:'10', dobLinesGradient:30, 
+			showCaption:'si', showValCapt:'si', captBg:'#ffffff', captBorder:'#dedede', captBorderWidth:'2', showAxisX:'si', showAxisY:'si', 
+			heightImgTag:'40'
 		} : props.params
 	}
 	componentDidUpdate() {
