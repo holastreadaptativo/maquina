@@ -17,9 +17,9 @@ export default class RectaNumerica extends Component {
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
       lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
       scaleDivisions: 10, scaleValue: 1, scaleWidth: 3, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'si',
-      showAllValues: 'todos', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
+      showAllValues: 'no', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
       alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: '5.71', showMiniPointValue: 'no',
-      showMiniGuides: 'no', initArcPt: '5.26', endArcPt: '5.71', selectValuesToShow: '1,1,1,0,1,0,0,0,0,1', wichPointValue: '5.15,5.87,5.66',
+      showMiniGuides: 'no', initArcPt: '5.26', endArcPt: '5.71', selectValuesToShow: '', wichPointValue: '5.15,5.87,5.66',
       rectValues: '5.38', wichFigValues: '5.15,5.87,5.66', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', initArcPtMini: '5.72',
       endArcPtMini: '5.76'
 
@@ -35,7 +35,7 @@ export default class RectaNumerica extends Component {
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['no','derecha','izquierda'],
-        showTheValuesOpt = ['todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
+        showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
@@ -77,12 +77,12 @@ export default class RectaNumerica extends Component {
           <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this} hide={rectType === 'enteros'}/>
           <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this} hide={rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'mixta'}/>
           <Select id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
-          <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
-          {/*<Select id="showTheValue" prefix="valor" options={yesNoOptions} parent={this}/>*/}
-          <Select id="showAllValues" prefix="valores" options={showTheValuesOpt} parent={this}/>
-          <Input id="selectValuesToShow" prefix="escoger" type="text" placeholder={'1,0,1,0'} parent={this} hide={showAllValues === 'todos'}/>
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
+          <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
+          {/*<Select id="showTheValue" prefix="valor" options={yesNoOptions} parent={this}/>*/}
+          <Select id="showAllValues" prefix="valores" options={showTheValuesOpt} parent={this} />
+          <Input id="selectValuesToShow" prefix="escoger" type="text" parent={this} hide={showAllValues === 'no' || showAllValues === 'todos'}/>
           <Select id="showPointValue" prefix="punto" options={showPointValueOpt} parent={this}/>
           <Input id="wichPointValue" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showPointValue === 'no'} />
           <Select id="showFigValue" prefix="figura" options={showFigValueOpt} parent={this}/>

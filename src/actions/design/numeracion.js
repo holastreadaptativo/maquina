@@ -87,8 +87,8 @@ export function rectNumFn(config) {
   state.show = {
     showExValues: showExValues === 'si' ? true : false,
     showAllValues: {
-      showAllValues: showAllValues,
-      selectValuesToShow: selectValuesToShow.split(',')
+      showAllValues: showAllValues !== 'no' ? showAllValues : false,
+      selectValuesToShow: valuesValidation(selectValuesToShow)
     },
     showTheValue: showTheValue === 'si' ? true : false,
     showPointValue: {
@@ -321,9 +321,11 @@ function insertarEjePrincipal(state, mainData) {
   if (typeRect !== 'enteros' && typeRect !== 'mixta' && scale.width > 0 && scale.length > 0) {
     generarEscalaDec(state, xIni, xFin, centroY, scale.divisions)
   }
+  chart.values.rectValues !== '' && show.showExValues && mostrarValoresExternos(state, xIni, xFin, centroY, scale.divisions, scale.value)
+  chart.values.rectValues !== '' && mostrarValores(state, xIni, xFin, centroY, scale.divisions, scale.value)
   chart.values.rectValues !== '' && show.showPointValue.showPointValue && mostrarPuntos(state, xIni, xFin, centroY, scale.divisions)
   chart.values.rectValues !== '' && show.showFigValue.showFigValue && mostrarFigura(state, xIni, xFin, centroY, scale.divisions)
-  show.showArcs.showArcs && mostrarArcos(state, xIni, xFin, centroY, scale.divisions, show.showArcs.showArcsValues.initArcPt.valuesDec, show.showArcs.showArcsValues.endArcPt.valuesDec, show.showArcs.showArcs)
+  show.showArcs.showArcs && mostrarArcos(state, xIni, xFin, centroY, scale.divisions, scale.value)
   ctx.restore()
   ctx.save()
 }
@@ -406,26 +408,102 @@ function generarEscalaDec(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
+/* -------------------------------- Mostrar Eje -------------------------------- */
+
+function mostrarValoresExternos(state, xIni, xFin, centroY, divisiones, valorEscala) {
+  const { ctx, typeRect, font, scale, chart } = state
+  ctx.save()
+  centroY += scale.length*1.3
+  ctx.strokeStyle = font.color
+  ctx.fillStyle = font.color
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+  let segment = (xFin - xIni)/(divisiones+1)
+  ctx.font = font.size*1.5 + 'px ' + font.family
+  let arr = [0, eval(divisiones)-1]
+  arr.map((val) => {
+    let theValue, xPos
+    if (typeRect === 'enteros') {
+      theValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
+      xPos = xIni + segment + segment*val
+      mostrarNumero(state, xPos, centroY, 1.5, theValue, decimo, centesimo)
+    } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
+      theValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
+      xPos = xIni + segment + segment*val
+      mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo)
+    }
+  })
+  ctx.restore()
+  ctx.save()
+}
+
+function mostrarValores(state, xIni, xFin, centroY, divisiones, valorEscala) {
+  const { ctx, typeRect, font, scale, chart, show } = state
+  ctx.save()
+  centroY += scale.length*1.3
+  ctx.strokeStyle = font.color
+  ctx.fillStyle = font.color
+  let segment = (xFin - xIni)/(divisiones+1)
+  ctx.font = font.size + 'px ' + font.family
+  let arrValEnteros = show.showAllValues.selectValuesToShow.valuesUnit
+  for (let i = 1; i < divisiones-1; i++) {
+    let xPos = xIni + segment + segment*i
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    let theValue
+    if (typeRect === 'enteros') {
+      theValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
+      switch (show.showAllValues.showAllValues) {
+        case 'mostrar':
+          arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          break;
+        case 'ocultar':
+          !arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          break;
+        case 'todos':
+          ctx.fillText(theValue, xPos, centroY)
+          break;
+      }
+    } else if (typeRect === 'mixta') {
+      theValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
+      switch (show.showAllValues.showAllValues) {
+        case 'mostrar':
+          arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          break;
+        case 'ocultar':
+          !arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          break;
+        case 'todos':
+          ctx.fillText(theValue, xPos, centroY)
+          break;
+      }
+    }
+
+  }
+  ctx.restore()
+  ctx.save()
+}
+
 function mostrarPuntos(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, typeRect, font } = state
-  const { decValue, centValue } = show.showPointValue
+  const { ctx, scale, show, typeRect, font, chart } = state
+  const { unitValue, decValue, centValue } = show.showPointValue
   ctx.save()  
-  ctx.strokeStyle = scale.color
-  ctx.fillStyle = font.color
-  ctx.lineWidth = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.width/2 : scale.width
-  let theRadius = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.length/3 : scale.length/2
   let segment = (xFin - xIni)/(divisiones+1)
   let miniSegment = segment/10
-  if (typeRect !== 'enteros' && typeRect !== 'mixta') {
+  //let theValue
+  let minVal = Math.min(...chart.values.rectValuesUnit)
+  if (typeRect === 'enteros') {
+    unitValue.forEach( (unit) => {
+      unit = eval(unit)
+      let xPos = xIni + segment + segment*((unit - minVal)/scale.value)
+      drawPoint(ctx, xPos, centroY)
+    })
+  } else if (typeRect !== 'enteros' && typeRect !== 'mixta') {
     decValue.forEach( (dec,index) => {
       if (dec !== '') {
         if (centValue[index] !== '') {
           let xPos = xIni + segment + segment*dec + miniSegment*centValue[index]
-          ctx.beginPath()
-          ctx.arc(xPos, centroY, theRadius, 0,360*Math.PI/180)
-          ctx.fill()
-          ctx.stroke()
-          ctx.closePath()
+          drawPoint(ctx, xPos, centroY)
         }
       }
     })
@@ -433,89 +511,118 @@ function mostrarPuntos(state, xIni, xFin, centroY, divisiones) {
     decValue.forEach( dec => {
       if (dec !== '') {
         let xPos = xIni + segment + segment*dec
-        ctx.beginPath()
-        ctx.arc(xPos, centroY, theRadius, 0,360*Math.PI/180)
-        ctx.fill()
-        ctx.stroke()
-        ctx.closePath()
+        drawPoint(ctx, xPos, centroY)
       }
     })
   }
   ctx.restore()
   ctx.save()
-}
-
-function mostrarFigura(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, typeRect, font } = state
-  const { decValue, centValue } = show.showFigValue
-  ctx.save()  
-  ctx.strokeStyle = scale.color
-  ctx.fillStyle = font.color
-  let segment = (xFin - xIni)/(divisiones+1)
-  let miniSegment = segment/10
-  ctx.fillStyle = '#dbac04'
-  ctx.strokeStyle = '#dbac04'
-  let diamondW = scale.length*1.5
-  let diamondH = diamondW*1.3
-  let yDist = show.showFigValue.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
-  if (typeRect !== 'enteros' && typeRect !== 'mixta') {
-    decValue.forEach( (dec,index) => {
-      if (dec !== '') {
-        if (centValue[index] !== '') {
-          let xPos = xIni + segment + segment*dec + miniSegment*centValue[index]
-          ctx.beginPath()
-          ctx.moveTo(xPos, centroY + yDist)
-          ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
-          ctx.lineTo(xPos, centroY + diamondH + yDist)
-          ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
-          ctx.lineTo(xPos, centroY + yDist)
-          ctx.fill()
-          ctx.stroke()
-          ctx.closePath()
-        }
-      }
-    })
-  } else {
-    decValue.forEach( dec => {
-      if (dec !== '') {
-        let xPos = xIni + segment + segment*dec
-        ctx.beginPath()
-        ctx.moveTo(xPos, centroY + yDist)
-        ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
-        ctx.lineTo(xPos, centroY + diamondH + yDist)
-        ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
-        ctx.lineTo(xPos, centroY + yDist)
-        ctx.fill()
-        ctx.stroke()
-        ctx.closePath()
-      }
-    })
-  }
-  ctx.restore()
-  ctx.save()
-}
-
-function mostrarArcos(state, xIni, xFin, centroY, divisiones, initPoint, endPoint, arcDirect) {
-  const { ctx, scale, font, show } = state
-  ctx.save()
-  let arcsDirectionAux = arcDirect === 'derecha' ? true : false
-  let segment = (xFin - xIni)/(divisiones+1)
-  for (let i = initPoint; i < endPoint; i++) {
-    let xPos = xIni + segment*i
-    let yPos = centroY
-    ctx.strokeStyle = font.color
-    ctx.lineWidth = Math.round(scale.width/2)
+  function drawPoint(ctx, xPos, centroY) {
+    ctx.strokeStyle = scale.color
+    ctx.fillStyle = font.color
+    ctx.lineWidth = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.width/2 : scale.width
+    let theRadius = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.length/3 : scale.length/2
     ctx.beginPath()
-    ctx.arc(xPos + segment + segment/2,yPos - scale.length/2,segment/2,220*Math.PI/180,320*Math.PI/180)
-    let arrowDirection = arcsDirectionAux ? -segment*0.15 : segment*0.15
-    let arrowInitPt = arcsDirectionAux ? (segment/2)*Math.cos(40*Math.PI/180) : -(segment/2)*Math.cos(40*Math.PI/180)
-    ctx.moveTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180) - segment*0.15)
-    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
-    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt + arrowDirection, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+    ctx.arc(xPos, centroY, theRadius, 0,360*Math.PI/180)
+    ctx.fill()
     ctx.stroke()
     ctx.closePath()
   }
 }
+
+function mostrarFigura(state, xIni, xFin, centroY, divisiones) {
+  const { ctx, scale, show, typeRect, font, chart } = state
+  const { unitValue, decValue, centValue } = show.showFigValue
+  ctx.save()  
+  let segment = (xFin - xIni)/(divisiones+1)
+  let miniSegment = segment/10
+  let diamondW = scale.length*1.5
+  let diamondH = diamondW*1.3
+  let yDist = show.showFigValue.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
+  let minVal = Math.min(...chart.values.rectValuesUnit)
+  if (typeRect === 'enteros') {
+    unitValue.map( (unit) => {
+      unit = eval(unit)
+      if (((unit - minVal) % scale.value) === 0) {
+        let xPos = xIni + segment + segment*((unit - minVal)/scale.value)
+        drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
+      }
+    })
+  } else if (typeRect !== 'enteros' && typeRect !== 'mixta') {
+    decValue.forEach( (dec,index) => {
+      if (dec !== '') {
+        if (centValue[index] !== '') {
+          let xPos = xIni + segment + segment*dec + miniSegment*centValue[index]
+          drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
+        }
+      }
+    })
+  } else {
+    decValue.forEach( dec => {
+      if (dec !== '') {
+        let xPos = xIni + segment + segment*dec
+        drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
+      }
+    })
+  }
+  ctx.restore()
+  ctx.save()
+
+  function drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist) {
+    ctx.strokeStyle = scale.color
+    ctx.fillStyle = font.color
+    ctx.fillStyle = '#dbac04'
+    ctx.strokeStyle = '#dbac04'
+    ctx.beginPath()
+    ctx.moveTo(xPos, centroY + yDist)
+    ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
+    ctx.lineTo(xPos, centroY + diamondH + yDist)
+    ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
+    ctx.lineTo(xPos, centroY + yDist)
+    ctx.fill()
+    ctx.stroke()
+    ctx.closePath()
+  }
+}
+
+function mostrarArcos(state, xIni, xFin, centroY, divisiones, valorEscala) {
+  const { ctx, typeRect, scale, font, show, chart } = state
+  ctx.save()
+  let initPoint, endPoint
+  let arcsDirection = show.showArcs.showArcs === 'derecha' ? true : false
+  let segment = (xFin - xIni)/(divisiones+1)
+  let minVal = Math.min(...chart.values.rectValuesUnit)
+  valorEscala = eval(valorEscala)
+  if (typeRect === 'enteros') {
+    let initVal = show.showArcs.showArcsValues.initArcPt.valuesUnit;
+    let endVal = show.showArcs.showArcsValues.endArcPt.valuesUnit;
+    initPoint = ((initVal - minVal)/valorEscala);
+    endPoint = ((endVal - minVal)/valorEscala);
+    (((initVal - minVal) % valorEscala) === 0) && (((endVal - minVal) % valorEscala) === 0) && dibujarArcos()
+  } else {
+    //valuesDec
+    //valuesCent
+  }
+  function dibujarArcos() {
+    for (let i = initPoint; i < endPoint; i ++) {
+      let xPos = xIni + segment*i
+      let yPos = centroY
+      ctx.strokeStyle = font.color
+      ctx.lineWidth = Math.round(scale.width/2)
+      ctx.beginPath()
+      ctx.arc(xPos + segment + segment/2,yPos - scale.length/2,segment/2,220*Math.PI/180,320*Math.PI/180)
+      let arrowDirection = arcsDirection ? -segment*0.15 : segment*0.15
+      let arrowInitPt = arcsDirection ? (segment/2)*Math.cos(40*Math.PI/180) : -(segment/2)*Math.cos(40*Math.PI/180)
+      ctx.moveTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180) - segment*0.15)
+      ctx.lineTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+      ctx.lineTo(xPos + segment + segment/2 + arrowInitPt + arrowDirection, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+      ctx.stroke()
+      ctx.closePath()
+    }
+  }
+}
+
+/* -------------------------------- Mini Eje -------------------------------- */
 
 function insertarEjeMini(state, mainData) {
   const { ctx, show } = state
@@ -534,7 +641,7 @@ function insertarEjeMini(state, mainData) {
 }
 
 function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, typeRect, font } = state
+  const { ctx, scale, show, font } = state
   const { valuesCent } = show.showMiniTheValue
   ctx.save()  
   ctx.strokeStyle = scale.color
@@ -542,7 +649,7 @@ function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
   ctx.lineWidth = scale.width
   let theRadius = scale.length/2
   let segment = (xFin - xIni)/(divisiones+1)
-  valuesCent.forEach( (cent,index) => {
+  valuesCent.forEach( (cent) => {
     if (cent !== '') {
       let xPos = xIni + segment + segment*cent
       ctx.beginPath()
@@ -557,13 +664,12 @@ function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
 }
 
 function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, typeRect, font } = state
+  const { ctx, scale, show, font } = state
   const { showMiniTheValue } = show
   const { valuesCent, valuesDec, valuesUnit } = show.showMiniFigure.wichMiniFigValues
   ctx.save()
   ctx.strokeStyle = scale.color
   ctx.fillStyle = font.color
-  let theRadius = scale.length/2
   let segment = (xFin - xIni)/(divisiones+1)
   ctx.fillStyle = '#dbac04'
   ctx.strokeStyle = '#dbac04'
@@ -590,10 +696,36 @@ function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
   ctx.save()
 }
 
-function mostrarValoresEnteros(state, xIni, xFin, centroY, divisiones) {
+/* -------------------------------- Mini Eje -------------------------------- */
 
-}
-
-function mostrarValores(state, xIni, xFin, centroY, divisiones) {
-  
+function mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo) {
+  const { ctx } = state
+  ctx.strokeStyle = font.color
+  ctx.fillStyle = font.color
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+  ctx.font = font.size*multSize + 'px ' + font.family
+  switch (typeRect) {
+    case 'enteros':
+      ctx.fillText(unidad, xPos, centroY)
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
 }
