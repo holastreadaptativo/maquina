@@ -6,6 +6,10 @@ export default class Text extends Component {
 		const { id, parent, update } = this.props, { input } = this.refs; let value = input.value.replace(/[\']/g,'\`')
 		if (!update) parent.setState({ [id]:value }); else update({ [id]:value })
 	}
+	componentDidMount() {
+		if (this.props.disabled)
+			this.refs.input.setAttribute('disabled', 'true')
+	}
 	render() {
 		const { hide, id, type, parent, placeholder, postfix, prefix, style } = this.props
 		return (

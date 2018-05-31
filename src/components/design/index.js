@@ -1,5 +1,8 @@
 import * as actions from 'actions'
-import * as components from './general'
+import * as general from './general'
+import * as canvas from './canvas'
+
+const components = { ...general, ...canvas }
 
 export const FUNCIONES = [	
 	{ name:'General', tag:'general', fns:[
@@ -10,7 +13,9 @@ export const FUNCIONES = [
 	{ name:'Numeración', tag:'numeracion', fns:[
 		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn }
 	]},
-	{ name:'Álgebra', tag:'algebra', fns:[]},
+	{ name:'Álgebra', tag:'algebra', fns:[
+		{ id:'Sucesiones', component:components.Sucesiones }
+	]},
 	{ name:'Medición', tag:'medicion', fns:[]},
 	{ name:'Geometría', tag:'geometria', fns:[
 		{ id:'Plano Cartesiano', component:components.PlanoCartesiano, action:actions.planoCartesiano }

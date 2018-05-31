@@ -9,6 +9,8 @@ export * from './design/datos'
 export * from './design/general'
 export * from './design/geometria'
 export * from './design/numeracion'
+export * from './design/medicion'
+export * from './design/algebra'
 
 import * as fn from 'actions'
 

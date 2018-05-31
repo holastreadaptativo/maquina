@@ -6,6 +6,10 @@ export default class Select extends Component {
 		const { id, parent, update } = this.props, { input } = this.refs
 		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
 	}
+	componentDidMount() {
+		if (this.props.disabled)
+			this.refs.input.setAttribute('disabled', 'true')
+	}
 	render() {
 		const { hide } = this.props
 		return (
