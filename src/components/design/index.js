@@ -14,9 +14,11 @@ export const FUNCIONES = [
 		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[
-		{ id:'Sucesiones', component:components.Sucesiones }
+		{ id:'Sucesiones', component:components.Sucesiones, action:actions.sucesiones }
 	]},
-	{ name:'Medición', tag:'medicion', fns:[]},
+	{ name:'Medición', tag:'medicion', fns:[
+
+	]},
 	{ name:'Geometría', tag:'geometria', fns:[
 		{ id:'Plano Cartesiano', component:components.PlanoCartesiano, action:actions.planoCartesiano }
 	]},
