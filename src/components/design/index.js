@@ -11,7 +11,8 @@ export const FUNCIONES = [
 		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[
-		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn }
+		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn },
+		{ id:'Repetición Pictorico', component:components.RepeticionPictoricos, action:actions.repeticionPic }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[
 		{ id:'Sucesiones', component:components.Sucesiones, action:actions.sucesiones }
