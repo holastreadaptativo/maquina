@@ -414,23 +414,18 @@ function mostrarValoresExternos(state, xIni, xFin, centroY, divisiones, valorEsc
   const { ctx, typeRect, font, scale, chart } = state
   ctx.save()
   centroY += scale.length*1.3
-  ctx.strokeStyle = font.color
-  ctx.fillStyle = font.color
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
   let segment = (xFin - xIni)/(divisiones+1)
-  ctx.font = font.size*1.5 + 'px ' + font.family
   let arr = [0, eval(divisiones)-1]
   arr.map((val) => {
     let theValue, xPos
     if (typeRect === 'enteros') {
       theValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
       xPos = xIni + segment + segment*val
-      mostrarNumero(state, xPos, centroY, 1.5, theValue, decimo, centesimo)
+      mostrarNumero(state, xPos, centroY, 1.5, theValue, theValue, theValue)
     } else if (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') {
       theValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
       xPos = xIni + segment + segment*val
-      mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo)
+      ctx.fillText(theValue, xPos, centroY)
     }
   })
   ctx.restore()
@@ -441,27 +436,22 @@ function mostrarValores(state, xIni, xFin, centroY, divisiones, valorEscala) {
   const { ctx, typeRect, font, scale, chart, show } = state
   ctx.save()
   centroY += scale.length*1.3
-  ctx.strokeStyle = font.color
-  ctx.fillStyle = font.color
   let segment = (xFin - xIni)/(divisiones+1)
-  ctx.font = font.size + 'px ' + font.family
   let arrValEnteros = show.showAllValues.selectValuesToShow.valuesUnit
   for (let i = 1; i < divisiones-1; i++) {
     let xPos = xIni + segment + segment*i
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
     let theValue
     if (typeRect === 'enteros') {
       theValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
       switch (show.showAllValues.showAllValues) {
         case 'mostrar':
-          arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          arrValEnteros.includes(theValue.toString()) && mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
           break;
         case 'ocultar':
-          !arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
+          !arrValEnteros.includes(theValue.toString()) && mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
           break;
         case 'todos':
-          ctx.fillText(theValue, xPos, centroY)
+          mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
           break;
       }
     } else if (typeRect === 'mixta') {
@@ -699,14 +689,14 @@ function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
 /* -------------------------------- Mini Eje -------------------------------- */
 
 function mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo) {
-  const { ctx } = state
+  const { ctx, font, typeRect, scale } = state
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
   switch (typeRect) {
-    case 'enteros':
+    case 'mixta':
       ctx.fillText(unidad, xPos, centroY)
       break;
     case 'enteros con decimales':
@@ -718,8 +708,24 @@ function mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo
     case 'centesimal':
       
       break;
-    case 'mixta':
-      
+    case 'enteros':
+      // Parte Entera
+      let deltaLine = eval(font.size)*multSize*1.5/2 - eval(scale.width)/2 + eval(scale.length)
+      let textLength = ctx.measureText('00').width
+      ctx.font = font.size*multSize*1.5 + 'px ' + font.family
+      ctx.textAlign = 'right'
+      //let textLength = ctx.measureText(txt).width
+      ctx.fillText(unidad, xPos, centroY + font.size/4)
+      // Parte Fracción
+      ctx.font = font.size*multSize + 'px ' + font.family
+      ctx.textAlign = 'center'
+      deltaLine = deltaLine*0.7
+      ctx.lineWidth = scale.width
+      lineaFraccion(state, xPos, centroY, deltaLine, textLength)
+      ctx.textBaseline = 'bottom'
+      ctx.fillText(decimo, xPos + textLength/2, centroY + deltaLine + eval(scale.width))
+      ctx.textBaseline = 'top'
+      ctx.fillText(10, xPos + textLength/2, centroY + deltaLine)
       break;
     case 'mixta decimal':
       
@@ -727,5 +733,14 @@ function mostrarNumero(state, xPos, centroY, multSize, unidad, decimo, centesimo
     case 'mixta centesimal':
       
       break;
+  }
+  function lineaFraccion(state, xPos, centroY, deltaLine, textLength) {
+    const { ctx, chart, scale } = state
+    ctx.beginPath()
+    ctx.strokeStyle = chart.axis.color
+    ctx.moveTo(xPos, centroY + deltaLine)
+    ctx.lineTo(xPos + textLength, centroY + deltaLine)
+    ctx.stroke()
+    ctx.closePath()
   }
 }
