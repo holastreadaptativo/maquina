@@ -17,7 +17,7 @@ export const FUNCIONES = [
 		{ id:'Sucesiones', component:components.Sucesiones, action:actions.sucesiones }
 	]},
 	{ name:'Medición', tag:'medicion', fns:[
-
+		{  }
 	]},
 	{ name:'Geometría', tag:'geometria', fns:[
 		{ id:'Plano Cartesiano', component:components.PlanoCartesiano, action:actions.planoCartesiano }
