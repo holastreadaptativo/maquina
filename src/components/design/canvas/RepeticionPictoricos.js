@@ -16,18 +16,18 @@ export default class RepeticionPictoricos extends Component {
       // Título
       titleValue: 'EL Título', titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold',
       // Padding
-      canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20', chartPadding: '10,10,10,10',
+      canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20', chartPadding: '30,10,10,10',
       // Fuente
       fontColor: '#8B1013', fontSize:14, fontFamily: 'Larke Neue Thin', fontWeight: 'normal',
       // Valores
       /*cantElem: 1*/
-      repetElem1: 1, urlElem1: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/1_1.png',
-      repetElem2: 1, urlElem2: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/5_1.png',
-      repetElem3: 1, urlElem3: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/10_1.png',
-      repetElem4: 1, urlElem4: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/50_1.png',
-      repetElem5: 1, urlElem5: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/100_1.png',
-      repetElem6: 1, urlElem6: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/500_1.png',
-      repetElem7: 1, urlElem7: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/Billetes_Grupos/1000_1.png',
+      repetElem1: 1, elemType1: 'moneda 1', /*urlElem1: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1_1.png',*/
+      repetElem2: 1, elemType2: 'moneda 5', /*urlElem2: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/5_1.png',*/
+      repetElem3: 1, elemType3: 'moneda 10', /*urlElem3: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/10_1.png',*/
+      repetElem4: 1, elemType4: 'moneda 50', /*urlElem4: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/50_1.png',*/
+      repetElem5: 1, elemType5: 'moneda 100', /*urlElem5: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/100_1.png',*/
+      repetElem6: 1, elemType6: 'moneda 500', /*urlElem6: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/500_1.png',*/
+      repetElem7: 1, elemType7: 'billete 1000' /*urlElem7: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png'*/
 
     } : props.params
   }
@@ -35,10 +35,11 @@ export default class RepeticionPictoricos extends Component {
     numeracion.repeticionPic({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    const { cantElem } = this.state
+    /*const { cantElem } = this.state*/
 
     let k = 0, fontWeightOptions = ['normal', 'bold'], borderCanvas = ['solid','dashed','dotted','double'], 
-        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], arrInputs = []
+        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'],/*, arrInputs = []*/  
+        imgSelec = ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000']
     
     /*
     for (let i = 0; i < cantElem; i++) {
@@ -81,20 +82,27 @@ export default class RepeticionPictoricos extends Component {
         </Item>
         <Item id={k++} title="Valores" parent={this}>
           <Input id={'repetElem1'} prefix={'cantidad 1'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem1'} prefix={'url Img 1'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType1" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem2'} prefix={'cantidad 2'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem2'} prefix={'url Img 2'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType2" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem3'} prefix={'cantidad 3'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem3'} prefix={'url Img 3'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType3" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem4'} prefix={'cantidad 4'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem4'} prefix={'url Img 4'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType4" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem5'} prefix={'cantidad 5'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem5'} prefix={'url Img 5'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType5" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem6'} prefix={'cantidad 6'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem6'} prefix={'url Img 6'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType6" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem7'} prefix={'cantidad 7'} type="number" placeholder={''} parent={this}/>
-          <Input id={'urlElem7'} prefix={'url Img 7'} type="text" placeholder={''} parent={this}/>
+          <Select id="elemType7" prefix="imagen" options={imgSelec} parent={this}/>
           {/*
+          <Input id={'urlElem1'} prefix={'url Img 1'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem2'} prefix={'url Img 2'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem3'} prefix={'url Img 3'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem4'} prefix={'url Img 4'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem5'} prefix={'url Img 5'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem6'} prefix={'url Img 6'} type="text" placeholder={''} parent={this}/>
+          <Input id={'urlElem7'} prefix={'url Img 7'} type="text" placeholder={''} parent={this}/>
             <Input id="cantElem" prefix="elementos" options={1} type="number" parent={this}/>
             {arrInputs}
           */}
