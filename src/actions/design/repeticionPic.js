@@ -1,10 +1,10 @@
-export function repeticionPic(config) {
+export function billetesMonedas(config) {
   const { container, params, variables, versions, vt } = config
 
   const {
     // height, width, background,
     // Borde
-    borderWidth, borderColor, borderStyle, borderRadius,
+    //borderWidth, borderColor, borderStyle, borderRadius,
     // Título
     titleValue, titleColor, titleSize, titleWeight,
     // Padding
@@ -17,36 +17,6 @@ export function repeticionPic(config) {
     repetElem5, urlElem5, repetElem6, urlElem6, repetElem7, urlElem7,
     elemType1, elemType2, elemType3, elemType4, elemType5, elemType6, elemType7
   } = params
-
-  /*
-  let urlElem1
-  urlElem1 = definirUrl(urlElem1a)
-  function definirUrl(variable) {
-    switch (variable) {
-      case 'moneda 1':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1_1.png'
-        break;
-      case 'moneda 5':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/5_1.png'
-        break;
-      case 'moneda 10':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/10_1.png'
-        break;
-      case 'moneda 50':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/50_1.png'
-        break;
-      case 'moneda 100':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/100_1.png'
-        break;
-      case 'moneda 500':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/500_1.png'
-        break;
-      case 'billete 1000':
-        return 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png'
-        break;
-    }
-  }
-  */
 
   if (!container) return
   let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
@@ -136,52 +106,31 @@ export function repeticionPic(config) {
   state.pictorics = [
     {
       elem: elemType1,
-      qtty: repetElem1,
-      //url: urlElem1,
-      //width: 66,
-      //height: 66
+      qtty: repetElem1
     },
     {
       elem: elemType2,
-      qtty: repetElem2,
-      //url: urlElem2,
-      //width: 66,
-      //height: 66
+      qtty: repetElem2
     },
     {
       elem: elemType3,
-      qtty: repetElem3,
-      //url: urlElem3,
-      //width: 66,
-      //height: 66
+      qtty: repetElem3
     },
     {
       elem: elemType4,
-      qtty: repetElem4,
-      //url: urlElem4,
-      //width: 66,
-      //height: 66
+      qtty: repetElem4
     },
     {
       elem: elemType5,
-      qtty: repetElem5,
-      //url: urlElem5,
-      //width: 72,
-      //height: 72
+      qtty: repetElem5
     },
     {
       elem: elemType6,
-      qtty: repetElem6,
-      //url: urlElem6,
-      //width: 72,
-      //height: 72
+      qtty: repetElem
     },
     {
       elem: elemType7,
-      qtty: repetElem7,
-      //url: urlElem7,
-      //width: 120,
-      //height: 60
+      qtty: repetElem7
     }    
   ]
   state.images = [
@@ -226,12 +175,12 @@ export function repeticionPic(config) {
       url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png',
       width: 120,
       height: 60
-    },
+    }
   ]
   
-  drawRects(state, state.canvas, 'red')
-  drawRects(state, state.container, 'blue')
-  drawRects(state, state.chart, 'green')
+  // drawRects(state, state.canvas, 'red')
+  // drawRects(state, state.container, 'blue')
+  // drawRects(state, state.chart, 'green')
 
   init(state)
 }
@@ -277,30 +226,37 @@ function insertarPictoricos(state) {
   // pictorics ==> elem, qtty
   // images ==> name, url, width, height
   let canvasWidth = x1 - x0
-  let deltaX = []
+  let imgArr = []
+  let xDist = [0]
   pictorics.map((pic,index) => {
-    if (pic.qtty > 0) {
-      let picImage = new Image()
-      images.map((img, index2) => {
-        if (pic.elem === img.name) {
-          deltaX.push(img.width + 10)
-          let sum = deltaX.reduce((a, b) => a + b, 0) - deltaX[index]
-          picImage.src = img.url
-          picImage.width = img.width
-          picImage.height = img.height
-          picImage.onload = function() {
-            for (let i = 0; i < pic.qtty; i++) {
-              let extraWidth
-              if (index === 0) {
-                extraWidth = img.name === 'billete 1000' ? img.width/10*i : img.width/6*i
-              } else {
-                extraWidth = img.name === 'billete 1000' ? img.width/10*i + img.width*2/3 : img.width/6*i + img.width*2/3
-              }
-              ctx.drawImage(picImage, x0 + sum + extraWidth, y0 + img.height/4*i)
-            }
-          }
+    images.map((img,index2) => {
+      if (pic.qtty !== 0 && pic.elem === img.name) {
+        imgArr.push({
+          name: img.name,
+          qtty: pic.qtty,
+          url: img.url,
+          width: img.width,
+          height: img.height, 
+          xPos: x0 + xDist[index],
+          yPos: y0
+        })
+        xDist.push(img.name === 'billete 1000' ? xDist[index] + img.width + 30 : xDist[index] + img.width + 20)
+      }
+    })
+  })
+  imgArr.map((img,index) => {
+    if (img.qtty > 0) {
+      let picImg = new Image()
+      picImg.src = img.url
+      picImg.width = img.width
+      picImg.height = img.height
+      picImg.onload = function() {
+        for (let i = 0; i < img.qtty; i++) {
+          let xPos = img.name === 'billete 1000' ? img.xPos + img.width/12*i : img.xPos + img.width/6*i
+          let yPos = img.yPos + img.height/4*i
+          ctx.drawImage(picImg, xPos, yPos)
         }
-      })
+      }
     }
-  }) 
+  })  
 }

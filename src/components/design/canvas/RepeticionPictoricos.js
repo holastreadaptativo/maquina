@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Item, Select, Editor/*, Switch*/ } from 'components'
-import * as numeracion from 'actions'
+import * as repeticionPic from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'
 
@@ -10,7 +10,7 @@ export default class RepeticionPictoricos extends Component {
     this.state = props.push ? { 
       active:0, 
       // General
-      height:450, width:720, background:COLORS['background'],
+      pictoricType: 'billetes y monedas', height:450, width:720, background:COLORS['background'],
       // Borde
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20,
       // Título
@@ -32,14 +32,15 @@ export default class RepeticionPictoricos extends Component {
     } : props.params
   }
   componentDidUpdate() {
-    numeracion.repeticionPic({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
+    repeticionPic.billetesMonedas({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
     /*const { cantElem } = this.state*/
 
     let k = 0, fontWeightOptions = ['normal', 'bold'], borderCanvas = ['solid','dashed','dotted','double'], 
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'],/*, arrInputs = []*/  
-        imgSelec = ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000']
+        imgSelec = ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000'],
+        pictoricTypeOptions = ['billetes y monedas','bloques base']
     
     /*
     for (let i = 0; i < cantElem; i++) {
@@ -53,6 +54,7 @@ export default class RepeticionPictoricos extends Component {
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
+          <Select id="pictoricType" prefix="tipo" options={pictoricTypeOptions} parent={this}/>
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
@@ -95,17 +97,6 @@ export default class RepeticionPictoricos extends Component {
           <Select id="elemType6" prefix="imagen" options={imgSelec} parent={this}/>
           <Input id={'repetElem7'} prefix={'cantidad 7'} type="number" placeholder={''} parent={this}/>
           <Select id="elemType7" prefix="imagen" options={imgSelec} parent={this}/>
-          {/*
-          <Input id={'urlElem1'} prefix={'url Img 1'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem2'} prefix={'url Img 2'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem3'} prefix={'url Img 3'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem4'} prefix={'url Img 4'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem5'} prefix={'url Img 5'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem6'} prefix={'url Img 6'} type="text" placeholder={''} parent={this}/>
-          <Input id={'urlElem7'} prefix={'url Img 7'} type="text" placeholder={''} parent={this}/>
-            <Input id="cantElem" prefix="elementos" options={1} type="number" parent={this}/>
-            {arrInputs}
-          */}
         </Item>
       </Editor>
     )
