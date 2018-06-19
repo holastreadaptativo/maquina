@@ -12,7 +12,7 @@ export const FUNCIONES = [
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[
 		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn },
-		{ id:'Billetes y monedas', component:components.RepeticionPictoricos, action:actions.billetesMonedas }
+		{ id:'Repetición Pictóricos', component:components.RepeticionPictoricos, action:actions.repeticionPic }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[
 		{ id:'Sucesiones', component:components.Sucesiones, action:actions.sucesiones }

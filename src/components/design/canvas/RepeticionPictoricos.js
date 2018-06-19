@@ -3,10 +3,12 @@ import { Input, Item, Select, Editor/*, Switch*/ } from 'components'
 import * as repeticionPic from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'
+import { show } from 'actions'
 
 export default class RepeticionPictoricos extends Component {
   constructor(props) {
     super(props)
+    
     this.state = props.push ? { 
       active:0, 
       // General
@@ -20,36 +22,48 @@ export default class RepeticionPictoricos extends Component {
       // Fuente
       fontColor: '#8B1013', fontSize:14, fontFamily: 'Larke Neue Thin', fontWeight: 'normal',
       // Valores
-      /*cantElem: 1*/
-      repetElem1: 1, elemType1: 'moneda 1', /*urlElem1: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1_1.png',*/
-      repetElem2: 1, elemType2: 'moneda 5', /*urlElem2: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/5_1.png',*/
-      repetElem3: 1, elemType3: 'moneda 10', /*urlElem3: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/10_1.png',*/
-      repetElem4: 1, elemType4: 'moneda 50', /*urlElem4: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/50_1.png',*/
-      repetElem5: 1, elemType5: 'moneda 100', /*urlElem5: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/100_1.png',*/
-      repetElem6: 1, elemType6: 'moneda 500', /*urlElem6: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/500_1.png',*/
-      repetElem7: 1, elemType7: 'billete 1000' /*urlElem7: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png'*/
-
+      maxCantElem: 10,
+      cantElem: 1,
+      elemData: []
     } : props.params
   }
-  componentDidUpdate() {
-    repeticionPic.billetesMonedas({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
-  }
-  render() {
-    /*const { cantElem } = this.state*/
 
+  componentWillMount() {
+    let elemData = []
+		if (this.props.push) {
+      const { maxCantElem } = this.state
+      for (let i = 0; i < maxCantElem; i++) {
+        elemData.push({
+          ['repetElem'+ (i+1)]: 0,
+          ['elemType'+ (i+1)]: 'moneda 1'
+        })
+      }
+    }
+    this.setState({elemData})
+	}
+  
+  componentDidUpdate() {
+    repeticionPic.repeticionPic({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
+  }
+
+  handleChange(e, i) {
+		let elemData = this.state.elemData
+		elemData[i][e.target.name] = e.target.value
+		this.setState({ elemData })
+	}
+
+  render() {
+    const { cantElem, maxCantElem, pictoricType, elemData } = this.state
+    
     let k = 0, fontWeightOptions = ['normal', 'bold'], borderCanvas = ['solid','dashed','dotted','double'], 
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'],/*, arrInputs = []*/  
-        imgSelec = ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000'],
-        pictoricTypeOptions = ['billetes y monedas','bloques base']
-    
-    /*
-    for (let i = 0; i < cantElem; i++) {
-      <Input key={'repetElem'+i} id={'repetElem' + i} prefix={'cantidad '+(i+1)} type="number" placeholder={''} parent={this}/>,
-      <Input key={'urlElem' + i} id={'urlElem' + i} prefix={'url Img '+(i+1)} type="text" placeholder={''} parent={this}/>
-      arrInputs.push(
-      )
-    }
-    */
+        imgSelec = pictoricType === 'billetes y monedas' ? ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000'] : ['bloque unidad', 'bloque decena', 'bloque centena', 'bloque mil'],
+        pictoricTypeOptions = ['billetes y monedas','bloques base'], cantElemArr = []
+
+    let aux1 = [maxCantElem]
+    aux1.forEach(el=>{
+      for (let i = 0; i < el; i++) {cantElemArr.push(i+1)}
+    })
 
     return (
       <Editor params={this.state} store={this.props} parent={this}>
@@ -82,21 +96,41 @@ export default class RepeticionPictoricos extends Component {
           <Select id="fontFamily" prefix="tipo" options={fontFamilyOptions} parent={this}/>
           <Select id="fontWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
         </Item>
-        <Item id={k++} title="Valores" parent={this}>
-          <Input id={'repetElem1'} prefix={'cantidad 1'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType1" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem2'} prefix={'cantidad 2'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType2" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem3'} prefix={'cantidad 3'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType3" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem4'} prefix={'cantidad 4'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType4" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem5'} prefix={'cantidad 5'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType5" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem6'} prefix={'cantidad 6'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType6" prefix="imagen" options={imgSelec} parent={this}/>
-          <Input id={'repetElem7'} prefix={'cantidad 7'} type="number" placeholder={''} parent={this}/>
-          <Select id="elemType7" prefix="imagen" options={imgSelec} parent={this}/>
+        <Item id={k++} title="Imágenes" parent={this}>
+          <Select id="cantElem" prefix={'cantidad'} options={cantElemArr} parent={this}/>
+          {
+            [maxCantElem].map( el => {
+              console.log(elemData)
+              let arrInputsSelects = []
+              for (let i = 0; i < el; i++) {
+                arrInputsSelects.push(
+                  <div class={show(cantElem > (i), 'form-config')}>
+                    <div class="input-group">
+                      <span class="input-group-addon prefix">imagen {(i+1)}</span>
+                      <input name={`repetElem${i+1}`} type="number" defaultValue={elemData[i][`repetElem${i+1}`]} class="form-control"
+                        onChange={e => ::this.handleChange(e, i)}>
+                      </input>
+                      <select name={`elemType${i+1}`} defaultValue={elemData[i][`elemType${i+1}`]} class="form-control"
+                        onChange={e => ::this.handleChange(e, i)}>
+                        {
+                          imgSelec.map( (el,index) => {
+                            return(
+                              <option key={index} value={el}>{el}</option>
+                            )
+                          })
+                        }
+                      </select>
+                    </div>
+                  </div>
+                  // <div key={i}>
+                  //   <Select id={elemData[i]['elemType' + (i+1)]} prefix={'imagen ' + (i+1)} options={imgSelec} hide={cantElem < (i+1)} parent={this}/>
+                  //   <Input id={'repetElem' + (i+1)} prefix={'repetir img ' + (i+1)} type="number" placeholder={''} hide={cantElem < (i+1)} parent={this}/>
+                  // </div>
+                )
+              }
+              return arrInputsSelects
+            })
+          }
         </Item>
       </Editor>
     )

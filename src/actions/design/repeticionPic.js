@@ -1,4 +1,4 @@
-export function billetesMonedas(config) {
+export function repeticionPic(config) {
   const { container, params, variables, versions, vt } = config
 
   const {
@@ -12,12 +12,9 @@ export function billetesMonedas(config) {
     // Fuente
     fontColor, fontSize, fontFamily, fontWeight,
     // Valores
-    /*cantElem: 1*/
-    repetElem1, urlElem1, repetElem2, urlElem2, repetElem3, urlElem3, repetElem4, urlElem4,
-    repetElem5, urlElem5, repetElem6, urlElem6, repetElem7, urlElem7,
-    elemType1, elemType2, elemType3, elemType4, elemType5, elemType6, elemType7
+    cantElem,
+    elemData
   } = params
-
   if (!container) return
   let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
       width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
@@ -44,6 +41,7 @@ export function billetesMonedas(config) {
   chartPaddingAux.left = eval(chartPadding.split(',')[3])
 
   let state = {}
+  state.cantElem = eval(cantElem)
   state.ctx = container.getContext('2d')
   state.titles = {
     mainTitle: {
@@ -103,36 +101,61 @@ export function billetesMonedas(config) {
     x1: state.container.position.x1 - state.chart.padding.right,
     y1: state.container.position.y1 - state.chart.padding.bottom
   }
-  state.pictorics = [
-    {
-      elem: elemType1,
-      qtty: repetElem1
-    },
-    {
-      elem: elemType2,
-      qtty: repetElem2
-    },
-    {
-      elem: elemType3,
-      qtty: repetElem3
-    },
-    {
-      elem: elemType4,
-      qtty: repetElem4
-    },
-    {
-      elem: elemType5,
-      qtty: repetElem5
-    },
-    {
-      elem: elemType6,
-      qtty: repetElem
-    },
-    {
-      elem: elemType7,
-      qtty: repetElem7
-    }    
-  ]
+  state.pictorics = []
+  for (let i = 0; i < elemData.length; i++) {
+    let elemType = 'elemType' + (i+1)
+    let repetElem = 'repetElem' + (i+1)
+    state.pictorics.push({
+      elem: elemData[i][elemType],
+      qtty: elemData[i][repetElem]
+    })
+  }
+  // state.pictorics = [
+  //   {
+  //     elem: elemType1,
+  //     qtty: repetElem1
+  //   },
+  //   {
+  //     elem: elemType2,
+  //     qtty: repetElem2
+  //   },
+  //   {
+  //     elem: elemType3,
+  //     qtty: repetElem3
+  //   },
+  //   {
+  //     elem: elemType4,
+  //     qtty: repetElem4
+  //   },
+  //   {
+  //     elem: elemType5,
+  //     qtty: repetElem5
+  //   },
+  //   {
+  //     elem: elemType6,
+  //     qtty: repetElem6
+  //   },
+  //   {
+  //     elem: elemType7,
+  //     qtty: repetElem7
+  //   },
+  //   {
+  //     elem: elemType8,
+  //     qtty: repetElem8
+  //   },
+  //   {
+  //     elem: elemType9,
+  //     qtty: repetElem9
+  //   },
+  //   {
+  //     elem: elemType10,
+  //     qtty: repetElem10
+  //   },
+  //   {
+  //     elem: elemType11,
+  //     qtty: repetElem11
+  //   }    
+  // ]
   state.images = [
     {
       name: 'moneda 1',
@@ -175,12 +198,36 @@ export function billetesMonedas(config) {
       url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png',
       width: 120,
       height: 60
+    },
+    {
+      name: 'bloque unidad',
+      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Unidad_Original.png',
+      width: 120,
+      height: 60
+    },
+    {
+      name: 'bloque decena',
+      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Decenas_Original.png',
+      width: 120,
+      height: 60
+    },
+    {
+      name: 'bloque centena',
+      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Cien_Original.png',
+      width: 120,
+      height: 60
+    },
+    {
+      name: 'bloque mil',
+      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Mil_Original.png',
+      width: 120,
+      height: 60
     }
   ]
   
-  // drawRects(state, state.canvas, 'red')
-  // drawRects(state, state.container, 'blue')
-  // drawRects(state, state.chart, 'green')
+  drawRects(state, state.canvas, 'red')
+  drawRects(state, state.container, 'blue')
+  drawRects(state, state.chart, 'green')
 
   init(state)
 }
@@ -202,8 +249,6 @@ function init(state) {
   insertarPictoricos(state)
 }
 
-
-// Main Title
 function insertarTituloPrincipal(state) {
   const { ctx, canvas } = state
   const { mainTitle } = state.titles
@@ -221,7 +266,7 @@ function insertarTituloPrincipal(state) {
 }
 
 function insertarPictoricos(state) {
-  const { ctx, chart, pictorics, images } = state
+  const { ctx, chart, pictorics, images, cantElem } = state
   const { x0, y0, x1 } = chart.position
   // pictorics ==> elem, qtty
   // images ==> name, url, width, height
@@ -230,7 +275,7 @@ function insertarPictoricos(state) {
   let xDist = [0]
   pictorics.map((pic,index) => {
     images.map((img,index2) => {
-      if (pic.qtty !== 0 && pic.elem === img.name) {
+      if (index < cantElem && pic.qtty !== 0 && pic.elem === img.name) {
         imgArr.push({
           name: img.name,
           qtty: pic.qtty,
@@ -245,7 +290,7 @@ function insertarPictoricos(state) {
     })
   })
   imgArr.map((img,index) => {
-    if (img.qtty > 0) {
+    if (img.qtty > 0 && index < cantElem) {
       let picImg = new Image()
       picImg.src = img.url
       picImg.width = img.width
