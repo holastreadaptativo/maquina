@@ -9,7 +9,7 @@ export default class Sucesiones extends Component {
 		super(props)
 		this.state = props.push ? { 
 			active:0, height:320, width:320, background:COLORS['background'], rows:10, cols:10, borderColor:COLORS['border'], borderRadius:10, borderWidth:2, 
-			borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, gridType:'simbólico', base:1, range:1, serie:'2*n', start:5, items:5
+			borderStyle:'solid', gridColor:COLORS['grid'], gridWidth:2, gridType:'simbólico', base:1, range:1, serie:'2*n', start:4, items:5
 		} : props.params
 	}
 	componentDidUpdate() {
@@ -38,11 +38,11 @@ export default class Sucesiones extends Component {
 					<Input id="gridColor" type="color" parent={this}/>
 				</Item>
 				<Item id={k++} title="Valores" parent={this}>
-					<Input id="base" prefix="base" postfix="#" type="number" parent={this}/>
-					<Input id="range" prefix="rango" postfix="#" type="number" parent={this}/>
+					<Input id="base" prefix="base" postfix="#" parent={this}/>
+					<Input id="range" prefix="rango" postfix="#" parent={this}/>
 					<Input id="serie" prefix="sucesión" parent={this}/>
-					<Input id="start" prefix="inicio" postfix="#" type="number" parent={this}/>
-					<Input id="items" prefix="marcados" postfix="#" type="number" parent={this}/>
+					<Input id="start" prefix="inicio" postfix="#" parent={this}/>
+					<Input id="items" prefix="marcados" postfix="#" parent={this}/>
 				</Item>
 			</Editor>
 		)
