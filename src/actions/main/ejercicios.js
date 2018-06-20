@@ -40,7 +40,7 @@ export function exe(action, state) {
 				let i = t.val().position
 				base.once('value').then(snap => {
 		    		snap.forEach(fn => {
-		    			let f = fn.val().position, ref = base.child(fn.key)
+							let f = fn.val().position, ref = base.child(fn.key)
 		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
 		    			else if (i == f) {
 		    				ref.remove().then(() => { base.once('value').then(c => { base.update({ count:c.val().count - 1 }) }) })

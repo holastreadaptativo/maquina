@@ -45,18 +45,17 @@ export function insertarTabla(config) {
 		table.forEach((m, i) => {
 			r += `<tr key="${i}">`
 			m.value.forEach((n, j) => {
-				r += `<td key="${j}">`
-				r += n.type == 'input' ? `<input class="form-control" type="text" placeholder="Respuesta" value="${n.value.answer}"></input>` :
-					n.type == 'image' ? `<img src="${n.value.url}" height="50px"/>` : `<h6>${n.value.text}</h6>`
-				r += '</td>'
+				if (n.value) {
+					r += `<td key="${j}">`
+					r += n.type == 'input' ? `<input class="form-control" type="text" placeholder="Respuesta" value="${n.value.answer}"></input>` :
+						n.type == 'image' ? `<img src="${n.value.url}" height="50px"/>` : `<h6>${n.value.text}</h6>`
+					r += '</td>'
+				}	
 			})
 			r += '</tr>'
 		})
 		r += '</tbody></table>'
 		container.innerHTML = r
-
-		if (false)
-			alert(vars)
 	}
 }
 export const ME = { 
