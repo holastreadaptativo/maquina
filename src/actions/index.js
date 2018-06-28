@@ -13,8 +13,8 @@ export * from './design/medicion'
 export * from './design/algebra'
 export * from './design/repeticionPic'
 
-import * as fn from 'actions'
+import * as functions from 'actions'
 
-export const action = { var:fn.cod, exe:fn.exe, ver:fn.ver }
+export const action = { var:functions.cod, exe:functions.exe, ver:functions.ver }
 
-export default fn.$
+export default functions.$

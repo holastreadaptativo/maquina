@@ -58,7 +58,7 @@ export default class RepeticionPictoricos extends Component {
     let k = 0, fontWeightOptions = ['normal', 'bold'], borderCanvas = ['solid','dashed','dotted','double'], 
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'],/*, arrInputs = []*/  
         imgSelec = pictoricType === 'billetes y monedas' ? ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000'] : ['bloque unidad', 'bloque decena', 'bloque centena', 'bloque mil'],
-        pictoricTypeOptions = ['billetes y monedas','bloques base'], cantElemArr = []
+        pictoricTypeOptions = ['billetes y monedas','bloque base'], cantElemArr = []
 
     let aux1 = [maxCantElem]
     aux1.forEach(el=>{
@@ -100,7 +100,6 @@ export default class RepeticionPictoricos extends Component {
           <Select id="cantElem" prefix={'cantidad'} options={cantElemArr} parent={this}/>
           {
             [maxCantElem].map( el => {
-              console.log(elemData)
               let arrInputsSelects = []
               for (let i = 0; i < el; i++) {
                 arrInputsSelects.push(
