@@ -2,6 +2,7 @@ import $, { exe, random, shuffle, stringify, ME } from 'actions'
 import { data, src, DEFAULT, LINKS } from 'stores'
 
 var num = 0, max = Math.pow(2, 13)
+// le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para las versiones} a las versiones
 export function ver(action, state) {
 	const { code, update } = state, base = data.child(code.concat('/versions'))
 	switch(action) {

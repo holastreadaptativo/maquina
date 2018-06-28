@@ -21,7 +21,9 @@ export const files = database.ref('files')
 export const images = storage.ref('images')
 export const src = storage.ref('src')
 
+// retorna el UserID uid del usuario que está activo
 export function uid() { return auth.currentUser.uid }
+// nueva instancia de base de datos para la creación de nuevos usuarios
 export const dbs = db.initializeApp(config, 'secondary').auth()
 
 export * from './const'

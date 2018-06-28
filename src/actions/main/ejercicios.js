@@ -3,6 +3,7 @@ import { data, DEVICES, LABELS } from 'stores'
 import $, { date } from 'actions'
 import React from 'react'
 
+// le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para el ejercicio} al ejercicio
 export function exe(action, state) {
 	const { code, path, update } = state, base = data.child(code.concat('/', path))
 	switch(action) {
