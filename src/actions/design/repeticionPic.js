@@ -115,52 +115,7 @@ export function repeticionPic(config) {
       qtty: Number(elemData[i][repetElem])
     })
   }
-  // state.pictorics = [
-  //   {
-  //     elem: elemType1,
-  //     qtty: repetElem1
-  //   },
-  //   {
-  //     elem: elemType2,
-  //     qtty: repetElem2
-  //   },
-  //   {
-  //     elem: elemType3,
-  //     qtty: repetElem3
-  //   },
-  //   {
-  //     elem: elemType4,
-  //     qtty: repetElem4
-  //   },
-  //   {
-  //     elem: elemType5,
-  //     qtty: repetElem5
-  //   },
-  //   {
-  //     elem: elemType6,
-  //     qtty: repetElem6
-  //   },
-  //   {
-  //     elem: elemType7,
-  //     qtty: repetElem7
-  //   },
-  //   {
-  //     elem: elemType8,
-  //     qtty: repetElem8
-  //   },
-  //   {
-  //     elem: elemType9,
-  //     qtty: repetElem9
-  //   },
-  //   {
-  //     elem: elemType10,
-  //     qtty: repetElem10
-  //   },
-  //   {
-  //     elem: elemType11,
-  //     qtty: repetElem11
-  //   }    
-  // ]
+  
   state.images = [
     {
       name: 'moneda 1',
@@ -276,13 +231,15 @@ function insertarPictoricos(state) {
   // images ==> name, url, width, height
   let imgArr = []
   let chartWidth = state.chart.width
-  let maxPictoricWidth
+  let maxPictoricWidth = 0
   let xDist = [x0]
   let yDist = [y0]
-  let reduceImgPercent = 0
+  let reduceImgPercent = 1
+  let imagesMargin = []
+  let deltaX = x0, deltaY = y0
   pictorics.map((pic,index) => {
     images.map((img,index2) => {
-      if (index < cantElem && pic.qtty !==  0 && pic.elem === img.name) {
+      if (pic.elem === img.name && index < cantElem && pic.qtty > 0) {
         imgArr.push({
           name: img.name,
           url: img.url,
@@ -292,43 +249,47 @@ function insertarPictoricos(state) {
           images: []
         })
       }
+      if (img.width > 0) { imagesMargin.push(img.height) }
     })
   })
-  let imgUnitMaxWitdh = 0
-  let deltaX = x0, deltaY = y0
+  imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
+
+  imgArr.map((img,i) => {
+    if (i < imgArr.length - 1)
+    maxPictoricWidth += eval(img.width) + imagesMargin/2
+  })
+  if (chartWidth < maxPictoricWidth) {
+    // reduceImgPercent = 1 + ((chartWidth - maxPictoricWidth)/chartWidth)
+    reduceImgPercent = 1 - ((maxPictoricWidth/chartWidth) - 1)
+    console.log(chartWidth)
+    console.log(maxPictoricWidth)
+    console.log('************************')
+    console.log(reduceImgPercent)
+  }
+  imagesMargin = imagesMargin*reduceImgPercent
   imgArr.map((img, index) => {
+    img.width = img.width*reduceImgPercent
+    img.height = img.height*reduceImgPercent
     let distImgReptVertical = 0, distImgReptHorizontal = 0
 
-    if (img.width > imgUnitMaxWitdh) { imgUnitMaxWitdh = img.width }
-
     if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
-      console.log('if')
-      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imgUnitMaxWitdh/2
+      //console.log('if')
+      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
       deltaY += 0
     } else if (imgArr[index].name === 'billete 1000') {
-      console.log('else if')
-      deltaX += index === 0 ? 0 : img.width + imgUnitMaxWitdh/2
+      // console.log('else if')
+      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
       deltaY += 0
     } else {
-      console.log('else')
-      deltaX += index === 0 ? 0 : img.width + imgUnitMaxWitdh/2
+      // console.log('else')
+      deltaX += index === 0 ? 0 : img.width + imagesMargin/2
       deltaY += 0
     }
 
     for (let i = 0; i < img.qtty; i++) {
-      if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000' && !imgArr[index].name === 'billete 1000') {
-        console.log('if')
-        distImgReptVertical = img.height/6*i
-        distImgReptHorizontal = img.width/6*i
-      } else if (imgArr[index].name === 'billete 1000') {
-        console.log('else if')
-        distImgReptVertical = img.height/6*i
-        distImgReptHorizontal = img.width/12*i
-      } else {
-        console.log('else')
-        distImgReptVertical = img.height/6*i
-        distImgReptHorizontal = img.width/6*i
-      }
+      distImgReptVertical = imagesMargin/4*i
+      distImgReptHorizontal = imagesMargin/8*i
+
       img.images.push({
         xPos: deltaX + distImgReptHorizontal,
         yPos: deltaY + distImgReptVertical
@@ -343,60 +304,9 @@ function insertarPictoricos(state) {
       for (let i = 0; i < img.qtty; i++) {
         ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
       }
-      /*
-      imgArr[index].images.push({
-        xPos: imgArr[index].name === 'billete 1000' ? xDist[0] + imgArr[index].width + imgArr[index].width/6*i,
-        yPos: yDist + imgArr[index].height/6*i
-      })
-      */
     }
   })
-  console.log(imgArr)
-  /*
-  imgArr.map( img => {
-    let picImg = new Image()
-    picImg.src = img.url
-    picImg.onload = function() {
-      img.images.map(imgPos => {
-        ctx.drawImage(picImg,imgPos.xPos, imgPos.yPos, img.width, img.height)
-      })
-    }
-  })
-  */
-  /*
-  let lastImg = pictorics[cantElem - 1] !== undefined ? pictorics[cantElem - 1] : 0
-  console.log(lastImg)
-  let typeImg = lastImg.elem === 'billete 1000' ? 12 : 6
-  console.log(typeImg)
-  let imagesWidth = 0
-  images.map((img,index2) => {
-    if (lastImg.elem === img.name) {
-      imagesWidth = img.xPos + img.width + (lastImg.qtty - 1)*img.width/typeImg
-    }
-  })
-  console.log(imagesWidth)
-  let reduceImgPercent = 0
-  if (chartWidth < imagesWidth) {
-    console.log('asdlskldalksadlsdalkas')
-    reduceImgPercent = (chartWidth - imagesWidth)/chartWidth
-  }
-  console.log(reduceImgPercent)
-
-  
-  imgArr.map((img,index) => {
-    if (img.qtty > 0 && index < cantElem) {
-      let picImg = new Image()
-      picImg.src = img.url
-      picImg.onload = function() {
-        for (let i = 0; i < img.qtty; i++) {
-          let xPos = img.name === 'billete 1000' ? img.xPos*(1+reduceImgPercent) + img.width/12*i : img.xPos*(1+reduceImgPercent) + img.width/6*i
-          let yPos = img.yPos + img.height/4*i
-          ctx.drawImage(picImg, xPos, yPos, img.width*(1+reduceImgPercent),img.height*(1+reduceImgPercent))
-        }
-      }
-    }
-  })
-  */
+  // console.log(imgArr)
 }
 
 function insertarPictoricos1(state) {
