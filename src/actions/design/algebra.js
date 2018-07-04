@@ -1,4 +1,4 @@
-//import { replace } from 'actions'
+import { replace } from 'actions'
 
 export function sucesiones(config) 
 {
@@ -12,6 +12,7 @@ export function sucesiones(config)
     container.height = height
     container.width = width
 
+    let vars = vt ? variables : versions
     let state = {
     	ctx:container.getContext('2d'), h:height/rows, w:width/cols, height, width, params
     }
@@ -42,17 +43,35 @@ export function sucesiones(config)
 	}
 
 	function generarSucesionNumerica(state) {
-		const { ctx, height, width, h, w } = state
+		const { ctx, params, height, width, h, w } = state
 
 		ctx.beginPath()
 
 		ctx.textAlign = 'center'
 		ctx.textBaseline = 'middle'
 		ctx.font = 'bold 13px arial'
+		ctx.lineWidth = '1px'
 
-		for (let y = h/2, i = 1; y < height; y += h) {
-			for (let x = w/2; x < width; x += w) {
-	     		ctx.fillText(i++, x, y)
+		for (let y = h/2, i = Number(replace(params.base, vars, vt)); y < height; y += h) {
+			for (let x = w/2; x < width; x += w, i += Number(replace(params.range, vars, vt))) {
+				try
+				{
+					let start = Number(replace(params.start, vars, vt))
+					for (let k = 0; k < Number(replace(params.items, vars, vt)); k++) {
+						let serie = replace(params.serie.replace('n', start + k), vars, vt)
+						for (let j = 0; j < 5; j++)
+							serie = serie.replace('n', start + k)
+						if (eval(serie) == i) {
+							ctx.fillStyle = 'rgba(0, 0, 255, 0.3)'
+							ctx.fillRect(x - w/2, y - h/2, w, h)
+						}
+					}
+				} catch(e) {}
+				finally
+				{
+					ctx.fillStyle = 'black'
+					ctx.fillText(i, x, y)		
+				}
 	     	}
 		}
 

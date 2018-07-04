@@ -3,6 +3,7 @@ import { data, DEVICES, LABELS } from 'stores'
 import $, { date } from 'actions'
 import React from 'react'
 
+// le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para el ejercicio} al ejercicio
 export function exe(action, state) {
 	const { code, path, update } = state, base = data.child(code.concat('/', path))
 	switch(action) {
@@ -40,7 +41,7 @@ export function exe(action, state) {
 				let i = t.val().position
 				base.once('value').then(snap => {
 		    		snap.forEach(fn => {
-		    			let f = fn.val().position, ref = base.child(fn.key)
+							let f = fn.val().position, ref = base.child(fn.key)
 		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
 		    			else if (i == f) {
 		    				ref.remove().then(() => { base.once('value').then(c => { base.update({ count:c.val().count - 1 }) }) })

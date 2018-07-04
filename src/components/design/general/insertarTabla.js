@@ -14,7 +14,7 @@ export default class InsertarTabla extends Component {
 			for (let i = 0; i < rows; i++) {
 				table.push({ id:i, value:[] })
 				for (let j = 0; j < cols; j++) {
-					table[i].value.push({ id:j, value:{}, type:'text' })
+					table[i].value.push({ id:j, value:{ text:'-' }, type:'text' })
 				}
 			}
 			this.setState({ table })
@@ -26,18 +26,20 @@ export default class InsertarTabla extends Component {
 		switch(table[i].value[j].type) {
 			case 'text': {
 				table[i].value[j].type = 'image'
+				table[i].value[j].value = { url:'-', height:20, width:20 }
 				break
 			}
 			case 'image': {
 				table[i].value[j].type = 'input'
+				table[i].value[j].value = { answer:'-' }
 				break
 			}
 			case 'input': {
 				table[i].value[j].type = 'text'
+				table[i].value[j].value = { text:'-' }
 				break
 			}
 		}
-		table[i].value[j].value = {}
 		this.setState({ table })
 	}
 	handleChange(e, i, j) {

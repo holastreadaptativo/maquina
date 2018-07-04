@@ -1,6 +1,7 @@
 import { data, DEFAULT } from 'stores'
 import $ from 'actions'
 
+// le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para el ejercicio} al ejercicio
 export function cod(action, state) {
 	const { code, update } = state, base = data.child(code.concat('/variables'))
 	switch(action) {
