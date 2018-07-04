@@ -12,7 +12,7 @@ export default class RepeticionPictoricos extends Component {
     this.state = props.push ? { 
       active:0, 
       // General
-      pictoricType: 'billetes y monedas', height:450, width:720, background:COLORS['background'],
+      pictoricType: 'billetes y monedas', height:350, width:720, background:COLORS['background'],
       // Borde
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20,
       // Título
@@ -22,24 +22,27 @@ export default class RepeticionPictoricos extends Component {
       // Fuente
       fontColor: '#8B1013', fontSize:14, fontFamily: 'Larke Neue Thin', fontWeight: 'normal',
       // Valores
-      maxCantElem: 10,
+      maxCantElem: 5,
       cantElem: 1,
       elemData: []
     } : props.params
   }
 
   componentWillMount() {
-    let elemData = []
-		if (this.props.push) {
+    let elemData = this.state.elemData
+    if (elemData.length === 0) {
       const { maxCantElem } = this.state
-      for (let i = 0; i < maxCantElem; i++) {
-        elemData.push({
-          ['repetElem'+ (i+1)]: 0,
-          ['elemType'+ (i+1)]: 'moneda 1'
-        })
+      let elemDataAux = []
+      if (this.props.push) {
+        for (let i = 0; i < maxCantElem; i++) {
+          elemDataAux.push({
+            ['repetElem'+ (i+1)]: 0,
+            ['elemType'+ (i+1)]: 'moneda 1'
+          })
+        }
       }
+      this.setState({elemData: elemDataAux})
     }
-    this.setState({elemData})
 	}
   
   componentDidUpdate() {

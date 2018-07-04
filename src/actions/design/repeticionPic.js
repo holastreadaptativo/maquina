@@ -18,7 +18,7 @@ export function repeticionPic(config) {
   } = params
   if (!container) return
   let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
-      width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
+      width = responsive ? params.width : maxWidth - 15, height = params.height//height = responsive ? params.height : width
 
   container.width = width
   container.height = height
@@ -185,9 +185,9 @@ export function repeticionPic(config) {
     }
   ]
   
-  drawRects(state, state.canvas, 'red')
-  drawRects(state, state.container, 'blue')
-  drawRects(state, state.chart, 'green')
+  // drawRects(state, state.canvas, 'red')
+  // drawRects(state, state.container, 'blue')
+  // drawRects(state, state.chart, 'green')
   init(state)
 }
 
@@ -226,11 +226,11 @@ function insertarTituloPrincipal(state) {
 
 function insertarPictoricos(state) {
   const { ctx, chart, pictorics, images, cantElem } = state
-  const { x0, y0/*, x1*/ } = chart.position
+  const { x0, y0, x1 } = chart.position
   // pictorics ==> elem, qtty
   // images ==> name, url, width, height
   let imgArr = []
-  let chartWidth = state.chart.width
+  let chartWidth = x1 - x0
   let maxPictoricWidth = 0
   let xDist = [x0]
   let yDist = [y0]
@@ -246,30 +246,28 @@ function insertarPictoricos(state) {
           width: img.width,
           height: img.height,
           qtty: pic.qtty,
-          images: []
+          images: [],
         })
       }
       if (img.width > 0) { imagesMargin.push(img.height) }
     })
   })
   imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
-
   imgArr.map((img,i) => {
-    if (i < imgArr.length - 1)
-    maxPictoricWidth += eval(img.width) + imagesMargin/2
+    let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
+    console.log(multImgRept)
+    console.log(i)
+    maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
   })
+  maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
   if (chartWidth < maxPictoricWidth) {
-    // reduceImgPercent = 1 + ((chartWidth - maxPictoricWidth)/chartWidth)
-    reduceImgPercent = 1 - ((maxPictoricWidth/chartWidth) - 1)
-    console.log(chartWidth)
-    console.log(maxPictoricWidth)
-    console.log('************************')
-    console.log(reduceImgPercent)
+    reduceImgPercent = chartWidth/maxPictoricWidth
   }
   imagesMargin = imagesMargin*reduceImgPercent
   imgArr.map((img, index) => {
     img.width = img.width*reduceImgPercent
     img.height = img.height*reduceImgPercent
+    //console.log(img.width)
     let distImgReptVertical = 0, distImgReptHorizontal = 0
 
     if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
@@ -297,16 +295,19 @@ function insertarPictoricos(state) {
     }
 
   })
-  imgArr.map((img,index) => {
-    let picImg = new Image()
-    picImg.src = img.url
-    picImg.onload = function() {
-      for (let i = 0; i < img.qtty; i++) {
-        ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
+  dibujarPictoricos(imgArr)
+  function dibujarPictoricos(imgArr) {
+    imgArr.map((img,index) => {
+      let picImg = new Image()
+      picImg.src = img.url
+      picImg.onload = function() {
+        for (let i = 0; i < img.qtty; i++) {
+          ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
+        }
       }
-    }
-  })
-  // console.log(imgArr)
+    })
+  }
+  //console.log(imgArr)
 }
 
 function insertarPictoricos1(state) {
