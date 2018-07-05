@@ -2,7 +2,7 @@
 export function $(ElementId) { return document.getElementById(ElementId) }
 
 // Compara 2 strings que sean iguales
-//export function compare(a, b) { return a.localeCompare(b) == 0 }
+export function compare(a, b) { return a.localeCompare(b) == 0 }
 
 // retorna fecha en localstring
 export function date() { return (new Date()).toLocaleString() } 
