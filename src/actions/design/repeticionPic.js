@@ -255,8 +255,6 @@ function insertarPictoricos(state) {
   imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
   imgArr.map((img,i) => {
     let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
-    console.log(multImgRept)
-    console.log(i)
     maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
   })
   maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
@@ -308,75 +306,4 @@ function insertarPictoricos(state) {
     })
   }
   //console.log(imgArr)
-}
-
-function insertarPictoricos1(state) {
-  const { ctx, chart, pictorics, images, cantElem } = state
-  const { x0, y0/*, x1*/ } = chart.position
-  // pictorics ==> elem, qtty
-  // images ==> name, url, width, height
-  let imgArr = []
-  let xDist = [0]
-  let chartWidth = state.chart.width
-
-  pictorics.map((pic,index) => {
-    images.map((img,index2) => {
-      if (index < cantElem && pic.qtty !==  0 && pic.elem === img.name) {
-        imgArr.push({
-          name: img.name,
-          qtty: pic.qtty,
-          url: img.url,
-          width: img.width,
-          height: img.height, 
-          xPos: x0 + xDist[index],
-          yPos: y0
-        })
-        let newVal = 0
-        switch (img.name) {
-          case 'billete 1000':
-            newVal = images[index2-1].name === 'billete 1000' ? xDist[index] + (img.width + img.width/4)*(1+reduceImgPercent) : xDist[index] + (img.width + img.width/6)*(1+reduceImgPercent)
-            break;
-        
-          default:
-            newVal = xDist[index] + (img.width + img.width/3)*(1+reduceImgPercent)
-            break;
-        }
-        xDist.push(newVal)
-        //xDist.push(img.name === 'billete 1000' ? xDist[index] + img.width + 40 : xDist[index] + img.width + 20)
-      }
-    })
-  })
-
-  let lastImg = pictorics[cantElem - 1] !== undefined ? pictorics[cantElem - 1] : 0
-  console.log(lastImg)
-  let typeImg = lastImg.elem === 'billete 1000' ? 12 : 6
-  console.log(typeImg)
-  let imagesWidth = 0
-  images.map((img,index2) => {
-    if (lastImg.elem === img.name) {
-      imagesWidth = img.xPos + img.width + (lastImg.qtty - 1)*img.width/typeImg
-    }
-  })
-  console.log(imagesWidth)
-  let reduceImgPercent = 0
-  if (chartWidth < imagesWidth) {
-    console.log('asdlskldalksadlsdalkas')
-    reduceImgPercent = (chartWidth - imagesWidth)/chartWidth
-  }
-  console.log(reduceImgPercent)
-
-  
-  imgArr.map((img,index) => {
-    if (img.qtty > 0 && index < cantElem) {
-      let picImg = new Image()
-      picImg.src = img.url
-      picImg.onload = function() {
-        for (let i = 0; i < img.qtty; i++) {
-          let xPos = img.name === 'billete 1000' ? img.xPos*(1+reduceImgPercent) + img.width/12*i : img.xPos*(1+reduceImgPercent) + img.width/6*i
-          let yPos = img.yPos + img.height/4*i
-          ctx.drawImage(picImg, xPos, yPos, img.width*(1+reduceImgPercent),img.height*(1+reduceImgPercent))
-        }
-      }
-    }
-  })
 }
