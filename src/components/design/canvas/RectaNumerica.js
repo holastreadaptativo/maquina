@@ -64,8 +64,8 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Escala" parent={this}>
           <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} hide={rectType !== 'enteros'}/>
-          <Select id="scaleDivisions" prefix="divisiones" options={scaleDivisionsOptions} parent={this} hide={rectType !== 'enteros con decimales'}/>
-          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} hide={rectType === 'enteros con decimales'}/>
+          {/*<Select id="scaleDivisions" prefix="divisiones" options={scaleDivisionsOptions} parent={this} hide={rectType !== 'enteros con decimales'}/>*/}
+          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} /*hide={rectType === 'enteros con decimales'}*//>
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
           <Input id="scaleColor" prefix="color" type="color" parent={this}/>
@@ -73,9 +73,13 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Valores" parent={this}>
           <Input id="rectValues" prefix="unidad" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
-          <Input id="rectValuesUnit" prefix="unidad" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
-          <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this} hide={rectType === 'enteros'}/>
-          <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this} hide={rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'mixta'}/>
+          {
+            /*
+            <Input id="rectValuesUnit" prefix="unidad" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
+            <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this} hide={rectType === 'enteros'}/>
+            <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this} hide={rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'mixta'}/>
+            */
+          }
           <Select id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
