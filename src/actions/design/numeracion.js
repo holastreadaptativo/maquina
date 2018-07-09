@@ -423,15 +423,15 @@ function mostrarValores(state, xIni, xFin, centroY, divisiones, valorEscala) {
     let xPos = xIni + segment + segment*i
     if (typeRect === 'enteros') {
       if (i === 0 || i === divisiones - 1) {
-        show.showExValues && mostrarNumeroEntero(state, xPos, centroY, i, 2, unitValue, decValue, centValue)
+        show.showExValues && mostrarNumeroMixtoCent(state, xPos, centroY, i, 2, unitValue, decValue, centValue)
       } else {
         let arrValEnteros = show.showAllValues.selectValuesToShow.valuesUnit
         console.log(arrValEnteros)
         if (show.showAllValues.showAllValues || arrValEnteros.length > 0) {
           arrValEnteros[i] === i
-          mostrarNumeroEntero(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
+          mostrarNumeroMixtoCent(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
         } else {
-          mostrarNumeroEntero(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
+          mostrarNumeromostrarNumeroMixtoCentMixto(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
         }
       }
     } else if (typeRect === 'enteros con decimales') {
@@ -877,7 +877,6 @@ function mostrarNumeroEntero(state, xPos, centroY, posicion, multSize, unidad, d
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
   let showValue = unidad + posicion*scale.value
-  console.log(showValue)
   ctx.fillText(showValue, xPos, centroY)
   ctx.restore()
   ctx.save()
@@ -917,30 +916,155 @@ function mostrarNumeroDecimal(state, xPos, centroY, posicion, multSize, unidad, 
   ctx.save()
 }
 
-function mostrarNumeroCentesimal(state, xPos, centroY, posicion, unidad, decimo, centesimo) {
+function mostrarNumeroCentesimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
+  let valorUnidad = unidad
+  let valorDecimal = decimo + posicion
+  if (valorDecimal >= 10) {
+    valorUnidad++
+    valorDecimal-=10
+  }
   ctx.font = font.size*multSize + 'px ' + font.family
-  let showValue = `${unidad},${posicion}0`
+  let showValue = `${valorUnidad},${valorDecimal}0`
   ctx.fillText(showValue, xPos, centroY)
   ctx.restore()
   ctx.save()
 }
 
-function mostrarNumeroMixto(state, xPos, centroY, multSize, posicion, unidad, decimo, centesimo) {
+function mostrarNumeroCentesimalIt(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
+  let valorUnidad = unidad
+  let valorDecimal = decimo
+  let valorCentecimal = centesimo + posicion
+  if (valorCentecimal >= 10) {
+    valorDecimal++
+    valorCentecimal-=10
+  }
+  if (valorDecimal >= 10) {
+    valorUnidad++
+    valorDecimal-=10
+  }
   ctx.font = font.size*multSize + 'px ' + font.family
-  let deltaLine
-  let textLength
+  let showValue = `${valorUnidad},${valorDecimal}${valorCentecimal}`
+  ctx.fillText(showValue, xPos, centroY)
+  ctx.restore()
+  ctx.save()
+}
+
+function mostrarNumeroMixto(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+  const { ctx, font, scale } = state
+  ctx.save()
+
+  let valorUnidad = unidad
+  let valorDecimal = decimo + posicion
+  let valorCentecimal = centesimo
+
+  ctx.strokeStyle = font.color
+  ctx.fillStyle = font.color
+  ctx.textBaseline = 'top'
+  let numberFontSize = Number(font.size*multSize*0.7)
+  ctx.font = numberFontSize + 'px ' + font.family
+  let textLength = ctx.measureText('00').width
+  xPos -= textLength/2
+  ctx.font = font.size*multSize + 'px ' + font.family
+  ctx.textAlign = 'right'
+
+
+  if (valorCentecimal >= 10) {
+    valorDecimal++
+    valorCentecimal-=10
+  }
+  if (valorDecimal >= 10) {
+    valorUnidad++
+    if (valorDecimal === 10) {
+      return(
+        ctx.fillText(valorUnidad, xPos + textLength*0.8, centroY)
+      )
+    }
+    valorDecimal-=10
+  }
+
+  ctx.fillText(valorUnidad, xPos, centroY)
+  ctx.strokeStyle = scale.color
+  ctx.lineWidth = scale.width/2
+  ctx.lineCap="round";
+  ctx.translate(xPos, centroY + numberFontSize)
+  ctx.moveTo(0, 0)
+  ctx.lineTo(textLength, 0)
+  ctx.stroke()
+  ctx.font = numberFontSize + 'px ' + font.family
+  // let deltaLine
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'bottom'
+  ctx.fillText(valorDecimal, textLength/4, 5)
+  ctx.textBaseline = 'top'
+  ctx.fillText('10', 0, 0)
+
+  ctx.restore()
+  ctx.save()
+}
+
+function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+  const { ctx, font, scale } = state
+  ctx.save()
+
+  let valorUnidad = unidad
+  let valorDecimal = decimo
+  let valorCentecimal = centesimo + posicion
+
+  ctx.strokeStyle = font.color
+  ctx.fillStyle = font.color
+  ctx.textBaseline = 'top'
+  let numberFontSize = Number(font.size*multSize*0.7)
+  ctx.font = numberFontSize + 'px ' + font.family
+  let textLength = ctx.measureText('000').width
+  xPos -= textLength/2
+  ctx.font = font.size*multSize + 'px ' + font.family
+  ctx.textAlign = 'right'
+
+
+  if (valorCentecimal >= 10) {
+    valorDecimal++
+    valorCentecimal-=10
+  }
+  // if (valorDecimal >= 10) {
+  //   valorUnidad++
+  //   if (valorDecimal === 10) {
+  //     return(
+  //       ctx.fillText(valorUnidad, xPos + textLength*0.8, centroY)
+  //     )
+  //   }
+  //   valorDecimal-=10
+  // }
+
+  ctx.fillText(valorUnidad, xPos, centroY)
+  ctx.strokeStyle = scale.color
+  ctx.lineWidth = scale.width/2
+  ctx.lineCap="round";
+  ctx.translate(xPos, centroY + numberFontSize)
+  ctx.moveTo(0, 0)
+  ctx.lineTo(textLength, 0)
+  ctx.stroke()
+  ctx.font = numberFontSize + 'px ' + font.family
+  // let deltaLine
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'bottom'
+  let mostrarValor = `${valorDecimal}${valorCentecimal}`
+  ctx.fillText(mostrarValor, textLength/6, 5)
+  ctx.textBaseline = 'top'
+  //ctx.font = numberFontSize*0.9 + 'px ' + font.family
+  ctx.fillText('100', 0, 0)
+
   ctx.restore()
   ctx.save()
 }
