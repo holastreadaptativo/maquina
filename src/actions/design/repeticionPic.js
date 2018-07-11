@@ -11,7 +11,7 @@ export function repeticionPic(config) {
     // Padding
     canvasPadding, containerPadding, chartPadding,
     // Fuente
-    fontColor, fontSize, fontFamily, fontWeight,
+    /*fontColor, fontSize, */fontFamily, /*fontWeight,*/
     // Valores
     cantElem,
     elemData
@@ -162,26 +162,26 @@ export function repeticionPic(config) {
     {
       name: 'bloque unidad',
       url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Unidad_Original.png',
-      width: 120,
-      height: 60
+      width: 71,
+      height: 68
     },
     {
       name: 'bloque decena',
       url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Decenas_Original.png',
-      width: 120,
-      height: 60
+      width: 71,
+      height: 541
     },
     {
       name: 'bloque centena',
       url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Cien_Original.png',
-      width: 120,
-      height: 60
+      width: 571,
+      height: 541
     },
     {
       name: 'bloque mil',
       url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Mil_Original.png',
-      width: 120,
-      height: 60
+      width: 572,
+      height: 489
     }
   ]
   
@@ -192,6 +192,7 @@ export function repeticionPic(config) {
 }
 
 // Dibuja los espacios definidos, container, chart
+/*
 function drawRects(state, el, color) {
   const { ctx } = state
   ctx.save()
@@ -202,6 +203,7 @@ function drawRects(state, el, color) {
   ctx.restore()
   ctx.save()
 }
+*/
 
 function init(state) {
   insertarTituloPrincipal(state)
@@ -226,19 +228,29 @@ function insertarTituloPrincipal(state) {
 
 function insertarPictoricos(state) {
   const { ctx, chart, pictorics, images, cantElem } = state
+  if (chart.type === 'billetes y monedas') {
+    billetes(state)
+  } else {
+    bloqueMultibase(state)
+  }
+  
+}
+
+function billetes(state) {
+  const { ctx, chart, pictorics, images, cantElem } = state
   const { x0, y0, x1 } = chart.position
   // pictorics ==> elem, qtty
   // images ==> name, url, width, height
   let imgArr = []
   let chartWidth = x1 - x0
   let maxPictoricWidth = 0
-  let xDist = [x0]
-  let yDist = [y0]
+  // let xDist = [x0]
+  // let yDist = [y0]
   let reduceImgPercent = 1
   let imagesMargin = []
   let deltaX = x0, deltaY = y0
   pictorics.map((pic,index) => {
-    images.map((img,index2) => {
+    images.map((img/*,index2*/) => {
       if (pic.elem === img.name && index < cantElem && pic.qtty > 0) {
         imgArr.push({
           name: img.name,
@@ -246,7 +258,7 @@ function insertarPictoricos(state) {
           width: img.width,
           height: img.height,
           qtty: pic.qtty,
-          images: [],
+          images: []
         })
       }
       if (img.width > 0) { imagesMargin.push(img.height) }
@@ -293,17 +305,92 @@ function insertarPictoricos(state) {
     }
 
   })
-  dibujarPictoricos(imgArr)
-  function dibujarPictoricos(imgArr) {
-    imgArr.map((img,index) => {
-      let picImg = new Image()
-      picImg.src = img.url
-      picImg.onload = function() {
-        for (let i = 0; i < img.qtty; i++) {
-          ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
-        }
-      }
-    })
-  }
+  dibujarPictoricos(ctx, imgArr)
   //console.log(imgArr)
+}
+
+function bloqueMultibase(state) {
+  const { ctx, chart, pictorics, images, cantElem } = state
+  const { x0, y0, x1 } = chart.position
+
+  let imgArr = []
+  let chartWidth = x1 - x0
+  let maxPictoricWidth = 0
+  let maxPictoricHeight = 0
+  // let xDist = [x0]
+  // let yDist = [y0]
+  let reduceImgPercent = 1
+  let imagesMargin = []
+  let deltaX = x0, deltaY = y0
+  pictorics.map((pic,index) => {
+    images.map((img/*,index2*/) => {
+      if (pic.elem === img.name && index < cantElem && pic.qtty > 0) {
+        imgArr.push({
+          name: img.name,
+          url: img.url,
+          width: img.width,
+          height: img.height,
+          qtty: pic.qtty,
+          images: []
+        })
+      }
+      if (img.width > 0) { imagesMargin.push(img.height) }
+    })
+  })
+  imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
+  imgArr.map((img,i) => {
+    let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
+    maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
+    maxPictoricHeight= eval(img.height)
+  })
+  maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
+  if (chartWidth < maxPictoricWidth) {
+    reduceImgPercent = chartWidth/maxPictoricWidth
+  }
+  imagesMargin = imagesMargin*reduceImgPercent
+  imgArr.map((img, index) => {
+    img.width = img.width*reduceImgPercent
+    img.height = img.height*reduceImgPercent
+    //console.log(img.width)
+    let distImgReptVertical = 0, distImgReptHorizontal = 0
+
+    if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
+      //console.log('if')
+      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
+      deltaY += 0
+    } else if (imgArr[index].name === 'billete 1000') {
+      // console.log('else if')
+      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
+      deltaY += 0
+    } else {
+      // console.log('else')
+      deltaX += index === 0 ? 0 : img.width + imagesMargin/2
+      deltaY += 0
+    }
+
+    for (let i = 0; i < img.qtty; i++) {
+      distImgReptVertical = imagesMargin/4*i
+      distImgReptHorizontal = imagesMargin/8*i
+
+      img.images.push({
+        xPos: deltaX + distImgReptHorizontal,
+        yPos: deltaY + distImgReptVertical
+      })
+    }
+
+  })
+  dibujarPictoricos(ctx, imgArr)
+  //console.log(imgArr)
+}
+
+function dibujarPictoricos(ctx, imgArr) {
+  imgArr.map((img/*,index*/) => {
+    let picImg = new Image()
+    picImg.src = img.url
+    picImg.onload = function() {
+      for (let i = 0; i < img.qtty; i++) {
+        ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
+      }
+    }
+  })
 }
