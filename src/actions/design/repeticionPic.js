@@ -311,15 +311,76 @@ function billetes(state) {
 
 function bloqueMultibase(state) {
   const { ctx, chart, pictorics, images, cantElem } = state
-  const { x0, y0, x1 } = chart.position
+  const { x0, y0, x1, y1 } = chart.position
+
+  let imgArr = [], chartHeight = y1 - y0, chartWidth = x1 -x0
+  //console.log(pictorics)
+  pictorics.map((img,index) => {
+    if (img.qtty > 0) {
+      images.map(el => {
+        if (img.elem === el.name) {
+          imgArr.push({
+            name: img.elem,
+            url: el.url,
+            qtty: img.qtty,
+            width: el.width,
+            height: el.height,
+            images: []
+          })
+        }
+      })
+    }
+  })
+  let xAcum = x0
+  let yAcum = y0
+  imgArr.map(el => {
+    el.width
+    let yDist = 0
+    for (let i = 0; i < el.qtty; i++) {
+      el.images.push({
+        xPos: xAcum,
+        yPos: y0 + yDist
+      })
+      yDist += el.height + 10
+    }
+    xAcum += el.width + 20
+    yAcum += yDist
+  })
+  console.log(imgArr)
+  
+  if (chartHeight < yAcum) {
+    console.log('se pasooooooo verticallllll')
+    let porcentaje = chartHeight/yAcum
+    ajustarImagenes(imgArr, porcentaje)
+  } else if (chartWidth < xAcum) {
+    console.log('se pasooooooo horizontallllll')
+    let porcentaje = chartWidth/xAcum
+    ajustarImagenes(imgArr, porcentaje)
+  }
+
+  dibujarPictoricos(ctx, imgArr)
+
+  function ajustarImagenes(imgArr, porcentaje) {
+    imgArr.map(img => {
+      img.height *= porcentaje
+      img.width *= porcentaje      
+    })
+  }
+}
+
+function bloqueMultibase1(state) {
+  const { ctx, chart, pictorics, images, cantElem } = state
+  const { x0, y0, x1, y1 } = chart.position
 
   let imgArr = []
   let chartWidth = x1 - x0
+  let chartHeight = y1 - y0
   let maxPictoricWidth = 0
-  let maxPictoricHeight = 0
+  let maxImgHeight = []
   // let xDist = [x0]
   // let yDist = [y0]
   let reduceImgPercent = 1
+  let reduceImgPercent2 = 1
   let imagesMargin = []
   let deltaX = x0, deltaY = y0
   pictorics.map((pic,index) => {
@@ -338,22 +399,27 @@ function bloqueMultibase(state) {
     })
   })
   imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
+  imagesMargin
   imgArr.map((img,i) => {
     let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
     maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
-    maxPictoricHeight= eval(img.height)
+    maxImgHeight.push(eval(img.height))
   })
+  maxImgHeight = 541//Math.max(...maxImgHeight)
   maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
-  if (chartWidth < maxPictoricWidth) {
+  if (chartHeight < maxImgHeight) {
+    reduceImgPercent2 = chartHeight/maxImgHeight
+  }
+  if (chartWidth < maxPictoricWidth*reduceImgPercent2) {
     reduceImgPercent = chartWidth/maxPictoricWidth
   }
   imagesMargin = imagesMargin*reduceImgPercent
   imgArr.map((img, index) => {
-    img.width = img.width*reduceImgPercent
-    img.height = img.height*reduceImgPercent
+    img.width = img.width*reduceImgPercent*reduceImgPercent2
+    img.height = img.height*reduceImgPercent*reduceImgPercent2
     //console.log(img.width)
     let distImgReptVertical = 0, distImgReptHorizontal = 0
-
+    /*
     if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
       //console.log('if')
       deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
@@ -367,10 +433,18 @@ function bloqueMultibase(state) {
       deltaX += index === 0 ? 0 : img.width + imagesMargin/2
       deltaY += 0
     }
+    */
+    deltaX += index === 0 ? 0 : img.width + imagesMargin/2
+    deltaY += 0
 
     for (let i = 0; i < img.qtty; i++) {
-      distImgReptVertical = imagesMargin/4*i
-      distImgReptHorizontal = imagesMargin/8*i
+      if (img.name === 'bloque unidad') {
+        console.log('dsdfkfsdkjsdfkjsdkjdsffdjkfjdksfjdk')
+        distImgReptVertical = (img.height + 5)*i 
+      } else {
+        distImgReptVertical = imagesMargin/4*i
+      }
+      //distImgReptHorizontal = imagesMargin/8*i
 
       img.images.push({
         xPos: deltaX + distImgReptHorizontal,
