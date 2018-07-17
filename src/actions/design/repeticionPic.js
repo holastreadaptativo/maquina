@@ -185,14 +185,15 @@ export function repeticionPic(config) {
     }
   ]
   
-  // drawRects(state, state.canvas, 'red')
-  // drawRects(state, state.container, 'blue')
-  // drawRects(state, state.chart, 'green')
+  drawRects(state, state.canvas, 'red')
+  drawRects(state, state.container, 'blue')
+  drawRects(state, state.chart, 'green')
   init(state)
 }
 
 // Dibuja los espacios definidos, container, chart
 /*
+*/
 function drawRects(state, el, color) {
   const { ctx } = state
   ctx.save()
@@ -203,7 +204,7 @@ function drawRects(state, el, color) {
   ctx.restore()
   ctx.save()
 }
-*/
+
 
 function init(state) {
   insertarTituloPrincipal(state)
@@ -313,7 +314,7 @@ function bloqueMultibase(state) {
   const { ctx, chart, pictorics, images, cantElem } = state
   const { x0, y0, x1, y1 } = chart.position
 
-  let imgArr = [], chartHeight = y1 - y0, chartWidth = x1 -x0
+  let imgArr = [], chartHeight = y1 - y0, chartWidth = x1 - x0
   //console.log(pictorics)
   pictorics.map((img,index) => {
     if (img.qtty > 0) {
@@ -334,36 +335,47 @@ function bloqueMultibase(state) {
   let xAcum = x0
   let yAcum = y0
   imgArr.map(el => {
-    el.width
+    let yDist = 0
+    for (let i = 0; i < el.qtty; i++) {
+      yDist += 10
+    }
+    yAcum += yDist + el.height
+    console.log(xAcum)
+    console.log(el.width)
+    xAcum += el.width + 20
+    console.log('---------')
+    console.log(xAcum)
+  })
+
+  if (chartHeight < 541) {
+    let porcentaje = chartHeight/541
+    ajustarImagenes(imgArr, porcentaje)
+  }
+  if (chartWidth < xAcum) {
+    let porcentaje = chartWidth/xAcum
+    ajustarImagenes(imgArr, porcentaje)
+  }
+  xAcum = x0
+  yAcum = y0
+  imgArr.map(el => {
     let yDist = 0
     for (let i = 0; i < el.qtty; i++) {
       el.images.push({
         xPos: xAcum,
         yPos: y0 + yDist
       })
-      yDist += el.height + 10
+      yDist += 10
     }
     xAcum += el.width + 20
-    yAcum += yDist
+    //yAcum += yDist
   })
-  console.log(imgArr)
-  
-  if (chartHeight < yAcum) {
-    console.log('se pasooooooo verticallllll')
-    let porcentaje = chartHeight/yAcum
-    ajustarImagenes(imgArr, porcentaje)
-  } else if (chartWidth < xAcum) {
-    console.log('se pasooooooo horizontallllll')
-    let porcentaje = chartWidth/xAcum
-    ajustarImagenes(imgArr, porcentaje)
-  }
 
   dibujarPictoricos(ctx, imgArr)
 
   function ajustarImagenes(imgArr, porcentaje) {
     imgArr.map(img => {
       img.height *= porcentaje
-      img.width *= porcentaje      
+      img.width *= porcentaje 
     })
   }
 }
