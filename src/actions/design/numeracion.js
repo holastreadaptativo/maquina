@@ -2,6 +2,7 @@ import { replace } from 'actions'
 //import { setInterval } from 'timers';
 
 export function rectNumFn(config) {
+  console.log('holaaaaaa')
   const { container, params, variables, versions, vt } = config
 
   const {
@@ -560,7 +561,8 @@ function mostrarNumeroMixto(state, xPos, centroY, posicion, multSize, unidad, de
   ctx.textBaseline = 'bottom'
   ctx.fillText(valorDecimal, textLength/4, 5)
   ctx.textBaseline = 'top'
-  ctx.fillText('10', 0, 0)
+  let denominador = scale.divisions - 1
+  ctx.fillText(denominador, 0, 0)
 
   ctx.restore()
   ctx.save()
@@ -576,11 +578,11 @@ function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad
 
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
-  ctx.textBaseline = 'top'
-  let numberFontSize = Number(font.size*multSize*0.7)
+  ctx.textBaseline = 'middle'
+  let numberFontSize = Number(font.size*multSize*0.65)
   ctx.font = numberFontSize + 'px ' + font.family
   let textLength = ctx.measureText('000').width
-  xPos -= textLength/2
+  xPos -= textLength/6
   ctx.font = font.size*multSize + 'px ' + font.family
   ctx.textAlign = 'right'
 
@@ -589,22 +591,24 @@ function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad
     valorDecimal++
     valorCentecimal-=10
   }
-  // if (valorDecimal >= 10) {
-  //   valorUnidad++
-  //   if (valorDecimal === 10) {
-  //     return(
-  //       ctx.fillText(valorUnidad, xPos + textLength*0.8, centroY)
-  //     )
-  //   }
-  //   valorDecimal-=10
-  // }
-
-  ctx.fillText(valorUnidad, xPos, centroY)
+  if (valorDecimal >= 10) {
+    valorUnidad++
+    if (valorDecimal === 10) {
+      return(
+        ctx.fillText(valorUnidad, xPos + textLength*0.8, centroY)
+      )
+    }
+    valorDecimal-=10
+  }
+  let elCentro = centroY + numberFontSize + numberFontSize/6
+  ctx.fillText(valorUnidad, xPos, elCentro)
+  ctx.textBaseline = 'top'
   ctx.strokeStyle = scale.color
-  ctx.lineWidth = scale.width/2
+  let denominadorLineaAncho = scale.width/2
+  ctx.lineWidth = denominadorLineaAncho
   ctx.lineCap="round";
   ctx.translate(xPos, centroY + numberFontSize)
-  ctx.moveTo(0, 0)
+  ctx.moveTo(2, 0)
   ctx.lineTo(textLength, 0)
   ctx.stroke()
   ctx.font = numberFontSize + 'px ' + font.family
@@ -612,10 +616,11 @@ function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad
   ctx.textAlign = 'left'
   ctx.textBaseline = 'bottom'
   let mostrarValor = `${valorDecimal}${valorCentecimal}`
-  ctx.fillText(mostrarValor, textLength/6, 5)
+  ctx.fillText(mostrarValor, textLength/6, -denominadorLineaAncho)
   ctx.textBaseline = 'top'
   //ctx.font = numberFontSize*0.9 + 'px ' + font.family
-  ctx.fillText('100', 0, 0)
+  let denominador = scale.divisions - 1
+  ctx.fillText(denominador*10, 4, denominadorLineaAncho*2)
 
   ctx.restore()
   ctx.save()
