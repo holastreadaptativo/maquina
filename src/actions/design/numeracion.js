@@ -4,16 +4,31 @@ import { replace } from 'actions'
 export function rectNumFn(config) {
   const { container, params, variables, versions, vt } = config
 
-  const { 
-    rectType, rectOrientation, /*background, borderWidth, borderColor, borderStyle, borderRadius,*/ titleValue,
-    titleColor, titleSize, titleWeight, canvasPadding, containerPadding, chartPadding, /*innerChartPadding,*/ 
-    rectValuesUnit, rectValuesDec, rectValuesCent,
-    valuesSeparator, axisColor, withArrows, axisWidth, fontColor, fontSize, fontFamily, fontWeight, 
-    pictoImg, lupaImg, scaleDivisions, scaleValue, scaleWidth, scaleColor, scaleLength, showExValues,
-    showAllValues, showTheValue, showPointValue, showFigValue, showLens, showArcs, showMiniScale, alignLens,
-    showMiniArcs, showMiniExValues, showMiniAllValues, showMiniTheValue, showMiniPointValue, showMiniGuides,
-    initArcPt, endArcPt, selectValuesToShow, wichPointValue, rectValues, wichFigValues, showMiniFig, wichMiniFigValues,
-    initArcPtMini, endArcPtMini
+  const {
+    // General
+    rectType, /*height, width, background,*/
+    // Borde
+    /* borderWidth, borderColor, borderStyle, borderRadius, */
+    // Títulos
+    titleValue, titleColor, titleSize, titleWeight,
+    // Padding
+    canvasPadding, containerPadding, chartPadding,
+    // Escala
+    scaleValue, scaleDivisions, scaleWidth, scaleLength, scaleColor,
+    // Valor
+    initValue, valuesSeparator,
+    // Mostrar
+    showExValues, showAllValues, selectValuesToShow, showPointValue, 
+    wichPointValue, showFigValue, wichFigValues,
+    showArcs, initArcPt, endArcPt,
+    // Mini Escala
+    showMiniScale, showMiniTheValue, showMiniExValues, showMiniAllValues,
+    showMiniPointValue, showMiniFig, wichMiniFigValues, showMiniArcs,
+    initArcPtMini, endArcPtMini, showMiniGuides, showLens, alignLens,
+    // Ejes
+    axisColor, withArrows, axisWidth,
+    // Fuente
+    fontColor, fontSize, fontFamily, fontWeight
   } = params
 
   let canvasPaddingAux = {}, containerPaddingAux = {}, chartPaddingAux = {}/*, innerChartPaddingAux = {}*/
@@ -40,9 +55,6 @@ export function rectNumFn(config) {
 
   let c = container
   let vars = vt ? variables : versions
-  let valuesUnit = replace(rectValuesUnit, vars, vt)
-  let valuesDec = replace(rectValuesDec, vars, vt)
-  let valuesCent= replace(rectValuesCent, vars, vt)
   function valuesValidation(arrValues) {
     let valuesUnit = [], valuesDec = [], valuesCent = []
     let aux = arrValues.split(',')
@@ -68,7 +80,6 @@ export function rectNumFn(config) {
     }
   }
 
-  let rectValuesAll = valuesValidation(rectValues)
   let pointsValuesAll = valuesValidation(wichPointValue)
   let figValuesAll = valuesValidation(wichFigValues)
   let arcsValuesFrom = valuesValidation(initArcPt)
@@ -90,44 +101,42 @@ export function rectNumFn(config) {
       showAllValues: showAllValues !== 'no' ? showAllValues : false,
       selectValuesToShow: valuesValidation(selectValuesToShow)
     },
-    showTheValue: showTheValue === 'si' ? true : false,
     showPointValue: {
       showPointValue: showPointValue !== 'no' ? true : false,
-      unitValue: pointsValuesAll.valuesUnit,
-      decValue: pointsValuesAll.valuesDec,
-      centValue: pointsValuesAll.valuesCent
+      selectPointsValue: pointsValuesAll
   },
     showFigValue: {
       showFigValue: showFigValue === 'no' ? false : showFigValue,
-      unitValue: figValuesAll.valuesUnit,
-      decValue: figValuesAll.valuesDec,
-      centValue: figValuesAll.valuesCent
-    }, // === 'si' ? true : false,
-    showLens: showLens === 'si' ? true : false,
-    alignLens: alignLens === 'punto' ? true : false,
+      selectPointsValue: figValuesAll
+    },
+    showLens: {
+      show: showLens === 'si' ? true : false,
+      alignLens: alignLens === 'punto' ? true : false
+    },
     showArcs: {
       showArcs: showArcs !== 'no' ? showArcs : false,
-      //arcsDirection: arcsDirection !== 'no' ? arcsDirection : false,
       showArcsValues : {
         initArcPt: arcsValuesFrom,
         endArcPt: arcsValuesTo
       }
     },
-    showMiniScale: (rectType !== 'enteros' && rectType !== 'mixta') && showMiniScale === 'si' ? true : false,
-    showMiniExValues: showMiniExValues === 'si' ? true: false,
-    showMiniAllValues: showMiniAllValues === 'si' ? true: false,
-    showMiniTheValue: valuesValidation(showMiniTheValue),
-    showMiniPointValue: showMiniPointValue === 'si' ? true: false,
-    showMiniFigure: {
-      showMiniFig: showMiniFig === 'no' ? false : showMiniFig,
-      wichMiniFigValues: valuesValidation(wichMiniFigValues)
-    },
-    showMiniArcs: {
-      show: showMiniArcs !== 'no' ? showMiniArcs : false,
-      initArcPtMini: valuesValidation(initArcPtMini),
-      endArcPtMini: valuesValidation(endArcPtMini)
-    },
-    showMiniGuides: showMiniGuides === 'si' ? true: false
+    showMiniScale: {
+      show: (rectType !== 'enteros' && rectType !== 'mixta') && showMiniScale === 'si' ? true : false,
+      showMiniExValues: showMiniExValues === 'si' ? true: false,
+      showMiniAllValues: showMiniAllValues === 'si' ? true: false,
+      showMiniTheValue: valuesValidation(showMiniTheValue),
+      showMiniPointValue: showMiniPointValue === 'si' ? true: false,
+      showMiniFigure: {
+        showMiniFig: showMiniFig === 'no' ? false : showMiniFig,
+        wichMiniFigValues: valuesValidation(wichMiniFigValues)
+      },
+      showMiniArcs: {
+        show: showMiniArcs !== 'no' ? showMiniArcs : false,
+        initArcPtMini: valuesValidation(initArcPtMini),
+        endArcPtMini: valuesValidation(endArcPtMini)
+      },
+      showMiniGuides: showMiniGuides === 'si' ? true: false
+    }
   }
   state.font = {
     family: fontFamily,
@@ -182,7 +191,6 @@ export function rectNumFn(config) {
     y1: state.canvas.position.y1 - state.container.padding.bottom
   }
   state.chart = {
-    orientation: rectOrientation,
     padding: {
       top: c.height*(chartPaddingAux.top/1000),
       right: c.width*(chartPaddingAux.right/1000),
@@ -197,17 +205,14 @@ export function rectNumFn(config) {
     },
     image: {
       //showLens: showLens === 'si' ? true : false,
-      lupa: lupaImg,
-      pictoImg: pictoImg
+      lupa: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
+      pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg'
     },
     values: {
-      rectValues: rectValues.split(','),
-      rectValuesUnit: rectValuesAll.valuesUnit,
-      rectValuesDec: rectValuesAll.valuesDec,
-      rectValuesCent: rectValuesAll.valuesCent,
-      valuesUnit: valuesUnit.split(','),
-      valuesDec: eval(valuesDec) >= state.scale.divisions ? state.scale.divisions : eval(valuesDec),
-      valuesCent: eval(valuesCent),
+      initValue: initValue,
+      unitValue: initValue.split('.')[0],
+      decValue: initValue.split('.')[1][0],
+      decValue: initValue.split('.')[1][1],
       valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
   }
@@ -218,28 +223,29 @@ export function rectNumFn(config) {
     y1: state.container.position.y1 - state.chart.padding.bottom
   }
 
-  /*
-  let adaptHeight = 2
-  if (state.typeRect !== 'enteros con decimales' && state.typeRect !== 'mixta') {
-    if (state.show.showMiniScale) {
-      adaptHeight = 4
-    }
-  }
-  */
   let mainData = {
     pointsData: ptosPrincipales(state),
-    pointsDataMini: ptosPrincipalesMini(state),
-    //centerChartY: state.chart.position.y0 + (state.chart.position.y1 - state.chart.position.y0 + state.chart.axis.width)/adaptHeight,
-    values: state.chart.values.valuesUnit,
-    initValue: Math.min(...state.chart.values.valuesUnit).toString().split('.')[0]
+    pointsDataMini: ptosPrincipalesMini(state)
   }
 
   
-  drawRects(state, state.canvas, 'red')
-  drawRects(state, state.container, 'blue')
-  drawRects(state, state.chart, 'green')
+  dibujarBordes(state, state.canvas, 'red') // Canvas
+  dibujarBordes(state, state.container, 'blue') // Container
+  dibujarBordes(state, state.chart, 'green') // Chart
   init(state, mainData)
 
+}
+
+// Dibuja los espacios definidos, container, chart
+function dibujarBordes(state, el, color) {
+  const { ctx } = state
+  ctx.save()
+  ctx.beginPath()
+  ctx.strokeStyle = color
+  ctx.rect(el.position.x0, el.position.y0, el.position.x1 - el.position.x0, el.position.y1 - el.position.y0)
+  ctx.stroke()
+  ctx.restore()
+  ctx.save()
 }
 
 function ptosPrincipales(state) {
@@ -270,25 +276,13 @@ function ptosPrincipalesMini(state) {
   }
 }
 
-// Dibuja los espacios definidos, container, chart
-function drawRects(state, el, color) {
-  const { ctx } = state
-  ctx.save()
-  ctx.beginPath()
-  ctx.strokeStyle = color
-  ctx.rect(el.position.x0, el.position.y0, el.position.x1 - el.position.x0, el.position.y1 - el.position.y0)
-  ctx.stroke()
-  ctx.restore()
-  ctx.save()
-}
-
 // Inicializa la graficación de la recta
 function init(state, mainData) {
   const { show, typeRect } = state
-  state.titles.mainTitle.title !== '' && insertarTitPrinc(state)
-  insertarEjePrincipal(state, mainData)
+  insertarTitPrinc(state)
+  ejePrincipal(state, mainData)
   if (typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales' && show.showMiniScale) {
-    insertarEjeMini(state, mainData)
+    ejeSecundario(state, mainData)
   }
 }
 
@@ -296,40 +290,22 @@ function init(state, mainData) {
 function insertarTitPrinc(state) {
   const { ctx, canvas } = state
   const { mainTitle } = state.titles
-  ctx.save()
-  let x = (canvas.position.x1)/2 + mainTitle.move.moveX + canvas.position.x0
-  let y = 0 + canvas.position.y0 + mainTitle.move.moveY
-  ctx.translate(x,y)
-  ctx.fillStyle = mainTitle.color
-  ctx.textAlign = mainTitle.alignX
-  ctx.textBaseline = mainTitle.alignY
-  ctx.font = mainTitle.font.weight + ' ' + mainTitle.font.size + 'px ' + mainTitle.font.family
-  ctx.fillText(mainTitle.title, 0, 0)
-  ctx.restore()
-  ctx.save()
-}
-
-function insertarEjePrincipal(state, mainData) {
-  const { ctx, typeRect, scale, chart, show } = state
-  const { pointsData } = mainData
-  ctx.save()
-  let xIni = pointsData.xIni
-  let xFin = pointsData.xFin
-  let centroY = pointsData.centroY
-  chart.axis.width > 0 && generarEje(state, xIni, xFin, centroY)
-  scale.width > 0 && scale.length > 0 && generarEscala(state, xIni, xFin, centroY, scale.divisions)
-  if (typeRect !== 'enteros' && typeRect !== 'mixta' && scale.width > 0 && scale.length > 0) {
-    generarEscalaDec(state, xIni, xFin, centroY, scale.divisions)
+  if (mainTitle.title !== '') {
+    ctx.save()
+    let x = (canvas.position.x1)/2 + mainTitle.move.moveX + canvas.position.x0
+    let y = 0 + canvas.position.y0 + mainTitle.move.moveY
+    ctx.translate(x,y)
+    ctx.fillStyle = mainTitle.color
+    ctx.textAlign = mainTitle.alignX
+    ctx.textBaseline = mainTitle.alignY
+    ctx.font = mainTitle.font.weight + ' ' + mainTitle.font.size + 'px ' + mainTitle.font.family
+    ctx.fillText(mainTitle.title, 0, 0)
+    ctx.restore()
+    ctx.save()
   }
-  //chart.values.rectValues !== '' && show.showExValues && mostrarValoresExternos(state, xIni, xFin, centroY, scale.divisions, scale.value)
-  chart.values.rectValues !== '' && mostrarValores(state, xIni, xFin, centroY, scale.divisions, scale.value)
-  chart.values.rectValues !== '' && show.showPointValue.showPointValue && mostrarPuntos(state, xIni, xFin, centroY, scale.divisions)
-  chart.values.rectValues !== '' && show.showFigValue.showFigValue && mostrarFigura(state, xIni, xFin, centroY, scale.divisions)
-  show.showArcs.showArcs && mostrarArcos(state, xIni, xFin, centroY, scale.divisions, scale.value)
-  ctx.restore()
-  ctx.save()
 }
 
+/* -------------------------------- Begin Eje Genérico -------------------------------- */
 function generarEje(state, xIni, xFin, centroY) {
   const { ctx, chart, scale } = state
   ctx.save()
@@ -407,467 +383,43 @@ function generarEscalaDec(state, xIni, xFin, centroY, divisiones) {
   ctx.restore()
   ctx.save()
 }
+/* -------------------------------- End Eje Genérico -------------------------------- */
 
-/* -------------------------------- Mostrar Eje -------------------------------- */
+/*-------------------------------- Begin Eje Principal --------------------------------*/
 
-function mostrarValores(state, xIni, xFin, centroY, divisiones, valorEscala) {
-  const { ctx, typeRect, font, scale, chart, show } = state
-  ctx.save()
-  centroY += scale.length*1.3
-  let segment = (xFin - xIni)/(divisiones+1)
-  let unitValue = eval(chart.values.rectValuesUnit.pop())
-  let decValue = eval(chart.values.rectValuesDec.pop())
-  let centValue = eval(chart.values.rectValuesCent.pop())
-  //let arr = [0,(divisiones-1)]
-  for (let i = 0; i < divisiones; i++) {
-    let xPos = xIni + segment + segment*i
-    if (typeRect === 'enteros') {
-      if (i === 0 || i === divisiones - 1) {
-        show.showExValues && mostrarNumeroMixtoCent(state, xPos, centroY, i, 2, unitValue, decValue, centValue)
-      } else {
-        let arrValEnteros = show.showAllValues.selectValuesToShow.valuesUnit
-        console.log(arrValEnteros)
-        if (show.showAllValues.showAllValues || arrValEnteros.length > 0) {
-          arrValEnteros[i] === i
-          mostrarNumeroMixtoCent(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
-        } else {
-          mostrarNumeromostrarNumeroMixtoCentMixto(state, xPos, centroY, i, 1.5, unitValue, decValue, centValue)
-        }
-      }
-    } else if (typeRect === 'enteros con decimales') {
-      // mostrarNumeroEntero(state, xPos, centroY, el, 2, unitValue, decValue, centValue)
-    } else if (typeRect === 'decimal') {
-      // mostrarNumeroDecimal(state, xPos, centroY, el, 2, unitValue, decValue, centValue)
-    } else if (typeRect === 'centesimal') {
-      // mostrarNumeroDecimal(state, xPos, centroY, el, 2, unitValue, decValue, centValue)
-    } else if (typeRect === 'mixta') {
-
-    } else if (typeRect === 'mixta decimal') {
-
-    } else if (typeRect === 'mixta centesimal') {
-
-    }
-  }
-  ctx.restore()
-  ctx.save()
-}
-
-// function mostrarValoresExternos(state, xIni, xFin, centroY, divisiones, valorEscala) {
-//   const { ctx, typeRect, font, scale, chart } = state
-//   ctx.save()
-//   centroY += scale.length*1.3
-//   let segment = (xFin - xIni)/(divisiones+1)
-//   let arr = [0, eval(divisiones)-1]
-//   arr.map((val,i) => {
-//     let unitValue, decValue, centValue, xPos
-//     switch (typeRect) {
-//       case 'enteros':
-//         unitValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
-//         xPos = xIni + segment + segment*val
-//         mostrarNumero(state, xPos, centroY, 2, unitValue, unitValue, unitValue)
-//         break;
-//       case 'enteros con decimales':
-        
-//         break;
-//       case 'decimal':
-        
-//         break;
-//       case 'centesimal':
-        
-//         break;
-//       case 'mixta':
-//         unitValue = eval(Math.min(...chart.values.rectValuesUnit)) + val*eval(valorEscala)
-//         decValue = 0
-//         centValue = 0
-//         xPos = xIni + segment + segment*val
-//         mostrarNumero(state, xPos, centroY, 1.5, unitValue, decValue, centValue)
-        
-//         break;
-
-//       case 'mixta decimal':
-//         unitValue = eval(Math.min(...chart.values.rectValuesUnit))
-//         decValue = eval(Math.min(...chart.values.rectValuesDec)) + i
-//         xPos = xIni + segment + segment*val
-//         mostrarNumero(state, xPos, centroY, 1.5, unitValue, decValue, unitValue)
-        
-//         break;
-//       case 'mixta centesimal':
-        
-//         break;
-//     }
-//   })
-//   ctx.restore()
-//   ctx.save()
-// }
-
-// function mostrarValores(state, xIni, xFin, centroY, divisiones, valorEscala) {
-//   const { ctx, typeRect, font, scale, chart, show } = state
-//   ctx.save()
-//   centroY += scale.length*1.3
-//   let segment = (xFin - xIni)/(divisiones+1)
-//   let arrValEnteros = show.showAllValues.selectValuesToShow.valuesUnit
-//   for (let i = 1; i < divisiones-1; i++) {
-//     let xPos = xIni + segment + segment*i
-//     let unitValue, decValue, centValue
-//     unitValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
-//     switch (show.showAllValues.showAllValues) {
-//       case 'mostrar':
-//         arrValEnteros.includes(unitValue.toString()) && mostrarNumero(state, xPos, centroY, 1.5, unitValue, unitValue, unitValue)
-//         break;
-//       case 'ocultar':
-//         !arrValEnteros.includes(unitValue.toString()) && mostrarNumero(state, xPos, centroY, 1.5, unitValue, unitValue, unitValue)
-//         break;
-//       case 'todos':
-//         mostrarNumero(state, xPos, centroY, 1.5, unitValue, unitValue, unitValue)
-//         break;
-//       default:
-//         break;
-//     }
-//     /*
-//     switch (typeRect) {
-//       case 'enteros':
-//         unitValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
-//         break;
-//       case 'enteros con decimales':
-//         switch (show.showAllValues.showAllValues) {
-//           case 'mostrar':
-            
-//             break;
-//           case 'ocultar':
-            
-//             break;
-//           case 'todos':
-            
-//             break;
-//           default:
-//             break;
-//         }
-//         break;
-//       case 'decimal':
-        
-//         break;
-//       case 'centesimal':
-        
-//         break;
-//       case 'mixta':
-        
-//         break;
-
-//       case 'mixta decimal':
-        
-//         break;
-//       case 'mixta centesimal':
-        
-//         break;
-//     }
-    
-//     if (typeRect === 'enteros') {
-//       theValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
-//       switch (show.showAllValues.showAllValues) {
-//         case 'mostrar':
-//           arrValEnteros.includes(theValue.toString()) && mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
-//           break;
-//         case 'ocultar':
-//           !arrValEnteros.includes(theValue.toString()) && mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
-//           break;
-//         case 'todos':
-//           mostrarNumero(state, xPos, centroY, 1, theValue, theValue, theValue)
-//           break;
-//       }
-//     } else if (typeRect === 'mixta') {
-//       theValue = eval(Math.min(...chart.values.rectValuesUnit)) + i*eval(valorEscala)
-//       switch (show.showAllValues.showAllValues) {
-//         case 'mostrar':
-//           arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
-//           break;
-//         case 'ocultar':
-//           !arrValEnteros.includes(theValue.toString()) && ctx.fillText(theValue, xPos, centroY)
-//           break;
-//         case 'todos':
-//           ctx.fillText(theValue, xPos, centroY)
-//           break;
-//       }
-//     }
-//     */
-
-//   }
-//   ctx.restore()
-//   ctx.save()
-// }
-
-// function mostrarPuntos(state, xIni, xFin, centroY, divisiones) {
-//   const { ctx, scale, show, typeRect, font, chart } = state
-//   const { unitValue, decValue, centValue } = show.showPointValue
-//   ctx.save()  
-//   let segment = (xFin - xIni)/(divisiones+1)
-//   let miniSegment = segment/10
-//   let minVal = Math.min(...chart.values.rectValuesUnit)
-//   if (typeRect === 'enteros') {
-//     unitValue.forEach( (unit) => {
-//       unit = eval(unit)
-//       let xPos = xIni + segment + segment*((unit - minVal)/scale.value)
-//       drawPoint(ctx, xPos, centroY)
-//     })
-//   } else if (typeRect !== 'enteros' && typeRect !== 'mixta') {
-//     decValue.forEach( (dec,index) => {
-//       if (dec !== '') {
-//         if (centValue[index] !== '') {
-//           let xPos = xIni + segment + segment*dec + miniSegment*centValue[index]
-//           drawPoint(ctx, xPos, centroY)
-//         }
-//       }
-//     })
-//   } else {
-//     decValue.forEach( dec => {
-//       if (dec !== '') {
-//         let xPos = xIni + segment + segment*dec
-//         drawPoint(ctx, xPos, centroY)
-//       }
-//     })
-//   }
-//   ctx.restore()
-//   ctx.save()
-//   function drawPoint(ctx, xPos, centroY) {
-//     ctx.strokeStyle = scale.color
-//     ctx.fillStyle = font.color
-//     ctx.lineWidth = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.width/2 : scale.width
-//     let theRadius = (typeRect !== 'enteros' && typeRect !== 'mixta') ? scale.length/3 : scale.length/2
-//     ctx.beginPath()
-//     ctx.arc(xPos, centroY, theRadius, 0,360*Math.PI/180)
-//     ctx.fill()
-//     ctx.stroke()
-//     ctx.closePath()
-//   }
-// }
-
-// function mostrarFigura(state, xIni, xFin, centroY, divisiones) {
-//   const { ctx, scale, show, typeRect, font, chart } = state
-//   const { unitValue, decValue, centValue } = show.showFigValue
-//   ctx.save()  
-//   let segment = (xFin - xIni)/(divisiones+1)
-//   let miniSegment = segment/10
-//   let diamondW = scale.length*1.5
-//   let diamondH = diamondW*1.3
-//   let yDist = show.showFigValue.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
-//   let minVal = Math.min(...chart.values.rectValuesUnit)
-//   if (typeRect === 'enteros') {
-//     unitValue.map( (unit) => {
-//       unit = eval(unit)
-//       if (((unit - minVal) % scale.value) === 0) {
-//         let xPos = xIni + segment + segment*((unit - minVal)/scale.value)
-//         drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
-//       }
-//     })
-//   } else if (typeRect !== 'enteros' && typeRect !== 'mixta') {
-//     decValue.forEach( (dec,index) => {
-//       if (dec !== '') {
-//         if (centValue[index] !== '') {
-//           let xPos = xIni + segment + segment*dec + miniSegment*centValue[index]
-//           drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
-//         }
-//       }
-//     })
-//   } else {
-//     decValue.forEach( dec => {
-//       if (dec !== '') {
-//         let xPos = xIni + segment + segment*dec
-//         drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
-//       }
-//     })
-//   }
-//   ctx.restore()
-//   ctx.save()
-
-//   function drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist) {
-//     ctx.strokeStyle = scale.color
-//     ctx.fillStyle = font.color
-//     ctx.fillStyle = '#dbac04'
-//     ctx.strokeStyle = '#dbac04'
-//     ctx.beginPath()
-//     ctx.moveTo(xPos, centroY + yDist)
-//     ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
-//     ctx.lineTo(xPos, centroY + diamondH + yDist)
-//     ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
-//     ctx.lineTo(xPos, centroY + yDist)
-//     ctx.fill()
-//     ctx.stroke()
-//     ctx.closePath()
-//   }
-// }
-
-// function mostrarArcos(state, xIni, xFin, centroY, divisiones, valorEscala) {
-//   const { ctx, typeRect, scale, font, show, chart } = state
-//   ctx.save()
-//   let initPoint, endPoint
-//   let arcsDirection = show.showArcs.showArcs === 'derecha' ? true : false
-//   let segment = (xFin - xIni)/(divisiones+1)
-//   let minVal = Math.min(...chart.values.rectValuesUnit)
-//   valorEscala = eval(valorEscala)
-//   if (typeRect === 'enteros') {
-//     let initVal = show.showArcs.showArcsValues.initArcPt.valuesUnit;
-//     let endVal = show.showArcs.showArcsValues.endArcPt.valuesUnit;
-//     initPoint = ((initVal - minVal)/valorEscala);
-//     endPoint = ((endVal - minVal)/valorEscala);
-//     (((initVal - minVal) % valorEscala) === 0) && (((endVal - minVal) % valorEscala) === 0) && dibujarArcos()
-//   } else {
-//     //valuesDec
-//     //valuesCent
-//   }
-//   function dibujarArcos() {
-//     for (let i = initPoint; i < endPoint; i ++) {
-//       let xPos = xIni + segment*i
-//       let yPos = centroY
-//       ctx.strokeStyle = font.color
-//       ctx.lineWidth = Math.round(scale.width/2)
-//       ctx.beginPath()
-//       ctx.arc(xPos + segment + segment/2,yPos - scale.length/2,segment/2,220*Math.PI/180,320*Math.PI/180)
-//       let arrowDirection = arcsDirection ? -segment*0.15 : segment*0.15
-//       let arrowInitPt = arcsDirection ? (segment/2)*Math.cos(40*Math.PI/180) : -(segment/2)*Math.cos(40*Math.PI/180)
-//       ctx.moveTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180) - segment*0.15)
-//       ctx.lineTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
-//       ctx.lineTo(xPos + segment + segment/2 + arrowInitPt + arrowDirection, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
-//       ctx.stroke()
-//       ctx.closePath()
-//     }
-//   }
-// }
-
-/* -------------------------------- Mini Eje -------------------------------- */
-
-function insertarEjeMini(state, mainData) {
-  const { ctx, show } = state
-  const { pointsDataMini } = mainData
-  ctx.save()
-  let xIni = pointsDataMini.xIni
-  let xFin = pointsDataMini.xFin
-  let centroY = pointsDataMini.centroY
+function ejePrincipal(state, mainData) {
+  const { scale, typeRect } = state
+  const { xIni, xFin, centroY } = mainData.pointsData
+  let divisiones = scale.divisions
   generarEje(state, xIni, xFin, centroY)
-  generarEscala(state, xIni, xFin, centroY, 11)
-  show.showMiniPointValue && mostrarPuntosMini(state, xIni, xFin, centroY, 11)
-  show.showMiniFigure.showMiniFig && mostrarFigMini(state, xIni, xFin, centroY, 11)
-  show.showMiniArcs.show && mostrarArcos(state, xIni, xFin, centroY, 11, show.showMiniArcs.initArcPtMini.valuesCent, show.showMiniArcs.endArcPtMini.valuesCent, show.showMiniArcs.show)
-  ctx.restore()
-  ctx.save()
-}
-
-function mostrarPuntosMini(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, font } = state
-  const { valuesCent } = show.showMiniTheValue
-  ctx.save()  
-  ctx.strokeStyle = scale.color
-  ctx.fillStyle = font.color
-  ctx.lineWidth = scale.width
-  let theRadius = scale.length/2
-  let segment = (xFin - xIni)/(divisiones+1)
-  valuesCent.forEach( (cent) => {
-    if (cent !== '') {
-      let xPos = xIni + segment + segment*cent
-      ctx.beginPath()
-      ctx.arc(xPos, centroY, theRadius, 0,360*Math.PI/180)
-      ctx.fill()
-      ctx.stroke()
-      ctx.closePath()
-    }
-  })
-  ctx.restore()
-  ctx.save()
-}
-
-function mostrarFigMini(state, xIni, xFin, centroY, divisiones) {
-  const { ctx, scale, show, font } = state
-  const { showMiniTheValue } = show
-  const { valuesCent, valuesDec, valuesUnit } = show.showMiniFigure.wichMiniFigValues
-  ctx.save()
-  ctx.strokeStyle = scale.color
-  ctx.fillStyle = font.color
-  let segment = (xFin - xIni)/(divisiones+1)
-  ctx.fillStyle = '#dbac04'
-  ctx.strokeStyle = '#dbac04'
-  let diamondW = scale.length*1.5
-  let diamondH = diamondW*1.3
-  let yDist = show.showMiniFigure.showMiniFig === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
-  valuesCent.forEach( (cent,index) => {
-    if (valuesUnit[index] === showMiniTheValue.valuesUnit[0] && valuesDec[index] === showMiniTheValue.valuesDec[0]) {
-      if (valuesCent[index] !== '') {
-        let xPos = xIni + segment + segment*valuesCent[index]
-        ctx.beginPath()
-        ctx.moveTo(xPos, centroY + yDist)
-        ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
-        ctx.lineTo(xPos, centroY + diamondH + yDist)
-        ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
-        ctx.lineTo(xPos, centroY + yDist)
-        ctx.fill()
-        ctx.stroke()
-        ctx.closePath()
-      }
-    }
-  })
-  ctx.restore()
-  ctx.save()
-}
-
-/* -------------------------------- Mini Eje -------------------------------- */
-
-function mostrarNumero(state, xPos, centroY, multSize, posicion, unidad, decimo, centesimo) {
-  const { ctx, font, typeRect, scale } = state
-  ctx.strokeStyle = font.color
-  ctx.fillStyle = font.color
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-  ctx.font = font.size*multSize + 'px ' + font.family
-  let deltaLine
-  let textLength
-  switch (typeRect) {
-    case 'enteros':
-      ctx.fillText(unidad + posicion, xPos, centroY)
-      break;
-    case 'enteros con decimales':
-      ctx.fillText(unidad, xPos, centroY)
-      break;
-    case 'decimal':
-      
-      break;
-    case 'centesimal':
-      
-      break;
-    case 'mixta':
-      ctx.fillText(unidad, xPos, centroY)
-      break;
-
-    case 'mixta decimal':
-      // Parte Entera
-      deltaLine = eval(font.size)*multSize*1.5/2 - eval(scale.width)/2 + eval(scale.length)
-      textLength = ctx.measureText('00').width
-      ctx.font = font.size*multSize*1.5 + 'px ' + font.family
-      ctx.textAlign = 'right'
-      //let textLength = ctx.measureText(txt).width
-      ctx.fillText(unidad, xPos, centroY + font.size/4)
-      // Parte Fracción
-      ctx.font = font.size*multSize + 'px ' + font.family
-      ctx.textAlign = 'center'
-      deltaLine = deltaLine*0.7
-      ctx.lineWidth = scale.width
-      lineaFraccion(state, xPos, centroY, deltaLine, textLength)
-      ctx.textBaseline = 'bottom'
-      ctx.fillText(decimo, xPos + textLength/2, centroY + deltaLine + eval(scale.width))
-      ctx.textBaseline = 'top'
-      ctx.fillText(10, xPos + textLength/2, centroY + deltaLine)
-      break;
-    case 'mixta centesimal':
-      
-      break;
-  }
-  function lineaFraccion(state, xPos, centroY, deltaLine, textLength) {
-    const { ctx, chart, scale } = state
-    ctx.beginPath()
-    ctx.strokeStyle = chart.axis.color
-    ctx.moveTo(xPos, centroY + deltaLine)
-    ctx.lineTo(xPos + textLength, centroY + deltaLine)
-    ctx.stroke()
-    ctx.closePath()
+  generarEscala(state, xIni, xFin, centroY, divisiones)
+  if (typeRect !== 'enteros' && typeRect !== 'enteros con decimales' && typeRect !== 'mixta') {
+    generarEscalaDec(state, xIni, xFin, centroY, divisiones)
   }
 }
 
+/*-------------------------------- End Eje Principal --------------------------------*/
+
+
+
+
+
+
+/*--------------------------------BeginEjeSecundario--------------------------------*/
+
+function ejeSecundario(state, mainData) {
+  console.log('ejeSecundario()')
+  const { scale, typeRect } = state
+  const { xIni, xFin, centroY } = mainData.pointsDataMini
+  let divisiones = scale.divisions
+  generarEje(state, xIni, xFin, centroY)
+  generarEscala(state, xIni, xFin, centroY, divisiones)
+}
+
+/*--------------------------------EndEjeSecundario--------------------------------*/
+
+
+/* --------------------------- Begin Tipo de Número ------------------------------- */
 function mostrarNumeroEntero(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, scale } = state
   ctx.save()
@@ -1068,3 +620,4 @@ function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad
   ctx.restore()
   ctx.save()
 }
+/* ------------------------------- End Tipo de Número ----------------------------------- */

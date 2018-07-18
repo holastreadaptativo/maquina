@@ -8,33 +8,21 @@ export default class RectaNumerica extends Component {
   constructor(props) {
     super(props)
     this.state = props.push ? { 
-      active:0, 
-      // General
-      rectType: 'enteros', height:450, width:720, background:COLORS['background'],
-      // Borde
-      borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, 
-      // Títulos
-      titleValue: 'EL Título', titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold',
-      // Padding
-      canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20', chartPadding: '10,10,10,10',
-      // Escala
-      scaleValue: 1, scaleDivisions: 10, scaleWidth: 3, scaleLength: 15, scaleColor: '#E58433',
-      // Valor
-      initValue: '3.56', valuesSeparator: 'coma',
-      // Mostrar
-      showExValues: 'si', showAllValues: 'no', selectValuesToShow: '', showPointValue: 'no', 
-      wichPointValue: '5.15,5.87,5.66', showFigValue: 'no', wichFigValues: '5.15,5.87,5.66',
-      showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71',
-      // Mini Escala
-      showMiniScale: 'no', showMiniTheValue: '5.71', showMiniExValues: 'no', showMiniAllValues: 'no',
-      showMiniPointValue: 'no', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', showMiniArcs: 'no',
-      initArcPtMini: '5.72', endArcPtMini: '5.76', showMiniGuides: 'no', showLens: 'no', alignLens:'punto',
-      // Ejes
-      axisColor: '#E58433', withArrows: 'si', axisWidth: 4,
-      // Fuente
-      fontColor: '#8B1013', fontSize:14, fontFamily: 'Larke Neue Thin', fontWeight: 'normal'
-      // rectValues: '5.38',   
-      // showTheValue: 'no',
+      active:0, rectType: 'enteros', rectOrientation: 'horizontal', height:450, width:720, background:COLORS['background'],
+      borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, titleValue: 'EL Título', 
+      titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold', canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20',
+      chartPadding: '10,10,10,10', innerChartPadding: '0,0,0,0',
+      valuesSeparator: 'coma', axisColor: '#E58433', withArrows: 'si', axisWidth: 4, fontColor: '#8B1013', fontSize:14, 
+      fontFamily: 'Larke Neue Thin', fontWeight: 'normal', 
+      pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg',
+      lupaImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Ordenar/lupa.svg',
+      scaleDivisions: 10, scaleValue: 1, scaleWidth: 3, scaleColor: '#E58433', scaleLength: 15, /*showValues: 'ninguno',*/ showExValues: 'si',
+      showAllValues: 'no', showTheValue: 'no', showPointValue: 'no', showFigValue: 'no', showLens: 'no', showArcs: 'no', showMiniScale: 'no',
+      alignLens:'punto', showMiniArcs: 'no', showMiniExValues: 'no', showMiniAllValues: 'no', showMiniTheValue: '5.71', showMiniPointValue: 'no',
+      showMiniGuides: 'no', initArcPt: '5.26', endArcPt: '5.71', selectValuesToShow: '', wichPointValue: '5.15,5.87,5.66',
+      rectValues: '5.38', wichFigValues: '5.15,5.87,5.66', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', initArcPtMini: '5.72',
+      endArcPtMini: '5.76'
+
     } : props.params
   }
   componentDidUpdate() {
@@ -72,16 +60,26 @@ export default class RectaNumerica extends Component {
           <Input id="canvasPadding" prefix="canvas" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
           <Input id="containerPadding" prefix="container" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
           <Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
+          {/*<Input id="innerChartPadding" prefix="innerchart" postfix="px" parent={this} placeholder={'x,y'} />*/}
         </Item>
         <Item id={k++} title="Escala" parent={this}>
           <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} hide={rectType !== 'enteros'}/>
-          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} />
+          {/*<Select id="scaleDivisions" prefix="divisiones" options={scaleDivisionsOptions} parent={this} hide={rectType !== 'enteros con decimales'}/>*/}
+          <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} /*hide={rectType === 'enteros con decimales'}*//>
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
           <Input id="scaleColor" prefix="color" type="color" parent={this}/>
+          {/*<Select id="showValues" prefix="mostrar" options={showValuesOptions} parent={this}/>*/}
         </Item>
         <Item id={k++} title="Valores" parent={this}>
-          <Input id="initValue" prefix="valor inicial" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
+          <Input id="rectValues" prefix="unidad" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
+          {
+            /*
+            <Input id="rectValuesUnit" prefix="unidad" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
+            <Input id="rectValuesDec" prefix="decimal" type="number" placeholder={'$b'} parent={this} hide={rectType === 'enteros'}/>
+            <Input id="rectValuesCent" prefix="centesimal" type="number" placeholder={'$c'} parent={this} hide={rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'mixta'}/>
+            */
+          }
           <Select id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
