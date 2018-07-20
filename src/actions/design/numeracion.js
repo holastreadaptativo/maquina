@@ -2,7 +2,6 @@ import { replace } from 'actions'
 //import { setInterval } from 'timers';
 
 export function rectNumFn(config) {
-  console.log('holaaaaaa')
   const { container, params, variables, versions, vt } = config
 
   const {
@@ -75,16 +74,11 @@ export function rectNumFn(config) {
       }
     })
     return {
-      valuesUnit: valuesUnit,
-      valuesDec: valuesDec,
-      valuesCent: valuesCent
+      unidadValor: valuesUnit,
+      decimalValor: valuesDec,
+      centesimalValor: valuesCent
     }
   }
-
-  let pointsValuesAll = valuesValidation(wichPointValue)
-  let figValuesAll = valuesValidation(wichFigValues)
-  let arcsValuesFrom = valuesValidation(initArcPt)
-  let arcsValuesTo = valuesValidation(endArcPt)
 
   let state = {}
   state.ctx = c.getContext('2d')
@@ -104,11 +98,11 @@ export function rectNumFn(config) {
     },
     showPointValue: {
       showPointValue: showPointValue !== 'no' ? true : false,
-      selectPointsValue: pointsValuesAll
+      selectPointsValue: valuesValidation(wichPointValue)
   },
     showFigValue: {
       showFigValue: showFigValue === 'no' ? false : showFigValue,
-      selectPointsValue: figValuesAll
+      selectPointsValue: valuesValidation(wichFigValues)
     },
     showLens: {
       show: showLens === 'si' ? true : false,
@@ -117,8 +111,8 @@ export function rectNumFn(config) {
     showArcs: {
       showArcs: showArcs !== 'no' ? showArcs : false,
       showArcsValues : {
-        initArcPt: arcsValuesFrom,
-        endArcPt: arcsValuesTo
+        initArcPt: valuesValidation(initArcPt),
+        endArcPt: valuesValidation(endArcPt)
       }
     },
     showMiniScale: {
@@ -210,10 +204,7 @@ export function rectNumFn(config) {
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg'
     },
     values: {
-      initValue: initValue,
-      unitValue: initValue.split('.')[0],
-      decValue: initValue.split('.')[1][0],
-      decValue: initValue.split('.')[1][1],
+      initValue: valuesValidation(initValue),
       valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
   }
@@ -397,12 +388,75 @@ function ejePrincipal(state, mainData) {
   if (typeRect !== 'enteros' && typeRect !== 'enteros con decimales' && typeRect !== 'mixta') {
     generarEscalaDec(state, xIni, xFin, centroY, divisiones)
   }
+  selecRecta(state, mainData)
 }
 
 /*-------------------------------- End Eje Principal --------------------------------*/
 
+function rectaTipo(state, mainData) {
+  const { scale, typeRect } = state
+  const { xIni, xFin, centroY } = mainData.pointsData
+  let divisiones = scale.divisions
+  for (let i = 0; i < state.scale.divisions; i++) {
+    if (i === 0 || i === state.scale.divisions - 1) {
+  
+    } else {
+  
+    }
+  }
+  
+  
+}
 
+function rectaEnteros(state, mainData) {
+  const { scale, chart } = state
+  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
+  const { xIni, xFin, centroY } = mainData.pointsData
+  let divisiones = scale.divisions - 1
+  let segmento = (xFin - xIni)/(divisiones + 2)
+  let unidad = Number(unidadValor.pop())
+  let decimo = Number(decimalValor.pop())
+  let centesimo = Number(centesimalValor.pop())
+  let centroYNum = centroY + scale.length*1.2
+  for (let i = 0; i <= divisiones; i++) {
+    let xPos = xIni + segmento + segmento*i
+    if (i === 0 || i === divisiones) {
+      numeroEntero(state, xPos, centroYNum, i, 2, unidad, decimo, centesimo)
+    } else {
+      numeroEntero(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
+    }
+  }
+  
+  
+}
 
+function selecRecta(state, mainData) {
+  const { typeRect } = state
+
+  switch (typeRect) {
+    case 'enteros':
+      rectaEnteros(state, mainData)
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
+}
 
 
 
@@ -421,7 +475,7 @@ function ejeSecundario(state, mainData) {
 
 
 /* --------------------------- Begin Tipo de Número ------------------------------- */
-function mostrarNumeroEntero(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroEntero(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -435,7 +489,7 @@ function mostrarNumeroEntero(state, xPos, centroY, posicion, multSize, unidad, d
   ctx.save()
 }
 
-function mostrarNumeroEnteroConDecimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroEnteroConDecimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -449,7 +503,7 @@ function mostrarNumeroEnteroConDecimal(state, xPos, centroY, posicion, multSize,
   ctx.save()
 }
 
-function mostrarNumeroDecimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroDecimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -469,7 +523,7 @@ function mostrarNumeroDecimal(state, xPos, centroY, posicion, multSize, unidad, 
   ctx.save()
 }
 
-function mostrarNumeroCentesimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroCentesimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -489,7 +543,7 @@ function mostrarNumeroCentesimal(state, xPos, centroY, posicion, multSize, unida
   ctx.save()
 }
 
-function mostrarNumeroCentesimalIt(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroCentesimalIt(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -514,7 +568,7 @@ function mostrarNumeroCentesimalIt(state, xPos, centroY, posicion, multSize, uni
   ctx.save()
 }
 
-function mostrarNumeroMixto(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroMixto(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, scale } = state
   ctx.save()
 
@@ -568,7 +622,7 @@ function mostrarNumeroMixto(state, xPos, centroY, posicion, multSize, unidad, de
   ctx.save()
 }
 
-function mostrarNumeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroMixtoCent(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, scale } = state
   ctx.save()
 
