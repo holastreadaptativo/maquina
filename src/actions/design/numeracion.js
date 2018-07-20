@@ -394,19 +394,51 @@ function ejePrincipal(state, mainData) {
 /*-------------------------------- End Eje Principal --------------------------------*/
 
 function rectaTipo(state, mainData) {
-  const { scale, typeRect } = state
+  const { scale, chart } = state
+  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
   const { xIni, xFin, centroY } = mainData.pointsData
-  let divisiones = scale.divisions
-  for (let i = 0; i < state.scale.divisions; i++) {
-    if (i === 0 || i === state.scale.divisions - 1) {
-  
+  let divisiones = scale.divisions - 1
+  let segmento = (xFin - xIni)/(divisiones + 2)
+  let unidad = Number(unidadValor.pop())
+  let decimo = Number(decimalValor.pop())
+  let centesimo = Number(centesimalValor.pop())
+  let centroYNum = centroY + scale.length*1.2
+  for (let i = 0; i <= divisiones; i++) {
+    let xPos = xIni + segmento + segmento*i
+    if (i === 0 || i === divisiones) {
+      
     } else {
-  
+      
     }
   }
   
   
 }
+/*
+switch (typeRect) {
+  case 'enteros':
+    rectaEnteros(state, mainData)
+    break;
+  case 'enteros con decimales':
+    
+    break;
+  case 'decimal':
+    
+    break;
+  case 'centesimal':
+    
+    break;
+  case 'mixta':
+    
+    break;
+  case 'mixta decimal':
+    
+    break;
+  case 'mixta centesimal':
+    
+    break;
+}
+*/
 
 function rectaEnteros(state, mainData) {
   const { scale, chart } = state
@@ -423,11 +455,11 @@ function rectaEnteros(state, mainData) {
     if (i === 0 || i === divisiones) {
       numeroEntero(state, xPos, centroYNum, i, 2, unidad, decimo, centesimo)
     } else {
-      numeroEntero(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
+      mostrarNumero(state, i, unidad, decimo, centesimo)  && numeroEntero(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
+      mostrarPuntos(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
+      mostrarFiguras(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
     }
   }
-  
-  
 }
 
 function selecRecta(state, mainData) {
@@ -458,7 +490,51 @@ function selecRecta(state, mainData) {
   }
 }
 
+function mostrarNumero(state, posicion, unidad, decimo, centesimo) {
+  const { typeRect } = state
+  const { showAllValues, selectValuesToShow } = state.show.showAllValues
+  const { unidadValor, decimalValor, centesimalValor } = selectValuesToShow
+  switch (typeRect) {
+    case 'enteros':
+    let valor = (posicion + unidad)
+    switch (showAllValues) {
+      case 'todos':
+        return true
+      case 'mostrar':
+        if (unidadValor.includes(valor)) {
+          return true
+        }
+        break;
+      case 'ocultar':
+        if (!unidadValor.includes(valor)) {
+          return true
+        }
+        break;
+      default:
+        break;
+    }
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
 
+}
 
 /*--------------------------------BeginEjeSecundario--------------------------------*/
 
@@ -472,6 +548,109 @@ function ejeSecundario(state, mainData) {
 }
 
 /*--------------------------------EndEjeSecundario--------------------------------*/
+
+function mostrarPuntos(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+  const { ctx, typeRect, font, scale, show, chart } = state
+  const { showPointValue } = show.showPointValue
+  const { unidadValor, decimalValor, centesimalValor} = show.showPointValue.selectPointsValue
+  ctx.save()
+  ctx.fillStyle = font.color
+  ctx.lineWidth = scale.width*0.6
+  ctx.strokeStyle = chart.axis.color
+  ctx.beginPath()
+  switch (typeRect) {
+    case 'enteros':
+      enteros()
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
+  ctx.fill()
+  ctx.stroke()
+  ctx.closePath()
+  ctx.restore()
+  ctx.save()
+  function enteros() {
+    if (showPointValue && unidadValor.includes((unidad + posicion).toString())) {
+      ctx.arc(xPos, centroY, scale.length/2*multSize,0,360*Math.PI/180)
+    }
+  }
+}
+
+function mostrarFiguras(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+  const { ctx, typeRect, font, scale, show } = state
+  const { showFigValue } = show.showFigValue
+  const { unidadValor, decimalValor, centesimalValor} = show.showFigValue.selectPointsValue
+  const { selectValuesToShow, showAllValues } = show.showAllValues
+  ctx.save()
+  let diamondW = scale.length*1.5
+  let diamondH = diamondW*1.3
+  let yDist = show.showFigValue.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
+  if (showFigValue === 'abajo' && (showAllValues === 'todos' || selectValuesToShow.unidadValor.includes((unidad + posicion).toString()))) {
+    yDist += font.size*1.5
+  }
+  switch (typeRect) {
+    case 'enteros':
+      enteros()
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
+  ctx.restore()
+  ctx.save()
+  function drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist) {
+    ctx.strokeStyle = scale.color
+    ctx.fillStyle = font.color
+    ctx.fillStyle = '#dbac04'
+    ctx.strokeStyle = '#dbac04'
+    ctx.beginPath()
+    ctx.moveTo(xPos, centroY + yDist)
+    ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
+    ctx.lineTo(xPos, centroY + diamondH + yDist)
+    ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
+    ctx.lineTo(xPos, centroY + yDist)
+    ctx.fill()
+    ctx.stroke()
+    ctx.closePath()
+  }
+  function enteros() {
+    if (showFigValue && unidadValor.includes((unidad + posicion).toString())) {
+      drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
+    }    
+  }
+}
 
 
 /* --------------------------- Begin Tipo de Número ------------------------------- */
