@@ -459,7 +459,34 @@ function rectaEnteros(state, mainData) {
       mostrarPuntos(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
       mostrarFiguras(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
     }
+    let centroX = xPos + segmento/2
+    dibujarArco(state, centroX, centroY, scale.length*1.2, 'derecha')
+    function dibujarArco(state, centroX, centroY, arcoRadio, direccion) {
+      const { ctx, font, scale } = state
+      ctx.save()
+      ctx.beginPath()
+      ctx.strokeStyle = font.color
+      ctx.lineWidth = scale.width
+      let iniAngulo = 220*Math.PI/180
+      let finAngulo = 320*Math.PI/180
+      ctx.arc(centroX, centroY, arcoRadio, iniAngulo, finAngulo)
+      let xDist, ladoDib
+      ladoDib = -(arcoRadio)*Math.cos(40*Math.PI/180)
+      xDist = -arcoRadio*0.15
+      if (direccion === 'derecha') {
+        xDist *= -1
+        ladoDib *= -1
+      }
+      ctx.moveTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180) - arcoRadio*0.15)
+      ctx.lineTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
+      ctx.lineTo(centroX + ladoDib - xDist, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
+      ctx.stroke()
+      ctx.closePath()
+      ctx.restore()
+      ctx.save()
+    }
   }
+  //mostrarArcos(state, mainData)
 }
 
 function selecRecta(state, mainData) {
@@ -496,7 +523,7 @@ function mostrarNumero(state, posicion, unidad, decimo, centesimo) {
   const { unidadValor, decimalValor, centesimalValor } = selectValuesToShow
   switch (typeRect) {
     case 'enteros':
-    let valor = (posicion + unidad)
+    let valor = (posicion + unidad).toString()
     switch (showAllValues) {
       case 'todos':
         return true
@@ -601,10 +628,7 @@ function mostrarFiguras(state, xPos, centroY, posicion, multSize, unidad, decimo
   ctx.save()
   let diamondW = scale.length*1.5
   let diamondH = diamondW*1.3
-  let yDist = show.showFigValue.showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
-  if (showFigValue === 'abajo' && (showAllValues === 'todos' || selectValuesToShow.unidadValor.includes((unidad + posicion).toString()))) {
-    yDist += font.size*1.5
-  }
+
   switch (typeRect) {
     case 'enteros':
       enteros()
@@ -646,9 +670,116 @@ function mostrarFiguras(state, xPos, centroY, posicion, multSize, unidad, decimo
     ctx.closePath()
   }
   function enteros() {
+    let yDist// = showFigValue === 'abajo' ? scale.length*1.5 : - (scale.length*1.5 + diamondH)
+    if (showFigValue !== 'abajo') {
+      yDist = - (scale.length*1.5 + diamondH)
+    } else {
+      yDist = scale.length*1.5
+      let incluVal = showAllValues === 'mostrar' && selectValuesToShow.unidadValor.includes((unidad + posicion).toString())
+      let noIncluVal = showAllValues === 'ocultar' && !selectValuesToShow.unidadValor.includes((unidad + posicion).toString())
+      if (showAllValues === 'todos' || incluVal || noIncluVal ) {
+        yDist += font.size*1.5
+      }
+    }
     if (showFigValue && unidadValor.includes((unidad + posicion).toString())) {
       drawDiamond(ctx, xPos, centroY, diamondW, diamondH, yDist)
     }    
+  }
+}
+
+function mostrarArcos(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+  const { ctx, typeRect, font, scale, show, chart } = state
+  const { showPointValue } = show.showPointValue
+  const { unidadValor, decimalValor, centesimalValor} = show.showPointValue.selectPointsValue
+
+  switch (typeRect) {
+    case 'enteros':
+      
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
+
+
+}
+
+function mostrarArcos1(state, mainData) {
+  const { ctx, typeRect, scale, font, show, chart } = state
+  const { initArcPt, endArcPt } = show.showArcs.showArcsValues
+  // showArcs: {
+  //   showArcs: showArcs !== 'no' ? showArcs : false,
+  //   showArcsValues : {
+  //     initArcPt: valuesValidation(initArcPt),
+  //     endArcPt: valuesValidation(endArcPt)
+  //   }
+  // },
+  ctx.save()
+  let initPoint, endPoint
+  let arcsDirection = show.showArcs.showArcs === 'derecha' ? true : false
+  switch (typeRect) {
+    case 'enteros':
+      initPoint = initArcPt.unidadValor[0]
+      endPoint = endArcPt.unidadValor[0]
+      dibujarArcos(initPoint, endPoint)
+      break;
+    case 'enteros con decimales':
+      
+      break;
+    case 'decimal':
+      
+      break;
+    case 'centesimal':
+      
+      break;
+    case 'mixta':
+      
+      break;
+    case 'mixta decimal':
+      
+      break;
+    case 'mixta centesimal':
+      
+      break;
+  }
+}
+function dibujarArco(xPos, centroY, segmento, ) {
+
+}
+function dibujarArcos1(xIni, xFin, centroY, valorMinEscala, escalaValor, desdeValor, hastaValor) {
+  let segment = (xFin - xIni)/(escalaValor - 2)
+  let minVal = Math.min(...chart.values.rectValuesUnit)
+  let initPoint = ((initVal - minVal)/valorEscala);
+  let endPoint = ((endVal - minVal)/valorEscala);
+  for (let i = initPoint; i < endPoint; i ++) {
+    let xPos = xIni + segment*i
+    let yPos = centroY
+    ctx.strokeStyle = font.color
+    ctx.lineWidth = Math.round(scale.width/2)
+    ctx.beginPath()
+    ctx.arc(xPos + segment + segment/2,yPos - scale.length/2,segment/2,220*Math.PI/180,320*Math.PI/180)
+    let arrowDirection = arcsDirection ? -segment*0.15 : segment*0.15
+    let arrowInitPt = arcsDirection ? (segment/2)*Math.cos(40*Math.PI/180) : -(segment/2)*Math.cos(40*Math.PI/180)
+    ctx.moveTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180) - segment*0.15)
+    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt + arrowDirection, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+    ctx.stroke()
+    ctx.closePath()
   }
 }
 
