@@ -221,9 +221,9 @@ export function rectNumFn(config) {
   }
 
   
-  dibujarBordes(state, state.canvas, 'red') // Canvas
-  dibujarBordes(state, state.container, 'blue') // Container
-  dibujarBordes(state, state.chart, 'green') // Chart
+  // dibujarBordes(state, state.canvas, 'red') // Canvas
+  // dibujarBordes(state, state.container, 'blue') // Container
+  // dibujarBordes(state, state.chart, 'green') // Chart
   init(state, mainData)
 
 }
@@ -393,27 +393,6 @@ function ejePrincipal(state, mainData) {
 
 /*-------------------------------- End Eje Principal --------------------------------*/
 
-function rectaTipo(state, mainData) {
-  const { scale, chart } = state
-  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
-  const { xIni, xFin, centroY } = mainData.pointsData
-  let divisiones = scale.divisions - 1
-  let segmento = (xFin - xIni)/(divisiones + 2)
-  let unidad = Number(unidadValor.pop())
-  let decimo = Number(decimalValor.pop())
-  let centesimo = Number(centesimalValor.pop())
-  let centroYNum = centroY + scale.length*1.2
-  for (let i = 0; i <= divisiones; i++) {
-    let xPos = xIni + segmento + segmento*i
-    if (i === 0 || i === divisiones) {
-      
-    } else {
-      
-    }
-  }
-  
-  
-}
 /*
 switch (typeRect) {
   case 'enteros':
@@ -440,54 +419,6 @@ switch (typeRect) {
 }
 */
 
-function rectaEnteros(state, mainData) {
-  const { scale, chart } = state
-  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
-  const { xIni, xFin, centroY } = mainData.pointsData
-  let divisiones = scale.divisions - 1
-  let segmento = (xFin - xIni)/(divisiones + 2)
-  let unidad = Number(unidadValor.pop())
-  let decimo = Number(decimalValor.pop())
-  let centesimo = Number(centesimalValor.pop())
-  let centroYNum = centroY + scale.length*1.2
-  for (let i = 0; i <= divisiones; i++) {
-    let xPos = xIni + segmento + segmento*i
-    if (i === 0 || i === divisiones) {
-      numeroEntero(state, xPos, centroYNum, i, 2, unidad, decimo, centesimo)
-    } else {
-      mostrarNumero(state, i, unidad, decimo, centesimo)  && numeroEntero(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
-      mostrarPuntos(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
-      mostrarFiguras(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
-    }
-    let centroX = xPos + segmento/2
-    dibujarArco(state, centroX, centroY, scale.length*1.2, 'derecha')
-    function dibujarArco(state, centroX, centroY, arcoRadio, direccion) {
-      const { ctx, font, scale } = state
-      ctx.save()
-      ctx.beginPath()
-      ctx.strokeStyle = font.color
-      ctx.lineWidth = scale.width
-      let iniAngulo = 220*Math.PI/180
-      let finAngulo = 320*Math.PI/180
-      ctx.arc(centroX, centroY, arcoRadio, iniAngulo, finAngulo)
-      let xDist, ladoDib
-      ladoDib = -(arcoRadio)*Math.cos(40*Math.PI/180)
-      xDist = -arcoRadio*0.15
-      if (direccion === 'derecha') {
-        xDist *= -1
-        ladoDib *= -1
-      }
-      ctx.moveTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180) - arcoRadio*0.15)
-      ctx.lineTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
-      ctx.lineTo(centroX + ladoDib - xDist, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
-      ctx.stroke()
-      ctx.closePath()
-      ctx.restore()
-      ctx.save()
-    }
-  }
-  //mostrarArcos(state, mainData)
-}
 
 function selecRecta(state, mainData) {
   const { typeRect } = state
@@ -497,7 +428,7 @@ function selecRecta(state, mainData) {
       rectaEnteros(state, mainData)
       break;
     case 'enteros con decimales':
-      
+      rectaEnterosConDecimales(state, mainData)
       break;
     case 'decimal':
       
@@ -517,33 +448,66 @@ function selecRecta(state, mainData) {
   }
 }
 
+function rectaEnteros(state, mainData) {
+  const { scale, chart, show } = state
+  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
+  const { xIni, xFin, centroY } = mainData.pointsData
+  let divisiones = scale.divisions - 1
+  let segmento = (xFin - xIni)/(divisiones + 2)
+  let unidad = Number(unidadValor[0])
+  let decimo = Number(decimalValor[0])
+  let centesimo = Number(centesimalValor[0])
+  let centroYNum = centroY + scale.length*1.2
+  for (let i = 0; i <= divisiones; i++) {
+    let xPos = xIni + segmento + segmento*i
+    if (i === 0 || i === divisiones) {
+      show.showExValues && numeroEntero(state, xPos, centroYNum, i, 2, unidad, decimo, centesimo)
+    } else {
+      mostrarNumero(state, i, unidad, decimo, centesimo)  && numeroEntero(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
+      mostrarPuntos(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
+      mostrarFiguras(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
+    }
+    let centroX = xPos + segmento/2
+    show.showArcs.showArcs !== false && mostrarArcos(state, centroX, centroY, i, segmento*0.6, unidad, decimo, centesimo)
+    
+  }
+}
+
+function rectaEnterosConDecimales(state, mainData) {
+  const { scale, chart, show } = state
+  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
+  const { xIni, xFin, centroY } = mainData.pointsData
+  let divisiones = scale.divisions - 1
+  let segmento = (xFin - xIni)/(divisiones + 2)
+  let unidad = Number(unidadValor[0])
+  let decimo = Number(decimalValor[0])
+  let centesimo = Number(centesimalValor[0])
+  let centroYNum = centroY + scale.length*1.2
+  for (let i = 0; i <= divisiones; i++) {
+    let xPos = xIni + segmento + segmento*i
+    if (i === 0 || i === divisiones) {
+      show.showExValues && numeroEnteroConDecimal(state, xPos, centroYNum, i, 2, unidad, decimo, centesimo)
+    } else {
+      console.log(mostrarNumero(state, i, unidad, decimo, centesimo))
+      mostrarNumero(state, i, unidad, decimo, centesimo) && numeroEnteroConDecimal(state, xPos, centroYNum, i, 1.5, unidad, decimo, centesimo)
+      mostrarPuntos(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
+      mostrarFiguras(state, xPos, centroY, i, 1, unidad, decimo, centesimo)
+    }
+    let centroX = xPos + segmento/2
+    show.showArcs.showArcs !== false && mostrarArcos(state, centroX, centroY, i, segmento*0.6, unidad, decimo, centesimo)
+  }
+  console.log(show.showAllValues.selectValuesToShow)
+}
+
 function mostrarNumero(state, posicion, unidad, decimo, centesimo) {
   const { typeRect } = state
   const { showAllValues, selectValuesToShow } = state.show.showAllValues
   const { unidadValor, decimalValor, centesimalValor } = selectValuesToShow
   switch (typeRect) {
     case 'enteros':
-    let valor = (posicion + unidad).toString()
-    switch (showAllValues) {
-      case 'todos':
-        return true
-      case 'mostrar':
-        if (unidadValor.includes(valor)) {
-          return true
-        }
-        break;
-      case 'ocultar':
-        if (!unidadValor.includes(valor)) {
-          return true
-        }
-        break;
-      default:
-        break;
-    }
-      break;
+    return verificarValorUnidad(showAllValues, posicion, unidad, unidadValor)
     case 'enteros con decimales':
-      
-      break;
+      return verificarValorUnidadDecimo(showAllValues, posicion, unidad, unidadValor, decimo, decimalValor)
     case 'decimal':
       
       break;
@@ -561,6 +525,47 @@ function mostrarNumero(state, posicion, unidad, decimo, centesimo) {
       break;
   }
 
+}
+
+function verificarValorUnidad(mostrarValores, posicion, unidad, unidadValor) {
+  let valor = (posicion + unidad).toString()
+  switch (mostrarValores) {
+    case 'todos':
+      return true
+    case 'mostrar':
+      if (unidadValor.includes(valor)) {
+        return true
+      }
+      break;
+    case 'ocultar':
+      if (!unidadValor.includes(valor)) {
+        return true
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+function verificarValorUnidadDecimo(mostrarValores, posicion, unidad, unidadValor, decimo, decimalValor) {
+  let valorU = (posicion + unidad).toString()
+  let valorD = (decimo).toString()
+  switch (mostrarValores) {
+    case 'todos':
+      return true
+    case 'mostrar':
+      if (unidadValor.includes(valorU) && decimalValor.includes(valorD)) {
+        return true
+      } else {return false}
+      break;
+    case 'ocultar':
+      if (!(unidadValor.includes(valorU) && decimalValor.includes(valorD))) {
+        return true
+      }
+      break;
+    default:
+      break;
+  }
 }
 
 /*--------------------------------BeginEjeSecundario--------------------------------*/
@@ -587,7 +592,9 @@ function mostrarPuntos(state, xPos, centroY, posicion, multSize, unidad, decimo,
   ctx.beginPath()
   switch (typeRect) {
     case 'enteros':
-      enteros()
+      if (showPointValue && unidadValor.includes((unidad + posicion).toString())) {
+        ctx.arc(xPos, centroY, scale.length/2*multSize,0,360*Math.PI/180)
+      }
       break;
     case 'enteros con decimales':
       
@@ -613,11 +620,6 @@ function mostrarPuntos(state, xPos, centroY, posicion, multSize, unidad, decimo,
   ctx.closePath()
   ctx.restore()
   ctx.save()
-  function enteros() {
-    if (showPointValue && unidadValor.includes((unidad + posicion).toString())) {
-      ctx.arc(xPos, centroY, scale.length/2*multSize,0,360*Math.PI/180)
-    }
-  }
 }
 
 function mostrarFiguras(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
@@ -687,105 +689,57 @@ function mostrarFiguras(state, xPos, centroY, posicion, multSize, unidad, decimo
   }
 }
 
-function mostrarArcos(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function mostrarArcos(state, centroX, centroY, posicion, segmento, unidad, decimo, centesimo) {
   const { ctx, typeRect, font, scale, show, chart } = state
-  const { showPointValue } = show.showPointValue
-  const { unidadValor, decimalValor, centesimalValor} = show.showPointValue.selectPointsValue
-
+  const { unidadValor, centesimalValor, decimalValor } =  chart.values.initValue
+  const { showArcsValues } = show.showArcs
+  const { initArcPt, endArcPt } = showArcsValues
+  let direccion, numInic, numFin, divisiones, minEscVal, maxEscVal
+  direccion = show.showArcs.showArcs === 'derecha' ? true : false
+  divisiones = Number(scale.divisions) - 1
   switch (typeRect) {
     case 'enteros':
-      
+      minEscVal = Number(unidadValor[0])
+      maxEscVal = Number(unidadValor[0]) + divisiones
+      numInic = Number(initArcPt.unidadValor[0]) - minEscVal
+      numFin = divisiones < Number(endArcPt.unidadValor[0]) - minEscVal ? divisiones : Number(endArcPt.unidadValor[0]) - minEscVal
       break;
-    case 'enteros con decimales':
-      
-      break;
-    case 'decimal':
-      
-      break;
-    case 'centesimal':
-      
-      break;
-    case 'mixta':
-      
-      break;
-    case 'mixta decimal':
-      
-      break;
-    case 'mixta centesimal':
-      
+  
+    default:
       break;
   }
-
-
-}
-
-function mostrarArcos1(state, mainData) {
-  const { ctx, typeRect, scale, font, show, chart } = state
-  const { initArcPt, endArcPt } = show.showArcs.showArcsValues
-  // showArcs: {
-  //   showArcs: showArcs !== 'no' ? showArcs : false,
-  //   showArcsValues : {
-  //     initArcPt: valuesValidation(initArcPt),
-  //     endArcPt: valuesValidation(endArcPt)
-  //   }
-  // },
-  ctx.save()
-  let initPoint, endPoint
-  let arcsDirection = show.showArcs.showArcs === 'derecha' ? true : false
-  switch (typeRect) {
-    case 'enteros':
-      initPoint = initArcPt.unidadValor[0]
-      endPoint = endArcPt.unidadValor[0]
-      dibujarArcos(initPoint, endPoint)
-      break;
-    case 'enteros con decimales':
-      
-      break;
-    case 'decimal':
-      
-      break;
-    case 'centesimal':
-      
-      break;
-    case 'mixta':
-      
-      break;
-    case 'mixta decimal':
-      
-      break;
-    case 'mixta centesimal':
-      
-      break;
+  if (numInic !== numFin && numInic <= posicion && (posicion) < numFin) { //numInic <= posicion <= numFin
+    dibujarArco(state, centroX, centroY, segmento, direccion)
   }
-}
-function dibujarArco(xPos, centroY, segmento, ) {
 
-}
-function dibujarArcos1(xIni, xFin, centroY, valorMinEscala, escalaValor, desdeValor, hastaValor) {
-  let segment = (xFin - xIni)/(escalaValor - 2)
-  let minVal = Math.min(...chart.values.rectValuesUnit)
-  let initPoint = ((initVal - minVal)/valorEscala);
-  let endPoint = ((endVal - minVal)/valorEscala);
-  for (let i = initPoint; i < endPoint; i ++) {
-    let xPos = xIni + segment*i
-    let yPos = centroY
-    ctx.strokeStyle = font.color
-    ctx.lineWidth = Math.round(scale.width/2)
+  function dibujarArco(state, centroX, centroY, arcoRadio, direccion) {
+    const { ctx, font, scale } = state
+    ctx.save()
     ctx.beginPath()
-    ctx.arc(xPos + segment + segment/2,yPos - scale.length/2,segment/2,220*Math.PI/180,320*Math.PI/180)
-    let arrowDirection = arcsDirection ? -segment*0.15 : segment*0.15
-    let arrowInitPt = arcsDirection ? (segment/2)*Math.cos(40*Math.PI/180) : -(segment/2)*Math.cos(40*Math.PI/180)
-    ctx.moveTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180) - segment*0.15)
-    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
-    ctx.lineTo(xPos + segment + segment/2 + arrowInitPt + arrowDirection, (yPos - scale.length/2) - (segment/2)*Math.sin(40*Math.PI/180))
+    ctx.strokeStyle = font.color
+    ctx.lineWidth = 2
+    let iniAngulo = 220*Math.PI/180
+    let finAngulo = 320*Math.PI/180
+    ctx.arc(centroX, centroY, arcoRadio, iniAngulo, finAngulo)
+    let xDist, ladoDib
+    ladoDib = -(arcoRadio)*Math.cos(40*Math.PI/180)
+    xDist = -arcoRadio*0.3
+    if (direccion) {
+      xDist *= -1
+      ladoDib *= -1
+    }
+    ctx.moveTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180) - arcoRadio*0.3)
+    ctx.lineTo(centroX + ladoDib, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
+    ctx.lineTo(centroX + ladoDib - xDist, centroY - (arcoRadio)*Math.sin(40*Math.PI/180))
     ctx.stroke()
     ctx.closePath()
+    ctx.restore()
+    ctx.save()
   }
 }
 
-
 /* --------------------------- Begin Tipo de Número ------------------------------- */
-function numeroEntero(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroEntero(state, centroX, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -794,12 +748,12 @@ function numeroEntero(state, xPos, centroY, posicion, multSize, unidad, decimo, 
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
   let showValue = unidad + posicion*scale.value
-  ctx.fillText(showValue, xPos, centroY)
+  ctx.fillText(showValue, centroX, centroY)
   ctx.restore()
   ctx.save()
 }
 
-function numeroEnteroConDecimal(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroEnteroConDecimal(state, centroX, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color
@@ -807,8 +761,8 @@ function numeroEnteroConDecimal(state, xPos, centroY, posicion, multSize, unidad
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
-  let showValue = unidad + posicion
-  ctx.fillText(showValue, xPos, centroY)
+  let showValue = `${unidad+posicion},${decimo}`
+  ctx.fillText(showValue, centroX, centroY)
   ctx.restore()
   ctx.save()
 }
@@ -853,7 +807,7 @@ function numeroCentesimal(state, xPos, centroY, posicion, multSize, unidad, deci
   ctx.save()
 }
 
-function numeroCentesimalIt(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
+function numeroCentesimalSeleccionado(state, xPos, centroY, posicion, multSize, unidad, decimo, centesimo) {
   const { ctx, font, typeRect, scale } = state
   ctx.save()
   ctx.strokeStyle = font.color

@@ -10,7 +10,7 @@ export default class RectaNumerica extends Component {
     this.state = props.push ? { 
       active:0, 
       // General
-      rectType: 'enteros', height:450, width:720, background:COLORS['background'],
+      rectType: 'enteros con decimales', height:450, width:720, background:COLORS['background'],
       // Borde
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, 
       // Títulos
