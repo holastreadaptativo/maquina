@@ -10,7 +10,7 @@ export default class RectaNumerica extends Component {
     this.state = props.push ? { 
       active:0, 
       // General
-      rectType: 'enteros con decimales', height:450, width:720, background:COLORS['background'],
+      rectType: 'mixta decimal', height:450, width:720, background:COLORS['background'],
       // Borde
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, 
       // Títulos
@@ -74,7 +74,7 @@ export default class RectaNumerica extends Component {
           <Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
         </Item>
         <Item id={k++} title="Escala" parent={this}>
-          <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} hide={rectType !== 'enteros'}/>
+          <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} />
           <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} />
           <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
           <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
