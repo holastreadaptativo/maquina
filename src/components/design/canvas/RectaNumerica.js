@@ -10,7 +10,7 @@ export default class RectaNumerica extends Component {
     this.state = props.push ? { 
       active:0, 
       // General
-      rectType: 'mixta decimal', height:450, width:720, background:COLORS['background'],
+      rectType: 'enteros con decimales', decimalScale: 'no', height:450, width:720, background:COLORS['background'],
       // Borde
       borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, 
       // Títulos
@@ -47,11 +47,14 @@ export default class RectaNumerica extends Component {
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['no','derecha','izquierda'],
-        showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
+        showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger'],
+        escaleOpt = ['si', 'no']
+    let scaleOptNmae = (rectType === 'enteros con decimales' || rectType == 'decimal' || rectType == 'mixta decimal')
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
           <Select id="rectType" prefix="recta" options={rectTypeOptions} parent={this}/>
+          {/*<Select id="decimalScale" prefix={ scaleOptNmae ? 'decimal' : 'centesimal'} options={escaleOpt} hide={(rectType === 'enteros' || rectType === 'mixta')} parent={this}/>*/}
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
@@ -82,7 +85,7 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Valores" parent={this}>
           <Input id="initValue" prefix="valor inicial" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}/>
-          <Select id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
+          <Select hide={true} id="valuesSeparator" prefix="separador" hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta decimal' || rectType === 'mixta centesimal'} options={valuesSeparatorOptions} parent={this}/>
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
           <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>

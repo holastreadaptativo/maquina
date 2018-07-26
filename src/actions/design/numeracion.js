@@ -6,7 +6,7 @@ export function rectNumFn(config) {
 
   const {
     // General
-    rectType, /*height, width, background,*/
+    rectType, decimalScale,/*height, width, background,*/
     // Borde
     /* borderWidth, borderColor, borderStyle, borderRadius, */
     // Títulos
@@ -84,6 +84,7 @@ export function rectNumFn(config) {
   state.ctx = c.getContext('2d')
   state.typeRect = rectType
   state.scale = {
+    decimalScale: decimalScale === 'si' ? true : false,
     divisions: Number(scaleDivisions),//eval(rectValuesDec) !== undefined ? eval(scaleDivisions) > eval(rectValuesDec) ? eval(scaleDivisions) + 1 : eval(rectValuesDec) + 2 : eval(scaleDivisions) + 1,
     value: /*state.typeRect !== 'enteros' ? 1 : */ eval(scaleValue) === 0 ? 1 : eval(scaleValue),
     width: c.width < 500 ? eval(scaleWidth)*0.6 : eval(scaleWidth),
@@ -275,18 +276,41 @@ function ptosPrincipales(state) {
   }
 }
 
+function ejeSecundario(state, data) {
+  const { scale, typeRect } = state
+  generarEje(state, data.eje)
+  generarEscala(state, data.recta)
+}
+
 function ptosPrincipalesMini(state) {
-  const { chart } = state
+  const { chart, scale } = state
   const { x0, y0, x1, y1 } = chart.position
-  let xIni = x0*1.1
-  let xFin = x1/1.1
-  let dist = ((x1 - x0) - (xFin - xIni))
+  let divisiones = 10
+  let escalaValor = 1
+  let xIni0 = x0*1.1
+  let xFin0 = x1/1.1
+  let segmento = (xFin0 - xIni0)/(divisiones)
+  let xIni = xIni0 + segmento
+  let xFin = xFin0 - segmento
+  let dist = ((xIni0 - xFin0) - (xFin - xIni))
   xIni += dist
   let centroY = (y1 - y0)*2/3 + y0
   return {
-    xIni: xIni,
-    xFin: xFin,
-    centroY: centroY
+    eje: {
+      xIni: xIni0,
+      xFin: xFin0,
+      centroY,
+      segmento,
+      divisiones
+    },
+    recta: {
+      xIni,
+      xFin,
+      centroY,
+      segmento,
+      divisiones,
+      escalaValor
+    }
   }
 }
 
@@ -296,7 +320,7 @@ function init(state, mainData) {
   insertarTitPrinc(state)
   ejePrincipal(state, mainData.pointsData)
   if (typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales' && show.showMiniScale) {
-    //ejeSecundario(state, mainData.pointsDataMini)
+    ejeSecundario(state, mainData.pointsDataMini)
   }
 }
 
@@ -322,14 +346,15 @@ function insertarTitPrinc(state) {
 /*-------------------------------- Begin Eje Principal --------------------------------*/
 
 function ejePrincipal(state, data) {
-  const { scale, typeRect } = state
-  const { xIni, xFin, centroY, segmento, divisiones } = data.eje
+  const { scale, typeRect, chart } = state
   generarEje(state, data.eje)
   generarEscala(state, data.recta)
   if (typeRect === 'enteros con decimales' || typeRect === 'decimales' || typeRect === 'mixta decimal') {
-    generarEscalaDec(state, data.recta)
+    scale.decimalScale && generarEscalaDec(state, data.recta)
   }
-  mostrarDatos(state, data.recta)
+  if (chart.values.initValue) {
+    mostrarDatos(state, data.recta)
+  }
 }
 
 /*-------------------------------- End Eje Principal --------------------------------*/
@@ -415,6 +440,10 @@ function generarEscalaDec(state, dataRecta) {
 }
 /* -------------------------------- End Eje Genérico -------------------------------- */
 
+/*-------------------------------- Eje Secundario --------------------------------*/
+
+
+
 /*
 switch (typeRect) {
   case 'enteros':
@@ -445,7 +474,7 @@ switch (typeRect) {
 function mostrarDatos(state, dataRecta) {
   const { show } = state
   const { extValues, allValues, points, figures, arcs, lens } = show
-  const { xIni, xFin, centroY, segmento, divisiones, escalaValor } = dataRecta
+  const { xIni, centroY, segmento, divisiones } = dataRecta
   for (let i = 0; i <= divisiones; i++) {
     let xPos = xIni + segmento*i
     let valor = numeroValidacion(state, i)
@@ -463,9 +492,7 @@ function mostrarDatos(state, dataRecta) {
     let arrValoresArcInit = arrNumerosValidacion(state, arcs.values.init)
     let arrValoresArcEnd = arrNumerosValidacion(state, arcs.values.end)
     arcs.show && mostrarArco(state, dataRecta, xPos, centroY, i, valor, arrValoresArcInit, arrValoresArcEnd)
-  }
-
-  
+  }  
 }
 
 function arrNumerosValidacion(state, arr) {
@@ -511,8 +538,12 @@ function numeroValidacion(state, index) {
       break;
     case 'enteros con decimales':
       valor = eval(valor) + index*scale.value 
-      valor = valor.toString()
-      valor = `${valor.split('.')[0]}.${valor.split('.')[1].toString().substring(0,1)}`
+      valor = valor.toFixed(2), valor = valor.toString()
+      if (valor.split('.')[1].toString()) {
+        valor = `${valor.split('.')[0]}.${valor.split('.')[1].toString().substring(0,1)}`
+      } else {
+        valor = `${valor.split('.')[0]}.0`
+      }
       break;
     case 'decimal':
       valor = eval(valor) + index*scale.value/10
@@ -530,7 +561,7 @@ function numeroValidacion(state, index) {
       break;
     case 'mixta':
       valor = eval(valor) + index*scale.value/10
-      valor = valor.toString()
+      valor = valor.toFixed(2), valor = valor.toString()
       if (valor.split('.')[1]) {
         valor = `${valor.split('.')[0]}.${valor.split('.')[1].toString().substring(0,1)}`
       } else {
@@ -539,7 +570,7 @@ function numeroValidacion(state, index) {
       break;
     case 'mixta decimal':
       valor = eval(valor) + index*scale.value/10
-      valor = valor.toString()
+      valor = valor.toFixed(2), valor = valor.toString()
       if (valor.split('.')[1]) {
         valor = `${valor.split('.')[0]}.${valor.split('.')[1].toString().substring(0,2)}`
       } else {
@@ -620,17 +651,16 @@ function mostrarValor(state, dataRecta, x, y, index, valor, arrValores) {
       mostrar = false
       let valAux = `${valor.split('.')[0]}.${valor.split('.')[1][0]}`
       if (show.allValues.show === 'todos') {
-        mostrar = true
+        numeroMixtoDecimal(state, x, y, valor, 1.5, index)
       } else if (show.allValues.show === 'mostrar') {
         if (arrValores.includes(valAux)) {
-          mostrar = true
+          numeroMixtoDecimal(state, x, y, valor, 1.5, index)
         }
       } else if (show.allValues.show === 'ocultar') {
         if (!arrValores.includes(valAux)) {
-          mostrar = true
+          numeroMixtoDecimal(state, x, y, valor, 1.5, index)
         }
       }
-      mostrar && numeroMixtoDecimal(state, x, y, valor, 1.5, index)
       break;
     case 'mixta centesimal':
       mostrar && numeroMixtoCentesimal(state, x, y, valor, 1.4, index)
@@ -715,18 +745,17 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
     const { figures, allValues } = state.show
     const xPos = x, centroY = y
     ctx.save()
-    let diamondSize = grande ? scale.length*1.5 : scale.length*1.3
+    let diamondSize = grande ? font.size*1.4 : font.size*1.2
     let diamondW = diamondSize
     let diamondH = diamondW*1.3
-    let yDist
+    let yDist = scale.length*1.5
     if (figures.show !== 'abajo') {
-      yDist = - (scale.length*1.5 + diamondH)
+      yDist -= (scale.length*1.5*2 + diamondH)
     } else {
-      yDist = scale.length*1.5
       let incluVal = allValues.show === 'mostrar' && allValues.values.includes((valor).toString())
       let noIncluVal = allValues.show === 'ocultar' && !allValues.values.includes((valor).toString())
       if (allValues.show === 'todos' || incluVal || noIncluVal ) {
-        yDist += font.size*1.5
+        yDist += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ?  font.size*2.3 : font.size*2
       }
     }
     ctx.strokeStyle = scale.color
@@ -754,7 +783,6 @@ function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta) {
   let arcoRadio = segmento/2
   let valorDesde = desde[0]
   let valorHasta = hasta[0]
-  console.log()
   if (valorDesde !== '' & valorHasta !== '') {
     valorDesde = eval(valorDesde)
     valorHasta = eval(valorHasta) < maximoValorEscala ? eval(valorHasta) : maximoValorEscala
@@ -825,6 +853,15 @@ function numeroEnteroDecimal(state, x, y, valor, multSize) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
+  let unidad, decimal, centesimal
+  unidad = valor.split('.')[0]
+  if (valor.split('.')[1][0]) {
+    decimal = valor.split('.')[1][0]
+    if (decimal) {
+      centesimal = valor.split('.')[0][1]
+    }
+  }
+  valor = `${unidad}.${decimal}`
   ctx.fillText(valor, x, y)
   ctx.restore()
   ctx.save()
@@ -891,24 +928,26 @@ function numeroMixto(state, x, y, valor, multSize, index) {
   let denominadorTextLength
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
-  ctx.lineWidth = scale.width/2
+  ctx.lineWidth = font.size/8
   ctx.lineCap="round";
+  let deltaYLine = font.size/16 + 1
   ctx.beginPath()
-  ctx.moveTo(enteroPosX + 1, centroY)
-  ctx.lineTo(x + denominadorTextLength + 2, centroY)
+  ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
+  ctx.lineTo(x + denominadorTextLength + 2, centroY - deltaYLine)
   ctx.stroke()
   ctx.closePath()
   let centroX = x + (denominadorTextLength)/2
 
   ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
+  //ctx.textBaseline = 'bottom'
+  let deltaYFraccion = numberFontSize/2
   if (valorDecimal > denominador) {
-    ctx.fillText(valorDecimal - denominador, centroX, centroY - 2)
+    ctx.fillText(valorDecimal - denominador, centroX, centroY - deltaYFraccion)
   } else {
-    ctx.fillText(valorDecimal, centroX, centroY - 2)
+    ctx.fillText(valorDecimal, centroX, centroY - deltaYFraccion)
   }
-  ctx.textBaseline = 'top'
-  ctx.fillText(denominador, centroX, centroY + 1)
+  //ctx.textBaseline = 'top'
+  ctx.fillText(denominador, centroX, centroY + deltaYFraccion)
   ctx.restore()
   ctx.save()
 }
@@ -916,7 +955,6 @@ function numeroMixto(state, x, y, valor, multSize, index) {
 function numeroMixtoDecimal(state, x, y, valor, multSize, index) {
   const { ctx, font, scale } = state
   ctx.save()
-  //console.log(valor)
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   let valorUnidad = Number(valor.split('.')[0])
@@ -949,24 +987,23 @@ function numeroMixtoDecimal(state, x, y, valor, multSize, index) {
   let denominadorTextLength
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
-  ctx.lineWidth = scale.width/2
+  ctx.lineWidth = font.size/8
   ctx.lineCap="round";
+  let deltaYLine = font.size/16 + 1
   ctx.beginPath()
-  ctx.moveTo(enteroPosX + 1, centroY)
-  ctx.lineTo(x + denominadorTextLength + 2, centroY)
+  ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
+  ctx.lineTo(x + denominadorTextLength + 2, centroY - deltaYLine)
   ctx.stroke()
   ctx.closePath()
   let centroX = x + (denominadorTextLength)/2
-
+  let deltaYFraccion = numberFontSize/2
   ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
   if (valorDecimal > denominador) {
-    ctx.fillText(valorDecimal - denominador, centroX, centroY - 2)
+    ctx.fillText(valorDecimal - denominador, centroX, centroY - deltaYFraccion)
   } else {
-    ctx.fillText(valorDecimal, centroX, centroY - 2)
+    ctx.fillText(valorDecimal, centroX, centroY - deltaYFraccion)
   }
-  ctx.textBaseline = 'top'
-  ctx.fillText(denominador, centroX, centroY + 1)
+  ctx.fillText(denominador, centroX, centroY + deltaYFraccion)
   ctx.restore()
   ctx.save()
 }
@@ -974,7 +1011,6 @@ function numeroMixtoDecimal(state, x, y, valor, multSize, index) {
 function numeroMixtoCentesimal(state, x, y, valor, multSize, index) {
   const { ctx, font, scale } = state
   ctx.save()
-  //console.log(valor)
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   let valorUnidad = Number(valor.split('.')[0])
@@ -1009,37 +1045,24 @@ function numeroMixtoCentesimal(state, x, y, valor, multSize, index) {
   let denominadorTextLength
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
-  ctx.lineWidth = scale.width/2
+  ctx.lineWidth = font.size/8
   ctx.lineCap="round";
+  let deltaYLine = font.size/16 + 1
   ctx.beginPath()
-  ctx.moveTo(enteroPosX + 1, centroY)
-  ctx.lineTo(x + denominadorTextLength + 2, centroY)
+  ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
+  ctx.lineTo(x + denominadorTextLength + 2, centroY - deltaYLine)
   ctx.stroke()
   ctx.closePath()
   let centroX = x + (denominadorTextLength)/2
-
+  let deltaYFraccion = numberFontSize/2
   ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
   if (numerador > denominador) {
-    ctx.fillText(numerador - denominador, centroX, centroY - 2)
+    ctx.fillText(numerador - denominador, centroX, centroY - deltaYFraccion)
   } else {
-    ctx.fillText(numerador, centroX, centroY - 2)
+    ctx.fillText(numerador, centroX, centroY - deltaYFraccion)
   }
-  ctx.textBaseline = 'top'
-  ctx.fillText(denominador, centroX, centroY + 1)
+  ctx.fillText(denominador, centroX, centroY + deltaYFraccion)
   ctx.restore()
   ctx.save()
 }
 
-/*--------------------------------BeginEjeSecundario--------------------------------*/
-
-function ejeSecundario1(state, mainData) {
-  console.log('ejeSecundario()')
-  const { scale, typeRect } = state
-  const { xIni, xFin, centroY } = mainData.pointsDataMini
-  let divisiones = scale.divisions
-  generarEje(state, xIni, xFin, centroY)
-  generarEscala(state, xIni, xFin, centroY, divisiones)
-}
-
-/*--------------------------------EndEjeSecundario--------------------------------*/
