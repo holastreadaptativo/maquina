@@ -41,20 +41,23 @@ export default class RectaNumerica extends Component {
     numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
   render() {
-    const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniFig, showMiniArcs } = this.state
+    const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, showMiniFig, showMiniArcs } = this.state
 
     let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
         borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
         fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
         yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['no','derecha','izquierda'],
-        showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger'],
-        escaleOpt = ['si', 'no']
-    let scaleOptNmae = (rectType === 'enteros con decimales' || rectType == 'decimal' || rectType == 'mixta decimal')
+        showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
+    // ocultar condicionales
+    let scaleOptName = (rectType === 'enteros con decimales' || rectType == 'decimal' || rectType == 'mixta decimal'),
+        mostrarMiniRecta = ((rectType === 'enteros' || rectType === 'mixta' || rectType === 'mixta centesimal') && showMiniScale === 'si')
+    console.log(mostrarMiniRecta)
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
           <Select id="rectType" prefix="recta" options={rectTypeOptions} parent={this}/>
-          {/*<Select id="decimalScale" prefix={ scaleOptNmae ? 'decimal' : 'centesimal'} options={escaleOpt} hide={(rectType === 'enteros' || rectType === 'mixta')} parent={this}/>*/}
+          <Select id="decimalScale" prefix={ scaleOptName ? 'decimal' : 'centesimal'} options={yesNoOptions} parent={this}
+          hide={rectType === 'centesimal' || rectType === 'mixta' || rectType === 'mixta centesimal'}/>
           <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
           <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
           <Input id="background" prefix="fondo" type="color" parent={this}/>
@@ -89,7 +92,6 @@ export default class RectaNumerica extends Component {
         </Item>
         <Item id={k++} title="Mostrar" parent={this}>
           <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
-          {/*<Select id="showTheValue" prefix="valor" options={yesNoOptions} parent={this}/>*/}
           <Select id="showAllValues" prefix="valores" options={showTheValuesOpt} parent={this} />
           <Input id="selectValuesToShow" prefix="escoger" type="text" parent={this} hide={showAllValues === 'no' || showAllValues === 'todos'}/>
           <Select id="showPointValue" prefix="punto" options={showPointValueOpt} parent={this}/>
@@ -99,9 +101,9 @@ export default class RectaNumerica extends Component {
           <Select id="showArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
           <Input id="initArcPt" prefix="desde" type="text" parent={this} hide={showArcs === 'no'}/>
           <Input id="endArcPt" prefix="hasta" type="text" parent={this} hide={showArcs === 'no'}/>
-        </Item>
-        <Item id={k++} title="Mini Escala" parent={this} hide={rectType === 'enteros' || rectType === 'mixta' || rectType === 'enteros con decimales'}>
           <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this}/>
+        </Item>
+        <Item id={k++} title="Mini Escala" parent={this} hide={mostrarMiniRecta}>
           <Input id="showMiniTheValue" prefix="valor" placeholder={'$a.$b$c o 2.34'} parent={this} />
           <Select id="showMiniExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
           <Select id="showMiniAllValues" prefix="valores" options={yesNoOptions} parent={this}/>

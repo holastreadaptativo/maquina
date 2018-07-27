@@ -251,7 +251,7 @@ function dibujarBordes(state, el, color) {
 function ptosPrincipales(state) {
   const { chart, show, scale } = state
   const { x0, y0, x1, y1 } = chart.position
-  let centroY = show.showMiniScale ? (y1 - y0)/4 + y0 : (y1 - y0)/2 + y0
+  let centroY = show.miniScale.show ? (y1 - y0)/4 + y0 : (y1 - y0)/2 + y0
   let segmento = (x1 - x0)/(scale.divisions + 2)
   let divisiones = scale.divisions
   let escalaValor = scale.value
@@ -276,36 +276,32 @@ function ptosPrincipales(state) {
   }
 }
 
-function ejeSecundario(state, data) {
-  const { scale, typeRect } = state
-  generarEje(state, data.eje)
-  generarEscala(state, data.recta)
-}
-
 function ptosPrincipalesMini(state) {
   const { chart, scale } = state
   const { x0, y0, x1, y1 } = chart.position
   let divisiones = 10
   let escalaValor = 1
-  let xIni0 = x0*1.1
-  let xFin0 = x1/1.1
-  let segmento = (xFin0 - xIni0)/(divisiones)
-  let xIni = xIni0 + segmento
-  let xFin = xFin0 - segmento
-  let dist = ((xIni0 - xFin0) - (xFin - xIni))
-  xIni += dist
-  let centroY = (y1 - y0)*2/3 + y0
+  let contenedorAncho = x1 - x0
+  let margenEje = contenedorAncho/8
+  let xIniEje = x0 + margenEje
+  let xFinEje = x1 - margenEje
+  let ejeAncho = xFinEje - xIniEje
+  let segmento = ejeAncho/(divisiones + 2)
+  let xIniRecta = xIniEje + segmento
+  let xFinRecta = xFinEje - segmento
+  
+  let centroY = (y1 - y0)*3/4 + y0
   return {
     eje: {
-      xIni: xIni0,
-      xFin: xFin0,
+      xIni: xIniEje,
+      xFin: xFinEje,
       centroY,
       segmento,
       divisiones
     },
     recta: {
-      xIni,
-      xFin,
+      xIni: xIniRecta,
+      xFin: xFinRecta,
       centroY,
       segmento,
       divisiones,
@@ -319,7 +315,8 @@ function init(state, mainData) {
   const { show, typeRect } = state
   insertarTitPrinc(state)
   ejePrincipal(state, mainData.pointsData)
-  if (typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales' && show.showMiniScale) {
+  if ((typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales') && show.miniScale.show) {
+    console.log('ejeSecundario')
     ejeSecundario(state, mainData.pointsDataMini)
   }
 }
@@ -349,12 +346,18 @@ function ejePrincipal(state, data) {
   const { scale, typeRect, chart } = state
   generarEje(state, data.eje)
   generarEscala(state, data.recta)
-  if (typeRect === 'enteros con decimales' || typeRect === 'decimales' || typeRect === 'mixta decimal') {
+  if (typeRect === 'enteros' || typeRect === 'enteros con decimales' || typeRect === 'decimal' || typeRect === 'mixta decimal') {
     scale.decimalScale && generarEscalaDec(state, data.recta)
   }
   if (chart.values.initValue) {
     mostrarDatos(state, data.recta)
   }
+}
+
+function ejeSecundario(state, data) {
+  const { ctx, scale, typeRect } = state
+  generarEje(state, data.eje)
+  generarEscala(state, data.recta)
 }
 
 /*-------------------------------- End Eje Principal --------------------------------*/
