@@ -249,9 +249,12 @@ function dibujarBordes(state, el, color) {
 }
 
 function ptosPrincipales(state) {
-  const { chart, show, scale } = state
+  const { typeRect, chart, show, scale } = state
   const { x0, y0, x1, y1 } = chart.position
-  let centroY = show.miniScale.show ? (y1 - y0)/4 + y0 : (y1 - y0)/2 + y0
+  let centroY = (y1 - y0)/2 + y0
+  if (show.miniScale.show && !(typeRect === 'centesimal' || typeRect === 'mixta centesimal')) {
+    centroY = (y1 - y0)/4 + y0
+  }
   let segmento = (x1 - x0)/(scale.divisions + 2)
   let divisiones = scale.divisions
   let escalaValor = scale.value
@@ -315,8 +318,7 @@ function init(state, mainData) {
   const { show, typeRect } = state
   insertarTitPrinc(state)
   ejePrincipal(state, mainData.pointsData)
-  if ((typeRect !== 'enteros' && typeRect !== 'mixta' && typeRect !== 'enteros con decimales') && show.miniScale.show) {
-    console.log('ejeSecundario')
+  if (show.miniScale.show && !(typeRect === 'centesimal' || typeRect === 'mixta centesimal')) {
     ejeSecundario(state, mainData.pointsDataMini)
   }
 }
@@ -346,7 +348,7 @@ function ejePrincipal(state, data) {
   const { scale, typeRect, chart } = state
   generarEje(state, data.eje)
   generarEscala(state, data.recta)
-  if (typeRect === 'enteros' || typeRect === 'enteros con decimales' || typeRect === 'decimal' || typeRect === 'mixta decimal') {
+  if (typeRect === 'enteros' || typeRect === 'enteros con decimales' || typeRect === 'decimal' || typeRect === 'mixta' || typeRect === 'mixta decimal') {
     scale.decimalScale && generarEscalaDec(state, data.recta)
   }
   if (chart.values.initValue) {
@@ -358,6 +360,7 @@ function ejeSecundario(state, data) {
   const { ctx, scale, typeRect } = state
   generarEje(state, data.eje)
   generarEscala(state, data.recta)
+  mostrarDatosEjeSec(state, data.recta)
 }
 
 /*-------------------------------- End Eje Principal --------------------------------*/
@@ -498,6 +501,120 @@ function mostrarDatos(state, dataRecta) {
   }  
 }
 
+function mostrarDatosEjeSec(state, dataRecta) {
+  const { show, scale } = state
+  const { miniScale } = show
+  const { theValue, extValues, allValues, point, figure, arcs, guides } = miniScale
+  const { xIni, centroY, segmento, divisiones } = dataRecta
+
+  //console.log(miniScale)
+  let centroYNum = centroY + scale.length*1.7
+  let valor = Number(theValue)
+  for (let i = 0; i <= 10; i++) {
+    let xPos = xIni + segmento*i
+    if (i === 0 || i === 10) {
+      extValues && valorExternoEjeSec(state, xPos, centroYNum, valor, i, 1.7)
+    } else {
+      allValues && valoresEjeSec(state, xPos, centroYNum, valor, i, 1.4)
+      point && puntoEjeSec(state, xPos, centroY, valor, i)
+      figure.show && figuraEjeSec(state, xPos, centroY, valor, i)
+      let desde = arcs.init, hasta = arcs.end
+      console.log(arcs)
+      arcs.show && arcosEjeSec(state, xPos, centroY, valor, i, desde, hasta, segmento)
+    }
+  }
+
+  function arcosEjeSec(state, x, y, valor, posicion, desde, hasta, segmento) {
+    valor = Number(`${valor.toFixed(2).split('.')[0]}.${valor.toFixed(2).split('.')[1][0]}${posicion}`)
+    let valorDesde = Number(desde)
+    let valorHasta = Number(hasta)
+    if (valor >= valorDesde && valor < valorHasta) {
+      console.log('------------------------')
+      console.log(valor)
+      console.log(valorDesde)
+      console.log(valorHasta)
+      let arcoRadio = segmento/2
+      dibujarArco(state, x + arcoRadio, y - arcoRadio/2, arcoRadio, true)
+    }
+  }
+  function figuraEjeSec(state, x, y, valor, posicion) {
+    const { typeRect } = state
+    let figura
+    if (typeRect === 'decimal') {
+      figura = valor.toFixed(2).split('.')[1][1]
+    }
+    figura = Number(figura)
+    console.log(figura)
+    if (figura === posicion) {
+      dibujarRombo(state, x, y, false)
+    }
+    function dibujarRombo(state, x, y, grande) {
+      const { ctx, scale, font } = state
+      const { figure, allValues } = state.show.miniScale
+      const xPos = x, centroY = y
+      ctx.save()
+      let diamondSize = grande ? font.size*1.4 : font.size*1.2
+      let diamondW = diamondSize
+      let diamondH = diamondW*1.3
+      let yDist = scale.length*1.5
+      if (figure.show !== 'abajo') {
+        yDist -= (scale.length*1.5*2 + diamondH)
+      } else {
+        if (allValues) {
+          yDist += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ?  font.size*2.3 : font.size*2
+        }
+      }
+      ctx.strokeStyle = scale.color
+      ctx.fillStyle = font.color
+      ctx.fillStyle = '#dbac04'
+      ctx.strokeStyle = '#dbac04'
+      ctx.beginPath()
+      ctx.moveTo(xPos, centroY + yDist)
+      ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
+      ctx.lineTo(xPos, centroY + diamondH + yDist)
+      ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
+      ctx.lineTo(xPos, centroY + yDist)
+      ctx.fill()
+      ctx.stroke()
+      ctx.closePath()
+      ctx.restore()
+      ctx.save()
+    }
+  }
+  function puntoEjeSec(state, x, y, valor, posicion) {
+    const { typeRect } = state
+    let punto
+    if (typeRect === 'decimal') {
+      punto = valor.toFixed(2).split('.')[1][1]
+    }
+    punto = Number(punto)
+    if (punto === posicion) {
+      dibujarPunto(state, x, y, true)
+    }
+  }
+  function valoresEjeSec(state, x, y, valor, posicion, size) {
+    const { typeRect } = state
+    if (typeRect === 'decimal') {
+      valor = Number(`${valor.toFixed(2).split('.')[0]}.${valor.toFixed(2).split('.')[1][0]}${posicion}`)
+      valor = valor.toFixed(2)
+      numeroCentesimal(state, x, y, valor, size)
+    }
+
+  }
+  function valorExternoEjeSec(state, x, y, valor, posicion, size) {
+    const { typeRect } = state
+    if (typeRect === 'decimal') {
+      if (posicion === 0) {
+        valor -= Number(`0.0${valor.toFixed(2).split('.')[1][1]}`)
+      } else {
+        valor += 0.1 - Number(`0.0${valor.toFixed(2).split('.')[1][1]}`)
+      }
+      valor = valor.toFixed(1)
+      numeroDecimal(state, x, y, valor, size)
+    }
+  }
+}
+
 function arrNumerosValidacion(state, arr) {
   const { typeRect, scale, chart } = state
   let arrValores = arr
@@ -602,7 +719,7 @@ function mostrarValorExterno(state, dataRecta, x, y, index, valor, arrValores) {
       numeroEnteroDecimal(state, x, y, valor, 2)
       break;
     case 'decimal':
-      numerDecimal(state, x, y, valor, 2)
+      numeroDecimal(state, x, y, valor, 2)
       break;
     case 'centesimal':
       numeroCentesimal(state, x, y, valor, 1.8)
@@ -642,7 +759,7 @@ function mostrarValor(state, dataRecta, x, y, index, valor, arrValores) {
       mostrar && numeroEnteroDecimal(state, x, y, valor, 1.5)
       break;
     case 'decimal':
-      mostrar && numerDecimal(state, x, y, valor, 1.5)
+      mostrar && numeroDecimal(state, x, y, valor, 1.5)
       break;
     case 'centesimal':
       mostrar && numeroCentesimal(state, x, y, valor, 1.4)
@@ -675,7 +792,7 @@ function mostrarPunto(state, dataRecta, x, y, index, valor, arrValores) {
   const { typeRect } = state
   const { segmento } = dataRecta
   //valor = valor.toString()
-  if (typeRect === 'mixta decimal') {
+  if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
     let valorAuxIni = `${valor.split('.')[0]}.${valor.split('.')[1][0]}`
     let valorAuxFin = eval(valor.split('.')[1][0]) === 9 ? `${eval(valor.split('.')[0])+1}.0` : `${valor.split('.')[0]}.${eval(valor.split('.')[1][0])+1}`
     if (arrValores[0] !== '') {
@@ -699,27 +816,12 @@ function mostrarPunto(state, dataRecta, x, y, index, valor, arrValores) {
       dibujarPunto(state, x, y, true)
     }
   }
-  function dibujarPunto(state, x, y, grande) {
-    const { ctx, scale, chart, font } = state
-    ctx.save()
-    let arcoRadio = grande ? scale.length/2 : scale.length/3
-    ctx.fillStyle = font.color
-    ctx.lineWidth = grande ? scale.width*0.6 : scale.width*0.5
-    ctx.strokeStyle = chart.axis.color
-    ctx.beginPath()
-    ctx.arc(x, y, arcoRadio,0,360*Math.PI/180)
-    ctx.fill()
-    ctx.stroke()
-    ctx.closePath()
-    ctx.restore()
-    ctx.save()
-  }
 }
 
 function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
   const { typeRect } = state
   const { segmento } = dataRecta
-  if (typeRect === 'mixta decimal') {
+  if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
     let valorAuxIni = `${valor.split('.')[0]}.${valor.split('.')[1][0]}`
     let valorAuxFin = eval(valor.split('.')[1][0]) === 9 ? `${eval(valor.split('.')[0])+1}.0` : `${valor.split('.')[0]}.${eval(valor.split('.')[1][0])+1}`
     if (arrValores[0] !== '') {
@@ -742,40 +844,6 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
     if (arrValores.includes(valor)) {
       drawDiamond(state, x, y, true)
     }
-  }
-  function drawDiamond(state, x, y, grande) {
-    const { ctx, scale, font } = state
-    const { figures, allValues } = state.show
-    const xPos = x, centroY = y
-    ctx.save()
-    let diamondSize = grande ? font.size*1.4 : font.size*1.2
-    let diamondW = diamondSize
-    let diamondH = diamondW*1.3
-    let yDist = scale.length*1.5
-    if (figures.show !== 'abajo') {
-      yDist -= (scale.length*1.5*2 + diamondH)
-    } else {
-      let incluVal = allValues.show === 'mostrar' && allValues.values.includes((valor).toString())
-      let noIncluVal = allValues.show === 'ocultar' && !allValues.values.includes((valor).toString())
-      if (allValues.show === 'todos' || incluVal || noIncluVal ) {
-        yDist += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ?  font.size*2.3 : font.size*2
-      }
-    }
-    ctx.strokeStyle = scale.color
-    ctx.fillStyle = font.color
-    ctx.fillStyle = '#dbac04'
-    ctx.strokeStyle = '#dbac04'
-    ctx.beginPath()
-    ctx.moveTo(xPos, centroY + yDist)
-    ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
-    ctx.lineTo(xPos, centroY + diamondH + yDist)
-    ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
-    ctx.lineTo(xPos, centroY + yDist)
-    ctx.fill()
-    ctx.stroke()
-    ctx.closePath()
-    ctx.restore()
-    ctx.save()
   }
 }
 
@@ -806,34 +874,87 @@ function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta) {
       dibujarArco(state, xPos + arcoRadio, centroY, arcoRadio)
     }
   }
-  function dibujarArco(state, x, y, arcoRadio) {
-    const { ctx, font, show } = state
-    let direccion = show.arcs.show === 'derecha' ? true : false
-    ctx.save()
-    ctx.beginPath()
-    ctx.strokeStyle = font.color
-    ctx.lineWidth = 2
-    let iniAngulo = 220*Math.PI/180
-    let finAngulo = 320*Math.PI/180
-    ctx.arc(x, y, arcoRadio, iniAngulo, finAngulo)
-    let xDist, ladoDib
-    ladoDib = -(arcoRadio)*Math.cos(40*Math.PI/180)
-    xDist = -arcoRadio*0.3
-    if (direccion) {
-      xDist *= -1
-      ladoDib *= -1
-    }
-    ctx.moveTo(x + ladoDib, y - (arcoRadio)*Math.sin(40*Math.PI/180) - arcoRadio*0.3)
-    ctx.lineTo(x + ladoDib, y - (arcoRadio)*Math.sin(40*Math.PI/180))
-    ctx.lineTo(x + ladoDib - xDist, y - (arcoRadio)*Math.sin(40*Math.PI/180))
-    ctx.stroke()
-    ctx.closePath()
-    ctx.restore()
-    ctx.save()
-  }
 }
 
 /* ------------------------ NUMEROS ------------------------- */
+
+function dibujarPunto(state, x, y, grande) {
+  const { ctx, scale, chart, font } = state
+  ctx.save()
+  let arcoRadio = grande ? scale.length/2 : scale.length/3
+  ctx.fillStyle = font.color
+  ctx.lineWidth = grande ? scale.width*0.6 : scale.width*0.5
+  ctx.strokeStyle = chart.axis.color
+  ctx.beginPath()
+  ctx.arc(x, y, arcoRadio,0,360*Math.PI/180)
+  ctx.fill()
+  ctx.stroke()
+  ctx.closePath()
+  ctx.restore()
+  ctx.save()
+}
+function drawDiamond(state, x, y, grande) {
+  const { ctx, scale, font } = state
+  const { figures, allValues } = state.show
+  const xPos = x, centroY = y
+  ctx.save()
+  let diamondSize = grande ? font.size*1.4 : font.size*1.2
+  let diamondW = diamondSize
+  let diamondH = diamondW*1.3
+  let yDist = scale.length*1.5
+  if (figures.show !== 'abajo') {
+    yDist -= (scale.length*1.5*2 + diamondH)
+  } else {
+    let incluVal = allValues.show === 'mostrar' && allValues.values.includes((valor).toString())
+    let noIncluVal = allValues.show === 'ocultar' && !allValues.values.includes((valor).toString())
+    if (allValues.show === 'todos' || incluVal || noIncluVal ) {
+      yDist += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ?  font.size*2.3 : font.size*2
+    }
+  }
+  ctx.strokeStyle = scale.color
+  ctx.fillStyle = font.color
+  ctx.fillStyle = '#dbac04'
+  ctx.strokeStyle = '#dbac04'
+  ctx.beginPath()
+  ctx.moveTo(xPos, centroY + yDist)
+  ctx.lineTo(xPos + diamondW/2, centroY + diamondH/2 + yDist)
+  ctx.lineTo(xPos, centroY + diamondH + yDist)
+  ctx.lineTo(xPos - diamondW/2, centroY + diamondH/2 + yDist)
+  ctx.lineTo(xPos, centroY + yDist)
+  ctx.fill()
+  ctx.stroke()
+  ctx.closePath()
+  ctx.restore()
+  ctx.save()
+}
+function dibujarArco(state, x, y, arcoRadio, mini = false) {
+  const { ctx, font, show } = state
+  let direccion = show.arcs.show === 'derecha' ? true : false
+  if (mini) {
+    direccion = show.miniScale.arcs.show === 'derecha' ? true : false
+  } 
+  ctx.save()
+  ctx.beginPath()
+  ctx.strokeStyle = font.color
+  ctx.lineWidth = 2
+  let iniAngulo = 220*Math.PI/180
+  let finAngulo = 320*Math.PI/180
+  ctx.arc(x, y, arcoRadio, iniAngulo, finAngulo)
+  let xDist, ladoDib
+  ladoDib = -(arcoRadio)*Math.cos(40*Math.PI/180)
+  xDist = -arcoRadio*0.3
+  if (direccion) {
+    xDist *= -1
+    ladoDib *= -1
+  }
+  ctx.moveTo(x + ladoDib, y - (arcoRadio)*Math.sin(40*Math.PI/180) - arcoRadio*0.3)
+  ctx.lineTo(x + ladoDib, y - (arcoRadio)*Math.sin(40*Math.PI/180))
+  ctx.lineTo(x + ladoDib - xDist, y - (arcoRadio)*Math.sin(40*Math.PI/180))
+  ctx.stroke()
+  ctx.closePath()
+  ctx.restore()
+  ctx.save()
+}
 
 function numeroEntero(state, x, y, valor, multSize) {
   const { ctx, font } = state
@@ -870,7 +991,7 @@ function numeroEnteroDecimal(state, x, y, valor, multSize) {
   ctx.save()
 }
 
-function numerDecimal(state, x, y, valor, multSize) {
+function numeroDecimal(state, x, y, valor, multSize) {
   const { ctx, font } = state
   ctx.save()
   ctx.strokeStyle = font.color
