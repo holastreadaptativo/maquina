@@ -320,6 +320,68 @@ function init(state, mainData) {
   ejePrincipal(state, mainData.pointsData)
   if (show.miniScale.show && !(typeRect === 'centesimal' || typeRect === 'mixta centesimal')) {
     ejeSecundario(state, mainData.pointsDataMini)
+    const { guides } = show.miniScale
+    guides && dibujarGuias(state, mainData)
+  }
+  function dibujarGuias(state, mainData) {
+    const { typeRect, show, scale, chart } = state
+    const { theValue, guides } = show.miniScale
+    const { pointsData, pointsDataMini } = mainData
+    let iniVal = Number(chart.values.initValue)
+    let miniVal = Number(theValue)
+    let valMin, valMax, miniValMin, miniValMax, puntoXIni, puntoXFin
+
+
+    if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
+      if (iniVal.toFixed(2).split('.')[1][0]) {
+        valMin = Number(`${iniVal.toFixed(2).split('.')[0]}.${iniVal.toFixed(2).split('.')[1][0]}`)
+        valMax = valMin + 1
+        if (miniVal.toFixed(2).split('.')[1][0]) {
+          miniValMin = Number(`${miniVal.toFixed(2).split('.')[0]}.${miniVal.toFixed(2).split('.')[1][0]}`)
+          miniValMax = miniValMin + 0.1
+        }
+        console.log('------')
+        console.log(iniVal)
+        console.log(valMin)
+        console.log(valMax)
+        console.log('------')
+        console.log(miniVal)
+        console.log(miniValMin)
+        console.log(miniValMax)
+      }
+    }
+    if (miniVal >= valMin && miniVal <= valMax) {
+
+    }
+
+
+
+    let miniPuntoXIni = mainData.pointsDataMini.recta.xIni
+    let miniPuntoXFin = mainData.pointsDataMini.recta.xFin
+    let miniPuntoY = mainData.pointsDataMini.recta.centroY
+    let delta = scale.length*2 
+    let puntoY = miniPuntoY - mainData.pointsData.recta.centroY - scale.length*2
+    dibujarLinea(state, miniPuntoXIni, miniPuntoXFin, miniPuntoY, 0, 0, puntoY, delta)
+    // xIni, xFin, centroY, segmento
+    function dibujarLinea(state, miniPuntoXIni, miniPuntoXFin, miniPuntoY, puntoXIni, puntoXFin, puntoY, delta) {
+      const { ctx, scale, font } = state
+      ctx.lineWidth = scale.width*2/3
+      ctx.strokeStyle = font.color
+      ctx.fillStyle = font.color
+      // let delta = scale.length*2
+      ctx.beginPath()
+      ctx.moveTo(miniPuntoXIni, miniPuntoY - delta)
+      ctx.lineTo(miniPuntoXIni, miniPuntoY - puntoY)
+      ctx.closePath()
+      ctx.stroke()
+      ctx.fill()
+      ctx.beginPath()
+      ctx.moveTo(miniPuntoXFin, miniPuntoY - delta)
+      ctx.lineTo(miniPuntoXFin, miniPuntoY - puntoY)
+      ctx.closePath()
+      ctx.stroke()
+      ctx.fill()
+    }
   }
 }
 
@@ -449,34 +511,6 @@ function generarEscalaDec(state, dataRecta) {
 /*-------------------------------- Eje Secundario --------------------------------*/
 
 
-
-/*
-switch (typeRect) {
-  case 'enteros':
-    rectaEnteros(state, mainData)
-    break;
-  case 'enteros con decimales':
-    
-    break;
-  case 'decimal':
-    
-    break;
-  case 'centesimal':
-    
-    break;
-  case 'mixta':
-    
-    break;
-  case 'mixta decimal':
-    
-    break;
-  case 'mixta centesimal':
-    
-    break;
-}
-*/
-
-
 function mostrarDatos(state, dataRecta) {
   const { show } = state
   const { extValues, allValues, points, figures, arcs, lens } = show
@@ -518,8 +552,9 @@ function mostrarDatosEjeSec(state, dataRecta) {
       allValues && valoresEjeSec(state, xPos, centroYNum, valor, i, 1.4)
       point && puntoEjeSec(state, xPos, centroY, valor, i)
       figure.show && figuraEjeSec(state, xPos, centroY, valor, i)
+    }
+    if (i < 10) {
       let desde = arcs.init, hasta = arcs.end
-      console.log(arcs)
       arcs.show && arcosEjeSec(state, xPos, centroY, valor, i, desde, hasta, segmento)
     }
   }
@@ -529,10 +564,6 @@ function mostrarDatosEjeSec(state, dataRecta) {
     let valorDesde = Number(desde)
     let valorHasta = Number(hasta)
     if (valor >= valorDesde && valor < valorHasta) {
-      console.log('------------------------')
-      console.log(valor)
-      console.log(valorDesde)
-      console.log(valorHasta)
       let arcoRadio = segmento/2
       dibujarArco(state, x + arcoRadio, y - arcoRadio/2, arcoRadio, true)
     }
@@ -540,11 +571,10 @@ function mostrarDatosEjeSec(state, dataRecta) {
   function figuraEjeSec(state, x, y, valor, posicion) {
     const { typeRect } = state
     let figura
-    if (typeRect === 'decimal') {
+    if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
       figura = valor.toFixed(2).split('.')[1][1]
     }
     figura = Number(figura)
-    console.log(figura)
     if (figura === posicion) {
       dibujarRombo(state, x, y, false)
     }
@@ -584,7 +614,7 @@ function mostrarDatosEjeSec(state, dataRecta) {
   function puntoEjeSec(state, x, y, valor, posicion) {
     const { typeRect } = state
     let punto
-    if (typeRect === 'decimal') {
+    if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
       punto = valor.toFixed(2).split('.')[1][1]
     }
     punto = Number(punto)
@@ -594,23 +624,31 @@ function mostrarDatosEjeSec(state, dataRecta) {
   }
   function valoresEjeSec(state, x, y, valor, posicion, size) {
     const { typeRect } = state
-    if (typeRect === 'decimal') {
+    if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
       valor = Number(`${valor.toFixed(2).split('.')[0]}.${valor.toFixed(2).split('.')[1][0]}${posicion}`)
       valor = valor.toFixed(2)
-      numeroCentesimal(state, x, y, valor, size)
+      if (typeRect === 'decimal') {
+        numeroCentesimal(state, x, y, valor, size)
+      } else {
+        numeroMixtoCentesimal(state, x, y, valor, size)
+      }
     }
 
   }
   function valorExternoEjeSec(state, x, y, valor, posicion, size) {
     const { typeRect } = state
-    if (typeRect === 'decimal') {
+    if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
       if (posicion === 0) {
         valor -= Number(`0.0${valor.toFixed(2).split('.')[1][1]}`)
       } else {
         valor += 0.1 - Number(`0.0${valor.toFixed(2).split('.')[1][1]}`)
       }
       valor = valor.toFixed(1)
-      numeroDecimal(state, x, y, valor, size)
+      if (typeRect === 'decimal') {
+        numeroDecimal(state, x, y, valor, size)
+      } else {
+        numeroMixtoDecimal(state, x, y, valor, size)
+      }
     }
   }
 }
@@ -830,11 +868,11 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
           valor = eval(valor), valorAuxIni = eval(valorAuxIni), valorAuxFin = eval(valorAuxFin)
           if (eval(el) >= valorAuxIni && eval(el) <= valorAuxFin) {
             if (eval(el) === valorAuxIni) {
-              drawDiamond(state, x, y, true)
+              dibujarRombo(state, x, y, true)
             } else {
               let delta = eval(el.split('.')[1][1])*segmento/10
               let centroX = x + delta
-              drawDiamond(state, centroX, y, false)
+              dibujarRombo(state, centroX, y, false)
             }
           }
         }
@@ -842,7 +880,7 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
     }
   } else {
     if (arrValores.includes(valor)) {
-      drawDiamond(state, x, y, true)
+      dibujarRombo(state, x, y, true)
     }
   }
 }
@@ -876,7 +914,7 @@ function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta) {
   }
 }
 
-/* ------------------------ NUMEROS ------------------------- */
+/* ------------------------ DIBUJOS ------------------------- */
 
 function dibujarPunto(state, x, y, grande) {
   const { ctx, scale, chart, font } = state
@@ -893,7 +931,7 @@ function dibujarPunto(state, x, y, grande) {
   ctx.restore()
   ctx.save()
 }
-function drawDiamond(state, x, y, grande) {
+function dibujarRombo(state, x, y, grande) {
   const { ctx, scale, font } = state
   const { figures, allValues } = state.show
   const xPos = x, centroY = y
@@ -956,6 +994,7 @@ function dibujarArco(state, x, y, arcoRadio, mini = false) {
   ctx.save()
 }
 
+/* ------------------------ NUMEROS ------------------------- */
 function numeroEntero(state, x, y, valor, multSize) {
   const { ctx, font } = state
   ctx.save()

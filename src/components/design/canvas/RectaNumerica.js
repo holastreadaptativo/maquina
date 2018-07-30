@@ -10,7 +10,7 @@
       this.state = props.push ? { 
         active:0, 
         // General
-        rectType: 'decimal', decimalScale: 'no', height:450, width:720, background:COLORS['background'],
+        rectType: 'mixta decimal', decimalScale: 'no', height:450, width:720, background:COLORS['background'],
         // Borde
         borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20, 
         // Títulos
@@ -106,7 +106,7 @@
             <Select id="showMiniAllValues" prefix="valores" options={yesNoOptions} parent={this}/>
             <Select id="showMiniPointValue" prefix="punto" options={yesNoOptions} parent={this}/>
             <Select id="showMiniFig" prefix="figura" options={showFigValueOpt} parent={this}/>
-            <Input id="wichMiniFigValues" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showMiniFig === 'no'} />
+            {/*<Input id="wichMiniFigValues" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showMiniFig === 'no'} />*/}
             <Select id="showMiniArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
             <Input id="initArcPtMini" prefix="desde" type="text" parent={this} hide={showMiniArcs === 'no'}/>
             <Input id="endArcPtMini" prefix="hasta" type="text" parent={this} hide={showMiniArcs === 'no'}/>
