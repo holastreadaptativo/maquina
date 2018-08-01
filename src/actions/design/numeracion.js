@@ -108,10 +108,6 @@ export function rectNumFn(config) {
       //selectPointsValue: valuesValidation(wichFigValues)
       values: wichFigValues
     },
-    lens: {
-      show: showLens === 'si' ? true : false,
-      align: alignLens === 'punto' ? true : false
-    },
     arcs: {
       show: showArcs !== 'no' ? showArcs : false,
       values : {
@@ -140,7 +136,11 @@ export function rectNumFn(config) {
         init: initArcPtMini,
         end: endArcPtMini
       },
-      guides: showMiniGuides === 'si' ? true: false
+      guides: showMiniGuides === 'si' ? true: false,
+      lens: {
+        show: showLens === 'si' ? true : false,
+        align: alignLens === 'punto' ? true : false
+      }
     }
   }
   state.font = {
@@ -318,20 +318,22 @@ function init(state, mainData) {
   const { show, typeRect } = state
   insertarTitPrinc(state)
   ejePrincipal(state, mainData.pointsData)
+  const { guides,  lens } = show.miniScale
   if (show.miniScale.show && !(typeRect === 'centesimal' || typeRect === 'mixta centesimal')) {
     ejeSecundario(state, mainData.pointsDataMini)
-    const { guides } = show.miniScale
-    guides && dibujarGuias(state, mainData)
+    if (guides || lens.show) {
+      dibujarGuiasLente(state, mainData)
+    }
   }
-  function dibujarGuias(state, mainData) {
-    const { typeRect, show, scale, chart } = state
+  function dibujarGuiasLente(state, mainData) {
+    const { typeRect, show, scale, chart, font } = state
     const { theValue, guides } = show.miniScale
     const { pointsData, pointsDataMini } = mainData
     let iniVal = Number(chart.values.initValue)
     let miniVal = Number(theValue)
     let valMin, valMax, miniValMin, miniValMax, puntoXIni, puntoXFin
 
-
+    let posIniGuia, posFinGuia
     if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
       if (iniVal.toFixed(2).split('.')[1][0]) {
         valMin = Number(`${iniVal.toFixed(2).split('.')[0]}.${iniVal.toFixed(2).split('.')[1][0]}`)
@@ -339,19 +341,25 @@ function init(state, mainData) {
         if (miniVal.toFixed(2).split('.')[1][0]) {
           miniValMin = Number(`${miniVal.toFixed(2).split('.')[0]}.${miniVal.toFixed(2).split('.')[1][0]}`)
           miniValMax = miniValMin + 0.1
+          posIniGuia = Number(((miniValMin - valMin)*10).toFixed(0))
+          posFinGuia = posIniGuia + 1
         }
-        console.log('------')
-        console.log(iniVal)
-        console.log(valMin)
-        console.log(valMax)
-        console.log('------')
-        console.log(miniVal)
-        console.log(miniValMin)
-        console.log(miniValMax)
+        // console.log('------')
+        // console.log(iniVal)
+        // console.log(valMin)
+        // console.log(valMax)
+        // console.log('------')
+        // console.log(miniVal)
+        // console.log(miniValMin)
+        // console.log(miniValMax)
+        // console.log('------')
+        // console.log(posIniGuia)
+        // console.log(posFinGuia)
       }
     }
     if (miniVal >= valMin && miniVal <= valMax) {
-
+      puntoXIni = pointsData.recta.xIni + pointsData.recta.segmento*posIniGuia
+      puntoXFin = pointsData.recta.xIni + pointsData.recta.segmento*posFinGuia
     }
 
 
@@ -359,9 +367,10 @@ function init(state, mainData) {
     let miniPuntoXIni = mainData.pointsDataMini.recta.xIni
     let miniPuntoXFin = mainData.pointsDataMini.recta.xFin
     let miniPuntoY = mainData.pointsDataMini.recta.centroY
-    let delta = scale.length*2 
-    let puntoY = miniPuntoY - mainData.pointsData.recta.centroY - scale.length*2
-    dibujarLinea(state, miniPuntoXIni, miniPuntoXFin, miniPuntoY, 0, 0, puntoY, delta)
+    let delta = scale.length*2
+    let puntoY = miniPuntoY - mainData.pointsData.recta.centroY - scale.length*2 - font.size*2.3
+    guides && dibujarLinea(state, miniPuntoXIni, miniPuntoXFin, miniPuntoY, puntoXIni, puntoXFin, puntoY, delta)
+    lens.show && dibujarLente(state, puntoXIni, puntoXFin, puntoY, pointsData.recta.segmento)
     // xIni, xFin, centroY, segmento
     function dibujarLinea(state, miniPuntoXIni, miniPuntoXFin, miniPuntoY, puntoXIni, puntoXFin, puntoY, delta) {
       const { ctx, scale, font } = state
@@ -371,16 +380,35 @@ function init(state, mainData) {
       // let delta = scale.length*2
       ctx.beginPath()
       ctx.moveTo(miniPuntoXIni, miniPuntoY - delta)
-      ctx.lineTo(miniPuntoXIni, miniPuntoY - puntoY)
+      ctx.lineTo(puntoXIni, miniPuntoY - puntoY)
       ctx.closePath()
       ctx.stroke()
       ctx.fill()
       ctx.beginPath()
       ctx.moveTo(miniPuntoXFin, miniPuntoY - delta)
-      ctx.lineTo(miniPuntoXFin, miniPuntoY - puntoY)
+      ctx.lineTo(puntoXFin, miniPuntoY - puntoY)
       ctx.closePath()
       ctx.stroke()
       ctx.fill()
+    }
+    function dibujarLente(state, puntoXIni, puntoXFin, puntoY, imgWidth) {
+      console.log('dibujarLente')
+      const { ctx, chart } = state
+      const { lupa } = chart.image
+      ctx.save()
+      let img = new Image()
+      img.src = lupa
+      let factorImg = (129/191)
+      let centerX, centerY
+      centerY = puntoY - imgWidth/2
+      img.onload = function() {
+        img.width = imgWidth
+        img.height = imgWidth*factorImg
+        ctx.drawImage(img,puntoXIni,centerY)
+      }
+      ctx.restore()
+      ctx.save()
+
     }
   }
 }
