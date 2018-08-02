@@ -21,7 +21,8 @@ export const FUNCIONES = [
 		{  }
 	]},
 	{ name:'Geometría', tag:'geometria', fns:[
-		{ id:'Plano Cartesiano', component:components.PlanoCartesiano, action:actions.planoCartesiano }
+		{ id:'Plano Cartesiano', component:components.PlanoCartesiano, action:actions.planoCartesiano },
+		{ id:'Transportador', component:components.Transportador, action:actions.transportador }
 	]},
 	{ name:'Datos', tag:'datos', fns:[
 		{ id:'Gráfico Datos', component:components.GraficoDatos, action:actions.graficoDatos }
