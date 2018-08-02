@@ -344,17 +344,6 @@ function init(state, mainData) {
           posIniGuia = Number(((miniValMin - valMin)*10).toFixed(0))
           posFinGuia = posIniGuia + 1
         }
-        // console.log('------')
-        // console.log(iniVal)
-        // console.log(valMin)
-        // console.log(valMax)
-        // console.log('------')
-        // console.log(miniVal)
-        // console.log(miniValMin)
-        // console.log(miniValMax)
-        // console.log('------')
-        // console.log(posIniGuia)
-        // console.log(posFinGuia)
       }
     }
     if (miniVal >= valMin && miniVal <= valMax) {
@@ -392,19 +381,23 @@ function init(state, mainData) {
       ctx.fill()
     }
     function dibujarLente(state, puntoXIni, puntoXFin, puntoY, imgWidth) {
-      console.log('dibujarLente')
       const { ctx, chart } = state
       const { lupa } = chart.image
       ctx.save()
       let img = new Image()
       img.src = lupa
       let factorImg = (129/191)
+      let imageWidth = imgWidth*2.2
+      let imageHeight = imageWidth*factorImg
       let centerX, centerY
-      centerY = puntoY - imgWidth/2
+      centerY = puntoY - imageHeight*0.38
+      centerX = puntoXIni - imgWidth/2.2
       img.onload = function() {
-        img.width = imgWidth
-        img.height = imgWidth*factorImg
-        ctx.drawImage(img,puntoXIni,centerY)
+        // img.width = imgWidth
+        // img.height = imgWidth*factorImg
+        ctx.translate(centerX + imageWidth/2, centerY + imageHeight/2)
+        ctx.rotate(60*Math.PI/180)
+        ctx.drawImage(img,-imageWidth/2,-imageHeight/2, imageWidth, imageHeight)
       }
       ctx.restore()
       ctx.save()
