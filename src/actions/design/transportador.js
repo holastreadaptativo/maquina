@@ -3,12 +3,24 @@ import { replace } from 'actions'
 export function transportador(config) {
   const { container, params, variables, versions, vt } = config
   const {
+    // Estilos
+    estilos: {
+      font: {
+        family: fontFamily,
+        size: fontSize,
+        color: fontColor
+      },
+      elements: {
+        backgroundColor: elBackgroundColor,
+        color: elColor
+      }
+    },
     // General
     transpType,
     // Ángulos
     anguloA, anguloB,
     // Sentido Ángulo
-    angIntSentido, angExtSentido
+    angIntSentido, nombreAnguloInt, angExtDesde, angExtSentido, nombreAnguloExt
   } = params
 
   if (!container) return
@@ -27,9 +39,14 @@ export function transportador(config) {
   state.container = { width: c.width, height: c.height }
   state.transpType = transpType === '180°' ? true : false
   state.angulos = { anguloA, anguloB }
-  state.sentido = {
-    interno: angIntSentido,
-    externo: angExtSentido
+  state.interno = {
+    sentido: angIntSentido,
+    nombre: nombreAnguloInt
+  }
+  state.externo = {
+    angulo: transpType === '180°' ? angExtDesde : false,
+    sentido: angExtSentido,
+    nombre: nombreAnguloExt
   }
   state.imagenes = {
     transp180: 'https://desarrolloadaptatin.blob.core.windows.net/genericos/Transportador_GEO/Transportador.svg',
@@ -39,6 +56,7 @@ export function transportador(config) {
   init(state)
 
   function init(state) {
+    console.log(state)
     const { transpType } = state
     if (transpType) {
       dibujarTransportador180(state)
@@ -47,7 +65,7 @@ export function transportador(config) {
     }
   }
   function dibujarTransportador180(state) {
-    const { ctx, container, angulos, sentido, imagenes } = state
+    const { ctx, container, angulos, interno, externo, imagenes } = state
     const { transp180 } = imagenes
     ctx.save()
     let imgTransp = new Image()
@@ -70,10 +88,10 @@ export function transportador(config) {
       angulos.anguloA !== '' && mostrarAnguloLinea(ctx, angulos.anguloA, centroXTransp, centroYTransp, largoLinea)
       angulos.anguloB !== '' && mostrarAnguloLinea(ctx, angulos.anguloB, centroXTransp, centroYTransp, largoLinea)
       let radioArc = largoLinea/2
-      if (angulos.anguloA !== '' && angulos.anguloB !== '' && sentido.interno !== 'no') {
-        mostrarAnguloInterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, sentido.interno)
+      if (angulos.anguloA !== '' && angulos.anguloB !== '' && interno.sentido !== 'no') {
+        mostrarAnguloInterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, interno.sentido)
       }
-      //angulos.anguloB !== '' && sentido.externo !== 'no' && mostrarAnguloExterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc)      
+      //angulos.anguloB !== '' && externo.sentido !== 'no' && mostrarAnguloExterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, extrer)      
     }
     ctx.restore()
     ctx.save()
@@ -83,12 +101,15 @@ export function transportador(config) {
   }
   function mostrarAnguloInterno(ctx, anguloA, anguloB, centroX, centroY, radioArc, sentido) {
     ctx.save()
+    nombreAnguloInterno(state, centroX, centroY, radioArc)
     let anguloANuevo = -anguloA*Math.PI/180, anguloBNuevo = -anguloB*Math.PI/180
     if (sentido !== 'horario') {
+      anguloBNuevo += 1*Math.PI/180
       ctx.arc(centroX, centroY, radioArc, anguloANuevo, anguloBNuevo, true)
       ctx.stroke()
       generarFlechas(ctx, centroX, centroY, anguloBNuevo, sentido)
     } else {
+      anguloANuevo -= 1*Math.PI/180
       ctx.arc(centroX, centroY, radioArc, anguloBNuevo, anguloANuevo, false)
       ctx.stroke()
       generarFlechas(ctx, centroX, centroY, anguloANuevo, sentido)
@@ -124,9 +145,73 @@ export function transportador(config) {
       ctx.restore()
     }
   }
-  function mostrarAnguloExterno(ctx, anguloA, anguloB, centroX, centroY) {
-
+  
+  function mostrarAnguloExterno(ctx, anguloA, anguloB, centroX, centroY, radioArc, sentido) {
+    ctx.save()
+    let anguloANuevo = -anguloA*Math.PI/180, anguloBNuevo = -anguloB*Math.PI/180
+    if (sentido !== 'horario') {
+      anguloBNuevo += 1*Math.PI/180
+      ctx.arc(centroX, centroY, radioArc, anguloANuevo, anguloBNuevo, true)
+      ctx.stroke()
+      generarFlechas(ctx, centroX, centroY, anguloBNuevo, sentido)
+    } else {
+      anguloANuevo -= 1*Math.PI/180
+      ctx.arc(centroX, centroY, radioArc, anguloBNuevo, anguloANuevo, false)
+      ctx.stroke()
+      generarFlechas(ctx, centroX, centroY, anguloANuevo, sentido)
+    }
+    ctx.stroke()
+    ctx.restore()
+    ctx.save()
+    function generarFlechas(ctx, centroX, centroY, angulo, sentido) {
+      let sentidoFlecha = sentido !== 'horario' ? 1 : -1
+      let nuevoCentroX = centroX + Math.cos(angulo)*radioArc
+      let nuevoCentroY = centroY + Math.sin(angulo)*radioArc
+      ctx.translate(nuevoCentroX, nuevoCentroY)
+      let deltaAngulo = 40*Math.PI/180
+      let deltaLargoFlecha = centroX/20
+      // Mitad Flecha
+      ctx.rotate(angulo)
+      ctx.rotate(deltaAngulo)
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
+      ctx.closePath()
+      ctx.stroke()
+      ctx.restore()
+      // Mitad Flecha
+      ctx.translate(nuevoCentroX, nuevoCentroY)
+      ctx.rotate(angulo)
+      ctx.rotate(-deltaAngulo)
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
+      ctx.closePath()
+      ctx.stroke()
+      ctx.restore()
+    }
   }
+
+  function nombreAnguloInterno(state, centroX, centroY, radioArc) {
+    const { ctx, angulos } = state
+    const { anguloA, anguloB } = angulos
+    const { nombre } = state.interno
+    // state.interno = {
+    //   sentido: angIntSentido,
+    //   nombre: nombreAnguloInt
+    ctx.save()
+    let anguloMenor = Number(anguloA < anguloB ?  anguloA : anguloB)
+    let anguloMayor = Number(anguloA > anguloB ?  anguloA : anguloB)
+    let deltaAngulo = Math.abs((anguloMayor - anguloMenor)/2)
+    let anguloMedio = anguloMenor + deltaAngulo
+    let nuevoCentroX = centroX + Math.cos(-anguloMedio*Math.PI/180)*radioArc*0.7
+    let nuevoCentroY = centroY + Math.sin(-anguloMedio*Math.PI/180)*radioArc*0.7
+    ctx.translate(nuevoCentroX, nuevoCentroY)
+    ctx.fillText(nombre, 0 ,0)
+    ctx.restore()
+    ctx.save()
+  }
+
   function mostrarAnguloLinea(ctx, angulo, centroX, centroY, largoLinea) {
     ctx.save()
     ctx.translate(centroX, centroY)
