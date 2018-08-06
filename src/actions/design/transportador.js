@@ -4,17 +4,7 @@ export function transportador(config) {
   const { container, params, variables, versions, vt } = config
   const {
     // Estilos
-    estilos: {
-      font: {
-        family: fontFamily,
-        size: fontSize,
-        color: fontColor
-      },
-      elements: {
-        backgroundColor: elBackgroundColor,
-        color: elColor
-      }
-    },
+    fontFamily, fontSize, fontColor, primaryBgColor, primaryColor,
     // General
     transpType,
     // Ángulos
@@ -35,6 +25,19 @@ export function transportador(config) {
 
   // State del gráfico
   let state = {}
+  state.style = {
+    font: {
+      family: fontFamily,
+      size: fontSize,
+      color: fontColor
+    },
+    elements: {
+      colors: {
+        primaryColor,
+        primaryBgColor
+      }
+    }
+  }
   state.ctx = c.getContext('2d')
   state.container = { width: c.width, height: c.height }
   state.transpType = transpType === '180°' ? true : false
@@ -49,8 +52,9 @@ export function transportador(config) {
     nombre: nombreAnguloExt
   }
   state.imagenes = {
+    // transp180: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/OA_19/IE_04/Transportador180.svg',
     transp180: 'https://desarrolloadaptatin.blob.core.windows.net/genericos/Transportador_GEO/Transportador.svg',
-    transp360: ''
+    transp360: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_3/OA_19/IE_05/F762_transportador360.svg'
   }
 
   init(state)
@@ -73,7 +77,7 @@ export function transportador(config) {
     let anchoImg, altoImg
     anchoImg = container.width*2/3
     altoImg = anchoImg/2
-    let centroXTransp = anchoImg/2, centroYTransp = altoImg*0.95
+    let centroXTransp = anchoImg/2, centroYTransp = altoImg*0.91
     imgTransp.onload = function() {
       ctx.fillStyle = '#077C7E'
       ctx.strokeStyle = '#077C7E'
@@ -88,8 +92,13 @@ export function transportador(config) {
       angulos.anguloA !== '' && mostrarAnguloLinea(ctx, angulos.anguloA, centroXTransp, centroYTransp, largoLinea)
       angulos.anguloB !== '' && mostrarAnguloLinea(ctx, angulos.anguloB, centroXTransp, centroYTransp, largoLinea)
       let radioArc = largoLinea/2
-      if (angulos.anguloA !== '' && angulos.anguloB !== '' && interno.sentido !== 'no') {
-        mostrarAnguloInterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, interno.sentido)
+      if (angulos.anguloA !== '' && angulos.anguloB !== '' ) {
+        if (interno.sentido !== 'no') {
+          mostrarAngulo(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, interno.sentido)
+        }
+        if (externo.sentido !== 'no') {
+          mostrarAngulo(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, externo.sentido)
+        }
       }
       //angulos.anguloB !== '' && externo.sentido !== 'no' && mostrarAnguloExterno(ctx, angulos.anguloA, angulos.anguloB, centroXTransp, centroYTransp, radioArc, extrer)      
     }
@@ -99,51 +108,27 @@ export function transportador(config) {
   function dibujarTransportador360(state) {
     console.log('dibujarTransportador360')
   }
-  function mostrarAnguloInterno(ctx, anguloA, anguloB, centroX, centroY, radioArc, sentido) {
+  function mostrarAngulo(ctx, anguloA, anguloB, centroX, centroY, radioArc, sentido, interno) {
     ctx.save()
+    if (tipoAngulo) {
+
+    }
     nombreAnguloInterno(state, centroX, centroY, radioArc)
     let anguloANuevo = -anguloA*Math.PI/180, anguloBNuevo = -anguloB*Math.PI/180
     if (sentido !== 'horario') {
       anguloBNuevo += 1*Math.PI/180
       ctx.arc(centroX, centroY, radioArc, anguloANuevo, anguloBNuevo, true)
       ctx.stroke()
-      generarFlechas(ctx, centroX, centroY, anguloBNuevo, sentido)
+      generarFlechas(ctx, centroX, centroY, anguloBNuevo, sentido, radioArc)
     } else {
       anguloANuevo -= 1*Math.PI/180
       ctx.arc(centroX, centroY, radioArc, anguloBNuevo, anguloANuevo, false)
       ctx.stroke()
-      generarFlechas(ctx, centroX, centroY, anguloANuevo, sentido)
+      generarFlechas(ctx, centroX, centroY, anguloANuevo, sentido, radioArc)
     }
     ctx.stroke()
     ctx.restore()
     ctx.save()
-    function generarFlechas(ctx, centroX, centroY, angulo, sentido) {
-      let sentidoFlecha = sentido !== 'horario' ? 1 : -1
-      let nuevoCentroX = centroX + Math.cos(angulo)*radioArc
-      let nuevoCentroY = centroY + Math.sin(angulo)*radioArc
-      ctx.translate(nuevoCentroX, nuevoCentroY)
-      let deltaAngulo = 40*Math.PI/180
-      let deltaLargoFlecha = centroX/20
-      // Mitad Flecha
-      ctx.rotate(angulo)
-      ctx.rotate(deltaAngulo)
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
-      ctx.closePath()
-      ctx.stroke()
-      ctx.restore()
-      // Mitad Flecha
-      ctx.translate(nuevoCentroX, nuevoCentroY)
-      ctx.rotate(angulo)
-      ctx.rotate(-deltaAngulo)
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
-      ctx.closePath()
-      ctx.stroke()
-      ctx.restore()
-    }
   }
   
   function mostrarAnguloExterno(ctx, anguloA, anguloB, centroX, centroY, radioArc, sentido) {
@@ -192,21 +177,50 @@ export function transportador(config) {
     }
   }
 
+  function generarFlechas(ctx, centroX, centroY, angulo, sentido, radioArc) {
+    let sentidoFlecha = sentido !== 'horario' ? 1 : -1
+    let nuevoCentroX = centroX + Math.cos(angulo)*radioArc
+    let nuevoCentroY = centroY + Math.sin(angulo)*radioArc
+    ctx.translate(nuevoCentroX, nuevoCentroY)
+    let deltaAngulo = 40*Math.PI/180
+    let deltaLargoFlecha = centroX/20
+    // Mitad Flecha
+    ctx.rotate(angulo)
+    ctx.rotate(deltaAngulo)
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
+    ctx.closePath()
+    ctx.stroke()
+    ctx.restore()
+    // Mitad Flecha
+    ctx.translate(nuevoCentroX, nuevoCentroY)
+    ctx.rotate(angulo)
+    ctx.rotate(-deltaAngulo)
+    ctx.beginPath()
+    ctx.moveTo(0, 0)
+    ctx.lineTo(0, sentidoFlecha*deltaLargoFlecha)
+    ctx.closePath()
+    ctx.stroke()
+    ctx.restore()
+  }
+
   function nombreAnguloInterno(state, centroX, centroY, radioArc) {
-    const { ctx, angulos } = state
+    const { ctx, angulos, style } = state
     const { anguloA, anguloB } = angulos
     const { nombre } = state.interno
-    // state.interno = {
-    //   sentido: angIntSentido,
-    //   nombre: nombreAnguloInt
     ctx.save()
     let anguloMenor = Number(anguloA < anguloB ?  anguloA : anguloB)
     let anguloMayor = Number(anguloA > anguloB ?  anguloA : anguloB)
     let deltaAngulo = Math.abs((anguloMayor - anguloMenor)/2)
     let anguloMedio = anguloMenor + deltaAngulo
-    let nuevoCentroX = centroX + Math.cos(-anguloMedio*Math.PI/180)*radioArc*0.7
-    let nuevoCentroY = centroY + Math.sin(-anguloMedio*Math.PI/180)*radioArc*0.7
+    let nuevoCentroX = centroX + Math.cos(-anguloMedio*Math.PI/180)*radioArc*0.8
+    let nuevoCentroY = centroY + Math.sin(-anguloMedio*Math.PI/180)*radioArc*0.8
     ctx.translate(nuevoCentroX, nuevoCentroY)
+    ctx.textBaseline = 'middle'
+    ctx.textAlign = 'center'
+    ctx.font = `bold ${style.font.size}px ${style.font.family}`
+    ctx.strokeStyle = style.font.color
     ctx.fillText(nombre, 0 ,0)
     ctx.restore()
     ctx.save()

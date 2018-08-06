@@ -12,9 +12,9 @@ export default class Transportador extends Component {
       // Estilos
       fontFamily: 'Larke Neue Thin',
       fontSize: 16,
-      fontColor: '',
-      elBackgroundColor: '',
-      elColor: '',
+      fontColor: 'red',
+      primaryBgColor: 'gray',
+      primaryColor: 'blue',
       // General
       transpType: '180°',
       anguloA: '15',
@@ -23,7 +23,7 @@ export default class Transportador extends Component {
       nombreAnguloInt: 'A',
       angExtDesde: '0°',
       angExtSentido: 'no',
-      nombreAnguloExt: 'A',
+      nombreAnguloExt: 'B',
     } : props.params
   }
   componentDidUpdate() {
