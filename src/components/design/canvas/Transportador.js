@@ -46,8 +46,8 @@ export default class Transportador extends Component {
           <Select id="angIntSentido" prefix="sentido" options={sentidoAngOpc} parent={this}/>
           <Input id="nombreAnguloInt" prefix="nombre" postfix="°" type="text" parent={this}/>	
         </Item>
-        <Item id={k++} title="Ángulo Externo" parent={this}>
-          <Select id="angExtDesde" prefix="ángulo" options={sentidoAngExt180} parent={this} hide={transpType !== '180°'}/>
+        <Item id={k++} title="Ángulo Externo" parent={this} hide={transpType === '180°'}>
+          {/*<Select id="angExtDesde" prefix="ángulo" options={sentidoAngExt180} parent={this}/>*/}
           <Select id="angExtSentido" prefix="sentido" options={sentidoAngOpc} parent={this}/>
           <Input id="nombreAnguloExt" prefix="nombre" type="text" parent={this}/>
         </Item>
