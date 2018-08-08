@@ -10,20 +10,15 @@ export default class Transportador extends Component {
     this.state = props.push ? { 
       active:0,
       // Estilos
-      fontFamily: 'Larke Neue Thin',
-      fontSize: 16,
-      fontColor: 'red',
-      primaryBgColor: 'gray',
-      primaryColor: 'blue',
+      fontFamily: 'Larke Neue Thin', fontSize: 16, fontColor: 'red', primaryBgColor: 'gray', primaryColor: 'blue',
       // General
       transpType: '180°',
-      anguloA: '15',
-      anguloB: '75',
-      angIntSentido: 'no',
-      nombreAnguloInt: 'A',
-      angExtDesde: '0°',
-      angExtSentido: 'no',
-      nombreAnguloExt: 'B',
+      // Ángulos
+      anguloA: '15', anguloB: '75',
+      // Ángulo interno
+      angIntSentido: 'no', nombreAnguloInt: 'A',
+      // Ángulo externo
+      angExtSentido: 'no', nombreAnguloExt: 'B'
     } : props.params
   }
   componentDidUpdate() {
@@ -31,8 +26,7 @@ export default class Transportador extends Component {
   }
   render() {
     const { transpType } = this.state
-    let k = 0, tipoTranspOpc = ['180°', '360°'], siNoOpc = ['si', 'no'], sentidoAngOpc = ['no', 'horario', 'antihorario'],
-        sentidoAngExt180 = ['0°', '180°']
+    let k = 0, tipoTranspOpc = ['180°', '360°'], sentidoAngOpc = ['no', 'horario', 'antihorario']
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
@@ -47,7 +41,6 @@ export default class Transportador extends Component {
           <Input id="nombreAnguloInt" prefix="nombre" postfix="°" type="text" parent={this}/>	
         </Item>
         <Item id={k++} title="Ángulo Externo" parent={this} hide={transpType === '180°'}>
-          {/*<Select id="angExtDesde" prefix="ángulo" options={sentidoAngExt180} parent={this}/>*/}
           <Select id="angExtSentido" prefix="sentido" options={sentidoAngOpc} parent={this}/>
           <Input id="nombreAnguloExt" prefix="nombre" type="text" parent={this}/>
         </Item>

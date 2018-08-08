@@ -9,8 +9,10 @@ export function transportador(config) {
     transpType,
     // Ángulos
     anguloA, anguloB,
-    // Sentido Ángulo
-    angIntSentido, nombreAnguloInt, angExtDesde, angExtSentido, nombreAnguloExt
+    // Ángulo interno
+    angIntSentido, nombreAnguloInt,
+    // Ángulo interno
+    angExtSentido, nombreAnguloExt
   } = params
 
   if (!container) return
@@ -90,9 +92,6 @@ export function transportador(config) {
   }
   function dibujarTransportador(state, mainData) {
     const { ctx } = state
-    console.log('dibujarTransportador')
-    console.log(state)
-    console.log(mainData)
     ctx.lineWidth = 2
     ctx.fillStyle = '#077C7E'
     ctx.strokeStyle = '#077C7E'
@@ -144,7 +143,6 @@ export function transportador(config) {
       ctx.save()
     }
     function nombreAngulo(ctx, x, y, radio, anguloA, anguloB, nombreAngulo, style, esInterno) {
-      console.log('nombreAnguloInterno')
       ctx.save()
       let anguloMenor = Number(anguloA < anguloB ?  anguloA : anguloB)
       let anguloMayor = Number(anguloA > anguloB ?  anguloA : anguloB)
@@ -153,8 +151,8 @@ export function transportador(config) {
         deltaAngulo = Math.abs((anguloMayor - anguloMenor)/2)
         anguloMedio = anguloMenor + deltaAngulo
       } else {
-        deltaAngulo = Math.abs((360 - (anguloMayor - anguloMenor))/2)
-        anguloMedio = anguloMenor + anguloMayor + deltaAngulo
+        deltaAngulo = Math.abs((360*Math.PI/180 - (anguloMayor - anguloMenor))/2)
+        anguloMedio = anguloMayor + deltaAngulo
       }
       let nuevoCentroX = x + Math.cos(anguloMedio)*radio*0.8
       let nuevoCentroY = y + Math.sin(anguloMedio)*radio*0.8
