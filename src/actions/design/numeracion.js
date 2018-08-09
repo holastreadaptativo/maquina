@@ -55,30 +55,6 @@ export function rectNumFn(config) {
 
   let c = container
   let vars = vt ? variables : versions
-  function valuesValidation(arrValues) {
-    let valuesUnit = [], valuesDec = [], valuesCent = []
-    let aux = arrValues.split(',')
-    aux.map( el => {
-      if (el.split('.')) {
-        valuesUnit.push(el.split('.')[0])
-        if (el.split('.')[1]) {
-          el.split('.')[1][0] ? valuesDec.push(el.split('.')[1][0]) : valuesDec.push('')
-          el.split('.')[1][1] ? valuesCent.push(el.split('.')[1][1]) : valuesCent.push('')
-        } else {
-          valuesDec.push('')
-          valuesCent.push('')
-        }
-      } else {
-        valuesDec.push('')
-        valuesCent.push('')
-      }
-    })
-    return {
-      unidadValor: valuesUnit,
-      decimalValor: valuesDec,
-      centesimalValor: valuesCent
-    }
-  }
 
   let state = {}
   state.ctx = c.getContext('2d')
@@ -95,24 +71,19 @@ export function rectNumFn(config) {
     extValues: showExValues === 'si' ? true : false,
     allValues: {
       show: showAllValues !== 'no' ? showAllValues : false,
-      //selectValuesToShow: valuesValidation(selectValuesToShow),
       values: selectValuesToShow
     },
     points: {
       show: showPointValue !== 'no' ? true : false,
-      //selectPointsValue: valuesValidation(wichPointValue),
       values: wichPointValue
     },
     figures: {
       show: showFigValue === 'no' ? false : showFigValue,
-      //selectPointsValue: valuesValidation(wichFigValues)
       values: wichFigValues
     },
     arcs: {
       show: showArcs !== 'no' ? showArcs : false,
       values : {
-        // initArcPt: valuesValidation(initArcPt),
-        // endArcPt: valuesValidation(endArcPt)
         init: initArcPt,
         end: endArcPt
       }
@@ -121,18 +92,14 @@ export function rectNumFn(config) {
       show: (rectType !== 'enteros' && rectType !== 'mixta') && showMiniScale === 'si' ? true : false,
       extValues: showMiniExValues === 'si' ? true: false,
       allValues: showMiniAllValues === 'si' ? true: false,
-      //showMiniTheValue: valuesValidation(showMiniTheValue),
       theValue: showMiniTheValue,
       point: showMiniPointValue === 'si' ? true: false,
       figure: {
         show: showMiniFig === 'no' ? false : showMiniFig,
-        // wichMiniFigValues: valuesValidation(wichMiniFigValues)
         values: wichMiniFigValues
       },
       arcs: {
         show: showMiniArcs !== 'no' ? showMiniArcs : false,
-        // initArcPtMini: valuesValidation(initArcPtMini),
-        // endArcPtMini: valuesValidation(endArcPtMini)
         init: initArcPtMini,
         end: endArcPtMini
       },
@@ -237,6 +204,7 @@ export function rectNumFn(config) {
 }
 
 // Dibuja los espacios definidos, container, chart
+/*
 function dibujarBordes(state, el, color) {
   const { ctx } = state
   ctx.save()
@@ -247,6 +215,7 @@ function dibujarBordes(state, el, color) {
   ctx.restore()
   ctx.save()
 }
+*/
 
 function ptosPrincipales(state) {
   const { typeRect, chart, show, scale } = state
@@ -280,7 +249,7 @@ function ptosPrincipales(state) {
 }
 
 function ptosPrincipalesMini(state) {
-  const { chart, scale } = state
+  const { chart } = state
   const { x0, y0, x1, y1 } = chart.position
   let divisiones = 10
   let escalaValor = 1
@@ -328,10 +297,10 @@ function init(state, mainData) {
   function dibujarGuiasLente(state, mainData) {
     const { typeRect, show, scale, chart, font } = state
     const { theValue, guides } = show.miniScale
-    const { pointsData, pointsDataMini } = mainData
+    const { pointsData } = mainData
     let iniVal = Number(chart.values.initValue)
     let miniVal = Number(theValue)
-    let valMin, valMax, miniValMin, miniValMax, puntoXIni, puntoXFin
+    let valMin, valMax, miniValMin, /*miniValMax,*/ puntoXIni, puntoXFin
 
     let posIniGuia, posFinGuia
     if (typeRect === 'decimal' || typeRect === 'mixta decimal') {
@@ -340,7 +309,7 @@ function init(state, mainData) {
         valMax = valMin + 1
         if (miniVal.toFixed(2).split('.')[1][0]) {
           miniValMin = Number(`${miniVal.toFixed(2).split('.')[0]}.${miniVal.toFixed(2).split('.')[1][0]}`)
-          miniValMax = miniValMin + 0.1
+          // miniValMax = miniValMin + 0.1
           posIniGuia = Number(((miniValMin - valMin)*10).toFixed(0))
           posFinGuia = posIniGuia + 1
         }
@@ -440,7 +409,6 @@ function ejePrincipal(state, data) {
 }
 
 function ejeSecundario(state, data) {
-  const { ctx, scale, typeRect } = state
   generarEje(state, data.eje)
   generarEscala(state, data.recta)
   mostrarDatosEjeSec(state, data.recta)
@@ -534,17 +502,17 @@ function generarEscalaDec(state, dataRecta) {
 
 function mostrarDatos(state, dataRecta) {
   const { show } = state
-  const { extValues, allValues, points, figures, arcs, lens } = show
+  const { extValues, allValues, points, figures, arcs } = show
   const { xIni, centroY, segmento, divisiones } = dataRecta
   for (let i = 0; i <= divisiones; i++) {
     let xPos = xIni + segmento*i
     let valor = numeroValidacion(state, i)
     // Mostrar valores externos
     if (i === 0 || i === divisiones) {
-      extValues && mostrarValorExterno(state, dataRecta, xPos, centroY, i, valor)
+      extValues && mostrarValorExterno(state, xPos, centroY, i, valor)
     } else {
       let arrValoresAll = arrNumerosValidacion(state, allValues.values)
-      allValues.show && mostrarValor(state, dataRecta, xPos, centroY, i, valor, arrValoresAll)
+      allValues.show && mostrarValor(state, xPos, centroY, i, valor, arrValoresAll)
     }
     let arrValoresPoints = arrNumerosValidacion(state, points.values)
     points.show && mostrarPunto(state, dataRecta, xPos, centroY, i, valor, arrValoresPoints)
@@ -559,8 +527,8 @@ function mostrarDatos(state, dataRecta) {
 function mostrarDatosEjeSec(state, dataRecta) {
   const { show, scale } = state
   const { miniScale } = show
-  const { theValue, extValues, allValues, point, figure, arcs, guides } = miniScale
-  const { xIni, centroY, segmento, divisiones } = dataRecta
+  const { theValue, extValues, allValues, point, figure, arcs } = miniScale
+  const { xIni, centroY, segmento } = dataRecta
 
   //console.log(miniScale)
   let centroYNum = centroY + scale.length*1.7
@@ -597,9 +565,9 @@ function mostrarDatosEjeSec(state, dataRecta) {
     }
     figura = Number(figura)
     if (figura === posicion) {
-      dibujarRombo(state, x, y, false)
+      dibujarRomboEjeSec(state, x, y, false)
     }
-    function dibujarRombo(state, x, y, grande) {
+    function dibujarRomboEjeSec(state, x, y, grande) {
       const { ctx, scale, font } = state
       const { figure, allValues } = state.show.miniScale
       const xPos = x, centroY = y
@@ -675,7 +643,7 @@ function mostrarDatosEjeSec(state, dataRecta) {
 }
 
 function arrNumerosValidacion(state, arr) {
-  const { typeRect, scale, chart } = state
+  const { typeRect } = state
   let arrValores = arr
   switch (typeRect) {
     case 'enteros':
@@ -767,7 +735,7 @@ function numeroValidacion(state, index) {
 
 /* ------------------------ MOSTRAR DATOS  ------------------------- */
 
-function mostrarValorExterno(state, dataRecta, x, y, index, valor, arrValores) {
+function mostrarValorExterno(state, x, y, index, valor) {
   const { typeRect, scale } = state
   y += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ? scale.length*2 : scale.length*1.7
   switch (typeRect) {
@@ -795,8 +763,8 @@ function mostrarValorExterno(state, dataRecta, x, y, index, valor, arrValores) {
   }
 }
 
-function mostrarValor(state, dataRecta, x, y, index, valor, arrValores) {
-  const { typeRect, show, chart, scale } = state
+function mostrarValor(state, x, y, index, valor, arrValores) {
+  const { typeRect, show, scale } = state
   y += (typeRect === 'mixta' || typeRect === 'mixta decimal' || typeRect === 'mixta centesimal') ? scale.length*2 : scale.length*1.7
   let mostrar = false
   if (show.allValues.show === 'todos') {
@@ -889,11 +857,11 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
           valor = eval(valor), valorAuxIni = eval(valorAuxIni), valorAuxFin = eval(valorAuxFin)
           if (eval(el) >= valorAuxIni && eval(el) <= valorAuxFin) {
             if (eval(el) === valorAuxIni) {
-              dibujarRombo(state, x, y, true)
+              dibujarRombo(state, x, y, valor, true)
             } else {
               let delta = eval(el.split('.')[1][1])*segmento/10
               let centroX = x + delta
-              dibujarRombo(state, centroX, y, false)
+              dibujarRombo(state, centroX, y, valor, false)
             }
           }
         }
@@ -901,7 +869,7 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
     }
   } else {
     if (arrValores.includes(valor)) {
-      dibujarRombo(state, x, y, true)
+      dibujarRombo(state, x, y, valor, true)
     }
   }
 }
@@ -952,8 +920,8 @@ function dibujarPunto(state, x, y, grande) {
   ctx.restore()
   ctx.save()
 }
-function dibujarRombo(state, x, y, grande) {
-  const { ctx, scale, font } = state
+function dibujarRombo(state, x, y, valor, grande) {
+  const { ctx, typeRect, scale, font } = state
   const { figures, allValues } = state.show
   const xPos = x, centroY = y
   ctx.save()
@@ -1030,20 +998,20 @@ function numeroEntero(state, x, y, valor, multSize) {
 }
 
 function numeroEnteroDecimal(state, x, y, valor, multSize) {
-  const { ctx, font, typeRect, scale } = state
+  const { ctx, font } = state
   ctx.save()
   ctx.strokeStyle = font.color
   ctx.fillStyle = font.color
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
   ctx.font = font.size*multSize + 'px ' + font.family
-  let unidad, decimal, centesimal
+  let unidad, decimal//, centesimal
   unidad = valor.split('.')[0]
   if (valor.split('.')[1][0]) {
     decimal = valor.split('.')[1][0]
-    if (decimal) {
-      centesimal = valor.split('.')[0][1]
-    }
+    // if (decimal) {
+    //   centesimal = valor.split('.')[0][1]
+    // }
   }
   valor = `${unidad}.${decimal}`
   ctx.fillText(valor, x, y)
@@ -1113,7 +1081,7 @@ function numeroMixto(state, x, y, valor, multSize, index) {
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
   ctx.lineWidth = font.size/8
-  ctx.lineCap="round";
+  ctx.lineCap = 'round'
   let deltaYLine = font.size/16 + 1
   ctx.beginPath()
   ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
@@ -1172,7 +1140,7 @@ function numeroMixtoDecimal(state, x, y, valor, multSize, index) {
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
   ctx.lineWidth = font.size/8
-  ctx.lineCap="round";
+  ctx.lineCap = 'round'
   let deltaYLine = font.size/16 + 1
   ctx.beginPath()
   ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
@@ -1230,7 +1198,7 @@ function numeroMixtoCentesimal(state, x, y, valor, multSize, index) {
   denominadorTextLength = ctx.measureText(denominador).width
   ctx.strokeStyle = scale.color
   ctx.lineWidth = font.size/8
-  ctx.lineCap="round";
+  ctx.lineCap = 'round'
   let deltaYLine = font.size/16 + 1
   ctx.beginPath()
   ctx.moveTo(enteroPosX + 1, centroY - deltaYLine)
