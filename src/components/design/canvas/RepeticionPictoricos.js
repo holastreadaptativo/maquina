@@ -36,7 +36,7 @@ export default class RepeticionPictoricos extends Component {
       if (this.props.push) {
         for (let i = 0; i < maxCantElem; i++) {
           elemDataAux.push({
-            ['repetElem'+ (i+1)]: 0,
+            ['repetElem'+ (i+1)]: i === 0 ? 1: 0,
             ['elemType'+ (i+1)]: 'moneda 1'
           })
         }
