@@ -185,15 +185,15 @@ export function repeticionPic(config) {
     }
   ]
   
-  drawRects(state, state.canvas, 'red')
-  drawRects(state, state.container, 'blue')
-  drawRects(state, state.chart, 'green')
+  // drawRects(state, state.canvas, 'red')
+  // drawRects(state, state.container, 'blue')
+  // drawRects(state, state.chart, 'green')
   init(state)
 }
 
 // Dibuja los espacios definidos, container, chart
+
 /*
-*/
 function drawRects(state, el, color) {
   const { ctx } = state
   ctx.save()
@@ -204,7 +204,7 @@ function drawRects(state, el, color) {
   ctx.restore()
   ctx.save()
 }
-
+*/
 
 function init(state) {
   insertarTituloPrincipal(state)
@@ -228,7 +228,7 @@ function insertarTituloPrincipal(state) {
 }
 
 function insertarPictoricos(state) {
-  const { ctx, chart, pictorics, images, cantElem } = state
+  const { chart } = state
   if (chart.type === 'billetes y monedas') {
     billetes(state)
   } else {
@@ -311,12 +311,12 @@ function billetes(state) {
 }
 
 function bloqueMultibase(state) {
-  const { ctx, chart, pictorics, images, cantElem } = state
+  const { ctx, chart, pictorics, images } = state
   const { x0, y0, x1, y1 } = chart.position
 
   let imgArr = [], chartHeight = y1 - y0, chartWidth = x1 - x0
   //console.log(pictorics)
-  pictorics.map((img,index) => {
+  pictorics.map( img => {
     if (img.qtty > 0) {
       images.map(el => {
         if (img.elem === el.name) {
@@ -333,18 +333,18 @@ function bloqueMultibase(state) {
     }
   })
   let xAcum = x0
-  let yAcum = y0
+  // let yAcum = y0
   imgArr.map(el => {
-    let yDist = 0
-    for (let i = 0; i < el.qtty; i++) {
-      yDist += 10
-    }
-    yAcum += yDist + el.height
-    console.log(xAcum)
-    console.log(el.width)
+    // let yDist = 0
+    // for (let i = 0; i < el.qtty; i++) {
+    //   yDist += 10
+    // }
+    // yAcum += yDist + el.height
+    // console.log(xAcum)
+    // console.log(el.width)
     xAcum += el.width + 20
-    console.log('---------')
-    console.log(xAcum)
+    // console.log('---------')
+    // console.log(xAcum)
   })
 
   if (chartHeight < 541) {
@@ -356,7 +356,7 @@ function bloqueMultibase(state) {
     ajustarImagenes(imgArr, porcentaje)
   }
   xAcum = x0
-  yAcum = y0
+  // yAcum = y0
   imgArr.map(el => {
     let yDist = 0
     for (let i = 0; i < el.qtty; i++) {
@@ -378,95 +378,6 @@ function bloqueMultibase(state) {
       img.width *= porcentaje 
     })
   }
-}
-
-function bloqueMultibase1(state) {
-  const { ctx, chart, pictorics, images, cantElem } = state
-  const { x0, y0, x1, y1 } = chart.position
-
-  let imgArr = []
-  let chartWidth = x1 - x0
-  let chartHeight = y1 - y0
-  let maxPictoricWidth = 0
-  let maxImgHeight = []
-  // let xDist = [x0]
-  // let yDist = [y0]
-  let reduceImgPercent = 1
-  let reduceImgPercent2 = 1
-  let imagesMargin = []
-  let deltaX = x0, deltaY = y0
-  pictorics.map((pic,index) => {
-    images.map((img/*,index2*/) => {
-      if (pic.elem === img.name && index < cantElem && pic.qtty > 0) {
-        imgArr.push({
-          name: img.name,
-          url: img.url,
-          width: img.width,
-          height: img.height,
-          qtty: pic.qtty,
-          images: []
-        })
-      }
-      if (img.width > 0) { imagesMargin.push(img.height) }
-    })
-  })
-  imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
-  imagesMargin
-  imgArr.map((img,i) => {
-    let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
-    maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
-    maxImgHeight.push(eval(img.height))
-  })
-  maxImgHeight = 541//Math.max(...maxImgHeight)
-  maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
-  if (chartHeight < maxImgHeight) {
-    reduceImgPercent2 = chartHeight/maxImgHeight
-  }
-  if (chartWidth < maxPictoricWidth*reduceImgPercent2) {
-    reduceImgPercent = chartWidth/maxPictoricWidth
-  }
-  imagesMargin = imagesMargin*reduceImgPercent
-  imgArr.map((img, index) => {
-    img.width = img.width*reduceImgPercent*reduceImgPercent2
-    img.height = img.height*reduceImgPercent*reduceImgPercent2
-    //console.log(img.width)
-    let distImgReptVertical = 0, distImgReptHorizontal = 0
-    /*
-    if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
-      //console.log('if')
-      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
-      deltaY += 0
-    } else if (imgArr[index].name === 'billete 1000') {
-      // console.log('else if')
-      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
-      deltaY += 0
-    } else {
-      // console.log('else')
-      deltaX += index === 0 ? 0 : img.width + imagesMargin/2
-      deltaY += 0
-    }
-    */
-    deltaX += index === 0 ? 0 : img.width + imagesMargin/2
-    deltaY += 0
-
-    for (let i = 0; i < img.qtty; i++) {
-      if (img.name === 'bloque unidad') {
-        console.log('dsdfkfsdkjsdfkjsdkjdsffdjkfjdksfjdk')
-        distImgReptVertical = (img.height + 5)*i 
-      } else {
-        distImgReptVertical = imagesMargin/4*i
-      }
-      //distImgReptHorizontal = imagesMargin/8*i
-
-      img.images.push({
-        xPos: deltaX + distImgReptHorizontal,
-        yPos: deltaY + distImgReptVertical
-      })
-    }
-
-  })
-  dibujarPictoricos(ctx, imgArr)
-  //console.log(imgArr)
 }
 
 function dibujarPictoricos(ctx, imgArr) {
