@@ -41,12 +41,12 @@
       numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
     }
     render() {
-      const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, showMiniFig, showMiniArcs } = this.state
+      const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, /*showMiniFig,*/ showMiniArcs } = this.state
 
       let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
           borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
           fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'], valuesSeparatorOptions = ['coma','punto'], 
-          yesNoOptions = ['no', 'si'], scaleDivisionsOptions = [1,5,10], arcsDirectionOptions = ['no','derecha','izquierda'],
+          yesNoOptions = ['no', 'si'], /*scaleDivisionsOptions = [1,5,10],*/ arcsDirectionOptions = ['no','derecha','izquierda'],
           showTheValuesOpt = ['no', 'todos','mostrar','ocultar'], showFigValueOpt = ['no','arriba','abajo'], showPointValueOpt = ['no','escoger']
       // ocultar condicionales
       let mostrarMiniRecta = (rectType === 'enteros' || rectType === 'enteros con decimales' || rectType === 'centesimal' || rectType === 'mixta' || rectType === 'mixta centesimal')
