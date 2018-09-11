@@ -47,19 +47,19 @@ export default class Design extends Component {
 				<div class="row">
 		        	<main class="feedback">
 		        		<article>
-						{	
-							this.props[feed].map((m, i) => 
-								<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
-								{
-									m.tag != 'general' ? 
-									<canvas id={`${LABELS.CONT[feed]}-${i}`} style={{background:m.params.background, borderRadius:m.params.borderRadius,
-										border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`, margin:'0 auto'}}></canvas> :
-									<div id={`${LABELS.CONT[feed]}-${i}`} class="general"></div>
-								}
-								</div>
-							)
-						}		
-						</article>	
+									{	
+										this.props[feed].map((m, i) => 
+											<div key={i} class={`col-md-${m.width.md} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
+											{
+												m.tag != 'general' ? 
+												<canvas id={`${LABELS.CONT[feed]}-${i}`} style={{background:m.params.background, borderRadius:m.params.borderRadius,
+													border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`, margin:'0 auto'}}></canvas> :
+												<div id={`${LABELS.CONT[feed]}-${i}`} class="general"></div>
+											}
+											</div>
+										)
+									}		
+								</article>	
 	        			<div class="img-duck"/>
 	        			<div class="triangle"/>
 	        			<footer/>

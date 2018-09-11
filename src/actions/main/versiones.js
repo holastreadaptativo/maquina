@@ -181,7 +181,7 @@ export function ver(action, state) {
 			break
 		}
 		case 'PRINT': {
-			DEFAULT.FNS.forEach(path => exe(action, { ...state, path }))
+			DEFAULT.FNS.forEach(path => exe(action, { ...state, path })) //FNS:['functions', 'answers', 'feedback']
 			break
 		}
 		case 'CHECK': {
@@ -199,9 +199,11 @@ export function ver(action, state) {
 			})
 			break
 		}
-		case 'DOWNLOAD': {
+		case 'DOWNLOAD': { //genera el html de los ejercicioas creados
 			const { answers, feedback, functions, versions, vt } = state, v = [...versions, vt]
-			answers.forEach(m => { delete m.json }); feedback.forEach(m => { delete m.json }); functions.forEach(m => { delete m.json })
+			answers.forEach(m => { delete m.json }); 
+			feedback.forEach(m => { delete m.json }); 
+			functions.forEach(m => { delete m.json })
 			let e = stringify(functions), r = stringify(answers), g = stringify(feedback), s = code.substring(10, 15)
 
 			v.forEach(m => {
@@ -218,8 +220,15 @@ export function ver(action, state) {
 				doc += '<footer><div id="help" class="help"><span>Consulta</span></div><button id="submit">Enviar</button></footer></body></html>'
 
 				let a = document.createElement('a'), url = URL.createObjectURL(new Blob([doc], {type:'text/html'}))
-				a.href = url; a.download = `${file}.html`; document.body.appendChild(a); a.click()
-				setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url) }, 0)
+				a.href = url; //crea link, asigna propiedades 
+				console.log(url)
+				a.download = `${file}.html`; 
+				document.body.appendChild(a); 
+				a.click() //simula evento para descargar el documento html
+				setTimeout(() => { 
+					document.body.removeChild(a); 
+					window.URL.revokeObjectURL(url) 
+				}, 0)
 			})
 			break
 		}

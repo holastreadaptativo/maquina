@@ -19,7 +19,7 @@ export const DEFAULT = 	{
 							EMPTY:{ var:'', val:'', type:'numero', vt:'', res:'' },
 							SEARCH:{ code:'000000000000000', length:0, search:[], selected:false, temp:0 },
 							EXE:{ active:0, limit:32, section:'functions', selected:128, tab:0, total:8192, vars:[], vt:[] },
-							FNS:['functions', 'answers', 'feedback']
+							FNS:['functions', 'answers', 'feedback'] // propiedades de los ejercicios en firebase /{id ejercicio}/{answers, feedback, functions, variables}
 						}
 
 export const LABELS =	{
