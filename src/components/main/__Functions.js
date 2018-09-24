@@ -6,7 +6,15 @@ import { DEFAULT } from 'stores'
 export default class Functions extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, modal:false, fn:'', md:12, sm:12, xs:12, tag:'general' }
+		this.state = { 
+			active:0, 
+			modal:false, 
+			fn:'', 
+			md:12, 
+			sm:12, 
+			xs:12, 
+			tag:'general'
+		}
 	}
     handleActive(active) {
     	this.setState({ active:active, tag:FUNCIONES[active].tag })
@@ -25,11 +33,17 @@ export default class Functions extends Component {
 	handleSelect(fn) {
 		this.setState({ modal:true, fn:fn })
 	}
-	getComponent() {
+	getComponent() {// obtiene el componente de FUNCIONES
 		let FX = null
 		FUNCIONES[this.state.active].fns.forEach(m => { if (m.id == this.state.fn) FX = m.component })
        	return FX && 
-       		<FX add={(x) => this.handleCreate.bind(this, x)} setState={::this.setState} fn={this.state.fn} tag={this.state.tag} push {...this.props}/>
+					<FX 
+						 add={(x) => this.handleCreate.bind(this, x)} 
+						 setState={::this.setState} 
+						 fn={this.state.fn} 
+						 tag={this.state.tag} 
+						 push {...this.props}
+					/>
 	}
 	render() {
 		let p = this.props, f = [p.functions, p.answers, p.feedback], t = ['E', 'R', 'G']
@@ -48,9 +62,11 @@ export default class Functions extends Component {
 					FUNCIONES.map((m, i) => m.fns.length > 0 &&
 						<Item key={i} id={i} title={m.name} parent={this} update={::this.handleActive}>
 			          	{
-			          		m.fns.map((n, j) => <li key={j} onClick={() => this.handleSelect(n.id)} class="button">{n.id}</li> )
+			          		m.fns.map((n, j) => 
+											<li key={j} onClick={() => this.handleSelect(n.id)} class="button">{n.id}</li> 
+										)
 			          	}
-					    </Item>
+					  </Item>
 					)
 				}
 				</div>

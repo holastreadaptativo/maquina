@@ -6,7 +6,15 @@ import { DEFAULT, LABELS } from 'stores'
 export default class Overview extends Component {
 	constructor() {
 		super()
-		this.state = { active:0, modal:false, drag:'', fn:'', id:'', params:'', tag:'general' }
+		this.state = { 
+			active:0, 
+			modal:false, 
+			drag:'', 
+			fn:'', 
+			id:'', 
+			params:'', 
+			tag:'general' 
+		}
 	}
 	handleRemove(id) {
 		const { code, path } = this.props
@@ -17,13 +25,15 @@ export default class Overview extends Component {
 		this.setState({ modal:true, id, fn, params, tag })
 	}
 	handleSwitch(e) {
-	    e.preventDefault()
-		const { code, path } = this.props
-	    let drag = this.state.drag.split('-/'), i = Number.parseInt(drag[1]), 
-	    	drop = e.target.id.split('-/'), f = Number.parseInt(drop[1])
+		e.preventDefault()
+		const { code, path } = this.props;
+		let drag = this.state.drag.split('-/'), 
+		i = Number.parseInt(drag[1]), 
+		drop = e.target.id.split('-/'), 
+		f = Number.parseInt(drop[1])
 
-	    if (drag.length > 1)
-	    	action.exe('SWITCH', { code, i, f, path })
+		if (drag.length > 1)
+			action.exe('SWITCH', { code, i, f, path })
 	}
 	handleUpdate(params) {
 		const { code, path } = this.props, { id } = this.state
@@ -44,14 +54,14 @@ export default class Overview extends Component {
 		let p = this.props, t = ['E', 'R', 'G']
 		return (
         	<Aside id={p.id} option={p.option} title="Selección" parent={this}>
-				<nav>
-				{
-					t.map((m, i) => 
-						<li key={i} class={`col-sm-${12/t.length} ${focus(p.tab == i, 'active')}`} 
-							onClick={() => p.setState({ section:DEFAULT.FNS[i], tab:i }) }>{m}</li>
-					)
-				}
-				</nav>
+						<nav>
+						{
+							t.map((m, i) => 
+								<li key={i} class={`col-sm-${12/t.length} ${focus(p.tab == i, 'active')}`} 
+									onClick={() => p.setState({ section:DEFAULT.FNS[i], tab:i }) }>{m}</li>
+							)
+						}
+						</nav>
 				<Item id={this.state.active} title="Actualizar" parent={this}>
 					<table class="draggable">
 						<tbody>
@@ -60,8 +70,12 @@ export default class Overview extends Component {
 								p[n].map((m, i) => { 
 									let k = 0, d = `${m.id}-/${i}-/${n}`
 									return (
-										<tr key={i} id={d.concat(k++)} class={show(p.path == n, m.tag)} onDrop={::this.handleSwitch} draggable="true"
-											onDragOver={e => e.preventDefault()} onDragStart={e => { this.setState({ drag:e.target.id }) }}>
+										<tr key={i} id={d.concat(k++)} class={show(p.path == n, m.tag)} 
+											draggable="true"
+											onDrop={::this.handleSwitch} 
+											onDragOver={e => e.preventDefault()} 
+											onDragStart={e => { this.setState({ drag:e.target.id }) }}
+										>
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{i+1}</h6></td>
 											<td id={d.concat(k++)}><h6 id={d.concat(k++)}>{m.name}-{m.id.substring(4, 7)}</h6></td>
 											<td>

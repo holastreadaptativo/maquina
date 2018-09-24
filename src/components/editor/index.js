@@ -12,7 +12,8 @@ export class Editor extends Component {
 		const { store } = this.props
 		if (!store.push) {
 			data.child(`${store.code}/${store.path}/${store.id}`).child('width').once('value').then(snap => {
-				const { md, sm, xs } = snap.val(), devices = [md, sm, xs]
+				const { md, sm, xs } = snap.val(), 
+				devices = [md, sm, xs]
 				DEVICES.forEach((m, i) => { $(m.col).value = devices[i] })
 				this.setState({ md, sm, xs })
 			})
@@ -30,7 +31,9 @@ export class Editor extends Component {
 			this.setState({ [e.target.id]:Number(e.target.value), edited:true })
 	}
 	render() {
-		const { active, md, sm, xs } = this.state, { params, store } = this.props, { add, fn, path, push, tag, update, variables } = store
+		const { active, md, sm, xs } = this.state, 
+		{ params, store } = this.props, 
+		{ add, fn, path, push, tag, update, variables } = store
 		const { background, borderColor, borderRadius, borderStyle, borderWidth, height, width } = params
 		let onSave = push ? add : update, devices = [md, sm, xs], general = compare(tag, 'general')
 		return (
@@ -52,8 +55,13 @@ export class Editor extends Component {
 				</main>
 				<main class="preview">
 					<div class={show(active == 0 && !general, 'canvas')}>
-						<canvas id="container" class="center-block" style={{ background:background, width:`${width}px`, height:`${height}px`, 
-							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}></canvas>						
+						<canvas 
+							id="container" 
+							class="center-block" 
+							style={{ background:background, width:`${width}px`, height:`${height}px`, 
+							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}
+						>
+						</canvas>						
 					</div>
 					<div class={show(active == 0 && compare(fn, 'Insertar Texto'), 'textarea')}>
 						{fn == 'Insertar Texto' && <TextEditor {...this.props} text="content"/>}

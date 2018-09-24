@@ -16,8 +16,10 @@ export function transportador(config) {
   } = params
 
   if (!container) return
-  let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
-      width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
+  let maxWidth = container.parentElement.offsetWidth, 
+      responsive = params.width < maxWidth,
+      width = responsive ? params.width : maxWidth - 15, 
+      height = responsive ? params.height : width
 
   container.width = width
   container.height = height

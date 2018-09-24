@@ -18,9 +18,9 @@ export default class Design extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.print )
 	}
-    handleDevice(device) {
-        this.setState({ device:device })
-    }
+	handleDevice(device) {
+		this.setState({ device:device })
+	}
 	print() {
 		action.ver('PRINT', { ...this.props, versions:this.props.vars, vt:false })
 	}

@@ -13,6 +13,7 @@ export * from './design/medicion'
 export * from './design/algebra'
 export * from './design/repeticionPic'
 export * from './design/transportador'
+export * from './design/reloj';
 
 import * as functions from 'actions'
 

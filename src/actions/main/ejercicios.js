@@ -40,14 +40,22 @@ export function exe(action, state) {
 			base.child(id).once('value').then(t => {
 				let i = t.val().position
 				base.once('value').then(snap => {
-		    		snap.forEach(fn => {
-							let f = fn.val().position, ref = base.child(fn.key)
-		    			if (i < f && state[path].length) { ref.update({ position:f - 1 }) }
-		    			else if (i == f) {
-		    				ref.remove().then(() => { base.once('value').then(c => { base.update({ count:c.val().count - 1 }) }) })
-		    			}
-		    		})
-		    	})
+					snap.forEach(fn => {
+						let f = fn.val().position, 
+						ref = base.child(fn.key);
+						if (i < f) { //antes if(i < f && ¿¿state[path].length??) {
+							ref.update({ position: f - 1 }) 
+						} else if (i == f) {
+							ref.remove().then(() => { 
+								base.once('value').then(c => { 
+									base.update({ 
+										count: c.val().count - 1 
+									}) 
+								}) 
+							})
+						}
+					})
+				})
 			})	
 			break
 		}
@@ -75,8 +83,15 @@ export function exe(action, state) {
 		case 'PRINT': {
 			const { variables, versions, vt } = state
 			state[path].forEach((m, i) => {
-				let j = FUNCIONES.findIndex(x => x.tag == m.tag), k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
-				FUNCIONES[j].fns[k].action({ container:$(`${LABELS.CONT[path]}-${i}`), params:m.params, variables, versions, vt })
+				let j = FUNCIONES.findIndex(x => x.tag == m.tag), 
+				k = FUNCIONES[j].fns.findIndex(x => x.id == m.name)
+				FUNCIONES[j].fns[k].action({ 
+					container:$(`${LABELS.CONT[path]}-${i}`), 
+					params:m.params, 
+					variables, 
+					versions, 
+					vt 
+				})
 			}) 	
 			break
 		}
@@ -100,17 +115,30 @@ export function exe(action, state) {
 			break
 		}
 		case 'GET': {
-			const { container, device } = state, fn = state[path]; let count = 0, arr = [], aux = []
+			const { container, device } = state, fn = state[path];
+			let count = 0, arr = [], aux = []
 
 			fn.forEach((m, i) => { 
-				let size = device <= DEVICES[2].size ? m.width.xs : device <= DEVICES[1].size ? m.width.sm : m.width.md; count += Number(size)
+				let size = device <= DEVICES[2].size ? 
+					m.width.xs : device <= DEVICES[1].size ? 
+						m.width.sm : 
+						m.width.md; 
+				count += Number(size)
 				let component = 
 					<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 					{
 						m.tag != 'general' ? 
-						<canvas id={`${container}-${i}`} class="center-block" style={{background:m.params.background, borderRadius:m.params.borderRadius,
-							border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`, margin:'0 auto'}}></canvas> :
-						<div id={`${container}-${i}`} class="general"></div>
+							<canvas 
+								id={`${container}-${i}`} 
+								class="center-block" 
+								style={{
+									background:m.params.background, 
+									borderRadius:m.params.borderRadius,
+									border:`${m.params.borderWidth}px ${m.params.borderStyle} ${m.params.borderColor}`, 
+									margin:'0 auto'}}
+							>
+							</canvas> :
+							<div id={`${container}-${i}`} class="general"></div>
 					}
 					</div>
 				if (count <= 12) {

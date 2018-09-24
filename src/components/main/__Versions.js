@@ -26,7 +26,7 @@ export default class Versions extends Component {
 		this.props.setState({ vars:m.vars, active:i })
 	}
 	render() {
-		const { active, id, option, setState, versions, vt } = this.props
+		const { active, id, option, setState, versions, vt } = this.props;
         return (
 			<Aside id={id} option={option} title="Versiones" parent={this}>
 				<Item id={0} title="Generar" parent={this}>
@@ -38,8 +38,14 @@ export default class Versions extends Component {
 				<Item id={0} title="Selección" parent={this}>
 				{
 					[vt, ...versions].map((m, i) => 
-						<h4 key={i} id={m.id} class={focus(active == i, 'active')} onClick={() => this.handleSelect(m, i)}>
-							Versión <b>{m.id}</b> {m.id != 'vt' && <span class={glyph('remove close')} onClick={() => this.handleRemove(m, i)}/>}
+						<h4
+							key={i} 
+							id={m.id} 
+							class={focus(active == i, 'active')} 
+							onClick={() => this.handleSelect(m, i)}
+						>
+							Versión <b>{m.id}</b> 
+							{m.id != 'vt' && <span class={glyph('remove close')} onClick={() => this.handleRemove(m, i)}/>}
 						</h4>
 					)
 				}

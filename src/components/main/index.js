@@ -14,7 +14,7 @@ import Variables from './__Variables'
 export class OnePage extends Component {
 	constructor() {
 		super()
-		this.state = DEFAULT.EXE
+		this.state = DEFAULT.EXE;
 	}
 	componentWillMount() {
 		this.refresh(this.props.code)

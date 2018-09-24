@@ -27,7 +27,9 @@ export function random(minNumber, maxNumber) { return Math.floor(Math.random(0, 
 // Reemplaza las variables por las variables tutoriales, isTutorial es booleano
 export function replace(theInput, theVariables, isTutorial) {
 	for (let k = 0; k < 10; k++)
-        theVariables.forEach(aVariable => { theInput = theInput.toString().replace(`$${aVariable.var}`, `${isTutorial ? aVariable.vt : aVariable.val}`) })
+        theVariables.forEach(aVariable => { 
+            theInput = theInput.toString().replace(`$${aVariable.var}`, `${isTutorial ? aVariable.vt : aVariable.val}`) 
+        })
 	return theInput
 }
 
