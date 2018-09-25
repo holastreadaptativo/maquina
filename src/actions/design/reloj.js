@@ -28,7 +28,6 @@ export function reloj(config) {
 
   let imgReloj = new Image(); 
   imgReloj.src = params.clockType === 'Digital' ? imgSrcDigital : imgSrcAnalogo;
-  //const widthCanvasContainer = canvas.parentElement.offsetWidth;
   
   var ctx = container.getContext('2d');
 
@@ -43,14 +42,14 @@ export function reloj(config) {
         dibujaHoraPorCaracter(ctx, horas, minutos, segundos, params.hora, params.formato, params.conSegundos, container.width, container.height);
       });
     } else { //si es analogico
-      //las imagenes de horario y minutero son 200 x 200, la manecilla estan del centro hacia arriba
       let imgMinutero = new Image();
       imgMinutero.src = imgSrcMinutero; //
       let imgHorario = new Image();
       imgHorario.src = imgSrcHorario;
       ctx.translate(container.width / 2, container.height / 2);
       var radio = container.height / 2;
-      /* dibuja horario y minutero con palitos :3
+      /* 
+      dibuja horario y minutero con palitos :3
       var radio = container.height / 2;
       ctx.translate(container.width / 2, container.height / 2);
       var horasRadianes = horaARadianes(horas, minutos, params.sumarMinutos, params.formato);
@@ -88,7 +87,7 @@ function drawHand(ctx, pos, length, width) {
   ctx.stroke();
   ctx.rotate(-pos);
 }
-
+//las imagenes de horario y minutero son 200 x 200, las manecilla estan del centro hacia arriba
 function pegaImagenDeManecilla(ctx, pos, img, width) {
   var x = ((width - img.height) / 2) - (width / 2); //290 - (200 / 2) = 90 => 90 / 2 = 45
   ctx.rotate(pos);
