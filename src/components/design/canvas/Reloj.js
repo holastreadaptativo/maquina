@@ -10,9 +10,9 @@ export default class Reloj extends Component {
     this.state = props.push ? { 
       active:0,
       //hora
-      horas: 11,
-      minutos: 30,
-      segundos: 45,
+      horas: this.props.vt ? this.props.vt.vars[0].val : 11,
+      minutos: this.props.vt ? this.props.vt.vars[1].val : 30,
+      segundos: this.props.vt ? this.props.vt.vars[2].val : 45,
       //opciones
       clockType: 'Digital',  //tipo de reloj, digital o analogico
       formato: '12', //formato de 24 o 12 horas
@@ -30,7 +30,6 @@ export default class Reloj extends Component {
     formato = ['12', '24'], 
     hora = ['am', 'pm'], 
     siono = ['no','si'];
-    console.log('aqui estan las props', this.props);
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
