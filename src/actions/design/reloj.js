@@ -2,7 +2,7 @@ export function reloj(config) {
   const { container, params, variables, versions, vt } = config;
   var horas = '', minutos = '', segundos = '';
 
-  if(vt && params.clockType === 'Digital') {
+  if(vt && params.clockType === 'Digital') { //vt => si es version tutorial
     horas = String(params.horas).padStart(2,'0');
     minutos = String(params.minutos).padStart(2,'0');
     segundos = String(params.segundos).padStart(2,'0');
@@ -20,11 +20,11 @@ export function reloj(config) {
     segundos = Number(versions[2].val);
   }
   //paths de imagenes
-  const imgSrcDigital = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Reloj_digital_100.png';
-  const imgSrcAnalogo = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/basereloj.png';
-  const imgSrcMinutero = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Minutero_100.png';
-  const imgSrcHorario = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Horario_100.png';
-  const srcFont = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/fonts/digital-7_italic.ttf';
+  const imgSrcDigital = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Reloj_digital_100.svg';
+  const imgSrcAnalogo = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/basereloj.svg';
+  const imgSrcMinutero = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Minutero_100.svg';
+  const imgSrcHorario = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/relojes/Horario_100.svg';
+  const srcFont = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/fonts/digital-7-mono-italic.ttf';
 
   let imgReloj = new Image(); 
   imgReloj.src = params.clockType === 'Digital' ? imgSrcDigital : imgSrcAnalogo;
@@ -58,14 +58,25 @@ export function reloj(config) {
       drawHand(ctx, horasRadianes, radio*0.5, radio*0.07);
       drawHand(ctx, minutosRadianes, radio*0.6, radio*0.03);
       */
-      imgHorario.onload = function() {
-        var horasRadianes = horaARadianes(horas, minutos, params.sumarMinutos, params.formato);
-        pegaImagenDeManecilla(ctx, horasRadianes, imgHorario, radio)
+      imgMinutero.onload = function() {//59.12 => largo del minutero
+        var altoAnchoImg = imgMinutero.height + ((container.width * 0.3703));
+        var minutosRadianes = minutosSegundosARadianes(minutos);
+        ctx.imageSmoothingEnabled = false;
+        var x = ((container.width - altoAnchoImg) / 2) - (container.width / 2);
+        ctx.rotate(minutosRadianes);
+        ctx.drawImage(imgMinutero, x, x, altoAnchoImg, altoAnchoImg);
+        ctx.rotate(-minutosRadianes);
+        //pegaImagenDeManecilla(ctx, minutosRadianes, imgMinutero, container.width)
       }
 
-      imgMinutero.onload = function() {
-        var minutosRadianes = minutosSegundosARadianes(minutos);
-        pegaImagenDeManecilla(ctx, minutosRadianes, imgMinutero, container.width)
+      imgHorario.onload = function() {//39.12 => largo del horario
+        var altoAnchoImg = imgHorario.height + ((container.width * 0.2279));
+        var horasRadianes = horaARadianes(horas, minutos, params.sumarMinutos, params.formato);
+        ctx.imageSmoothingEnabled = false;
+        var x = ((container.width - altoAnchoImg) / 2) - (container.width / 2);
+        ctx.rotate(horasRadianes);
+        ctx.drawImage(imgHorario, x, x, altoAnchoImg, altoAnchoImg);
+        ctx.rotate(-horasRadianes);
       }
 
       if(params.conSegundos == 'si') {
@@ -119,108 +130,87 @@ conSegs = 'si' || 'no'
 ancho = ancho de canvas
 alto = alto de canvas
 */
+
 function dibujaHoraPorCaracter(ctx, horas, minutos, segundos, amPm, formato, conSegs, ancho, alto) {
-  ctx.font = `${60}px Digital-7`; //cambiar este valor fijo cuando se tenga la imagen real
+  var altoTexto = alto * 0.3027;
+  ctx.font = `${altoTexto}px Digital-7`; //cambiar este valor fijo cuando se tenga la imagen real
   ctx.fillStyle = '#175389';
-  var separacion = 25;
-  var separacionDosPuntos = 6;
-  var actual;
-  //inicia en la mitad del canvas menos la mitad del largo del texto de la hora
+  
+  var widthHora;
   if(formato === '12' && conSegs === 'si') {
-    actual = ((ancho / 2) - ((6 * separacion) + (2 * separacionDosPuntos) + separacion ) / 2);
+    widthHora = ctx.measureText(`${horas}:${minutos}:${segundos}${amPm[0]}`).width;
   } else if (formato === '12' && conSegs === 'no'){
-    actual = ((ancho / 2) - (4 * separacion) + separacionDosPuntos + separacion);
+    widthHora = ctx.measureText(`${horas}:${minutos}${amPm[0]}`).width;
   } else if (formato === '24' && conSegs === 'si') {
-    actual = ((ancho / 2) - ((6 * separacion) + (2 * separacionDosPuntos)) / 2);
+    widthHora = ctx.measureText(`${horas}:${minutos}:${segundos}`).width;
   } else {//formato = '24' y conSegundos = 'no'
-    actual = ((ancho / 2) - ((4 * separacion) + (2 * separacionDosPuntos)) / 2);
+    widthHora = ctx.measureText(`${horas}:${minutos}`).width;
   }
-       
 
-  if(horas[0] === '0') { //dibuja primer digito de hora
+  var posicionTextoEjeX = (ancho - widthHora) / 2;
+  var posicionTextoEjeY = alto * 0.4863;
+
+  if(horas[0] === '0' && horas[1] !== '0') { //dibuja primer digito de hora
     ctx.globalAlpha = 0.3;
-    ctx.fillText('0', actual, alto / 2);
-  } else if (horas[0] === '1') {
-    ctx.globalAlpha = 1;
-    ctx.fillText(' 1', actual, alto / 2);
+    ctx.fillText(horas[0], posicionTextoEjeX, posicionTextoEjeY);
   } else {
     ctx.globalAlpha = 1;
-    ctx.fillText(horas[0], actual, alto / 2);
+    ctx.fillText(horas[0], posicionTextoEjeX, posicionTextoEjeY);
   }
 
-  actual = actual + separacion; // separa los digitos
+  posicionTextoEjeX += ctx.measureText(horas[0]).width; // agrega ancho de nuevo caracter
 
-  if(horas[1] === '1') { //dibuja segundo digito de hora
-    ctx.globalAlpha = 1;
-    ctx.fillText(' 1', actual, alto / 2);
-  } else {
-    ctx.globalAlpha = 1;
-    ctx.fillText(horas[1], actual, alto / 2);
-  }
+  ctx.globalAlpha = 1;
+  ctx.fillText(horas[1], posicionTextoEjeX, posicionTextoEjeY);
 
-  actual = actual + separacion; // separa los digitos
+  posicionTextoEjeX += ctx.measureText(horas[1]).width; // agrega ancho de nuevo caracter
 
-  ctx.fillText(':', actual, alto / 2); //dibuja dos puntos
+  ctx.fillText(':', posicionTextoEjeX, posicionTextoEjeY); //dibuja dos puntos
 
-  actual = actual + separacionDosPuntos; // separa los digitos
+  posicionTextoEjeX += ctx.measureText(':').width; // agrega ancho de nuevo caracter
 
-  if(minutos[0] === '0') { //dibuja primer digito de minuto
+  if(minutos[0] === '0' && minutos[1] !== '0') { //dibuja primer digito de minuto
     ctx.globalAlpha = 0.3;
-    ctx.fillText('0', actual, alto / 2);
-  } else if (minutos[0] === '1') {
-    ctx.globalAlpha = 1;
-    ctx.fillText(' 1', actual, alto / 2);
+    ctx.fillText(minutos[0], posicionTextoEjeX, posicionTextoEjeY);
   } else {
     ctx.globalAlpha = 1;
-    ctx.fillText(minutos[0], actual, alto / 2);
+    ctx.fillText(minutos[0], posicionTextoEjeX, posicionTextoEjeY);
   }
 
-  actual = actual + separacion; // separa los digitos
+  posicionTextoEjeX += ctx.measureText(minutos[0]).width; // agrega ancho de nuevo caracter
 
-  if(minutos[1] === '1') { //dibuja segundo digito de minuto
-    ctx.globalAlpha = 1;
-    ctx.fillText(' 1', actual, alto / 2);
-  } else {
-    ctx.globalAlpha = 1;
-    ctx.fillText(minutos[1], actual, alto / 2);
-  }
+  ctx.globalAlpha = 1;
+  ctx.fillText(minutos[1], posicionTextoEjeX, posicionTextoEjeY);
+
+  posicionTextoEjeX += ctx.measureText(minutos[1]).width; // agrega ancho de nuevo caracter
 
   if(conSegs === 'si') {
-    actual = actual + separacion;
+    ctx.fillText(':', posicionTextoEjeX, posicionTextoEjeY);//dos puntos
 
-    ctx.fillText(':', actual, alto / 2);//dos puntos
+    posicionTextoEjeX += ctx.measureText(':').width; // agrega ancho de nuevo caracter
 
-    actual = actual + separacionDosPuntos;
-
-    if(segundos[0] === '0') {
+    if(segundos[0] === '0' && segundos[1] !== '0') {
       ctx.globalAlpha = 0.3;
-      ctx.fillText('0', actual, alto / 2);
-    } else if (segundos[0] === '1') {
-      ctx.globalAlpha = 1;
-      ctx.fillText(' 1', actual, alto / 2);
+      ctx.fillText(segundos[0], posicionTextoEjeX, posicionTextoEjeY);
     } else {
       ctx.globalAlpha = 1;
-      ctx.fillText(segundos[0], actual, alto / 2);
+      ctx.fillText(segundos[0], posicionTextoEjeX, posicionTextoEjeY);
     }
 
-    actual = actual + separacion;
+    posicionTextoEjeX += ctx.measureText(segundos[0]).width; // agrega ancho de nuevo caracter
 
-    if(segundos[1] === '1') {
-      ctx.globalAlpha = 1;
-      ctx.fillText(' 1', actual, alto / 2);
-    } else {
-      ctx.globalAlpha = 1;
-      ctx.fillText(segundos[1], actual, alto / 2);
-    }
+    ctx.globalAlpha = 1;
+    ctx.fillText(segundos[1], posicionTextoEjeX, posicionTextoEjeY);
+
+    posicionTextoEjeX += ctx.measureText(segundos[1]).width; // agrega ancho de nuevo caracter
   }
   
   if(formato === '12') {
     ctx.globalAlpha = 1;
-    ctx.font = `${30}px Digital-7`
 
-    actual = actual + separacion;
+    ctx.font = `${altoTexto / 2}px Digital-7`
 
-    ctx.fillText(amPm, actual, alto / 2); // dibuja hora 'am' o 'pm'
+    ctx.fillText(amPm, posicionTextoEjeX, posicionTextoEjeY); // dibuja hora 'am' o 'pm'
   }
 }
 
