@@ -130,7 +130,7 @@ export function exe(action, state) {
 						m.tag != 'general' ? 
 							<canvas 
 								id={`${container}-${i}`} 
-								class="center-block" 
+								class="center-block img-responsive" 
 								style={{
 									background:m.params.background, 
 									borderRadius:m.params.borderRadius,

@@ -57,7 +57,7 @@ export class Editor extends Component {
 					<div class={show(active == 0 && !general, 'canvas')}>
 						<canvas 
 							id="container" 
-							class="center-block" 
+							class="center-block img-fluid" 
 							style={{ background:background, width:`${width}px`, height:`${height}px`, 
 							border:`${borderWidth}px ${borderStyle} ${borderColor}`, borderRadius:`${borderRadius}px` }}
 						>

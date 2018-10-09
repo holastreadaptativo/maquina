@@ -11,7 +11,10 @@ export default class Versions extends Component {
 		e.preventDefault()
 		const { code, limit, selected, variables } = this.props; let fns = []
 		variables.forEach(m => {
-			if (m.type == 'funcion') { fns.push(m); this.setState({ fns }) }
+			if (m.type == 'funcion') { 
+				fns.push(m); 
+				this.setState({ fns }) 
+			}
 		})
 		action.ver('CREATE', { code, fns, limit, selected, variables })
 	}

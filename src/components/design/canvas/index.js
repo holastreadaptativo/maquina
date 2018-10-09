@@ -7,3 +7,4 @@ export Sucesiones from './Sucesiones'
 export RepeticionPictoricos from './RepeticionPictoricos'
 export Transportador from './Transportador'
 export Reloj from './Reloj'
+export AreaCuadrado from "./AreaCuadrado";

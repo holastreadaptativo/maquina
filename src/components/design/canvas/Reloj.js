@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Item, Select, Editor/*, Switch*/ } from 'components'
+import { Input, Item, Select, Editor/*, Switch*/ } from 'components' // Editor => '../../editor/index'
 import * as acciones from 'actions'
 import { COLORS } from 'stores'
 import $ from 'actions'

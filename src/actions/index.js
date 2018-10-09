@@ -14,6 +14,7 @@ export * from './design/algebra'
 export * from './design/repeticionPic'
 export * from './design/transportador'
 export * from './design/reloj';
+export * from './design/areaCuadrado'
 
 import * as functions from 'actions'
 

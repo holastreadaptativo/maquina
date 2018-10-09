@@ -21,7 +21,7 @@ export default class eModal extends Component {
     render() {
 	   return (
         	<Modal show={this.props.modal} onHide={::this.handleModal} bsClass="react-modal">
-        		{ this.props.children }
+				{ this.props.children }
         		<span class={glyph('info-sign react-help')} onClick={::this.handleHelp}/>
         		<div class={show(this.state.help, 'react-info')}>
         			<h4>Math</h4>
