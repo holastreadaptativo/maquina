@@ -15,6 +15,7 @@ export * from './design/repeticionPic'
 export * from './design/transportador'
 export * from './design/reloj';
 export * from './design/areaCuadrado'
+export * from './design/igualPerimetro'
 
 import * as functions from 'actions'
 

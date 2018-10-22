@@ -74,6 +74,7 @@ export function cod(action, state) {
 				for (let i = 0; i < variables.length; i++) {
 					let val = variables[i].val, res = variables[i].res, type = variables[i].type; vars[i] = true
 					if (val.length == 1) {
+						//caracteres de a-z y tipo es igual a 'funcion'
 						let a = val.charCodeAt(0) >= 97 && val.charCodeAt(0) <= 122 && type == 'funcion', 
 							b = Number.isInteger(parseInt(val)) && type == 'numero'
 						if (!a && !b) aux[1] = vars[i] = false

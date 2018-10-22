@@ -33,6 +33,16 @@ export function replace(theInput, theVariables, isTutorial) {
 	return theInput
 }
 
+export function regex(theInput, theVariables, isTutorial) {
+    var result = theInput.toString().replace(/(\s|\>)(\$[a-z])(\s|.|\<)/g, function(coincidencia) { //coincidencia => ' $a.'
+        var variable = theVariables.find(item => item.var == coincidencia[2]);
+        return isTutorial ? 
+            `${coincidencia[0]}${variable.vt}${coincidencia[3]}` : 
+            `${coincidencia[0]}${variable.val}${coincidencia[3]}`;
+    });
+    return result;
+}
+
 // Si cumple una condición theCondition dada agrega una clase theClass, si theCondition es false no muestra el elemento
 export function show(theCondition, theClass) { return `${theCondition ? theClass ? theClass : '' : 'hidden'}` }
 

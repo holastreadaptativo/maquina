@@ -1,11 +1,11 @@
-import { replace } from 'actions'
+import { regex, replace } from 'actions'
 
 export function insertarTexto(config) {
 	const { container, params, variables, versions, vt } = config
 
 	if (container) {
 		let vars = vt ? variables : versions
-  		container.innerHTML = replace(params.content, vars, vt)
+  		container.innerHTML = regex(params.content, vars, vt)
 	}
 }
 export function insertarInput(config) {
