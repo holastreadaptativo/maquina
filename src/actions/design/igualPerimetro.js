@@ -3,7 +3,7 @@ export function igualPerimetro(config) {
 
   container.width = params.cuadro * 10;
   container.height = params.cuadro * 5;
-  container.style.border = params.borderWidth+"px solid  #000";
+  container.style.border = params.borderWidth+'px solid  #000';
   
   var ctx = container.getContext('2d');
   
@@ -11,7 +11,7 @@ export function igualPerimetro(config) {
     ctx.beginPath();
     ctx.moveTo(i * params.cuadro, container.height);
     ctx.lineTo(i * params.cuadro, 0);
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = 'black';
     ctx.lineWidth=2;
     ctx.stroke();
     ctx.closePath();
@@ -21,7 +21,7 @@ export function igualPerimetro(config) {
     ctx.beginPath();
     ctx.moveTo(container.width, i * params.cuadro);
     ctx.lineTo(0, i * params.cuadro);
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = 'black';
     ctx.lineWidth=2;
     ctx.stroke();
     ctx.closePath();
@@ -47,35 +47,21 @@ export function igualPerimetro(config) {
     
     var alto = vt ? varAlto.vt : varAlto.val;
     var ancho = vt ? varAncho.vt : varAncho.val;
-    
-    switch(Number(alto)) {
-      case 1:
-        ctx.beginPath();
-        ctx.rect(params.cuadro, params.cuadro * 2, ancho * params.cuadro, alto * params.cuadro);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth=4;
-        ctx.stroke();
-        break;
-      case 2:
-        ctx.beginPath();
-        ctx.rect(params.cuadro, params.cuadro * 2, ancho * params.cuadro, alto * params.cuadro);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth=4;
-        ctx.stroke();
-        break;
-      case 3:
-        ctx.beginPath();
-        ctx.rect(params.cuadro, params.cuadro * 2, ancho * params.cuadro, alto * params.cuadro);
-        ctx.strokeStyle = "red";
-        ctx.lineWidth=4;
-        ctx.stroke();
-        break;
-      default:
-        console.log('no hizo nada');
-        break;
-    }
+    dibujaRectangulo(ctx, ancho * params.cuadro, alto * params.cuadro, params.cuadro);
+
   } catch(error) {
-    console.log('explota');
+    console.log(error);
   }
-  
+
+  function dibujaRectangulo(ctx, largox, largoy, lado) {
+    ctx.translate(0,0);
+    var x,y;
+    y = largoy / lado === 1 ? 2 * lado : lado;
+    x = (10 * lado)/2 - (Math.trunc((largox / lado) / 2) * lado);
+    ctx.beginPath();
+    ctx.rect(x, y, largox, largoy);
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth=4;
+    ctx.stroke();
+  }
 }

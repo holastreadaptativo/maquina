@@ -124,13 +124,17 @@ export function exe(action, state) {
 						m.width.sm : 
 						m.width.md; 
 				count += Number(size)
+				var requiereClassSeleccionable = path === 'answers' && m.tag != 'general';
+				function muestraClaseSeleccionable(requiereClassSeleccionable) {
+					return requiereClassSeleccionable ? 'radio-div' : '';
+				}
 				let component = 
 					<div key={i} class={`col-md-${size} col-sm-${m.width.sm} col-sm-${m.width.xs} div-${m.tag} tags`}>
 					{
 						m.tag != 'general' ? 
 							<canvas 
 								id={`${container}-${i}`} 
-								class="center-block img-responsive" 
+								class={`center-block img-responsive ${muestraClaseSeleccionable(requiereClassSeleccionable)}`} 
 								style={{
 									background:m.params.background, 
 									borderRadius:m.params.borderRadius,

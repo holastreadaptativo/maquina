@@ -34,11 +34,11 @@ export function replace(theInput, theVariables, isTutorial) {
 }
 
 export function regex(theInput, theVariables, isTutorial) {
-    var result = theInput.toString().replace(/(\s|\>)(\$[a-z])(\s|.|\<)/g, function(coincidencia) { //coincidencia => ' $a.'
-        var variable = theVariables.find(item => item.var == coincidencia[2]);
+    var result = theInput.toString().replace(/\$[a-z]/g, function(coincidencia) { //coincidencia => '$a'
+        var variable = theVariables.find(item => item.var == coincidencia[1]);
         return isTutorial ? 
-            `${coincidencia[0]}${variable.vt}${coincidencia[3]}` : 
-            `${coincidencia[0]}${variable.val}${coincidencia[3]}`;
+            `${variable.vt}` : 
+            `${variable.val}`;
     });
     return result;
 }

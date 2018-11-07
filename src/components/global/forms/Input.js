@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { show } from 'actions'
 
 export default class Input extends Component {
-	update() {
+	update(event) {
 		const { id, parent, update } = this.props, { input } = this.refs
 		if (!update) parent.setState({ [id]:input.value }); else update({ [id]:input.value })
 	}

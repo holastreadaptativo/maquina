@@ -5,7 +5,7 @@ export const DEVICES = 	[
  						]
 
 export const LINKS =	[
-							{ name:'bootstrap', type:'link', url:'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' },
+							{ name:'bootstrap', type:'link', url:'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' },
 							{ name:'app.css', type:'link', url:'https://firebasestorage.googleapis.com/v0/b/maquina-d0d32.appspot.com/o/src%2Fapp.css?alt=media&token=7b396524-c69f-42af-bc1a-6f0d25bd73c3', dev:'app.css' },
 							{ name:'app.js', type:'script', url:'https://firebasestorage.googleapis.com/v0/b/maquina-d0d32.appspot.com/o/src%2Fapp.js?alt=media&token=b7f757f7-1900-4e1d-aa28-92a5e60fde90', dev:'app.js' }
 							// { name:'bootstrap', type:'link', url:'https://goo.gl/PK5Rdx' },

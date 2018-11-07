@@ -24,7 +24,7 @@ export class OnePage extends Component {
 	}
 	download() {
 		this.refresh(this.props.code)
-		action.ver('DOWNLOAD', { ...this.props, vt:this.state.vt }) //genera el html de los ejercicios creados
+		action.ver('DOWNLOAD2', { ...this.props, vt:this.state.vt }) //genera el html de los ejercicios creados
 	}
 	refresh(code) {
 		action.ver('CHECK', { code, update:(::this.setState) })
