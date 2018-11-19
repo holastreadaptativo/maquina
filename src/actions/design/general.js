@@ -55,6 +55,29 @@ export function insertarInput(config) {
 		}	
 	}
 }
+export function insertarInputFraccion(config) {
+	const { container, params, variables, versions, vt } = config;
+	var inputFraccion = '', vars;
+	try {
+		vars = vt ? variables : versions;
+		var feedbackGood = regex(params.feedbackGood, vars, vt);
+		var feedbackBad = regex(params.feedbackBad, vars, vt);
+		var disabled = params.disabled==='si' ? 'disabled': '';
+		var entero = regex('$'.concat(params.entero), vars, vt);
+		var numerador = regex('$'.concat(params.numerador), vars, vt);
+		var denominador = regex('$'.concat(params.denominador), vars, vt);
+		inputFraccion = '<table><tbody><tr><td rowspan="2">';
+		inputFraccion += `<input type="text" id="entero" name="answer" class="input-numerador" data-content="{'feedbackGood':'${feedbackGood}','feedbackBad':'${feedbackBad}','esCorrecta': '${entero}'}" ${disabled} ${params.disabled==='si' && `value="${entero}"`} />`;
+		inputFraccion += '</td><td style="border-bottom: 2px solid black;">'
+		inputFraccion += `<input type="text" id="numerador" name="answer" class="input-num-y-den" data-content="{'feedbackGood':'${feedbackGood}','feedbackBad':'${feedbackBad}','esCorrecta': '${numerador}'}" ${disabled} ${params.disabled==='si' && `value="${numerador}"`}"/>`
+		inputFraccion += '</td></tr><tr><td>'
+		inputFraccion += `<input type="text" id="denominador" name="answer" class="input-num-y-den" data-content="{'feedbackGood':'${feedbackGood}','feedbackBad':'${feedbackBad}','esCorrecta': '${denominador}'}" ${disabled} ${params.disabled==='si' && `value="${denominador}"`}/>`
+		inputFraccion += '</td></tr></tbody></table>';
+	} catch(e) {
+		console.log(e);
+	}
+	container.innerHTML = inputFraccion;
+} 
 export function insertarTabla(config) {
 	const { container, params, variables, versions, vt } = config, { table } = params, vars = vt ? variables : versions
 

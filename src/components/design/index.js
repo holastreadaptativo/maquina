@@ -8,10 +8,12 @@ export const FUNCIONES = [
 	{ name:'General', tag:'general', fns:[
 		{ id:'Insertar Input', component:components.InsertarInput, action:actions.insertarInput },
 		{ id:'Insertar Tabla', component:components.InsertarTabla, action:actions.insertarTabla },
-		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto }
+		{ id:'Insertar Texto', component:components.InsertarTexto, action:actions.insertarTexto },
+		{ id:'Insertar Input Fraccion', component:components.InsertarInputFraccion, action: actions.insertarInputFraccion }
 	]},
 	{ name:'Numeración', tag:'numeracion', fns:[
 		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn },
+		{ id:'Recta 2', component:components.Recta, action:actions.recta },
 		{ id:'Repetición Pictóricos', component:components.RepeticionPictoricos, action:actions.repeticionPic }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[

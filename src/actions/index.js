@@ -16,6 +16,7 @@ export * from './design/transportador'
 export * from './design/reloj';
 export * from './design/areaCuadrado'
 export * from './design/igualPerimetro'
+export * from './design/recta'
 
 import * as functions from 'actions'
 

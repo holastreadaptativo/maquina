@@ -36,9 +36,7 @@ export function replace(theInput, theVariables, isTutorial) {
 export function regex(theInput, theVariables, isTutorial) {
     var result = theInput.toString().replace(/\$[a-z]/g, function(coincidencia) { //coincidencia => '$a'
         var variable = theVariables.find(item => item.var == coincidencia[1]);
-        return isTutorial ? 
-            `${variable.vt}` : 
-            `${variable.val}`;
+        return isTutorial ? variable.vt : variable.val;
     });
     return result;
 }

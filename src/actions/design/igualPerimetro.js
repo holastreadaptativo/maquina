@@ -1,3 +1,5 @@
+import { regex } from '../../actions/global/tools';
+
 export function igualPerimetro(config) {
   const { container, params, variables, versions, vt } = config;
 

@@ -75,6 +75,9 @@ export class Editor extends Component {
 					<div class={show(compare(fn, 'Insertar Tabla'), 'editable')}>
 						{fn == 'Insertar Tabla' && <TableEditor {...this.props}/>}
 					</div>
+					<div class={show(compare(fn, 'Insertar Input Fraccion'), 'editable')}>
+						{fn == 'Insertar Input Fraccion' && <InputFraccionEditor {...this.props}/>}
+					</div>
 					<button id="btn-save" class="react-submit" onClick={onSave(this.props.params)}>Guardar</button>
 				</main>
 				<header>
@@ -105,3 +108,4 @@ export class Editor extends Component {
 import InputEditor from './InputEditor'
 import TableEditor from './TableEditor'
 import TextEditor from './TextEditor'
+import InputFraccionEditor from './InputFraccionEditor'
