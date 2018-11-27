@@ -41,6 +41,35 @@ export function regex(theInput, theVariables, isTutorial) {
     return result;
 }
 
+export function regexFunctions(text) {
+    var result = text.replace(/(?=\{).*?(\})/g, function(coincidencia){ //coincidencia => '{funcion()}'
+        var final = coincidencia.length - 2;
+        var funcion = coincidencia.substr(1,final);
+        return eval(funcion);
+    });
+    return result;
+}
+
+function fraccion(entero, numerador, denominador) {
+    return `<table style="margin:0 4px;display: inline-block;vertical-align: middle;">
+                <tbody>
+                    <tr>
+                        ${entero > 0 ? `<td rowspan="2">
+                            <span style="font-size:25px;">${entero}</span>
+                        </td>` : ''}
+                        <td style="border-bottom: 2px solid black;">
+                            <span style="font-size:18px;">&nbsp;${numerador}&nbsp;</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size:18px;">&nbsp;${denominador}&nbsp;</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>`;
+}
+
 // Si cumple una condición theCondition dada agrega una clase theClass, si theCondition es false no muestra el elemento
 export function show(theCondition, theClass) { return `${theCondition ? theClass ? theClass : '' : 'hidden'}` }
 

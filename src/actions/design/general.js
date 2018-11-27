@@ -1,11 +1,13 @@
-import { regex, replace } from 'actions'
+import { regex, replace, regexFunctions } from 'actions'
 
 export function insertarTexto(config) {
 	const { container, params, variables, versions, vt } = config
 
 	if (container) {
-		let vars = vt ? variables : versions
-  		container.innerHTML = regex(params.content, vars, vt)
+		let vars = vt ? variables : versions;
+		var texto = regex(params.content, vars, vt);
+		texto = regexFunctions(texto);
+  		container.innerHTML = texto;
 	}
 }
 export function insertarInput(config) {

@@ -223,7 +223,7 @@ export function ver(action, state) {
 				a.href = url; //crea link, asigna propiedades 
 				console.log(url)
 				a.download = `${file}.html`; 
-				document.body.appendChild(a); 
+				document.body.appendChild(a);
 				a.click() //simula evento para descargar el documento html
 				setTimeout(() => { 
 					document.body.removeChild(a); 
@@ -244,17 +244,114 @@ export function ver(action, state) {
 
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
-				let documento = '<!doctype html><html lang="en"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
-				documento += '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">'
-				documento += '<link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/maquina-d0d32.appspot.com/o/src%2Fcss2.css?alt=media&token=62abffb1-79ac-4431-848a-8066746ff795">'
-				documento += `<title>${name}</title> </head> <body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">`
-				documento += '<header class="encabezado"> <div class="container"><div class="row no-gutters"> <div class="col-11"> <span class="h5 tituloEncabezado">MISIÓN: Determinar el área de rectangulos y cuadrados</span> </div> <div class="col-1 "> <p class="float-right">|Icono|</p> </div> </div> </div> </header> <section class="contenido"> <div class="container"> <div id="enunciado" class="row no-gutters"></div> <div id="respuesta" class="row justify-content-center"></div> </div> </section> <footer class="fixed-bottom pie"> <div class="container"> <div class="row no-gutters"> <div class="col-5 col-sm-3"><button type="button" id="btnConsulta" class="btn boton mb-2 mt-2">Consulta</button> </div> <div class="col-2 col-sm-6"></div> <div class="col-5 col-sm-3"><button type="button" id="btnResponder" class="btn boton mb-2 mt-2 float-right" disabled>Responder</button> </div> </div> </div> </footer> <div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-body"> </div> <div class="modal-footer"> <button id="btnCloseModal" type="button" class="btn btn-primary">Aceptar</button> </div> </div> </div> </div> <div class="modal fade" id="modalGlosa" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered" role="document"> <div class="modal-content"> <div class="modal-body" id="glosa"></div> <div class="modal-footer"> <button id="btnCloseGlosa" type="button" class="btn btn-primary">Aceptar</button> </div> </div> </div> </div>'
-				documento += '<input id="hiddenIntento" type="hidden" value="hiddenIntento"/>'
-				documento += '<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script> '
-				documento += '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> '
-				documento += '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> '
-				documento += '<script src="https://firebasestorage.googleapis.com/v0/b/maquina-d0d32.appspot.com/o/src%2Fapp.js?alt=media&token=cf929ad8-1480-4b95-b013-a7ab56083c30"></script> '
-				documento += '<script src="https://firebasestorage.googleapis.com/v0/b/maquina-d0d32.appspot.com/o/src%2FjsEjercicios.js?alt=media&token=8443fd2c-7485-4547-a33b-185f8ede6288"></script> </body></html>'
+/*
+https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/css/app.css
+https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/app.js
+https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/interfaz.js
+https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicios.js
+*/
+				let documento = `<!doctype html>
+<html lang="en">
+		<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+			<link rel="stylesheet" href="https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/css/app.css">
+			<title>${name}</title>
+		</head>
+		<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">
+			<header class="encabezado">
+					<div class="container">
+						<div class="row no-gutters">
+								<div class="col-11">
+									<span class="tituloEncabezado"></span>
+								</div>
+								<div class="col-1">
+									<p class="float-right btnSalirMision">|Icono|</p>
+								</div>
+						</div>
+					</div>
+			</header>
+			<header class="barraprogreso">
+					<div class="container">
+						<div class="row no-gutters">
+								<div class="col-12">
+									<svg id="progressbar" style="width:100%;height:20;" xmlns="http://www.w3.org/2000/svg">
+											<defs>
+												<linearGradient id="grad1">
+														<stop offset="0" stop-color="#5cba46" />
+														<stop offset="1" stop-color="#2ab04a" />
+												</linearGradient>
+											</defs>
+											<line id="bar" x1="0" y1="10" x2="100%" y2="10" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
+											<rect id="progress" x="0" y="6" height="8" rx="2" ry="2" fill="url(#grad1)" />
+											<circle id="progressfinal" cx="0" cy="10" r="5" stroke="#ddd" fill="#ddd" />
+									</svg>
+								</div>
+						</div>
+					</div>
+			</header>
+			<section class="contenido">
+					<div class="container">
+						<div id="enunciado" class="row no-gutters"></div>
+						<div id="respuesta" class="row justify-content-center"></div>
+					</div>
+			</section>
+			<footer class="fixed-bottom pie">
+					<div class="container">
+						<div class="row align-items-center">
+								<div class="col-5 col-sm-3">
+									<button type="button" id="btnConsulta" class="btn btn-block">Consulta</button>
+									<img id="imgfeedback" class="img-fluid d-none" alt="IMG" />
+								</div>
+								<div class="col-2 col-sm-6">
+									<span></span>
+								</div>
+								<div class="col-5 col-sm-3">
+									<button type="button" id="btnResponder" class="btn btn-block float-right" disabled>Responder</button> 
+								</div>
+						</div>
+					</div>
+			</footer>
+			<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+								<div id="feedback" class="modal-body">
+									<div class="container-fluid">
+											<div class="row no-gutters align-items-center">
+												<div class="col-4">
+														<img class="img-fluid" src="" alt="IMG" />
+												</div>
+												<div class="col-8">
+														<span></span>
+												</div>
+											</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button id="btnCloseModal" type="button" class="btn btn-primary">Aceptar</button>
+								</div>
+						</div>
+					</div>
+			</div>
+			<div class="modal fade" id="modalGlosa" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div id="contenidoGlosa" class="modal-content glosaEjercicio">
+								<div class="modal-body" id="glosa"></div>
+								<div class="modal-footer">
+									<button id="btnCloseGlosa" type="button" class="btn btn-primary">Aceptar</button>
+								</div>
+						</div>
+					</div>
+			</div>
+			<input id="hiddenIntento" type="hidden" value="hiddenIntento"/>
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+			<script src="https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/app.js"></script>
+			<script src="https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/interfaz.js"></script>
+			<script src="https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicios.js"></script>
+		</body>
+</html>`;
 				let a = document.createElement('a'), 
 				url = URL.createObjectURL(new Blob([documento], {type:'text/html'}))
 				a.href = url; //crea link, asigna propiedades 
