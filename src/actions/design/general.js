@@ -1,4 +1,5 @@
-import { regex, replace, regexFunctions } from 'actions'
+import { regex, replace, regexFunctions } from 'actions';
+import { shuffle } from '../global/tools';
 
 export function insertarTexto(config) {
 	const { container, params, variables, versions, vt } = config
@@ -12,15 +13,46 @@ export function insertarTexto(config) {
 }
 export function insertarInput(config) {
 	const { container, params, variables, versions, vt } = config, 
-	{ value1, value2, value3, value4, inputType } = params
-	let arr = [value1, value2, value3, value4], 
-	vars = vt ? variables : versions
-	
+	{ inputSize, answer, error2, error3, error4,
+		feed0, feed1, feed2, feed3, feed4, 
+		value1, value2, value3, value4, inputType } = params
+	var vars = vt ? variables : versions;
+	var values = inputSize === 3 ? [value1, value2, value3] : [value1, value2, value3, value4];
+	var feedback = inputSize === 3 ? [feed1,feed2, feed3] : [value1, value2, value3, value4];
+	var errFrec = inputSize === 3 ? [undefined, error2, error3] : [undefined, error2, error3, error4];
+	let r = '', n = '', valoresReemplazados = '';
+	console.log(params);
+
 	if (container) {
 		switch(inputType) {
-			case 'input': { container.innerHTML = '<input type="text" placeholder="Respuesta"></input>'; break }
-			case 'radio': { 
-				let r = '', n = '', valoresReemplazados = '';
+			case 'input': 
+				container.innerHTML = '<input type="text" placeholder="Respuesta"></input>'; 
+				break;
+			case 'radio 3':
+				var elements = [];
+				values.forEach((m, i) => {
+					var val = regex(m, vars, vt);
+					var dataContent = {
+						feedback: feedback[i],
+						esCorrecta: i === 0? true : false, 
+						errFrec: errFrec[i]
+					}
+					var lmnt = document.createElement('div');
+					lmnt.className = "col-3";
+					lmnt.innerHTML = `<div class="custom-control custom-radio">
+	<span></span>
+	<input type="radio" id="radio-${i}" name="answer" value="${val}" class="custom-control-input" data-content='${JSON.stringify(dataContent)}'>
+	<label class="custom-control-label" for="radio-${i}">${val}</label>
+</div>`;
+					elements.push(lmnt);
+				});
+				container.innerHTML = '';
+				elements = shuffle(elements);
+				elements.forEach((item, i) => {
+					container.appendChild(item);
+				});
+				break;
+			case 'radio 4':
 				arr.forEach((m, i) => {
 					valoresReemplazados = replace(m, vars, vt);
 					try {
@@ -31,10 +63,8 @@ export function insertarInput(config) {
 					}
 				}); 
 				container.innerHTML = r
-				break
-			}
-			case 'checkbox': { 
-				let r = '', n = '', valoresReemplazados = '';
+				break;
+			case 'checkbox':
 				arr.forEach((m, i) => { 
 					valoresReemplazados = replace(m, vars, vt);
 					try {
@@ -45,15 +75,9 @@ export function insertarInput(config) {
 					}
 				}); 
 				container.innerHTML = r
-				break
-			}	
-			case 'select': { let r = '<select>', n = ''
-				arr.slice(0, 3).forEach((m, i) => { n = eval(replace(m, vars, vt))
-					r += `<option key="${i}" value="${n}">${n}</option>` 
-				}); container.innerHTML = r + '</select>'
-				break
-			}
-			case 'textarea': { container.innerHTML = '<textarea placeholder="Respuesta"></textarea>'; break }
+				break;
+			case 'textarea': container.innerHTML = '<textarea placeholder="Respuesta"></textarea>';
+				break;
 		}	
 	}
 }

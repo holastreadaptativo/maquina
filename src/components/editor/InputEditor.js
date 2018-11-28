@@ -18,7 +18,7 @@ export default class InputEditor extends Component {
 		switch(type) {
 			case 'input': { return 'Permite ingresar un texto o un número' }
 			case 'checkbox': { return 'Permite seleccionar múltiples alternativas' }
-			case 'radio': case 'select': { return 'Permite seleccionar solo una alternativa' }
+			case 'radio 3': case 'radio 4': case 'select': { return 'Permite seleccionar solo una alternativa' }
 			case 'textarea': { return 'Permite ingresar una respuesta extensa' }
 		}
 	}
@@ -26,7 +26,10 @@ export default class InputEditor extends Component {
 		const { value1, value2, value3, value4 } = this.props.params, { variables } = this.props.store, arr = [value1, value2, value3, value4]
 		switch(type) {
 			case 'input': { return <input type="text" placeholder="Respuesta"></input> }
-			case 'radio': { return arr.map((m, i) => { let n = replace(m, variables, true)
+			case 'radio 3': { return arr.map((m, i) => { let n = replace(m, variables, true)
+				return ( <li key={i}><input name="answer" value={n} type="radio"/><label>{n}</label></li> )}					 
+			)}
+			case 'radio 4': { return arr.map((m, i) => { let n = replace(m, variables, true)
 				return ( <li key={i}><input name="answer" value={n} type="radio"/><label>{n}</label></li> )}					 
 			)}
 			case 'checkbox': { return arr.map((m, i) => { let n = replace(m, variables, true)
