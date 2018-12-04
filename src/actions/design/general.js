@@ -12,28 +12,78 @@ export function insertarTexto(config) {
 	}
 }
 export function insertarInput(config) {
-	const { container, params, variables, versions, vt } = config, 
-	{ inputSize, answer, error2, error3, error4,
+	const { container, params, variables, versions, vt } = config,
+	{ tipoInput, maxLength, inputSize, answer, answer2, answer3, answer4, error0, error2, error3, error4,
 		feed0, feed1, feed2, feed3, feed4, 
 		value1, value2, value3, value4, inputType } = params
 	var vars = vt ? variables : versions;
 	var values = inputSize === 3 ? [value1, value2, value3] : [value1, value2, value3, value4];
-	var feedback = inputSize === 3 ? [feed1,feed2, feed3] : [value1, value2, value3, value4];
+	var feedback = inputSize === 3 ? [feed1,feed2, feed3] : [feed1, feed2, feed3, feed4];
 	var errFrec = inputSize === 3 ? [undefined, error2, error3] : [undefined, error2, error3, error4];
 	let r = '', n = '', valoresReemplazados = '';
-	console.log(params);
-
 	if (container) {
 		switch(inputType) {
-			case 'input': 
-				container.innerHTML = '<input type="text" placeholder="Respuesta"></input>'; 
+			case 'input':
+				var dataContent = {
+					type: tipoInput,
+					feeds: [{
+						respuesta: answer,
+						feedback: feed1,
+						errFrec: null
+					},{
+						respuesta: answer2,
+						feedback: feed2,
+						errFrec: error2
+					},{
+						respuesta: answer3,
+						feedback: feed3,
+						errFrec: error3
+					},{
+						respuesta: answer4,
+						feedback: feed4,
+						errFrec: error4
+					}, {
+						respuesta: 'default',
+						feedback: feed0,
+						errFrec: error0
+					}]
+				};
+				container.innerHTML = '';
+				container.innerHTML = `<input type="text" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' />`;
 				break;
 			case 'radio 3':
 				var elements = [];
 				values.forEach((m, i) => {
 					var val = regex(m, vars, vt);
 					var dataContent = {
-						feedback: feedback[i],
+						feedback: feedback[i] != "" ? feedback[i] : feed0,
+						esCorrecta: i === 0? true : false, 
+						errFrec: errFrec[i]
+					};
+					var lmnt = document.createElement('div');
+					lmnt.className = "col-3";
+					lmnt.innerHTML = `<div class="custom-control custom-radio">
+	<span></span>
+	<input type="radio" id="radio-${i}" name="answer" value="${val}" class="custom-control-input" data-content='${JSON.stringify(dataContent)}'>
+	<label class="custom-control-label" for="radio-${i}">${val}</label>
+</div>`;
+					elements.push(lmnt);
+				});
+				container.innerHTML = '';
+				elements = shuffle(elements);
+				elements.forEach((item, i) => {
+					container.appendChild(item);
+				});
+				['a','b','c'].forEach(function(opcion, index){
+					container.children[index].querySelector('span').innerHTML = opcion;
+				});
+				break;
+			case 'radio 4':
+				var elements = [];
+				values.forEach((m, i) => {
+					var val = regex(m, vars, vt);
+					var dataContent = {
+						feedback: feedback[i] != "" ? feedback[i] : feed0,
 						esCorrecta: i === 0? true : false, 
 						errFrec: errFrec[i]
 					}
@@ -51,18 +101,9 @@ export function insertarInput(config) {
 				elements.forEach((item, i) => {
 					container.appendChild(item);
 				});
-				break;
-			case 'radio 4':
-				arr.forEach((m, i) => {
-					valoresReemplazados = replace(m, vars, vt);
-					try {
-						n = eval(valoresReemplazados);
-						r += `<li key="${i}"><input name="answer" value="${n}" type="radio"/><label>${n}</label></li>`
-					} catch(e) {
-						r += `<li key="${i}"><input name="answer" value="${valoresReemplazados}" type="radio"/><label>${valoresReemplazados}</label></li>`
-					}
-				}); 
-				container.innerHTML = r
+				['a','b','c','d'].forEach(function(opcion, index){
+					container.children[index].querySelector('span').innerHTML = opcion;
+				});
 				break;
 			case 'checkbox':
 				arr.forEach((m, i) => { 

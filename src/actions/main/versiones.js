@@ -254,6 +254,7 @@ https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicio
 <html lang="en">
 		<head>
 			<meta charset="utf-8">
+			<link rel="icon" type="image/png" href="https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/imagenes_front/favicon.png" />
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 			<link rel="stylesheet" href="https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/css/app.css">
@@ -301,7 +302,7 @@ https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicio
 					<div class="container">
 						<div class="row align-items-center">
 								<div class="col-5 col-sm-3">
-									<button type="button" id="btnConsulta" class="btn btn-block">Consulta</button>
+									<button type="button" id="btnConsulta" class="btn btn-block" onclick="pressConsulta()">Consulta</button>
 									<img id="imgfeedback" class="img-fluid d-none" alt="IMG" />
 								</div>
 								<div class="col-2 col-sm-6">
@@ -339,7 +340,7 @@ https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicio
 						<div id="contenidoGlosa" class="modal-content glosaEjercicio">
 								<div class="modal-body" id="glosa"></div>
 								<div class="modal-footer">
-									<button id="btnCloseGlosa" type="button" class="btn btn-primary">Aceptar</button>
+									<button id="btnCloseGlosa" type="button" class="btn btn-primary" onclick="cerrarFeedGlosa()">Aceptar</button>
 								</div>
 						</div>
 					</div>
