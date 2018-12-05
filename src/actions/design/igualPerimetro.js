@@ -1,6 +1,4 @@
-import { regex } from '../../actions/global/tools';
-
-export function igualPerimetro(config) {
+export default function igualPerimetro(config) {
   const { container, params, variables, versions, vt } = config;
 
   container.width = params.cuadro * 10;
@@ -31,21 +29,12 @@ export function igualPerimetro(config) {
 
   try {
     var varAncho, varAlto;
-    if(vt) {
-      varAlto = variables.find(function(item) {
-        return item.var === params.alto
-      });
-      varAncho = variables.find(function(item) {
-        return item.var === params.ancho
-      });
-    } else {
-      varAlto = versions.find(function(item) {
-        return item.var === params.alto
-      });
-      varAncho = versions.find(function(item) {
-        return item.var === params.ancho
-      });
-    }
+    varAlto = variables.find(function(item) {
+      return item.var === params.alto
+    });
+    varAncho = variables.find(function(item) {
+      return item.var === params.ancho
+    });
     
     var alto = vt ? varAlto.vt : varAlto.val;
     var ancho = vt ? varAncho.vt : varAncho.val;

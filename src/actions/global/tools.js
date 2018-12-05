@@ -82,3 +82,16 @@ export function shuffle(theArray, iterationNumber = 10) {
 
 // Reemplaza las comillas dobles por las simples del JSON para guardarlas en el HTML 
 export function stringify(theJSON) { return JSON.stringify(theJSON).replace(/[\"]/g,'\'') }
+
+export function cargaImagen(src) {
+    return new Promise(function(resolve, reject){
+        var img = new Image();
+        img.src = src;
+        img.onload = function() {
+            resolve(img);
+        }
+        img.onerror = function() {
+            reject('no pasa nada');
+        }
+    });
+}

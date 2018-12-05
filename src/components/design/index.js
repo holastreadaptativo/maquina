@@ -14,7 +14,8 @@ export const FUNCIONES = [
 	{ name:'Numeración', tag:'numeracion', fns:[
 		{ id:'Recta Numérica', component:components.RectaNumerica, action:actions.rectNumFn },
 		{ id:'Recta 2', component:components.Recta, action:actions.recta },
-		{ id:'Repetición Pictóricos', component:components.RepeticionPictoricos, action:actions.repeticionPic }
+		{ id:'Repetición Pictóricos', component:components.RepeticionPictoricos, action:actions.repeticionPic },
+		{ id:'Tabla Posicional', component:components.TablaPosicional, action:actions.tablaPosicional }
 	]},
 	{ name:'Álgebra', tag:'algebra', fns:[
 		{ id:'Sucesiones', component:components.Sucesiones, action:actions.sucesiones }
