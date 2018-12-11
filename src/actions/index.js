@@ -18,6 +18,7 @@ export * from './design/areaCuadrado'
 export * from './design/igualPerimetro'
 export * from './design/recta'
 export * from './design/tablaPosicional';
+export * from './design/valorPosicional';
 
 import * as functions from 'actions'
 

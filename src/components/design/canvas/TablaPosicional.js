@@ -1,5 +1,5 @@
 import React from 'react'
-import { Item, Select, Editor/*, Switch*/ } from 'components' // Editor => '../../editor/index'
+import { Input, Item, Select, Editor/*, Switch*/ } from 'components' // Editor => '../../editor/index'
 import * as acciones from 'actions'
 import $ from 'actions'
 
@@ -15,7 +15,11 @@ export default class TablaPosicional extends React.Component {
       _miles:'a',
       _centenas:'a',
       _decenas:'a',
-      _numero:'a'
+      _numero:'a',
+      _textoUnidades:'100',
+      _textoNumeroPalabras:'50',
+      _margenElementos:'30',
+      _soloTabla:'no'
     } : props.params;
   }
   componentDidUpdate() {
@@ -30,7 +34,11 @@ export default class TablaPosicional extends React.Component {
       _miles,
       _centenas,
       _decenas,
-      _numero
+      _numero,
+      _textoUnidades,
+      _textoNumeroPalabras,
+      _margenElementos,
+      _soloTabla
     } = this.state;
     const { variables } = this.props;
     var vars = variables.map(item => { 
@@ -41,6 +49,7 @@ export default class TablaPosicional extends React.Component {
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
+          <Select id="_soloTabla" prefix="Solo Tabla" options={['si','no']} parent={this} value={_soloTabla} />
           <Select id="_umil" prefix="Unidad de Mil" options={vars} parent={this} value={_umil}/>
           <Select id="_centena" prefix="Centena" options={vars} parent={this} value={_centena}/>
           <Select id="_decena" prefix="Decena" options={vars} parent={this} value={_decena}/>
@@ -49,6 +58,11 @@ export default class TablaPosicional extends React.Component {
           <Select id="_centenas" prefix="Centenas" options={vars} parent={this} value={_centenas}/>
           <Select id="_decenas" prefix="Decenas" options={vars} parent={this} value={_decenas}/>
           <Select id="_numero" prefix="Numero" options={vars} parent={this} value={_numero}/>
+        </Item>
+        <Item id={k++} title="Dimension" parent={this}>
+          <Input id="_textoUnidades" prefix="Texto unidades" parent={this} value={_textoUnidades}/>
+          <Input id="_textoNumeroPalabras" prefix="Texto numero" parent={this} value={_textoNumeroPalabras}/>
+          <Input id="_margenElementos" prefix="Margen" parent={this} value={_margenElementos}/>
         </Item>
       </Editor>
     );

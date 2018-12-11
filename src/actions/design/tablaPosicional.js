@@ -1,101 +1,53 @@
-import { cargaImagen } from '../global/tools';
+import { regex, cargaImagen, cargaFuente } from '../global/tools';
 
 export function tablaPosicional(config) {
   const { container, params, variables, versions, vt } = config;
-  var imgSrcTablaCentena = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/tablas_posicionales/Tabla_Centena_Full.png';
-  var imgSrcTablaUMil = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/tablas_posicionales/Tabla_UMil.png';
-  var imgSrcFlechaAbajo = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/tablas_posicionales/Numeracion_Flecha_Abajo.png';
-  var imgSrcSignoMas = 'https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/imagenes_front/tablas_posicionales/NumeracionSuma.png';
-  var { _umil,_centena,_decena,_unidad,_miles,_centenas,_decenas,_numero } = params;
+  var imgSrcTablaCentena = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/tabla_CDU.svg';
+  var imgSrcTablaUMil = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/tabla_UMCDU.svg';
+  var imgSrcFlechaAbajo = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/flecha_fija.svg';
+  var imgSrcSignoMas = 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/num_sig_mas.svg';
+  var srcFuente = 'https://desarrolloadaptatin.blob.core.windows.net/fuentes/LarkeNeueThin.ttf';
+  var { _soloTabla,_umil,_centena,_decena,_unidad,_miles,_centenas,_decenas,_numero,_textoUnidades,_textoNumeroPalabras,_margenElementos } = params;
+ 
+  var vars = vt ? variables : versions;
   try {
-    if(vt) {
-      if(_umil !== 'Seleccione') {
-        _umil = variables.find(function(item) {
-          return item.var === params._umil;
-        });
-        _miles = variables.find(function(item) {
-          return item.var === params._miles;
-        });
-        _umil = vt ? _umil.vt : _umil.val;
-        _miles = vt ? _miles.vt : _miles.val;
-      } else {
-        _umil = '0';
-        _miles = '0000';
-      }
-      _centena = variables.find(function(item) {
-        return item.var === params._centena
-      });
-      _decena = variables.find(function(item) {
-        return item.var === params._decena
-      });
-      _unidad = variables.find(function(item) {
-        return item.var === params._unidad
-      });
-      _centenas = variables.find(function(item) {
-        return item.var === params._centenas
-      });
-      _decenas = variables.find(function(item) {
-        return item.var === params._decenas
-      });
-      _numero = variables.find(function(item) {
-        return item.var === params._numero
-      });
+    if(_umil !== 'Seleccione') {
+      _umil = regex(`$${_umil}`, vars, vt);
+      _miles = regex(`$${_miles}`, vars, vt);
     } else {
-      if(_umil !== 'Seleccione') {
-        _umil = versions.find(function(item) {
-          return item.var === params._umil;
-        });
-        _miles = versions.find(function(item) {
-          return item.var === params._miles;
-        });
-        _umil = vt ? _umil.vt : _umil.val;
-        _miles = vt ? _miles.vt : _miles.val;
-      } else {
-        _umil = '0';
-        _miles = '0000';
-      }
-      _centena = versions.find(function(item) {
-        return item.var === params._centena
-      });
-      _decena = versions.find(function(item) {
-        return item.var === params._decena
-      });
-      _unidad = versions.find(function(item) {
-        return item.var === params._unidad
-      });
-      _centenas = versions.find(function(item) {
-        return item.var === params._centenas
-      });
-      _decenas = versions.find(function(item) {
-        return item.var === params._decenas
-      });
-      _numero = versions.find(function(item) {
-        return item.var === params._numero
-      });
+      _umil = '0';
+      _miles = '0000';
     }
-    _centena = vt ? _centena.vt : _centena.val;
-    _decena = vt ? _decena.vt : _decena.val;
-    _unidad = vt ? _unidad.vt : _unidad.val;
-    _centenas = vt ? _centenas.vt : _centenas.val;
-    _decenas = vt ? _decenas.vt : _decenas.val;
-    _numero = vt ? _numero.vt : _numero.val;
+    _centena = regex(`$${_centena}`, vars, vt);
+    _decena = regex(`$${_decena}`, vars, vt);
+    _unidad = regex(`$${_unidad}`, vars, vt);
+    _centenas = regex(`$${_centenas}`, vars, vt);
+    _decenas = regex(`$${_decenas}`, vars, vt);
+    _numero = regex(`$${_numero}`, vars, vt);
   } catch(error) {
     console.log(error);
   }
 
+  _textoUnidades = Number(_textoUnidades);
+  _textoNumeroPalabras = Number(_textoNumeroPalabras);
+  _margenElementos = Number(_margenElementos);
   Promise.all([
     cargaImagen(imgSrcTablaCentena), 
     cargaImagen(imgSrcTablaUMil), 
     cargaImagen(imgSrcFlechaAbajo),
-    cargaImagen(imgSrcSignoMas)
+    cargaImagen(imgSrcSignoMas),
+    cargaFuente('LarkeNeueThinFuente', srcFuente)
   ]).then(function(result){
     var imgTablaCentena = result[0], 
     imgTablaUMil = result[1], 
     imgFlechaAbajo = result[2], 
     imgSignoMas = result[3];
+    
     var ctx = container.getContext('2d');
     var tabla = _umil !== '0' ? imgTablaUMil : imgTablaCentena;
-    container.height = tabla.height + 350;
+    container.height = _soloTabla == 'no' ? 
+      tabla.height+_textoUnidades+_textoNumeroPalabras+(imgFlechaAbajo.height*2)+(_margenElementos*5) :
+      tabla.height;
     container.width = tabla.width;
     ctx.drawImage(tabla, 0, 0);
 
@@ -107,52 +59,58 @@ export function tablaPosicional(config) {
       var centroSeccion = (anchoSeparaciones * i) - (anchoSeparaciones/2);
       var centroSeparacion = anchoSeparaciones * i;
       dibujaNumeros(numeros[i-1], centroSeccion);
-      insertaFlecha(centroSeccion);
-      dibujaNumerosSuma(numerosSuma[i-1], centroSeccion);
-      i+1 !== diviciones+1 && insertaSignosMas(centroSeparacion);
+      _soloTabla == 'no' && insertaFlecha(centroSeccion);
+      _soloTabla == 'no' && dibujaNumerosSuma(numerosSuma[i-1], centroSeccion);
+      i+1 !== diviciones+1 && _soloTabla == 'no' && insertaSignosMas(centroSeparacion);
     }
 
     dibujaFlechaCentro(centroSeccion);
     dibujaNumeroFinal();
 
     function dibujaNumeros(numero, centroSeccion) {
-      ctx.font = 'bold 200pt opensans';
+      var altoBox = (tabla.height/1.8);
+      var altoTexto = altoBox*0.65;
+      var yTexto = tabla.height-(altoBox/2)+(altoTexto/2);
+      ctx.font = `${altoTexto}pt LarkeNeueThinFuente`;
       var anchoTexto = ctx.measureText(numero).width;
       var xTexto = centroSeccion-(anchoTexto/2);
-      ctx.fillText(numero, xTexto, 328);
-    }
-
-    function dibujaNumerosSuma(numero, centroSeccion) {
-      ctx.font = 'bold 100pt opensans';
-      var anchoTexto = ctx.measureText(numero).width;
-      var xTexto = centroSeccion-(anchoTexto/2);
-      var yTexto = tabla.height + imgFlechaAbajo.height + 130; 
+      ctx.fillStyle = '#F58220';
       ctx.fillText(numero, xTexto, yTexto);
     }
 
     function insertaFlecha(centroSeccion) {
       var x = centroSeccion - (imgFlechaAbajo.width / 2)
-      var y = tabla.height + 20;
+      var y = tabla.height + _margenElementos;
       ctx.drawImage(imgFlechaAbajo, x, y);
+    }
+
+    function dibujaNumerosSuma(numero, centroSeccion) {
+      ctx.font = `${_textoUnidades}pt LarkeNeueThinFuente`;
+      var anchoTexto = ctx.measureText(numero).width;
+      var xTexto = centroSeccion-(anchoTexto/2);
+      var yTexto = tabla.height+imgFlechaAbajo.height+(_margenElementos*2)+_textoUnidades;
+      ctx.fillStyle = '#F58220';
+      ctx.fillText(numero, xTexto, yTexto);
     }
     
     function insertaSignosMas(centroSeparacion) {
       var x = centroSeparacion - (imgSignoMas.width/2);
-      var y = tabla.height + imgFlechaAbajo.height + 85 - (imgSignoMas.height/2);
+      var y = tabla.height+(_margenElementos*2)+imgFlechaAbajo.height+(_textoUnidades/2)-(imgSignoMas.height/2);
       ctx.drawImage(imgSignoMas, x, y);
     }
 
     function dibujaFlechaCentro() {
       var x = (container.width/2) - (imgFlechaAbajo.width / 2);
-      var y = tabla.height + imgFlechaAbajo.height + 150;
+      var y = tabla.height+(_margenElementos*3)+imgFlechaAbajo.height+_textoUnidades;
       ctx.drawImage(imgFlechaAbajo, x, y);
     }
 
     function dibujaNumeroFinal() {
-      ctx.font = 'bold 50pt opensans';
+      ctx.font = `${_textoNumeroPalabras}pt LarkeNeueThinFuente`;
       ctx.textAlign="center"; 
       var x = container.width / 2;
-      var y = tabla.height + imgFlechaAbajo.height + 260;
+      var y = tabla.height+_textoUnidades+_textoNumeroPalabras+(imgFlechaAbajo.height*2)+(_margenElementos*4);
+      ctx.fillStyle = '#F58220';
       ctx.fillText(_numero, x, y);
     }
   }).catch(function(error){

@@ -95,3 +95,15 @@ export function cargaImagen(src) {
         }
     });
 }
+
+export function cargaFuente(nombre, src) {
+    return new Promise(function(resolve, reject){
+        var font = new FontFace(nombre, `url('${src}')`, {});
+        font.load().then(function(loadedFont) {
+            document.fonts.add(loadedFont);
+            resolve(nombre);
+        }).catch(function(error){
+            reject(error);
+        });
+    });
+}
