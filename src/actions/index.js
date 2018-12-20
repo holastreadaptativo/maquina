@@ -19,6 +19,7 @@ export * from './design/igualPerimetro'
 export * from './design/recta'
 export * from './design/tablaPosicional';
 export * from './design/valorPosicional';
+export * from './design/bloquesMultibase';
 
 import * as functions from 'actions'
 

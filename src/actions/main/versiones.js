@@ -369,6 +369,7 @@ export function ver(action, state) {
 		<script src="${appJs}"></script>
 		<script src="${interfazJs}"></script>
 		<script src="${jsEjerciciosJs}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_HTMLorMML-full" async></script>
 	</body>
 </html>`;
 				let a = document.createElement('a'), 
