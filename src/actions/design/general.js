@@ -13,96 +13,73 @@ export function insertarTexto(config) {
 }
 export function insertarInput(config) {
 	const { container, params, variables, versions, vt } = config,
-	{ tipoInput, maxLength, inputSize, answer, answer2, answer3, answer4, error0, error2, error3, error4,
-		feed0, feed1, feed2, feed3, feed4, 
-		value1, value2, value3, value4, inputType } = params
+	{ tipoInput, maxLength, inputSize, error0, error2, error3, error4, defaultError,
+		feed0, feed1, feed2, feed3, feed4, defaultFeed,
+		value1, value2, value3, value4, inputType,colmd,colsm,col } = params
 	var vars = vt ? variables : versions;
-	var values = inputSize === 3 ? [value1, value2, value3] : [value1, value2, value3, value4];
-	var feedback = inputSize === 3 ? [feed1,feed2, feed3] : [feed1, feed2, feed3, feed4];
-	var errFrec = inputSize === 3 ? [undefined, error2, error3] : [undefined, error2, error3, error4];
 	let r = '', n = '', valoresReemplazados = '';
+	var feedGenerico = regex(feed0, vars, vt);
+	var answers = [{
+		respuesta: regex(value1, vars, vt),
+		feedback: regex(feed1, vars, vt),
+		errFrec: null
+	},{
+		respuesta: regex(value2, vars, vt),
+		feedback: feed0 === '' ? regex(feed2, vars, vt) : feedGenerico,
+		errFrec: error0 === '' ? error2 : error0
+	}];
+	if(inputSize > 2) {
+		answers[2] = {
+			respuesta: regex(value3, vars, vt),
+			feedback: feed0 === '' ? regex(feed3, vars, vt) : feedGenerico,
+			errFrec: error0 === '' ? error3 : error0
+		}
+	}
+	if(inputSize > 3) {
+		answers[3] = {
+			respuesta: regex(value4, vars, vt),
+			feedback: feed0 === '' ? regex(feed4, vars, vt) : feedGenerico,
+			errFrec: error0 === '' ? error4 : error0
+		}
+	}
 	if (container) {
 		switch(inputType) {
 			case 'input':
 				var dataContent = {
-					type: tipoInput,
-					feeds: [{
-						respuesta: answer,
-						feedback: feed1,
-						errFrec: null
-					},{
-						respuesta: answer2,
-						feedback: feed2,
-						errFrec: error2
-					},{
-						respuesta: answer3,
-						feedback: feed3,
-						errFrec: error3
-					},{
-						respuesta: answer4,
-						feedback: feed4,
-						errFrec: error4
-					}, {
-						respuesta: 'default',
-						feedback: feed0,
-						errFrec: error0
-					}]
+					tipoInput,
+					answers,
+					feedbackDefecto: feed0 === '' ? regex(defaultFeed, vars, vt) : feedGenerico,
+					errFrecDefecto: error0 === '' ? defaultError : error0
 				};
 				container.innerHTML = '';
-				container.innerHTML = `<input type="text" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' />`;
+				//almodificar los inputs se arrojaran errores ya que las funciones que se llaman solo estan en el resultado final
+				switch (tipoInput) {
+					case 'texto':
+						container.innerHTML = `<input type="text" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+						break;
+					case 'numero':
+						container.innerHTML = `<input type="text" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+						break;
+					case 'alfanumerico':
+						container.innerHTML = `<input type="text" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+						break;
+				}
 				break;
-			case 'radio 3':
-				var elements = [];
-				values.forEach((m, i) => {
-					var val = regex(m, vars, vt);
-					var dataContent = {
-						feedback: feedback[i] != "" ? feedback[i] : feed0,
-						esCorrecta: i === 0? true : false, 
-						errFrec: errFrec[i]
-					};
-					var lmnt = document.createElement('div');
-					lmnt.className = "col-3";
-					lmnt.innerHTML = `<div class="custom-control custom-radio">
-	<span></span>
-	<input type="radio" id="radio-${i}" name="answer" value="${val}" class="custom-control-input" data-content='${JSON.stringify(dataContent)}'>
-	<label class="custom-control-label" for="radio-${i}">${val}</label>
-</div>`;
-					elements.push(lmnt);
-				});
+			case 'radio':
+				//al seleccionar los inputs se arrojaran errores ya que las funciones que se llaman solo estan en el resultado final
 				container.innerHTML = '';
-				elements = shuffle(elements);
-				elements.forEach((item, i) => {
-					container.appendChild(item);
-				});
-				['a','b','c'].forEach(function(opcion, index){
-					container.children[index].querySelector('span').innerHTML = opcion;
-				});
-				break;
-			case 'radio 4':
-				var elements = [];
-				values.forEach((m, i) => {
-					var val = regex(m, vars, vt);
-					var dataContent = {
-						feedback: feedback[i] != "" ? feedback[i] : feed0,
-						esCorrecta: i === 0? true : false, 
-						errFrec: errFrec[i]
-					}
+				container.className = 'row justify-content-center';
+				answers = shuffle(answers);
+				answers.forEach((m, i) => {
 					var lmnt = document.createElement('div');
-					lmnt.className = "col-3";
-					lmnt.innerHTML = `<div class="custom-control custom-radio">
+					lmnt.className = `col-${col} col-sm-${colsm} col-md-${colmd}`;
+					lmnt.innerHTML = `<div class="opcionradio">
 	<span></span>
-	<input type="radio" id="radio-${i}" name="answer" value="${val}" class="custom-control-input" data-content='${JSON.stringify(dataContent)}'>
-	<label class="custom-control-label" for="radio-${i}">${val}</label>
+	<input type="radio" id="radio-${i}" name="answer" value="${m.respuesta}" onchange="cambiaRadios(event)" data-content='${JSON.stringify(m)}'>
+	<label for="radio-${i}">${m.respuesta}</label>
 </div>`;
-					elements.push(lmnt);
-				});
-				container.innerHTML = '';
-				elements = shuffle(elements);
-				elements.forEach((item, i) => {
-					container.appendChild(item);
-				});
-				['a','b','c','d'].forEach(function(opcion, index){
-					container.children[index].querySelector('span').innerHTML = opcion;
+					lmnt.style.marginBottom = '5px';
+					container.appendChild(lmnt);
 				});
 				break;
 			case 'checkbox':
