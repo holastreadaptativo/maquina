@@ -31,7 +31,6 @@ export default class InputEditor extends Component {
 		switch(type) {
 			case 'input': { return <input type="text" placeholder="Respuesta"></input> }
 			case 'radio': 
-				console.log(n);
 				return arr.map((m, i) => { 
 					let n = replace(m, variables, true)
 					return ( <li key={i}><input name="answer" value={n} type="radio"/><label>{n}</label></li> 

@@ -260,18 +260,6 @@ export function ver(action, state) {
 		<title>${name}</title>
 	</head>
 	<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">
-		<header class="encabezado">
-				<div class="container-fluid">
-					<div class="row">
-							<div class="col-11">
-								<span class="tituloEncabezado"></span>
-							</div>
-							<div class="col-1">
-								<p class="float-right btnSalirMision">|Icono|</p>
-							</div>
-					</div>
-				</div>
-		</header>
 		<header class="barraprogreso">
 				<div class="container-fluid">
 					<div class="row">
