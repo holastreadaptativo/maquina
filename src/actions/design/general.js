@@ -123,24 +123,139 @@ export function insertarInputFraccion(config) {
 	container.innerHTML = inputFraccion;
 } 
 export function insertarTabla(config) {
-	const { container, params, variables, versions, vt } = config, { table } = params, vars = vt ? variables : versions
-
+	const { container, params, variables, versions, vt } = config, { table, encabezado } = params, vars = vt ? variables : versions
 	if (container) {
-		let r = '<table class="table table-condensed"><tbody>'			
-		table.forEach((m, i) => {
-			r += `<tr key="${i}">`
-			m.value.forEach((n, j) => {
-				if (n.value) {
-					r += `<td key="${j}">`
-					r += n.type == 'input' ? `<input class="form-control" type="text" placeholder="Respuesta" value="${n.value.answer}"></input>` :
-						n.type == 'image' ? `<img src="${n.value.url}" height="50px"/>` : `<h6>${n.value.text}</h6>`
-					r += '</td>'
-				}	
-			})
+		let r = '<table class="tabla"><tbody>';
+		for(var row = 0; row < table.length; row++) {
+			r += '<tr>';
+			for(var col = 0; col < table[row].length; col++) {
+				r+= '<td>';
+				switch(table[row][col].type) {
+					case 'text':
+						if(encabezado==='arriba' && row === 0) {
+							r+= `<p><b>${regex(table[row][col].value.text, vars, vt)}</b></p>`;
+						} else if(encabezado==='izquierda' && col === 0) {
+							r+= `<p><b>${regex(table[row][col].value.text, vars, vt)}</b></p>`;
+						} else {
+							r+= `<p>${regex(table[row][col].value.text, vars, vt)}</p>`;
+						}
+						break;
+					case 'image':
+						r+= `<img src=${regex(table[row][col].value.url, vars, vt)} height=${table[row][col].value.height} width=${table[row][col].value.width}/>`;
+						break;
+					case 'input':
+						var { tipoInput, maxLength, error0, error2, error3, error4, defaultError,
+							feed0, feed1, feed2, feed3, feed4, defaultFeed,
+							value1, value2, value3, value4 } = table[row][col].value;
+						var feedGenerico = regex(feed0, vars, vt);
+						var answers = [{
+							respuesta: regex(value1, vars, vt),
+							feedback: regex(feed1, vars, vt),
+							errFrec: null
+						}];
+						if(value2 !== '') {
+							answers[1] = {
+								respuesta: regex(value2, vars, vt),
+								feedback: feed0 === '' ? regex(feed2, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error2 : error0
+							}
+						}
+						if(value3 !== '') {
+							answers[2] = {
+								respuesta: regex(value3, vars, vt),
+								feedback: feed0 === '' ? regex(feed3, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error3 : error0
+							}
+						}
+						if(value4 !== '') {
+							answers[3] = {
+								respuesta: regex(value4, vars, vt),
+								feedback: feed0 === '' ? regex(feed4, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error4 : error0
+							}
+						}
+						var dataContent = {
+							tipoInput,
+							answers,
+							feedbackDefecto: feed0 === '' ? regex(defaultFeed, vars, vt) : feedGenerico,
+							errFrecDefecto: error0 === '' ? defaultError : error0
+						};
+						switch(tipoInput) {
+							case 'text':
+								r+= `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+								break;
+							case 'numero':
+								r+= `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+								break;
+							case 'alfanumerico':
+								r+= `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+								break;
+						}
+						break;
+					case 'text-input':
+						var { text, tipoInput, maxLength, error0, error2, error3, error4, defaultError,
+							feed0, feed1, feed2, feed3, feed4, defaultFeed,
+							value1, value2, value3, value4 } = table[row][col].value;
+						var p = regex(text, vars, vt);
+						var feedGenerico = regex(feed0, vars, vt);
+						var answers = [{
+							respuesta: regex(value1, vars, vt),
+							feedback: regex(feed1, vars, vt),
+							errFrec: null
+						}];
+						if(value2 !== '') {
+							answers[1] = {
+								respuesta: regex(value2, vars, vt),
+								feedback: feed0 === '' ? regex(feed2, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error2 : error0
+							}
+						}
+						if(value3 !== '') {
+							answers[2] = {
+								respuesta: regex(value3, vars, vt),
+								feedback: feed0 === '' ? regex(feed3, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error3 : error0
+							}
+						}
+						if(value4 !== '') {
+							answers[3] = {
+								respuesta: regex(value4, vars, vt),
+								feedback: feed0 === '' ? regex(feed4, vars, vt) : feedGenerico,
+								errFrec: error0 === '' ? error4 : error0
+							}
+						}
+						var dataContent = {
+							tipoInput,
+							answers,
+							feedbackDefecto: feed0 === '' ? regex(defaultFeed, vars, vt) : feedGenerico,
+							errFrecDefecto: error0 === '' ? defaultError : error0
+						};
+						var input;
+						switch(tipoInput) {
+							case 'text':
+								input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+								break;
+							case 'numero':
+								input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+								break;
+							case 'alfanumerico':
+								input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+								break;
+						}
+						r+= `<p>${p.replace('{input}', input)}</p>`;
+						break;
+					case 'text-image':
+						var p = regex(table[row][col].value.text, vars, vt);
+						var img = `<img src=${regex(table[row][col].value.url, vars, vt)} height=${table[row][col].value.height} width=${table[row][col].value.width}/>`;
+						r+= `<p>${p.replace('{imagen}', img)}</p>`
+						break;
+				}
+				r+= '</td>';
+			}
 			r += '</tr>'
-		})
-		r += '</tbody></table>'
-		container.innerHTML = r
+		}
+		r += '</tbody></table>';
+		container.innerHTML = r;
 	}
 }
 export const ME = { 

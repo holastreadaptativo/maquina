@@ -1,19 +1,32 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { regex } from '../../actions/global/tools';
 
 export default class TableEditor extends Component {
+	constructor(props) {
+		super(props);
+	}
 	render () {
 		const { table } = this.props.params
+		const { variables, versions, vt } = this.props.store;
+		var vars = vt ? variables : versions;
 		return (
-			<table class="table table-condensed">
+			<table class="table">
 				<tbody>
 				{
 					table.map((m, i) => 
 						<tr key={i}>
 						{ 
-							m.value.map((n, j) => 
+							m.map((n, j) => 
 								<td key={j}>
-									<input class={`form-control ${n.type}`} type="text" placeholder={this.getPlaceholder(n.type)} 
-									value={this.getValue(n.type, n.value)} disabled/>
+									{n.type === 'text' ? 			<p>{regex(n.value.text, vars, vt)}</p> :
+										n.type === 'image' ? 		<img src={regex(n.value.url, vars, vt)} height={n.value.height} width={n.value.width}/> :
+											n.type === 'input' ? 	<input 
+																							class={`form-control ${n.type}`} 
+																							type="text" 
+																							placeholder={'La coorrecta es: ' + regex(n.value.value1, vars, vt)}
+																						/> : 
+																						<p>{regex(n.value.text, vars, vt)}</p>
+									}
 								</td>
 							)
 						}
@@ -23,19 +36,5 @@ export default class TableEditor extends Component {
 				</tbody>
 			</table>
 		)
-	}
-	getPlaceholder(type) {
-		switch(type) {
-			case 'input': { return 'Respuesta' }
-			case 'image': { return 'URL de la imagen' }
-			case 'text': { return 'Completar texto' }
-		}
-	}
-	getValue(type, value) {
-		switch(type) {
-			case 'input': { return value.answer }
-			case 'image': { return value.url }
-			case 'text': { return value.text }
-		}
 	}
 }

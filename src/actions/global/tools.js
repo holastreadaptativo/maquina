@@ -41,8 +41,7 @@ export function regex(theInput, theVariables, isTutorial) {
         });
         return result;
     } catch(error) {
-        console.log(error);
-        console.log('Texto ==> ', theInput, ' Variables ==>',theVariables, ' Tutorial ==>',isTutorial);
+        console.log(error.message);
     }
 }
 
