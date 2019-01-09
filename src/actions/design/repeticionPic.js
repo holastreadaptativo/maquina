@@ -1,393 +1,401 @@
+import { regex, cargaImagen } from '../global/tools'
+
 export function repeticionPic(config) {
-  const { container, params, variables, versions, vt } = config
+  const { container, params, variables, versions, vt } = config;
 
-  const {
-    pictoricType,
-    // height, width, background,
-    // Borde
-    //borderWidth, borderColor, borderStyle, borderRadius,
-    // Título
-    titleValue, titleColor, titleSize, titleWeight,
-    // Padding
-    canvasPadding, containerPadding, chartPadding,
-    // Fuente
-    /*fontColor, fontSize, */fontFamily, /*fontWeight,*/
-    // Valores
-    cantElem,
-    elemData
-  } = params
-  if (!container) return
-  let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
-      width = responsive ? params.width : maxWidth - 15, height = params.height//height = responsive ? params.height : width
+  var imagenes = [{
+    name: 'bloque mil',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/umil.svg'
+  },{
+    name: 'bloque cien',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/centena.svg'
+  }, {
+    name: 'bloque diez',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/decena.svg'
+  },{
+    name: 'bloque uno',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/img_Funcionalidades_temp/unidad.svg'
+  },{
+    name: 'billete mil',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/1000_1.png'
+  },{
+    name: 'moneda cien',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/100_1.png'
+  },{
+    name: 'moneda diez',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/10_1.png'
+  },{
+    name: 'moneda uno',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/1_1.png'
+  },{
+    name: 'moneda quinientos',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/500_1.png'
+  },{
+    name: 'moneda cincuenta',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/50_1.png'
+  },{
+    name: 'moneda cinco',
+    src: 'https://desarrolloadaptatin.blob.core.windows.net/agapito/5_1.png'
+  }];
+ 
+  let {_pictoricos, _separacion, heightCanvas, widthCanvas, 
+  _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,
+  _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,
+  _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,
+  _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,
+  _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,
+  _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,
+  _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,
+  _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8} = params;
 
-  container.width = width
-  container.height = height
+  var vars = vt ? variables : versions;
+  try {
+    _repeticiones1 = regex(`$${_repeticiones1}`, vars, vt);
+    _repeticiones2 = regex(`$${_repeticiones2}`, vars, vt);
+    _repeticiones3 = regex(`$${_repeticiones3}`, vars, vt);
+    _repeticiones4 = regex(`$${_repeticiones4}`, vars, vt);
+    _repeticiones5 = regex(`$${_repeticiones5}`, vars, vt);
+    _repeticiones6 = regex(`$${_repeticiones6}`, vars, vt);
+    _repeticiones7 = regex(`$${_repeticiones7}`, vars, vt);
+    _repeticiones8 = regex(`$${_repeticiones8}`, vars, vt);
+  } catch(error) {
+    console.log(error);
+  }
 
-  let c = container
 
-  let vars = vt ? variables : versions
 
-  let canvasPaddingAux = {}, containerPaddingAux = {}, chartPaddingAux = {}/*, innerChartPaddingAux = {}*/
-  canvasPaddingAux.top = eval(canvasPadding.split(',')[0])
-  canvasPaddingAux.right = eval(canvasPadding.split(',')[1])
-  canvasPaddingAux.bottom = eval(canvasPadding.split(',')[2])
-  canvasPaddingAux.left = eval(canvasPadding.split(',')[3])
-  containerPaddingAux.top = eval(containerPadding.split(',')[0])
-  containerPaddingAux.right = eval(containerPadding.split(',')[1])
-  containerPaddingAux.bottom = eval(containerPadding.split(',')[2])
-  containerPaddingAux.left = eval(containerPadding.split(',')[3])
-  chartPaddingAux.top = eval(chartPadding.split(',')[0])
-  chartPaddingAux.right = eval(chartPadding.split(',')[1])
-  chartPaddingAux.bottom = eval(chartPadding.split(',')[2])
-  chartPaddingAux.left = eval(chartPadding.split(',')[3])
-
-  let state = {}
-  state.cantElem = eval(cantElem)
-  state.ctx = container.getContext('2d')
-  state.titles = {
-    mainTitle: {
-      title: titleValue,
-      alignX: 'center',
-      alignY: 'top',
-      font: {
-          family: fontFamily,
-          weight: titleWeight,
-          color: titleColor,
-          size: eval(titleSize)
-      },
-      move: { moveY: 0, moveX: 0 }
+ var repeticiones = getRepeticiones();
+ 
+ _separacion = Number(_separacion);
+ let xStart = _separacion;
+ container.height = Number(heightCanvas);
+ container.width = Number(widthCanvas);
+ var ctx = container.getContext('2d');
+ //carga las imagenes y dibuja las repeticiones
+ Promise.all(repeticiones.map(x => cargaImagen(x.imagen.src))).then(imagenes => {
+    repeticiones.forEach(function(x, i){
+       repeticiones[i].imagen = imagenes[i]
+    });
+    return repeticiones;
+ }).then(function(repeticionesPictoricas) {
+    for(let repeticion of repeticionesPictoricas) {
+      console.log(repeticion);
+       if(repeticion.repeticiones > 0) {
+          switch(repeticion.formaRepeticion) {
+             case 'dado':
+                xStart = dibujaRepeticionDado(repeticion);
+                break;
+             case 'diagonal/apilado':
+                xStart = dibujaRepeticionDiagonalApilado(repeticion);
+                break;
+             case 'diagonal':
+                xStart = dibujaRepeticionDiagonal(repeticion);
+                break;
+             case 'horizontal/vertical':
+                xStart = dibujaRepeticionHorizontalVertical(repeticion);
+                break;
+             case 'horizontal':
+                xStart = dibujaRepeticionHorizontal(repeticion);
+                break;
+             case 'vertical':
+                xStart = dibujaRepeticionVertical(repeticion);
+                break;
+             default:
+                console.log(repeticion);
+                break;
+          }
+       }
     }
-  }
-  state.canvas = {
-    height: c.height,
-    width: c.width,
-    padding: {
-      top: c.height*(canvasPaddingAux.top/1000),
-      right: c.width*(canvasPaddingAux.right/1000),
-      bottom: c.height*(canvasPaddingAux.bottom/1000),
-      left: c.width*(canvasPaddingAux.left/1000)
-    }
-  }
-  state.canvas.position = {
-    x0: state.canvas.padding.left,
-    y0: state.canvas.padding.top,
-    x1: c.width - (state.canvas.padding.right),
-    y1: c.height - (state.canvas.padding.bottom) 
-  }
-  state.container = {
-    padding: {
-      top: c.height*(containerPaddingAux.top/1000),
-      right: c.width*(containerPaddingAux.right/1000),
-      bottom: c.height*(containerPaddingAux.bottom/1000),
-      left: c.width*(containerPaddingAux.left/1000)
-    }
-  }
-  state.container.position = {
-    x0: state.canvas.position.x0 + state.container.padding.left,
-    y0: state.canvas.position.y0 + state.container.padding.top + titleSize,
-    x1: state.canvas.position.x1 - state.container.padding.right,
-    y1: state.canvas.position.y1 - state.container.padding.bottom
-  }
-  state.chart = {
-    type: pictoricType,
-    padding: {
-      top: c.height*(chartPaddingAux.top/1000),
-      right: c.width*(chartPaddingAux.right/1000),
-      bottom: c.height*(chartPaddingAux.bottom/1000),
-      left: c.width*(chartPaddingAux.left/1000)
-    }
-  }
-  state.chart.position = {
-    x0: state.container.position.x0 + state.chart.padding.left,
-    y0: state.container.position.y0 + state.chart.padding.top,
-    x1: state.container.position.x1 - state.chart.padding.right,
-    y1: state.container.position.y1 - state.chart.padding.bottom
-  }
-  state.chart.width = state.chart.position.x1 - state.chart.position.x0,
-  state.chart.height = state.chart.position.y1 - state.chart.position.y0
-  
-  state.pictorics = []
-  for (let i = 0; i < elemData.length; i++) {
-    let elemType = 'elemType' + (i+1)
-    let repetElem = 'repetElem' + (i+1)
-    state.pictorics.push({
-      elem: elemData[i][elemType],
-      qtty: Number(elemData[i][repetElem])
-    })
-  }
-  
-  state.images = [
-    {
-      name: 'moneda 1',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1_1.png',
-      width: 66,
-      height: 66
-    },
-    {
-      name: 'moneda 5',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/5_1.png',
-      width: 66,
-      height: 66
-    },
-    {
-      name: 'moneda 10',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/10_1.png',
-      width: 66,
-      height: 66
-    },
-    {
-      name: 'moneda 50',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/50_1.png',
-      width: 66,
-      height: 66
-    },
-    {
-      name: 'moneda 100',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/100_1.png',
-      width: 72,
-      height: 72
-    },
-    {
-      name: 'moneda 500',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/500_1.png',
-      width: 72,
-      height: 72
-    },
-    {
-      name: 'billete 1000',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net:443/agapito/1000_1.png',
-      width: 120,
-      height: 60
-    },
-    {
-      name: 'bloque unidad',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Unidad_Original.png',
-      width: 71,
-      height: 68
-    },
-    {
-      name: 'bloque decena',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Decenas_Original.png',
-      width: 71,
-      height: 541
-    },
-    {
-      name: 'bloque centena',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Cien_Original.png',
-      width: 571,
-      height: 541
-    },
-    {
-      name: 'bloque mil',
-      url: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Bloques%20multibase/Mil_Original.png',
-      width: 572,
-      height: 489
-    }
-  ]
-  
-  // drawRects(state, state.canvas, 'red')
-  // drawRects(state, state.container, 'blue')
-  // drawRects(state, state.chart, 'green')
-  init(state)
-}
+ }).catch(function(error){
+    console.log(error);
+ });
+ 
 
-// Dibuja los espacios definidos, container, chart
+  function getRepeticiones() {
+    let repeticiones = [{
+      imagen: _imagen1 !== '' ? imagenes.find(x => x.name === _imagen1) : { src:'' },
+      altoImagen: Number(_altoImagen1),
+      formaRepeticion: _formaRepeticion1,
+      repeticiones: Number(_repeticiones1),
+      separacion: Number(_separacion1),
+      separaciony: Number(_separaciony1)
+    }];
 
-/*
-function drawRects(state, el, color) {
-  const { ctx } = state
-  ctx.save()
-  ctx.beginPath()
-  ctx.strokeStyle = color
-  ctx.rect(el.position.x0, el.position.y0, el.position.x1 - el.position.x0, el.position.y1 - el.position.y0)
-  ctx.stroke()
-  ctx.restore()
-  ctx.save()
-}
-*/
-
-function init(state) {
-  insertarTituloPrincipal(state)
-  insertarPictoricos(state)
-}
-
-function insertarTituloPrincipal(state) {
-  const { ctx, canvas } = state
-  const { mainTitle } = state.titles
-  ctx.save()
-  let x = (canvas.position.x1)/2 + mainTitle.move.moveX + canvas.position.x0
-  let y = 0 + canvas.position.y0 + mainTitle.move.moveY
-  ctx.translate(x,y)
-  ctx.fillStyle = mainTitle.color
-  ctx.textAlign = mainTitle.alignX
-  ctx.textBaseline = mainTitle.alignY
-  ctx.font = mainTitle.font.weight + ' ' + mainTitle.font.size + 'px ' + mainTitle.font.family
-  ctx.fillText(mainTitle.title, 0, 0)
-  ctx.restore()
-  ctx.save()
-}
-
-function insertarPictoricos(state) {
-  const { chart } = state
-  if (chart.type === 'billetes y monedas') {
-    billetes(state)
-  } else {
-    bloqueMultibase(state)
-  }
-  
-}
-
-function billetes(state) {
-  const { ctx, chart, pictorics, images, cantElem } = state
-  const { x0, y0, x1 } = chart.position
-  // pictorics ==> elem, qtty
-  // images ==> name, url, width, height
-  let imgArr = []
-  let chartWidth = x1 - x0
-  let maxPictoricWidth = 0
-  // let xDist = [x0]
-  // let yDist = [y0]
-  let reduceImgPercent = 1
-  let imagesMargin = []
-  let deltaX = x0, deltaY = y0
-  pictorics.map((pic,index) => {
-    images.map((img/*,index2*/) => {
-      if (pic.elem === img.name && index < cantElem && pic.qtty > 0) {
-        imgArr.push({
-          name: img.name,
-          url: img.url,
-          width: img.width,
-          height: img.height,
-          qtty: pic.qtty,
-          images: []
-        })
+    if(_pictoricos > 1) {
+      repeticiones[1] = {
+        imagen: _imagen2 !== '' ? imagenes.find(x => x.name === _imagen2) : { src:'' },
+        altoImagen: Number(_altoImagen2),
+        formaRepeticion: _formaRepeticion2,
+        repeticiones: Number(_repeticiones2),
+        separacion: Number(_separacion2),
+        separaciony: Number(_separaciony2)
       }
-      if (img.width > 0) { imagesMargin.push(img.height) }
-    })
-  })
-  imagesMargin = imagesMargin.sort((a, b) => {a-b}).shift()
-  imgArr.map((img,i) => {
-    let multImgRept = i === imgArr.length - 1 ? img.qtty : 0
-    maxPictoricWidth += eval(img.width) + imagesMargin/2 + multImgRept*imagesMargin/8
-  })
-  maxPictoricWidth -= (imagesMargin/2 - imagesMargin/8)
-  if (chartWidth < maxPictoricWidth) {
-    reduceImgPercent = chartWidth/maxPictoricWidth
-  }
-  imagesMargin = imagesMargin*reduceImgPercent
-  imgArr.map((img, index) => {
-    img.width = img.width*reduceImgPercent
-    img.height = img.height*reduceImgPercent
-    //console.log(img.width)
-    let distImgReptVertical = 0, distImgReptHorizontal = 0
+    }
+    
+    if(_pictoricos > 2) {
+      repeticiones[2] = {
+        imagen: _imagen3 !== '' ? imagenes.find(x => x.name === _imagen3) : { src:'' },
+        altoImagen: Number(_altoImagen3),
+        formaRepeticion: _formaRepeticion3,
+        repeticiones: Number(_repeticiones3),
+        separacion: Number(_separacion3),
+        separaciony: Number(_separaciony3)
+      }
+    }
 
-    if (imgArr[index - 1] && imgArr[index - 1].name === 'billete 1000') {
-      //console.log('if')
-      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
-      deltaY += 0
-    } else if (imgArr[index].name === 'billete 1000') {
-      // console.log('else if')
-      deltaX += index === 0 ? 0 : imgArr[index - 1].width + imagesMargin/2
-      deltaY += 0
+    if(_pictoricos > 3) {
+      repeticiones[3] = {
+        imagen: _imagen4 !== '' ? imagenes.find(x => x.name === _imagen4) : { src:'' },
+        altoImagen: Number(_altoImagen4),
+        formaRepeticion: _formaRepeticion4,
+        repeticiones: Number(_repeticiones4),
+        separacion: Number(_separacion4),
+        separaciony: Number(_separaciony4)
+      }
+    }
+
+    if(_pictoricos > 4) {
+      repeticiones[4] = {
+        imagen: _imagen5 !== '' ? imagenes.find(x => x.name === _imagen5) : { src:'' },
+        altoImagen: Number(_altoImagen5),
+        formaRepeticion: _formaRepeticion5,
+        repeticiones: Number(_repeticiones5),
+        separacion: Number(_separacion5),
+        separaciony: Number(_separaciony5)
+      }
+    }
+
+    if(_pictoricos > 5) {
+      repeticiones[5] = {
+        imagen: _imagen6 !== '' ? imagenes.find(x => x.name === _imagen6) : { src:'' },
+        altoImagen: Number(_altoImagen6),
+        formaRepeticion: _formaRepeticion6,
+        repeticiones: Number(_repeticiones6),
+        separacion: Number(_separacion6),
+        separaciony: Number(_separaciony6)
+      }
+    }
+
+    if(_pictoricos > 6) {
+      repeticiones[6] = {
+        imagen: _imagen7 !== '' ? imagenes.find(x => x.name === _imagen7) : { src:'' },
+        altoImagen: Number(_altoImagen7),
+        formaRepeticion: _formaRepeticion7,
+        repeticiones: Number(_repeticiones7),
+        separacion: Number(_separacion7),
+        separaciony: Number(_separaciony7)
+      }
+    }
+
+    if(_pictoricos > 7) {
+      repeticiones[7] = {
+        imagen: _imagen8 !== '' ? imagenes.find(x => x.name === _imagen8) : { src:'' },
+        altoImagen: Number(_altoImagen8),
+        formaRepeticion: _formaRepeticion8,
+        repeticiones: Number(_repeticiones8),
+        separacion: Number(_separacion8),
+        separaciony: Number(_separaciony8)
+      }
+    }
+
+    return repeticiones;
+ }
+
+ function dibujaRepeticionVertical(repeticion) {
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    var yStart = container.height/2 - (repeticion.repeticiones * repeticion.altoImagen + (repeticion.repeticiones-1) * repeticion.separacion)/2; 
+    for(var i = 0, x = xStart, y; i < repeticion.repeticiones; i++){
+       y = yStart + (i * repeticion.altoImagen) + (i * repeticion.separacion);
+       ctx.drawImage(repeticion.imagen, x, y, width, repeticion.altoImagen);
+    }
+    return x+width+_separacion;
+ }
+
+ function dibujaRepeticionHorizontal(repeticion){
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    for(var i = 0,x,y; i < repeticion.repeticiones; i++) {
+       x = xStart + (i * repeticion.separacion) + (i * width);
+       y = container.height/2 - repeticion.altoImagen/2;
+       ctx.drawImage(repeticion.imagen, x, y, width, repeticion.altoImagen);
+    }
+    return x+width+_separacion;
+ }
+
+ function dibujaRepeticionHorizontalVertical(repeticion) {
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    var yPrimera;
+    if(repeticion.repeticiones < 6) {
+       yPrimera = container.height/2-repeticion.altoImagen/2;
     } else {
-      // console.log('else')
-      deltaX += index === 0 ? 0 : img.width + imagesMargin/2
-      deltaY += 0
+       var heightTotal = repeticion.altoImagen + (repeticion.repeticiones-6)*repeticion.separacion + width*(repeticion.repeticiones-5);
+       yPrimera = container.height/2-heightTotal/2;
+    }
+    for(var i = 0, x, x2, y2; i < repeticion.repeticiones; i++){
+       if(i >= 6) {
+          x2 = xStart;
+          y2 = yPrimera + repeticion.separacion*(i-5) + width*(i-5) + repeticion.altoImagen;
+          ctx.save();
+          ctx.translate(x2,y2);
+          ctx.rotate(-Math.PI/2);
+          ctx.drawImage(repeticion.imagen, 0, 0, width, repeticion.altoImagen);
+          ctx.restore();
+       } else {
+          x = (width * i) + (repeticion.separacion * i) + xStart;
+          ctx.drawImage(repeticion.imagen, x, yPrimera, width, repeticion.altoImagen);
+       }
+    }
+    return x+width+_separacion;
+ }
+
+ function dibujaRepeticionDiagonal(repeticion) {
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    for(var i = 0, x, y, height; i < repeticion.repeticiones; i++) {
+       x = xStart + i * repeticion.separacion;
+       height = repeticion.altoImagen + (repeticion.repeticiones-1) * repeticion.separaciony;
+       y = (container.height/2)-(height/2)+(i*repeticion.separaciony);
+       ctx.drawImage(repeticion.imagen, x, y, width, repeticion.altoImagen);
+    }
+    return x+width+_separacion;
+ }
+
+ function dibujaRepeticionDiagonalApilado(repeticion) {
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    for(var i = 0, x, y, height; i < repeticion.repeticiones; i++) {
+       x = i <= 4 ? 
+          xStart + i * repeticion.separacion : 
+          xStart + width + (5 * repeticion.separacion) + ((i-5) * repeticion.separacion);
+       if(repeticion.repeticiones <= 5) { // solo hay una pila
+          height = repeticion.altoImagen + (repeticion.repeticiones-1) * repeticion.separaciony;
+          y = (container.height/2)-(height/2)+(i*repeticion.separaciony);
+       } else { // hay dos pilas
+          if(i <= 4) {
+             height = repeticion.altoImagen + 4 * repeticion.separaciony;
+             y = (container.height/2)-(height/2)+(i*repeticion.separaciony);
+          } else {
+             height = repeticion.altoImagen + (repeticion.repeticiones-5) * repeticion.separaciony;
+             y = (container.height/2)-(height/2)+((i-4)*repeticion.separaciony);
+          }
+       }
+       ctx.drawImage(repeticion.imagen, x, y, width, repeticion.altoImagen);
+    }
+    return x+width+_separacion;
+ }
+
+ function dibujaRepeticionDado(repeticion) {
+    var width = repeticion.imagen.width * repeticion.altoImagen / repeticion.imagen.height;
+    var x = 0;
+    switch(repeticion.repeticiones) {
+       case 1:
+          x = dibujaBloqueEnPosicionUno(repeticion.imagen, repeticion.altoImagen);
+          break;
+       case 2:
+          x = dibujaBloqueEnPosicionCuatro(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionCuatro(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion)
+          break;
+       case 3:
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(5, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          x = dibujaBloqueEnPosicionNueve(9, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 4:
+          dibujaBloqueEnPosicionCuatro(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionCuatro(3, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          x = dibujaBloqueEnPosicionCuatro(2, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionCuatro(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 5:
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(3, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(5, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(7, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          x = dibujaBloqueEnPosicionNueve(9, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 6:
+          x = dibujaBloqueEnPosicionNueve(8, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(5, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(2, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(7, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 7:
+          x = dibujaBloqueEnPosicionNueve(9, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(6, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(3, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(5, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(7, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 8:
+          x = dibujaBloqueEnPosicionNueve(9, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(6, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(3, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(8, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(2, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(7, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+       case 9:
+          x = dibujaBloqueEnPosicionNueve(9, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(6, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(3, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(8, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(5, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(2, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(7, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(4, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          dibujaBloqueEnPosicionNueve(1, repeticion.imagen, repeticion.altoImagen, repeticion.separacion);
+          break;
+    }
+    console.log(x);
+    return x+width+_separacion;
+
+    function dibujaBloqueEnPosicionNueve(posicion, imagen, altoImagen, separacion) { //posicion 1-9
+       var width = imagen.width * altoImagen / imagen.height;
+       var x, y;
+       if(posicion==1 || posicion==4 || posicion==7) {
+          x = xStart;
+       } else if(posicion==2 || posicion==5 || posicion==8) {
+          x = separacion+width+xStart;
+       } else {
+          x = separacion*2+width*2+xStart;
+       }
+       if(posicion==1 || posicion==2 || posicion==3) {
+          y = container.height/2 - altoImagen/2 - separacion - altoImagen;
+       } else if(posicion==4 || posicion==5 || posicion==6) {
+          y = container.height/2 - altoImagen/2;
+       } else {
+          y = container.height/2 + altoImagen/2 + separacion;
+       }
+       ctx.drawImage(imagen, x, y, width, altoImagen);
+       return x;
     }
 
-    for (let i = 0; i < img.qtty; i++) {
-      distImgReptVertical = imagesMargin/4*i
-      distImgReptHorizontal = imagesMargin/8*i
-
-      img.images.push({
-        xPos: deltaX + distImgReptHorizontal,
-        yPos: deltaY + distImgReptVertical
-      })
+    function dibujaBloqueEnPosicionCuatro(posicion, imagen, altoImagen, separacion) {
+       var width = imagen.width * altoImagen / imagen.height;
+       var x, y;
+       if(posicion==1 || posicion==3) {
+          x = xStart;
+       } else {
+          x = separacion+width+xStart;
+       }
+       if(posicion==1 || posicion==2) {
+          y = container.height/2 - altoImagen - separacion/2;
+       } else {
+          y = container.height/2 + separacion/2;
+       }
+       ctx.drawImage(imagen, x, y, width, altoImagen);
+       return x;
     }
 
-  })
-  dibujarPictoricos(ctx, imgArr)
-  //console.log(imgArr)
-}
-
-function bloqueMultibase(state) {
-  const { ctx, chart, pictorics, images } = state
-  const { x0, y0, x1, y1 } = chart.position
-
-  let imgArr = [], chartHeight = y1 - y0, chartWidth = x1 - x0
-  //console.log(pictorics)
-  pictorics.map( img => {
-    if (img.qtty > 0) {
-      images.map(el => {
-        if (img.elem === el.name) {
-          imgArr.push({
-            name: img.elem,
-            url: el.url,
-            qtty: img.qtty,
-            width: el.width,
-            height: el.height,
-            images: []
-          })
-        }
-      })
+    function dibujaBloqueEnPosicionUno(imagen, altoImagen) {
+       var width = imagen.width * altoImagen / imagen.height;
+       var x = xStart;
+       var y = container.height/2-altoImagen/2;
+       ctx.drawImage(imagen, x, y, width, altoImagen);
+       return x;
     }
-  })
-  let xAcum = x0
-  // let yAcum = y0
-  imgArr.map(el => {
-    // let yDist = 0
-    // for (let i = 0; i < el.qtty; i++) {
-    //   yDist += 10
-    // }
-    // yAcum += yDist + el.height
-    // console.log(xAcum)
-    // console.log(el.width)
-    xAcum += el.width + 20
-    // console.log('---------')
-    // console.log(xAcum)
-  })
-
-  if (chartHeight < 541) {
-    let porcentaje = chartHeight/541
-    ajustarImagenes(imgArr, porcentaje)
-  }
-  if (chartWidth < xAcum) {
-    let porcentaje = chartWidth/xAcum
-    ajustarImagenes(imgArr, porcentaje)
-  }
-  xAcum = x0
-  // yAcum = y0
-  imgArr.map(el => {
-    let yDist = 0
-    for (let i = 0; i < el.qtty; i++) {
-      el.images.push({
-        xPos: xAcum,
-        yPos: y0 + yDist
-      })
-      yDist += 10
-    }
-    xAcum += el.width + 20
-    //yAcum += yDist
-  })
-
-  dibujarPictoricos(ctx, imgArr)
-
-  function ajustarImagenes(imgArr, porcentaje) {
-    imgArr.map(img => {
-      img.height *= porcentaje
-      img.width *= porcentaje 
-    })
-  }
-}
-
-function dibujarPictoricos(ctx, imgArr) {
-  imgArr.map((img/*,index*/) => {
-    let picImg = new Image()
-    picImg.src = img.url
-    picImg.onload = function() {
-      for (let i = 0; i < img.qtty; i++) {
-        ctx.drawImage(picImg, img.images[i].xPos, img.images[i].yPos, img.width, img.height)
-      }
-    }
-  })
+ }
 }

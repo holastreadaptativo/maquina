@@ -18,6 +18,9 @@ export function valorPosicional(config) {
       _numeroPalabras = regex(`$${_numeroPalabras}`, vars, vt);
     } else if(_tipo === 'Texto') {
       _texto = regex(_texto, vars, vt);
+    } else if (_tipo === 'Texto a Palabras') {
+      _numeroPalabras = regex(`$${_numeroPalabras}`, vars, vt);
+      _texto = regex(_texto, vars, vt);
     }
   } catch(error) {
     console.log(error);
@@ -44,7 +47,7 @@ export function valorPosicional(config) {
 
     if(_tipo === 'Numero Escrito') {
       ctx.fillText(_numeroPalabras, xTexto, yTexto);
-    } else if(_tipo === 'Texto'){
+    } else if(_tipo === 'Texto' || _tipo === 'Texto a Palabras'){
       ctx.fillText(_texto, xTexto, yTexto);
     }
 
@@ -68,6 +71,13 @@ export function valorPosicional(config) {
       ctx.drawImage(imgFlecha, xFlecha, yFlecha);
 
       escribeNumeroCentro();
+    } else if(_tipo === 'Texto a Palabras') {
+      var xFlecha = (container.width / 2) - (imgFlecha.width / 2);
+      var yFlecha = _altoTexo + (_margenTopBottom*2);
+      ctx.drawImage(imgFlecha, xFlecha, yFlecha);
+      var xPalabras = container.width/2;
+      var yPalabras = _altoTexo*2 + (_margenTopBottom*3) + imgFlecha.height;
+      ctx.fillText(_numeroPalabras, xPalabras, yPalabras);
     } else {
       var underline = _marca === 'U de Mil' ? 1 : 2;
       var anchoTextoNumero = _altoTexo*4 + 3*Number(_separacionNumeros);

@@ -13,10 +13,10 @@ export default class ValorPosicional extends React.Component {
       _texto:'',
       _marca:'U de Mil',
       _separacionNumeros:'0',
-      _miles:'a',
-      _centenas:'a',
-      _decenas:'a',
-      _unidades:'a',
+      _miles:'0',
+      _centenas:'0',
+      _decenas:'0',
+      _unidades:'0',
       _altoTexo:'45',
       _margenTopBottom:'20'
     } : props.params;
@@ -47,23 +47,42 @@ export default class ValorPosicional extends React.Component {
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
-          <Select id="_tipo" prefix="Tipo" options={['Numero Escrito','Texto','Numero']} parent={this} value={_tipo} />
+          <Select id="_tipo" prefix="Tipo" options={['Texto a Palabras','Numero Escrito','Texto','Numero']} parent={this} value={_tipo} />
           { 
-            _tipo === 'Numero Escrito' && <Select id="_numeroPalabras" prefix="Numero escrito" options={vars} parent={this} value={_numeroPalabras}/>
+            (_tipo === 'Numero Escrito' || _tipo === 'Texto a Palabras') && 
+              <Select id="_numeroPalabras" prefix="Numero escrito" options={vars} parent={this} value={_numeroPalabras}/>
           }
           {
-            _tipo === 'Texto' && <Input id="_texto" prefix="Texto" parent={this} value={_texto}/>
+            (_tipo === 'Texto' || _tipo === 'Texto a Palabras') && <Input id="_texto" prefix="Texto" parent={this} value={_texto}/>
           }
           {
-            _tipo === 'Numero' && <Select id="_marca" prefix="Numero escrito" options={['U de Mil','Centena']} parent={this} value={_marca}/> 
+            _tipo === 'Numero' && 
+              <Select id="_marca" prefix="Numero escrito" options={['U de Mil','Centena']} parent={this} value={_marca}/> 
           }
           {
-            _tipo === 'Numero' && <Input id="_separacionNumeros" prefix="Separacion" parent={this} value={_separacionNumeros}/> 
+            _tipo === 'Numero' && 
+              <Input id="_separacionNumeros" prefix="Separacion" parent={this} value={_separacionNumeros}/> 
           }
-          <Select id="_miles" prefix="Miles" options={vars} parent={this} value={_miles}/>
-          <Select id="_centenas" prefix="Centenas" options={vars} parent={this} value={_centenas}/>
-          <Select id="_decenas" prefix="Decenas" options={vars} parent={this} value={_decenas}/>
-          <Select id="_unidades" prefix="Unidades" options={vars} parent={this} value={_unidades}/>
+          {
+            _tipo !== 'Texto a Palabras' && 
+              <Select id="_miles" prefix="Miles" options={vars} parent={this} value={_miles}/>
+          }
+          {
+            _tipo !== 'Texto a Palabras' && 
+              <Select id="_centenas" prefix="Centenas" options={vars} parent={this} value={_centenas}/>
+          }
+          {
+            _tipo !== 'Texto a Palabras' && 
+              <Select id="_decenas" prefix="Decenas" options={vars} parent={this} value={_decenas}/>
+          }
+          {
+            _tipo !== 'Texto a Palabras' && 
+              <Select id="_unidades" prefix="Unidades" options={vars} parent={this} value={_unidades}/>
+          }
+          {
+            _tipo !== 'Texto a Palabras' && 
+              <Select id="_unidades" prefix="Unidades" options={vars} parent={this} value={_unidades}/>
+          }
           <Input id="_altoTexo" prefix="Alto texto" parent={this} value={_altoTexo}/>
           <Input id="_margenTopBottom" prefix="Margen TyB" parent={this} value={_margenTopBottom}/>
         </Item>

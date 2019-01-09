@@ -10,130 +10,142 @@ export default class RepeticionPictoricos extends Component {
     super(props)
     
     this.state = props.push ? { 
-      active:0, 
-      // General
-      pictoricType: 'billetes y monedas', height:350, width:720, background:COLORS['background'],
-      // Borde
-      borderWidth:0, borderColor:'#E58433', borderStyle:'solid', borderRadius:20,
-      // Título
-      titleValue: 'EL Título', titleColor: '#8B1013', titleSize: 18, titleWeight: 'bold',
-      // Padding
-      canvasPadding: '0,0,0,0', containerPadding: '20,20,20,20', chartPadding: '30,10,10,10',
-      // Fuente
-      fontColor: '#8B1013', fontSize:14, fontFamily: 'Larke Neue Thin', fontWeight: 'normal',
-      // Valores
-      maxCantElem: 5,
-      cantElem: 1,
-      elemData: []
+      _pictoricos: '0',opcionPictorica: 'Bloques Multibase',
+      _separacion: '20', heightCanvas:'300', widthCanvas:'1000',
+      _imagen1:'',_altoImagen1:'0',_formaRepeticion1:'',_repeticiones1:'1',_separacion1:'10',_separaciony1:'0',
+      _imagen2:'',_altoImagen2:'0',_formaRepeticion2:'',_repeticiones2:'1',_separacion2:'10',_separaciony2:'0',
+      _imagen3:'',_altoImagen3:'0',_formaRepeticion3:'',_repeticiones3:'1',_separacion3:'10',_separaciony3:'0',
+      _imagen4:'',_altoImagen4:'0',_formaRepeticion4:'',_repeticiones4:'1',_separacion4:'10',_separaciony4:'0',
+      _imagen5:'',_altoImagen5:'0',_formaRepeticion5:'',_repeticiones5:'1',_separacion5:'10',_separaciony5:'0',
+      _imagen6:'',_altoImagen6:'0',_formaRepeticion6:'',_repeticiones6:'1',_separacion6:'10',_separaciony6:'0',
+      _imagen7:'',_altoImagen7:'0',_formaRepeticion7:'',_repeticiones7:'1',_separacion7:'10',_separaciony7:'0',
+      _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0'
     } : props.params
   }
-
-  componentWillMount() {
-    let elemData = this.state.elemData
-    if (elemData.length === 0) {
-      const { maxCantElem } = this.state
-      let elemDataAux = []
-      if (this.props.push) {
-        for (let i = 0; i < maxCantElem; i++) {
-          elemDataAux.push({
-            ['repetElem'+ (i+1)]: i === 0 ? 1: 0,
-            ['elemType'+ (i+1)]: 'moneda 1'
-          })
-        }
-      }
-      this.setState({elemData: elemDataAux})
-    }
-	}
   
   componentDidUpdate() {
     repeticionPic.repeticionPic({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
   }
 
-  handleChange(e, i) {
-		let elemData = this.state.elemData
-		elemData[i][e.target.name] = e.target.value
-		this.setState({ elemData })
-	}
-
   render() {
-    const { cantElem, maxCantElem, pictoricType, elemData } = this.state
-    
-    let k = 0, fontWeightOptions = ['normal', 'bold'], borderCanvas = ['solid','dashed','dotted','double'], 
-        fontFamilyOptions = ['Larke Neue Thin', 'Arial', 'Montserrat'],/*, arrInputs = []*/  
-        imgSelec = pictoricType === 'billetes y monedas' ? ['moneda 1', 'moneda 5','moneda 10', 'moneda 50', 'moneda 100', 'moneda 500', 'billete 1000'] : ['bloque unidad', 'bloque decena', 'bloque centena', 'bloque mil'],
-        pictoricTypeOptions = ['billetes y monedas','bloque base'], cantElemArr = []
-
-    let aux1 = [maxCantElem]
-    aux1.forEach(el=>{
-      for (let i = 0; i < el; i++) {cantElemArr.push(i+1)}
-    })
+    var k = 0;
+    const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,
+      _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,
+      _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,
+      _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,
+      _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,
+      _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,
+      _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,
+      _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,
+      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8 } = this.state;
+    var opcionesDePictoricos = ['Seleccione','Monedas y billetes', 'Bloques Multibase'];
+    var cantidad = ['0','1','2','3','4','5','6','7','8'];
+    var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical'];
+    var imagenes;
+    if(opcionPictorica == 'Monedas y billetes') {
+      imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco'];
+    } else if(opcionPictorica == 'Bloques Multibase') {
+      imagenes = ['Seleccionar','bloque mil', 'bloque cien', 'bloque diez', 'bloque uno'];
+    }
 
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="General" parent={this}>
-          <Select id="pictoricType" prefix="tipo" options={pictoricTypeOptions} parent={this}/>
-          <Input id="height" prefix="alto" postfix="px" type="number" parent={this}/>	
-          <Input id="width" prefix="ancho" postfix="px" type="number" parent={this}/>	
-          <Input id="background" prefix="fondo" type="color" parent={this}/>
-        </Item>
-        <Item id={k++} title="Borde" parent={this}>
-          <Input id="borderWidth" prefix="ancho" postfix="px" type="number" parent={this}/>	
-          <Input id="borderColor" prefix="color" type="color" parent={this}/>
-          <Select id="borderStyle" prefix="estilo" options={borderCanvas} parent={this}/>
-          <Input id="borderRadius" prefix="radio" postfix="px" type="number" parent={this}/>
-        </Item>
-        <Item id={k++} title="Títulos" parent={this}>
-          <Input id="titleValue" prefix="título" placeholder={'Título'} parent={this}/>
-          <Input id="titleColor" type="color" parent={this}/>
-          <Input id="titleSize" prefix="tamaño" postfix="px" type="number" parent={this}/>
-          <Select id="titleWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
-        </Item>
-        <Item id={k++} title="padding" parent={this}>
-          <Input id="canvasPadding" prefix="canvas" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
-          <Input id="containerPadding" prefix="container" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
-          <Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
-        </Item>
-        <Item id={k++} title="Fuente" parent={this}>
-          <Input id="fontColor" type="color" parent={this}/>
-          <Input id="fontSize" prefix="tamaño" postfix="px" type="number" parent={this}/>
-          <Select id="fontFamily" prefix="tipo" options={fontFamilyOptions} parent={this}/>
-          <Select id="fontWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
+          <Input id="heightCanvas" prefix="alto" postfix="px" type="number" parent={this} value={heightCanvas}/>	
+          <Input id="widthCanvas" prefix="ancho" postfix="px" type="number" parent={this} value={widthCanvas}/>
         </Item>
         <Item id={k++} title="Imágenes" parent={this}>
-          <Select id="cantElem" prefix={'cantidad'} options={cantElemArr} parent={this}/>
-          {
-            [maxCantElem].map( el => {
-              let arrInputsSelects = []
-              for (let i = 0; i < el; i++) {
-                arrInputsSelects.push(
-                  <div class={show(cantElem > (i), 'form-config')}>
-                    <div class="input-group">
-                      <span class="input-group-addon prefix">imagen {(i+1)}</span>
-                      <input name={`repetElem${i+1}`} type="number" defaultValue={elemData[i][`repetElem${i+1}`]} class="form-control"
-                        onChange={e => ::this.handleChange(e, i)}>
-                      </input>
-                      <select name={`elemType${i+1}`} defaultValue={elemData[i][`elemType${i+1}`]} class="form-control"
-                        onChange={e => ::this.handleChange(e, i)}>
-                        {
-                          imgSelec.map( (el,index) => {
-                            return(
-                              <option key={index} value={el}>{el}</option>
-                            )
-                          })
-                        }
-                      </select>
-                    </div>
-                  </div>
-                  // <div key={i}>
-                  //   <Select id={elemData[i]['elemType' + (i+1)]} prefix={'imagen ' + (i+1)} options={imgSelec} hide={cantElem < (i+1)} parent={this}/>
-                  //   <Input id={'repetElem' + (i+1)} prefix={'repetir img ' + (i+1)} type="number" placeholder={''} hide={cantElem < (i+1)} parent={this}/>
-                  // </div>
-                )
-              }
-              return arrInputsSelects
-            })
-          }
+          <Input id="_separacion" type="number" value={_separacion} prefix="Sep Repeticion" parent={this}/>
+          <Select id="opcionPictorica" prefix="tipo" options={opcionesDePictoricos} parent={this} value={opcionPictorica}/>
+          <Select id="_pictoricos" prefix={'cantidad'} options={cantidad} parent={this} value={_pictoricos}/>
         </Item>
+        { _pictoricos > 0 && 
+        <Item id={k++} title="Imagen 1" parent={this}>
+          <Select id="_imagen1" prefix="Imagen" options={imagenes} parent={this} value={_imagen1} /> 
+          <Select id="_formaRepeticion1" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion1} />
+          <Input id="_repeticiones1" prefix="Cantidad" parent={this} value={_repeticiones1} />
+          <Input id="_altoImagen1" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen1} />
+          <Input id="_separacion1" type="number" prefix="Separacion" parent={this} value={_separacion1} />
+          { (_formaRepeticion1 === 'diagonal' || _formaRepeticion1 === 'diagonal/apilado') && 
+              <Input id="_separaciony1" type="number" prefix="Separacion y " parent={this} value={_separaciony1} /> }
+        </Item> }
+
+        { _pictoricos > 1 && 
+        <Item id={k++} title="Imagen 2" parent={this}>
+          <Select id="_imagen2" prefix="Imagen" options={imagenes} parent={this} value={_imagen2} /> 
+            <Select id="_formaRepeticion2" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion2} />
+            <Input id="_repeticiones2" prefix="Cantidad" parent={this} value={_repeticiones2} />
+            <Input id="_altoImagen2" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen2} />
+            <Input id="_separacion2" type="number" prefix="Separacion" parent={this} value={_separacion2} />
+            { (_formaRepeticion2 === 'diagonal' || _formaRepeticion2 === 'diagonal/apilado') && 
+                <Input id="_separaciony2" type="number" prefix="Separacion y " parent={this} value={_separaciony2} /> }
+        </Item> }
+
+        { _pictoricos > 2 &&
+        <Item id={k++} title="Imagen 3" parent={this}>
+          <Select id="_imagen3" prefix="Imagen" options={imagenes} parent={this} value={_imagen3} /> 
+            <Select id="_formaRepeticion3" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion3} />
+            <Input id="_repeticiones3" prefix="Cantidad" parent={this} value={_repeticiones3} />
+            <Input id="_altoImagen3" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen3} />
+            <Input id="_separacion3" type="number" prefix="Separacion" parent={this} value={_separacion3} />
+            { (_formaRepeticion3 === 'diagonal' || _formaRepeticion3 === 'diagonal/apilado') && 
+                <Input id="_separaciony3" type="number" prefix="Separacion y " parent={this} value={_separaciony3} /> }
+        </Item> }
+
+        { _pictoricos > 3 &&
+        <Item id={k++} title="Imagen 4" parent={this}>
+          <Select id="_imagen4" prefix="Imagen" options={imagenes} parent={this} value={_imagen4} /> 
+            <Select id="_formaRepeticion4" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion4} />
+            <Input id="_repeticiones4" prefix="Cantidad" parent={this} value={_repeticiones4} />
+            <Input id="_altoImagen4" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen4} />
+            <Input id="_separacion4" type="number" prefix="Separacion" parent={this} value={_separacion4} />
+            { (_formaRepeticion4 === 'diagonal' || _formaRepeticion4 === 'diagonal/apilado') && 
+                <Input id="_separaciony4" type="number" prefix="Separacion y " parent={this} value={_separaciony4} /> }
+        </Item> }
+
+        { _pictoricos > 4 &&
+        <Item id={k++} title="Imagen 5" parent={this}>
+          <Select id="_imagen5" prefix="Imagen" options={imagenes} parent={this} value={_imagen5} /> 
+            <Select id="_formaRepeticion5" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion5} />
+            <Input id="_repeticiones5" prefix="Cantidad" parent={this} value={_repeticiones5} />
+            <Input id="_altoImagen5" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen5} />
+            <Input id="_separacion5" type="number" prefix="Separacion" parent={this} value={_separacion5} />
+            { (_formaRepeticion5 === 'diagonal' || _formaRepeticion5 === 'diagonal/apilado') && 
+                <Input id="_separaciony5" type="number" prefix="Separacion y " parent={this} value={_separaciony5} /> }
+        </Item> }
+
+        { _pictoricos > 5 &&
+        <Item id={k++} title="Imagen 6" parent={this}>
+          <Select id="_imagen6" prefix="Imagen" options={imagenes} parent={this} value={_imagen6} /> 
+            <Select id="_formaRepeticion6" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion6} />
+            <Input id="_repeticiones6" prefix="Cantidad" parent={this} value={_repeticiones6} />
+            <Input id="_altoImagen6" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen6} />
+            <Input id="_separacion6" type="number" prefix="Separacion" parent={this} value={_separacion6} />
+            { (_formaRepeticion6 === 'diagonal' || _formaRepeticion6 === 'diagonal/apilado') && 
+                <Input id="_separaciony6" type="number" prefix="Separacion y " parent={this} value={_separaciony6} /> }
+        </Item> }
+
+        { _pictoricos > 6 &&
+        <Item id={k++} title="Imagen 7" parent={this}>
+          <Select id="_imagen7" prefix="Imagen" options={imagenes} parent={this} value={_imagen7} /> 
+            <Select id="_formaRepeticion7" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion7} />
+            <Input id="_repeticiones7" prefix="Cantidad" parent={this} value={_repeticiones7} />
+            <Input id="_altoImagen7" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen7} />
+            <Input id="_separacion7" type="number" prefix="Separacion" parent={this} value={_separacion7} />
+            { (_formaRepeticion7 === 'diagonal' || _formaRepeticion7 === 'diagonal/apilado') && 
+                <Input id="_separaciony7" type="number" prefix="Separacion y " parent={this} value={_separaciony7} /> }
+        </Item> }
+
+        { _pictoricos > 7 &&
+        <Item id={k++} title="Imagen 8" parent={this}>
+          <Select id="_imagen8" prefix="Imagen" options={imagenes} parent={this} value={_imagen8} /> 
+            <Select id="_formaRepeticion8" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion8} />
+            <Input id="_repeticiones8" prefix="Cantidad" parent={this} value={_repeticiones8} />
+            <Input id="_altoImagen8" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen8} />
+            <Input id="_separacion8" type="number" prefix="Separacion" parent={this} value={_separacion8} />
+            { (_formaRepeticion8 === 'diagonal' || _formaRepeticion8 === 'diagonal/apilado') && 
+                <Input id="_separaciony8" type="number" prefix="Separacion y " parent={this} value={_separaciony8} /> }
+        </Item> }
       </Editor>
     )
   }

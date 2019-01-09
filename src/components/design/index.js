@@ -47,10 +47,6 @@ export const FUNCIONES = [{
 		id:'Valor Posicional', 
 		component:components.ValorPosicional, 
 		action:actions.valorPosicional 
-	},{
-		id:'Bloques Multibase',
-		component:components.BloquesMultibase,
-		action:actions.bloquesMultibase
 	}]
 },{ 
 	name:'Álgebra', 
