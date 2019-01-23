@@ -32,10 +32,6 @@ export const FUNCIONES = [{
 		component:components.RectaNumerica, 
 		action:actions.rectNumFn 
 	},{ 
-		id:'Recta 2', 
-		component:components.Recta, 
-		action:actions.recta 
-	},{ 
 		id:'Repetición Pictóricos', 
 		component:components.RepeticionPictoricos, 
 		action:actions.repeticionPic 

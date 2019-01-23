@@ -252,113 +252,106 @@ export function ver(action, state) {
 
 				let documento = `<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="${bootstrapCss}">
-		<link rel="stylesheet" href="${appCss}">
-		<title>${name}</title>
-	</head>
-	<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">
-		<header class="barraprogreso">
-				<div class="container-fluid">
-					<div class="row">
-							<div class="col-12">
-								<svg id="progressbar" style="width:100%;height:20;" xmlns="http://www.w3.org/2000/svg">
-										<defs>
-											<linearGradient id="grad1">
-													<stop offset="0" stop-color="#5cba46" />
-													<stop offset="1" stop-color="#2ab04a" />
-											</linearGradient>
-										</defs>
-										<line id="bar" x1="0" y1="10" x2="100%" y2="10" stroke="#ddd" stroke-width="2" stroke-linecap="round" />
-										<rect id="progress" x="0" y="6" height="8" rx="2" ry="2" fill="url(#grad1)" />
-										<circle id="progressfinal" cx="0" cy="10" r="5" stroke="#ddd" fill="#ddd" />
-								</svg>
-							</div>
-					</div>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="${bootstrapCss}">
+	<link rel="stylesheet" href="${appCss}">
+	<title>${name}</title>
+</head>
+<body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">
+	<header class="barraprogreso">
+			<div class="container-fluid">
+				<div class="row justify-content-center no-gutters align-items-center">
+						<div class="col-11 col-sm-10 pr-4 pr-sm-0">
+							<svg id="progressbar" viewBox="0 0 1000 50" width="1000" height="50" xmlns="http://www.w3.org/2000/svg"></svg>
+						</div>
+						<div class="col-1">
+							<svg id="botonSalir" class="float-right" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" data-toggle="tooltip" data-placement="bottom" title="Salir de la misión">
+								<path d="M0 0h24v24H0z" fill="none"/><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+							</svg>
+						</div>
 				</div>
-		</header>
-		<section class="contenido">
-				<div class="container-fluid">
-					<div id="enunciado" class="row"></div>
-					<div id="respuesta" class="row justify-content-center"></div>
+			</div>
+	</header>
+	<section class="contenido">
+			<div class="container-fluid">
+				<div id="enunciado" class="row"></div>
+				<div id="respuesta" class="row justify-content-center"></div>
+			</div>
+	</section>
+	<footer class="fixed-bottom pie">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+						<div class="col-5 col-sm-4 col-md-3">
+							<button type="button" id="btnConsulta" class="btn btn-block bton bton-5 bton-5a icon-consulta" onclick="pressConsulta()">
+								<span>CONSULTA</span>
+							</button>
+							<img id="imgfeedback" class="img-fluid d-none" alt="IMG" />
+						</div>
+						<div class="col-2 col-sm-4 col-md-6"></div>
+						<div class="col-5 col-sm-4 col-md-3">
+							<button type="button" id="btnResponder" class="btn btn-block bton bton-5 bton-5a icon-responder float-right" disabled>
+								<span>RESPONDER</span>
+							</button> 
+						</div>
 				</div>
-		</section>
-		<footer class="fixed-bottom pie">
-				<div class="container-fluid">
-					<div class="row align-items-center">
-							<div class="col-5 col-sm-3">
-								<button type="button" id="btnConsulta" class="btn btn-block" onclick="pressConsulta()">Consulta</button>
-								<img id="imgfeedback" class="img-fluid d-none" alt="IMG" />
-							</div>
-							<div class="col-2 col-sm-6">
-								<span></span>
-							</div>
-							<div class="col-5 col-sm-3">
-								<button type="button" id="btnResponder" class="btn btn-block float-right" disabled>Responder</button> 
-							</div>
-					</div>
-				</div>
-		</footer>
-		<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-							<div id="feedback" class="modal-body">
-								<div class="container-fluid">
-										<div class="row no-gutters align-items-center">
-											<div class="col-4">
-													<img class="img-fluid" src="" alt="IMG" />
-											</div>
-											<div class="col-8">
-													<span></span>
-											</div>
+			</div>
+	</footer>
+	<div class="modal fade" id="modalFeedback" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content" style="border-radius: 10px!important">
+						<div id="feedback" class="modal-body" style="padding: 10px 0;">
+							<div class="container-fluid">
+									<div class="row no-gutters">
+										<div class="col-12">
+												
 										</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button id="btnCloseModal" type="button" class="btn btn-primary">Aceptar</button>
-							</div>
-					</div>
-				</div>
-		</div>
-		<div class="modal fade" id="modalGlosa" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered dimensionGlosa" role="document">
-					<div id="contenidoGlosa" class="modal-content glosaEjercicio">
-							<div class="modal-body modalBody">
-									<div class="container-fluid">
-										<div class="row no-gutters">
-											<div class="offset-2 col-10 tituloGlosa">
-												<span>Solución</span>
-											</div>
-											<div class="col-2">
-												<img  alt=""/>
-											</div>
-											<div class="col-10" id="glosa">
-											</div>
+										<div class="col-4 offset-8">
+											<button id="btnCloseModal" type="button" class="btnCerrarFeed">
+												<div></div>
+											</button>
 										</div>
 									</div>
 							</div>
-							<div class="modal-footer">
+						</div>
+				</div>
+			</div>
+	</div>
+	<div class="modal fade" id="modalGlosa" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered dimensionGlosa" role="document">
+				<div id="contenidoGlosa" class="modal-content glosaEjercicio">
+						<div class="modal-body modalBody">
 								<div class="container-fluid">
 									<div class="row no-gutters">
-										<div class="offset-10 col-2">
+										<div class="offset-2 col-10 tituloGlosa">
+											<span>Solución</span>
+										</div>
+										<div class="col-2 d-none d-sm-block">
+											<img class="img-fluid" src="https://desarrolloadaptatin.blob.core.windows.net/prueba/diseno_prototipo/svg/togaSuki.svg">
+										</div>
+										<div class="col-12 col-sm-10" id="glosa">
+										</div>
+									</div>
+									<div class="row no-gutters">
+										<div class="offset-8 col-4 offset-sm-9 col-sm-3 offset-md-10 col-md-2">
 											<button id="btnCloseGlosa" type="button" class="btn btn-primary" onclick="cerrarFeedGlosa()">Aceptar</button>
 										</div>
 									</div>
 								</div>
-							</div>
-					</div>
+						</div>
 				</div>
-		</div>
-		<input id="hiddenIntento" type="hidden" value="hiddenIntento"/>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-		<script src="${appJs}"></script>
-		<script src="${interfazJs}"></script>
-		<script src="${jsEjerciciosJs}"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_HTMLorMML-full" async></script>
-	</body>
+			</div>
+	</div>
+	<input id="hiddenIntento" type="hidden" value="hiddenIntento"/>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<script src="${appJs}"></script>
+	<script src="${interfazJs}"></script>
+	<script src="${jsEjerciciosJs}"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_HTMLorMML-full" async></script>
+</body>
 </html>`;
 				let a = document.createElement('a'), 
 				url = URL.createObjectURL(new Blob([documento], {type:'text/html'}))

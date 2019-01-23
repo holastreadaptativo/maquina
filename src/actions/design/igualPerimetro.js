@@ -1,4 +1,6 @@
-export default function igualPerimetro(config) {
+import { regex } from '../global/tools';
+
+export function igualPerimetro(config) {
   const { container, params, variables, versions, vt } = config;
 
   container.width = params.cuadro * 10;
@@ -6,7 +8,7 @@ export default function igualPerimetro(config) {
   container.style.border = params.borderWidth+'px solid  #000';
   
   var ctx = container.getContext('2d');
-  
+  var vars = vt ? variables : versions;
   for(var i = 1; i < 10; i++) { //lineas verticales
     ctx.beginPath();
     ctx.moveTo(i * params.cuadro, container.height);
@@ -26,20 +28,11 @@ export default function igualPerimetro(config) {
     ctx.stroke();
     ctx.closePath();
   }
-
+  var alto, ancho;
   try {
-    var varAncho, varAlto;
-    varAlto = variables.find(function(item) {
-      return item.var === params.alto
-    });
-    varAncho = variables.find(function(item) {
-      return item.var === params.ancho
-    });
-    
-    var alto = vt ? varAlto.vt : varAlto.val;
-    var ancho = vt ? varAncho.vt : varAncho.val;
+    alto = regex(`$${params.alto}`, vars, vt);
+    ancho = regex(`$${params.ancho}`, vars, vt);
     dibujaRectangulo(ctx, ancho * params.cuadro, alto * params.cuadro, params.cuadro);
-
   } catch(error) {
     console.log(error);
   }
