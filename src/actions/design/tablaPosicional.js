@@ -7,9 +7,9 @@ export function tablaPosicional(config) {
   var srcFuente = 'https://desarrolloadaptatin.blob.core.windows.net/fuentes/LarkeNeueThin.ttf';
   //× => ALT+158
   var {_width,_tipoTabla, /*puede ser 'centenas' o 'miles'*/_pisosTabla, /*pueden ser 'uno', 'dos', 'tres'*/_separacionElementos,
-_tipoPisoUno,_repeticionPictoricaPisoUno,_umilPisoUno,_centenaPisoUno,_decenaPisoUno,_unidadPisoUno, /*numerico , imagenes, repeticion*/
-_tipoPisoDos,_repeticionPictoricaPisoDos,_umilPisoDos,_centenaPisoDos,_decenaPisoDos,_unidadPisoDos,
-_tipoPisoTres,_repeticionPictoricaPisoTres,_umilPisoTres,_centenaPisoTres,_decenaPisoTres,_unidadPisoTres,
+_tipoPisoUno,_repeticionPictoricaPisoUno,_umilPisoUno,_centenaPisoUno,_decenaPisoUno,_unidadPisoUno,_altoTextoPisoUno, /*numerico , imagenes, repeticion*/
+_tipoPisoDos,_repeticionPictoricaPisoDos,_umilPisoDos,_centenaPisoDos,_decenaPisoDos,_unidadPisoDos,_altoTextoPisoDos,
+_tipoPisoTres,_repeticionPictoricaPisoTres,_umilPisoTres,_centenaPisoTres,_decenaPisoTres,_unidadPisoTres,_altoTextoPisoTres,
 _dibujaValorPosicional1,_altoTextoValorPosicional1,_umilVP1,_centenaVP1,_decenaVP1,_unidadVP1,
 _dibujaValorPosicional2,_altoTextoValorPosicional2,_umilVP2,_centenaVP2,_decenaVP2,_unidadVP2,
 _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
@@ -54,29 +54,32 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
   datosEjercicio.tabla.detallePisos = [{
     tipo: _tipoPisoUno, //tipo piso uno
     tipoRepeticion: _repeticionPictoricaPisoUno,
-    umil: Number(_umilPisoUno),
-    centena: Number(_centenaPisoUno),
-    decena: Number(_decenaPisoUno),
-    unidad: Number(_unidadPisoUno)
+    umil: _umilPisoUno,
+    centena: _centenaPisoUno,
+    decena: _decenaPisoUno,
+    unidad: _unidadPisoUno,
+    altoTexto: _altoTextoPisoUno
   }]
   if (datosEjercicio.tabla.configuracion.pisosTabla > 1) {
     datosEjercicio.tabla.detallePisos[1] = {
       tipo: _tipoPisoDos,
       tipoRepeticion: _repeticionPictoricaPisoDos,
-      umil: Number(_umilPisoDos),
-      centena: Number(_centenaPisoDos),
-      decena: Number(_decenaPisoDos),
-      unidad: Number(_unidadPisoDos)
+      umil: _umilPisoDos,
+      centena: _centenaPisoDos,
+      decena: _decenaPisoDos,
+      unidad: _unidadPisoDos,
+      altoTexto: _altoTextoPisoDos
     }
   }
   if (datosEjercicio.tabla.configuracion.pisosTabla > 2) {
     datosEjercicio.tabla.detallePisos[2] = {
       tipo: _tipoPisoTres,
       tipoRepeticion: _repeticionPictoricaPisoTres,
-      umil: Number(_umilPisoTres),
-      centena: Number(_centenaPisoTres),
-      decena: Number(_decenaPisoTres),
-      unidad: Number(_unidadPisoTres)
+      umil: _umilPisoTres,
+      centena: _centenaPisoTres,
+      decena: _decenaPisoTres,
+      unidad: _unidadPisoTres,
+      altoTexto: _altoTextoPisoTres
     }
   }
   datosEjercicio.valoresPosicionales = [];
@@ -143,26 +146,21 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
   });
 
   function dibujaContenidoTabla(anchoSeparaciones, altoImagen) {
-    ctx.fillStyle = '#F58220';
-    ctx.textAlign = 'center';
-
     const { detallePisos } = datosEjercicio.tabla;
     const { tipoTabla, pisosTabla } = datosEjercicio.tabla.configuracion;
     var porcion = altoImagen / ((pisosTabla * 2) + 1);//cantidad de separaciones que tiene la imagen ya que el alto de un cuadro equivale a dos alto del titulo de la tabla
     var altoCuadro = porcion * 2;
-    var altoHeader = porcion;
-    var altoTexto = altoCuadro * 0.85;
     var separaciones = tipoTabla === 'centenas' ? 3 : 4;
     var anchoSeparacion = container.width / separaciones;
-    ctx.font = `${altoTexto}pt LarkeNeueThinFuente`;
+    
 
     for (var fila = 0; fila < detallePisos.length; fila++) {
-      const { tipo, tipoRepeticion, umil, centena, decena, unidad } = detallePisos[fila];
+      const { tipo, tipoRepeticion, umil, centena, decena, unidad, altoTexto } = detallePisos[fila];
       var numeros = tipoTabla === 'centenas' ? [centena, decena, unidad] : [umil, centena, decena, unidad];
       numeros.forEach(function (numero, columna) {
         switch (tipo) {
           case 'numerico':
-            !(tipoTabla === 'miles' && numero == 0 && columna === 0) && dibujaNumeroEnFila(numero, fila, columna);
+            !(tipoTabla === 'miles' && numero == 0 && columna === 0) && dibujaNumeroEnFila(numero, fila, columna, altoTexto);
             break;
           case 'imagenes':
             dibujaImagen(numero, fila, columna, tipoRepeticion);
@@ -177,7 +175,10 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
       });
     }
 
-    function dibujaNumeroEnFila(numero, fila, columna) {
+    function dibujaNumeroEnFila(numero, fila, columna, altoTexto) {
+      ctx.fillStyle = '#F58220';
+      ctx.font = `${altoTexto}pt LarkeNeueThinFuente`;
+      ctx.textAlign = 'center';
       fila++;
       var xTexto = (anchoSeparacion * columna) + (anchoSeparacion / 2);
       var yTexto = porcion + (altoCuadro * fila) - (altoCuadro - altoTexto) / 2;
@@ -185,7 +186,6 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
     }
 
     function dibujaImagen(numero, fila, columna, tipoRepeticion) {
-      console.log('me llamaron');
       if (tipoRepeticion === 'pelotas') {
         var src = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/imagenes_front/pelotas_repeticiones/Arreglo${numero}.svg`;
         cargaImagen(src).then(image => {
@@ -258,19 +258,19 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
         var separacion = container / 3 * 0.1;
 
         switch (numero) {
-          case 1:
+          case '1':
             var x = cx - widthImg / 2;
             var y = cy - altoImg / 2;
             ctx.drawImage(image, x, y, widthImg, altoImg);
             break;
-          case 2:
+          case '2':
             var x = cx - widthImg / 2;
             var y1 = cy - container / 2,
               y2 = cy + container / 2 - altoImg;
             ctx.drawImage(image, x, y1, widthImg, altoImg);
             ctx.drawImage(image, x, y2, widthImg, altoImg);
             break;
-          case 3:
+          case '3':
             var x = cx - widthImg / 2;
             var y1 = cy - container / 2,
               y2 = cy + container / 2 - altoImg,
@@ -279,7 +279,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             ctx.drawImage(image, x, y2, widthImg, altoImg);
             ctx.drawImage(image, x, y3, widthImg, altoImg);
             break;
-          case 4:
+          case '4':
             var x1 = cx - separacion / 2 - widthImg, x2 = cx + separacion / 2;
             var y1 = cy - separacion / 2 - altoImg, y2 = cy + separacion / 2;
             ctx.drawImage(image, x1, y1, widthImg, altoImg);
@@ -287,7 +287,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             ctx.drawImage(image, x2, y1, widthImg, altoImg);
             ctx.drawImage(image, x2, y2, widthImg, altoImg);
             break;
-          case 5:
+          case '5':
             var x1 = cx - separacion / 2 - widthImg, 
             x2 = cx + separacion / 2;
             var y1 = cy - container / 2,
@@ -301,7 +301,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             ctx.drawImage(image, x2, y4, widthImg, altoImg);
             ctx.drawImage(image, x2, y5, widthImg, altoImg);
             break;
-          case 6:
+          case '6':
             var x1 = cx - separacion / 2 - widthImg, x2 = cx + separacion / 2;
             var y1 = cy - container / 2,
               y2 = cy + container / 2 - altoImg,
@@ -314,7 +314,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             ctx.drawImage(image, x2, y3, widthImg, altoImg);
             break;
           default:
-            alert('La repeticion de billetes de mil es hasta 6');
+            console.log('Hola :)');
             break;
         }
       }
@@ -353,32 +353,32 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
         var anchoImg = image.width * altoImg / image.height;
         var separacion = ((altoCuadro * 0.85) / 3) * 0.1;
         switch (numero) {
-          case 1:
+          case '1':
             dibujaBloqueEnPosicionNueve(5, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 2:
+          case '2':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 3:
+          case '3':
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(5, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 4:
+          case '4':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(7, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 5:
+          case '5':
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(5, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(7, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 6:
+          case '6':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(6, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);
@@ -386,7 +386,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             dibujaBloqueEnPosicionNueve(4, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 7:
+          case '7':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(6, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);
@@ -395,7 +395,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             dibujaBloqueEnPosicionNueve(4, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 8:
+          case '8':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(6, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);
@@ -405,7 +405,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
             dibujaBloqueEnPosicionNueve(4, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
-          case 9:
+          case '9':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(6, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(3, image, altoImg, anchoImg, cx, cy, separacion);

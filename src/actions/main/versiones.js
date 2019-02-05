@@ -240,16 +240,19 @@ export function ver(action, state) {
 			let e = stringify(functions), 
 			r = stringify(answers), 
 			g = stringify(feedback), 
-			s = code.substring(10, 15)
+			s = code.substring(10, 15),
+			OAIE = code.substring(4,8);
 
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
-			const bootstrapCss = 'https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/css/bootstrap.min.css';
-			const appCss = 'https://desarrolloadaptatin.blob.core.windows.net:443/frontejercicios/css/app.css';
-			const appJs = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/app.js';
-			const interfazJs = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/interfaz.js';
-			const jsEjerciciosJs = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jsEjercicios.js';
-
+			const bootstrapCss = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/css/bootstrap.min.css';
+			const appCss = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/css/app.css';
+			const appJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/app.js`;
+			const interfazJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/interfaz.js`;
+			const jsEjerciciosJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/jsEjercicios.js`;
+			const bootstrapJs = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/bootstrap.min.js';
+			const jquery = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jquery-3.3.1.slim.min.js';
+			const popper = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/popper.min.js';
 				let documento = `<!doctype html>
 <html lang="en">
 <head>
@@ -283,14 +286,14 @@ export function ver(action, state) {
 	<footer class="fixed-bottom pie">
 			<div class="container-fluid">
 				<div class="row align-items-center">
-						<div class="col-5 col-sm-4 col-md-3">
+						<div class="col-4 col-md-3">
 							<button type="button" id="btnConsulta" class="btn btn-block bton bton-5 bton-5a icon-consulta" onclick="pressConsulta()">
 								<span>CONSULTA</span>
 							</button>
 							<img id="imgfeedback" class="img-fluid d-none" alt="IMG" />
 						</div>
-						<div class="col-2 col-sm-4 col-md-6"></div>
-						<div class="col-5 col-sm-4 col-md-3">
+						<div class="col-4 col-md-6"></div>
+						<div class="col-4 col-md-3">
 							<button type="button" id="btnResponder" class="btn btn-block bton bton-5 bton-5a icon-responder float-right" disabled>
 								<span>RESPONDER</span>
 							</button> 
@@ -344,13 +347,12 @@ export function ver(action, state) {
 			</div>
 	</div>
 	<input id="hiddenIntento" type="hidden" value="hiddenIntento"/>
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<script src="${jquery}"></script>
+	<script src="${popper}"></script>
+	<script src="${bootstrapJs}"></script>
 	<script src="${appJs}"></script>
 	<script src="${interfazJs}"></script>
 	<script src="${jsEjerciciosJs}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_HTMLorMML-full" async></script>
 </body>
 </html>`;
 				let a = document.createElement('a'), 

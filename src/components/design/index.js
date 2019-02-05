@@ -23,6 +23,10 @@ export const FUNCIONES = [{
 		id:'Insertar Input Fraccion', 
 		component:components.InsertarInputFraccion, 
 		action:actions.insertarInputFraccion 
+	},{
+		id:'Insertar Imagen',
+		component:components.InsertImage,
+		action:actions.insertarImagen
 	}]
 },{ 
 	name:'Numeración', 

@@ -1,4 +1,5 @@
 import { regex, replace, regexFunctions } from 'actions';
+import { cargaImagen } from '../../actions/global/tools';
 import { shuffle } from '../global/tools';
 
 export function insertarTexto(config) {
@@ -18,27 +19,27 @@ export function insertarInput(config) {
 		value1, value2, value3, value4, inputType,colmd,colsm,col } = params
 	var vars = vt ? variables : versions;
 	let r = '', n = '', valoresReemplazados = '';
-	var feedGenerico = regex(feed0, vars, vt);
+	var feedGenerico = regexFunctions(regex(feed0, vars, vt));
 	var answers = [{
-		respuesta: regex(value1, vars, vt),
-		feedback: regex(feed1, vars, vt),
+		respuesta: regexFunctions(regex(value1, vars, vt)),
+		feedback: regexFunctions(regex(feed1, vars, vt)),
 		errFrec: null
 	},{
-		respuesta: regex(value2, vars, vt),
-		feedback: feed0 === '' ? regex(feed2, vars, vt) : feedGenerico,
+		respuesta: regexFunctions(regex(value2, vars, vt)),
+		feedback: feed0 === '' ? regexFunctions(regex(feed2, vars, vt)) : feedGenerico,
 		errFrec: error0 === '' ? error2 : error0
 	}];
 	if(inputSize > 2) {
 		answers[2] = {
-			respuesta: regex(value3, vars, vt),
-			feedback: feed0 === '' ? regex(feed3, vars, vt) : feedGenerico,
+			respuesta: regexFunctions(regex(value3, vars, vt)),
+			feedback: feed0 === '' ? regexFunctions(regex(feed3, vars, vt)) : feedGenerico,
 			errFrec: error0 === '' ? error3 : error0
 		}
 	}
 	if(inputSize > 3) {
 		answers[3] = {
-			respuesta: regex(value4, vars, vt),
-			feedback: feed0 === '' ? regex(feed4, vars, vt) : feedGenerico,
+			respuesta: regexFunctions(regex(value4, vars, vt)),
+			feedback: feed0 === '' ? regexFunctions(regex(feed4, vars, vt)) : feedGenerico,
 			errFrec: error0 === '' ? error4 : error0
 		}
 	}
@@ -48,7 +49,7 @@ export function insertarInput(config) {
 				var dataContent = {
 					tipoInput,
 					answers,
-					feedbackDefecto: feed0 === '' ? regex(defaultFeed, vars, vt) : feedGenerico,
+					feedbackDefecto: feed0 === '' ? regexFunctions(regex(defaultFeed, vars, vt)) : feedGenerico,
 					errFrecDefecto: error0 === '' ? defaultError : error0
 				};
 				container.innerHTML = '';
@@ -121,7 +122,44 @@ export function insertarInputFraccion(config) {
 		console.log(e);
 	}
 	container.innerHTML = inputFraccion;
-} 
+}
+export function insertarImagen(config){
+	const { container, params, variables, versions, vt } = config;
+	const { src, display, height, width, col, colsm, colmd, offsetsm, offsetmd } = params;
+	var source;
+	try {
+		var vars = vt ? variables : versions;
+		source = regex(src, vars, vt);
+	} catch(e) {
+		console.log(e);
+	}
+	cargaImagen(source).then(img => {
+		if(display === 'alto exacto') {
+			img.width = height * img.width / img.height;
+			img.height = height;
+			container.className = "text-center"
+		} else if (display === 'ancho exacto') {
+			img.height = width * img.height / img.width;
+			img.width = width;
+			container.className = "text-center"
+		} else if(display === 'alto y ancho exacto') {
+			img.width = width;
+			img.height = height;
+			container.className = "text-center"
+		} else {
+			img.className = "img-responsive";
+			container.className = `col-${col} col-sm-${colsm} offset-sm-${offsetsm} col-md-${colmd} offset-sm-${offsetmd}`;
+		}
+		container.innerHTML = "";
+		container.appendChild(img);
+	}).catch(error => {
+		var img = document.createElement('img');
+		img.src = "/notfound";
+		img.alt = "Error al cargar imagen";
+		container.appendChild(img);
+		console.log(error);
+	});
+}
 export function insertarTabla(config) {
 	const { container, params, variables, versions, vt } = config, { table, encabezado } = params, vars = vt ? variables : versions
 	if (container) {

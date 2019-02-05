@@ -8,13 +8,13 @@ export default class TablaPosicional extends React.Component {
     super(props)
     this.state = props.push ? { 
       active:0,_width:'500',_tipoTabla:'miles', /*puede ser 'centenas' o 'miles'*/_pisosTabla:'1', /*pueden ser 'uno', 'dos', 'tres'*/_separacionElementos:'20',
-_tipoPisoUno:'numerico',_repeticionPictoricaPisoUno:'',_umilPisoUno:'0',_centenaPisoUno:'0',_decenaPisoUno:'0',_unidadPisoUno:'0',
-_tipoPisoDos:'numerico',_repeticionPictoricaPisoDos:'',_umilPisoDos:'0',_centenaPisoDos:'0',_decenaPisoDos:'0',_unidadPisoDos:'0',
-_tipoPisoTres:'numerico',_repeticionPictoricaPisoTres:'',_umilPisoTres:'0',_centenaPisoTres:'0',_decenaPisoTres:'0',_unidadPisoTres:'0',
+_tipoPisoUno:'numerico',_repeticionPictoricaPisoUno:'',_umilPisoUno:'0',_centenaPisoUno:'0',_decenaPisoUno:'0',_unidadPisoUno:'0',_altoTextoPisoUno:'0',
+_tipoPisoDos:'numerico',_repeticionPictoricaPisoDos:'',_umilPisoDos:'0',_centenaPisoDos:'0',_decenaPisoDos:'0',_unidadPisoDos:'0',_altoTextoPisoDos:'0',
+_tipoPisoTres:'numerico',_repeticionPictoricaPisoTres:'',_umilPisoTres:'0',_centenaPisoTres:'0',_decenaPisoTres:'0',_unidadPisoTres:'0',_altoTextoPisoTres:'0',
 _dibujaValorPosicional1:'no',_altoTextoValorPosicional1:'30',_umilVP1:'0',_centenaVP1:'0',_decenaVP1:'0',_unidadVP1:'0',
 _dibujaValorPosicional2:'no',_altoTextoValorPosicional2:'30',_umilVP2:'0',_centenaVP2:'0',_decenaVP2:'0',_unidadVP2:'0',
-_dibujaTextoResultado:'no',_altoTextoResultado:'0',_resultado:'',esCorrecta: false,
-errFrec: ""} : props.params;
+_dibujaTextoResultado:'no',_altoTextoResultado:'0',_resultado:'',
+errFrec: "", feed: ""} : props.params;
   }
   componentDidUpdate() {
     acciones.tablaPosicional({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
@@ -22,9 +22,9 @@ errFrec: ""} : props.params;
   render() {
     const {
       _width,_tipoTabla,_pisosTabla,_separacionElementos,
-      _tipoPisoUno,_repeticionPictoricaPisoUno,_umilPisoUno,_centenaPisoUno,_decenaPisoUno,_unidadPisoUno,
-      _tipoPisoDos,_repeticionPictoricaPisoDos,_umilPisoDos,_centenaPisoDos,_decenaPisoDos,_unidadPisoDos,
-      _tipoPisoTres,_repeticionPictoricaPisoTres,_umilPisoTres,_centenaPisoTres,_decenaPisoTres,_unidadPisoTres,
+      _tipoPisoUno,_repeticionPictoricaPisoUno,_umilPisoUno,_centenaPisoUno,_decenaPisoUno,_unidadPisoUno,_altoTextoPisoUno,
+      _tipoPisoDos,_repeticionPictoricaPisoDos,_umilPisoDos,_centenaPisoDos,_decenaPisoDos,_unidadPisoDos,_altoTextoPisoDos,
+      _tipoPisoTres,_repeticionPictoricaPisoTres,_umilPisoTres,_centenaPisoTres,_decenaPisoTres,_unidadPisoTres,_altoTextoPisoTres,
       _dibujaValorPosicional1,_altoTextoValorPosicional1,_umilVP1,_centenaVP1,_decenaVP1,_unidadVP1,
       _dibujaValorPosicional2,_altoTextoValorPosicional2,_umilVP2,_centenaVP2,_decenaVP2,_unidadVP2,
       _dibujaTextoResultado,_altoTextoResultado,_resultado
@@ -34,7 +34,6 @@ errFrec: ""} : props.params;
     var opcionesDos = _tipoPisoDos === 'repeticion' ? ['bloques', 'monedas y billetes'] : ['pelotas', 'circulo y cuadrado'];
     var opcionesTres = _tipoPisoTres === 'repeticion' ? ['bloques', 'monedas y billetes'] : ['pelotas', 'circulo y cuadrado'];
     let k = 0;
-    console.log(this.state.esCorrecta);
     return (
       <Editor params={this.state} store={this.props} parent={this}>
         <Item id={k++} title="Dimension" parent={this}>
@@ -51,6 +50,7 @@ errFrec: ""} : props.params;
           <Input id="_centenaPisoUno" prefix="centenas" parent={this} value={_centenaPisoUno} />
           <Input id="_decenaPisoUno" prefix="decenas" parent={this} value={_decenaPisoUno} />
           <Input id="_unidadPisoUno" prefix="unidades" parent={this} value={_unidadPisoUno} />
+          { _tipoPisoUno === 'numerico' && <Input id="_altoTextoPisoUno" prefix="Alto Texto" parent={this} value={_altoTextoPisoUno}/> }
         </Item> 
         {(_pisosTabla === '2' || _pisosTabla === '3') && 
           <Item id={k++} title="Piso Dos" parent={this}>
@@ -61,6 +61,7 @@ errFrec: ""} : props.params;
             <Input id="_centenaPisoDos" prefix="centenas"  parent={this} value={_centenaPisoDos} />
             <Input id="_decenaPisoDos" prefix="decenas"  parent={this} value={_decenaPisoDos} />
             <Input id="_unidadPisoDos" prefix="unidades"  parent={this} value={_unidadPisoDos} />
+            { _tipoPisoDos === 'numerico' && <Input id="_altoTextoPisoDos" prefix="Alto Texto" parent={this} value={_altoTextoPisoDos} /> }
           </Item> }
         {_pisosTabla === '3' && 
           <Item id={k++} title="Piso Tres" parent={this}>
@@ -71,6 +72,7 @@ errFrec: ""} : props.params;
             <Input id="_centenaPisoTres" prefix="centenas"  parent={this} value={_centenaPisoTres} />
             <Input id="_decenaPisoTres" prefix="decenas"  parent={this} value={_decenaPisoTres} />
             <Input id="_unidadPisoTres" prefix="unidades"  parent={this} value={_unidadPisoTres} />
+            { _tipoPisoTres === 'numerico' && <Input id="_altoTextoPisoTres" prefix="Alto Texto" parent={this} value={_altoTextoPisoTres}/> }
           </Item> }
         <Item id={k++} title="Valor Posicional Uno" parent={this}>
           <Select id="_dibujaValorPosicional1" prefix="Dibujar" parent={this} options={['si','no']} value={_dibujaValorPosicional1} />
@@ -95,6 +97,7 @@ errFrec: ""} : props.params;
         </Item>
         { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
           <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
         </Item> }
         
       </Editor>

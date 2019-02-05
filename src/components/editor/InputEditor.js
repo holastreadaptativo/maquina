@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { replace, show } from 'actions'
+import { regexFunctions } from '../../actions/global/tools'
 
 export default class InputEditor extends Component {
 	render () {
@@ -33,8 +34,8 @@ export default class InputEditor extends Component {
 			case 'radio': 
 				return arr.map((m, i) => { 
 					let n = replace(m, variables, true)
-					return ( <li key={i}><input name="answer" value={n} type="radio"/><label>{n}</label></li> 
-				)})
+					return ( <li key={i}><input name="answer" value={regexFunctions(n)} type="radio"/><label>{regexFunctions(n)}</label></li> )
+				})
 			case 'checkbox': { return arr.map((m, i) => { let n = replace(m, variables, true)
 				return ( <li key={i}><input name="answer" value={n} type="checkbox"/><label>{n}</label></li> )}	
 			)}	
@@ -84,10 +85,10 @@ export default class InputEditor extends Component {
 		return (
 			<div class="feed">
 				<h5>Respuestas</h5>
-				<h6><b>Correcta: </b>{ value1 === '' ? 'Ingresa Respuesta Correcta' : replace(value1, variables, true) }</h6>
-				<h6><b>Respuesta 2: </b>{ value2 === '' ? 'Ingresa respuesta 2' : replace(value2, variables, true) }</h6>
-				<h6><b>Respuesta 3: </b>{ value3 === '' ? 'Ingresa respuesta 3' : replace(value3, variables, true) }</h6>
-				<h6><b>Respuesta 4: </b>{ value4 === '' ? 'Ingresa respuesta 4' : replace(value4, variables, true) }</h6>
+				<h6><b>Correcta: </b>{ value1 === '' ? 'Ingresa Respuesta Correcta' : regexFunctions(replace(value1, variables, true)) }</h6>
+				<h6><b>Respuesta 2: </b>{ value2 === '' ? 'Ingresa respuesta 2' : regexFunctions(replace(value2, variables, true)) }</h6>
+				<h6><b>Respuesta 3: </b>{ value3 === '' ? 'Ingresa respuesta 3' : regexFunctions(replace(value3, variables, true)) }</h6>
+				<h6><b>Respuesta 4: </b>{ value4 === '' ? 'Ingresa respuesta 4' : regexFunctions(replace(value4, variables, true)) }</h6>
 			</div>
 		);
 	}

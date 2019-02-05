@@ -19,7 +19,8 @@ export default class RepeticionPictoricos extends Component {
       _imagen5:'',_altoImagen5:'0',_formaRepeticion5:'',_repeticiones5:'1',_separacion5:'10',_separaciony5:'0',
       _imagen6:'',_altoImagen6:'0',_formaRepeticion6:'',_repeticiones6:'1',_separacion6:'10',_separaciony6:'0',
       _imagen7:'',_altoImagen7:'0',_formaRepeticion7:'',_repeticiones7:'1',_separacion7:'10',_separaciony7:'0',
-      _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0'
+      _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0',
+      errFrec: "", feed: ""
     } : props.params
   }
   
@@ -146,6 +147,12 @@ export default class RepeticionPictoricos extends Component {
             { (_formaRepeticion8 === 'diagonal' || _formaRepeticion8 === 'diagonal/apilado') && 
                 <Input id="_separaciony8" type="number" prefix="Separacion y " parent={this} value={_separaciony8} /> }
         </Item> }
+        
+        { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
+          <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
+        </Item> }
+
       </Editor>
     )
   }

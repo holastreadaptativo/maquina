@@ -74,6 +74,24 @@ function fraccion(entero, numerador, denominador) {
             </table>`;
 }
 
+function espacioMiles(stringNumero) {
+    if(stringNumero.length >= 4) {
+        var arrayReverse = String(stringNumero).split("").reverse();
+        for(var i=0,count=0,valor=''; i < arrayReverse.length; i++) {
+            count++;
+            if(count === 3 && arrayReverse[i+1]) {
+                valor=' '+arrayReverse[i]+valor;
+                count=0;
+            } else {
+                valor=arrayReverse[i]+valor;
+            }
+        } 
+        return valor;
+    } else {
+        return stringNumero;
+    }
+}
+
 // Si cumple una condición theCondition dada agrega una clase theClass, si theCondition es false no muestra el elemento
 export function show(theCondition, theClass) { return `${theCondition ? theClass ? theClass : '' : 'hidden'}` }
 
