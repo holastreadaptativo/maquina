@@ -1,3 +1,4 @@
+import { regex } from '../global/tools'
 import { replace } from 'actions'
 //import { setInterval } from 'timers';
 
@@ -6,7 +7,7 @@ export function rectNumFn(config) {
 
   const {
     // General
-    rectType, decimalScale,/*height, width, background,*/
+    rectType, decimalScale, height, width, /*background,*/
     // Borde
     /* borderWidth, borderColor, borderStyle, borderRadius, */
     // Títulos
@@ -18,9 +19,9 @@ export function rectNumFn(config) {
     // Valor
     initValue, valuesSeparator,
     // Mostrar
-    showExValues, showAllValues, selectValuesToShow, showPointValue, 
+    showFirstValue, showExValues, showAllValues, selectValuesToShow, showPointValue, 
     wichPointValue, showFigValue, wichFigValues,
-    showArcs, initArcPt, endArcPt,
+    showArcs, initArcPt, endArcPt,showConstant,
     // Mini Escala
     showMiniScale, showMiniTheValue, showMiniExValues, showMiniAllValues,
     showMiniPointValue, showMiniFig, wichMiniFigValues, showMiniArcs,
@@ -45,11 +46,6 @@ export function rectNumFn(config) {
   chartPaddingAux.bottom = eval(chartPadding.split(',')[2])
   chartPaddingAux.left = eval(chartPadding.split(',')[3])
   //innerChartPaddingAux = eval(innerChartPadding)
-
-  if (!container) return
-  let maxWidth = container.parentElement.offsetWidth, responsive = params.width < maxWidth,
-      width = responsive ? params.width : maxWidth - 15, height = responsive ? params.height : width
-
   container.width = width
   container.height = height
 
@@ -61,17 +57,18 @@ export function rectNumFn(config) {
   state.typeRect = rectType
   state.scale = {
     decimalScale: decimalScale === 'si' ? true : false,
-    divisions: Number(scaleDivisions),//eval(rectValuesDec) !== undefined ? eval(scaleDivisions) > eval(rectValuesDec) ? eval(scaleDivisions) + 1 : eval(rectValuesDec) + 2 : eval(scaleDivisions) + 1,
-    value: /*state.typeRect !== 'enteros' ? 1 : */ eval(scaleValue) === 0 ? 1 : eval(scaleValue),
+    divisions: Number(regex(scaleDivisions, vars, vt)),//eval(rectValuesDec) !== undefined ? eval(scaleDivisions) > eval(rectValuesDec) ? eval(scaleDivisions) + 1 : eval(rectValuesDec) + 2 : eval(scaleDivisions) + 1,
+    value: /*state.typeRect !== 'enteros' ? 1 : */ eval(regex(scaleValue, vars, vt)) === 0 ? 1 : eval(regex(scaleValue, vars, vt)),
     width: c.width < 500 ? eval(scaleWidth)*0.6 : eval(scaleWidth),
     color: scaleColor,
     length: c.width < 500 ? eval(scaleLength)*0.7 : eval(scaleLength)
   }
   state.show = {
     extValues: showExValues === 'si' ? true : false,
+    firstValue: showFirstValue === 'si' ? true : false,
     allValues: {
       show: showAllValues !== 'no' ? showAllValues : false,
-      values: selectValuesToShow
+      values: regex(selectValuesToShow, vars, vt)
     },
     points: {
       show: showPointValue !== 'no' ? true : false,
@@ -84,8 +81,9 @@ export function rectNumFn(config) {
     arcs: {
       show: showArcs !== 'no' ? showArcs : false,
       values : {
-        init: initArcPt,
-        end: endArcPt
+        init: regex(initArcPt, vars, vt),
+        end: regex(endArcPt, vars, vt),
+        constant: showConstant === 'si' ? true : false
       }
     },
     miniScale: {
@@ -181,7 +179,7 @@ export function rectNumFn(config) {
       pictoImg: 'https://desarrolloadaptatin.blob.core.windows.net/imagenesprogramacion/Eje_1/OA_11/IE_04/rombo.svg'
     },
     values: {
-      initValue: initValue,
+      initValue: regex(initValue, vars, vt),
       valuesSeparator: valuesSeparator == 'coma' ? ',' : '.'
     }
   }
@@ -502,14 +500,15 @@ function generarEscalaDec(state, dataRecta) {
 
 function mostrarDatos(state, dataRecta) {
   const { show } = state
-  const { extValues, allValues, points, figures, arcs } = show
+  const { extValues, firstValue, allValues, points, figures, arcs } = show
   const { xIni, centroY, segmento, divisiones } = dataRecta
   for (let i = 0; i <= divisiones; i++) {
     let xPos = xIni + segmento*i
     let valor = numeroValidacion(state, i)
     // Mostrar valores externos
     if (i === 0 || i === divisiones) {
-      extValues && mostrarValorExterno(state, xPos, centroY, i, valor)
+      extValues && mostrarValorExterno(state, xPos, centroY, i, valor);
+      (i === 0 && firstValue) && mostrarValorExterno(state, xPos, centroY, i, valor);
     } else {
       let arrValoresAll = arrNumerosValidacion(state, allValues.values)
       allValues.show && mostrarValor(state, xPos, centroY, i, valor, arrValoresAll)
@@ -520,7 +519,7 @@ function mostrarDatos(state, dataRecta) {
     figures.show && mostrarFigura(state, dataRecta, xPos, centroY, i, valor, arrValoresFig)
     let arrValoresArcInit = arrNumerosValidacion(state, arcs.values.init)
     let arrValoresArcEnd = arrNumerosValidacion(state, arcs.values.end)
-    arcs.show && mostrarArco(state, dataRecta, xPos, centroY, i, valor, arrValoresArcInit, arrValoresArcEnd)
+    arcs.show && mostrarArco(state, dataRecta, xPos, centroY, i, valor, arrValoresArcInit, arrValoresArcEnd, arcs.values.constant)
   }  
 }
 
@@ -874,8 +873,8 @@ function mostrarFigura(state, dataRecta, x, y, index, valor, arrValores) {
   }
 }
 
-function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta) {
-  const { typeRect, chart, scale } = state
+function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta, constante) {
+  const { ctx, typeRect, chart, scale } = state
   const { segmento } = dataRecta
   let maximoValorEscala = eval(chart.values.initValue) + scale.divisions*scale.value
   let arcoRadio = segmento/2
@@ -899,6 +898,12 @@ function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta) {
     if (valor >= valorDesde && valor < valorHasta) {
       
       dibujarArco(state, xPos + arcoRadio, centroY, arcoRadio)
+      if(constante) {
+        ctx.fillStyle = '#A84C4E';
+        ctx.textAlign = "center"; 
+        ctx.font = '15px Helvetica';
+        ctx.fillText(`+${scale.value}`, xPos + arcoRadio, centroY-arcoRadio-10);
+      }
     }
   }
 }

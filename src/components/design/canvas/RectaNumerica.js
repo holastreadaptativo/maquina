@@ -22,9 +22,9 @@
         // Valor
         initValue: '3.56', valuesSeparator: 'coma',
         // Mostrar
-        showExValues: 'si', showAllValues: 'no', selectValuesToShow: '', showPointValue: 'no', 
+        showExValues: 'si', showFirstValue: 'no', showAllValues: 'no', selectValuesToShow: '', showPointValue: 'no', 
         wichPointValue: '5.15,5.87,5.66', showFigValue: 'no', wichFigValues: '5.15,5.87,5.66',
-        showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71',
+        showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71', showConstant:'no',
         // Mini Escala
         showMiniScale: 'no', showMiniTheValue: '5.71', showMiniExValues: 'si', showMiniAllValues: 'no',
         showMiniPointValue: 'no', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', showMiniArcs: 'no',
@@ -41,7 +41,7 @@
       numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
     }
     render() {
-      const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, /*showMiniFig,*/ showMiniArcs } = this.state
+      const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, /*showMiniFig,*/ showMiniArcs, showFirstValue, showConstant } = this.state
 
       let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
           borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
@@ -77,8 +77,8 @@
             <Input id="chartPadding" prefix="chart" postfix="px" parent={this} placeholder={'top,right,bottom,left'} />
           </Item>
           <Item id={k++} title="Escala" parent={this}>
-            <Input id="scaleValue" prefix="valor" placeholder={'1'} type="number" parent={this} />
-            <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} type="number" parent={this} />
+            <Input id="scaleValue" prefix="valor" placeholder={'1'} parent={this} />
+            <Input id="scaleDivisions" prefix="divisiones" placeholder={'10'} parent={this} />
             <Input id="scaleWidth" prefix="ancho" placeholder={'5'} type="number" parent={this}/>
             <Input id="scaleLength" prefix="largo" placeholder={'15'} type="number" parent={this}/>
             <Input id="scaleColor" prefix="color" type="color" parent={this}/>
@@ -89,6 +89,7 @@
           </Item>
           <Item id={k++} title="Mostrar" parent={this}>
             <Select id="showExValues" prefix="valores ext" options={yesNoOptions} parent={this}/>
+            <Select id="showFirstValue" prefix="primer val" options={['si','no']} parent={this} value={showFirstValue}/>
             <Select id="showAllValues" prefix="valores" options={showTheValuesOpt} parent={this} />
             <Input id="selectValuesToShow" prefix="escoger" type="text" parent={this} hide={showAllValues === 'no' || showAllValues === 'todos'}/>
             <Select id="showPointValue" prefix="punto" options={showPointValueOpt} parent={this}/>
@@ -98,6 +99,7 @@
             <Select id="showArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
             <Input id="initArcPt" prefix="desde" type="text" parent={this} hide={showArcs === 'no'}/>
             <Input id="endArcPt" prefix="hasta" type="text" parent={this} hide={showArcs === 'no'}/>
+            <Select id="showConstant" prefix="constante" type="text" parent={this} hide={showArcs === 'no'} options={['si','no']} value={showConstant}/>
             <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this} hide={mostrarMiniRecta}/>
           </Item>
           <Item id={k++} title="Mini Escala" parent={this} hide={(mostrarMiniRecta  || (showMiniScale === 'no'))}>

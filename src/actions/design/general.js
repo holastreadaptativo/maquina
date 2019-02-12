@@ -24,11 +24,14 @@ export function insertarInput(config) {
 		respuesta: regexFunctions(regex(value1, vars, vt)),
 		feedback: regexFunctions(regex(feed1, vars, vt)),
 		errFrec: null
-	},{
-		respuesta: regexFunctions(regex(value2, vars, vt)),
-		feedback: feed0 === '' ? regexFunctions(regex(feed2, vars, vt)) : feedGenerico,
-		errFrec: error0 === '' ? error2 : error0
 	}];
+	if(inputSize > 1) {
+		answers[1] = {
+			respuesta: regexFunctions(regex(value2, vars, vt)),
+			feedback: feed0 === '' ? regexFunctions(regex(feed2, vars, vt)) : feedGenerico,
+			errFrec: error0 === '' ? error2 : error0
+		}
+	}
 	if(inputSize > 2) {
 		answers[2] = {
 			respuesta: regexFunctions(regex(value3, vars, vt)),
@@ -161,9 +164,9 @@ export function insertarImagen(config){
 	});
 }
 export function insertarTabla(config) {
-	const { container, params, variables, versions, vt } = config, { table, encabezado } = params, vars = vt ? variables : versions
+	const { container, params, variables, versions, vt } = config, { table, cssclases, encabezado } = params, vars = vt ? variables : versions
 	if (container) {
-		let r = '<table class="tabla"><tbody>';
+		let r = `<div class="table-responsive"><table class="tabla ${cssclases}"><tbody>`;
 		for(var row = 0; row < table.length; row++) {
 			r += '<tr>';
 			for(var col = 0; col < table[row].length; col++) {
@@ -171,11 +174,11 @@ export function insertarTabla(config) {
 				switch(table[row][col].type) {
 					case 'text':
 						if(encabezado==='arriba' && row === 0) {
-							r+= `<p><b>${regex(table[row][col].value.text, vars, vt)}</b></p>`;
+							r+= `<p><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
 						} else if(encabezado==='izquierda' && col === 0) {
-							r+= `<p><b>${regex(table[row][col].value.text, vars, vt)}</b></p>`;
+							r+= `<p><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
 						} else {
-							r+= `<p>${regex(table[row][col].value.text, vars, vt)}</p>`;
+							r+= `<p>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</p>`;
 						}
 						break;
 					case 'image':
@@ -231,6 +234,7 @@ export function insertarTabla(config) {
 						}
 						break;
 					case 'text-input':
+					
 						var { text, tipoInput, maxLength, error0, error2, error3, error4, defaultError,
 							feed0, feed1, feed2, feed3, feed4, defaultFeed,
 							value1, value2, value3, value4 } = table[row][col].value;
@@ -285,14 +289,16 @@ export function insertarTabla(config) {
 					case 'text-image':
 						var p = regex(table[row][col].value.text, vars, vt);
 						var img = `<img src=${regex(table[row][col].value.url, vars, vt)} height=${table[row][col].value.height} width=${table[row][col].value.width}/>`;
-						r+= `<p>${p.replace('{imagen}', img)}</p>`
+						
+						p = `<p>${p.replace('{imagen}', img)}</p>`
+						r += regexFunctions(p)
 						break;
 				}
 				r+= '</td>';
 			}
 			r += '</tr>'
 		}
-		r += '</tbody></table>';
+		r += '</tbody></table></div>';
 		container.innerHTML = r;
 	}
 }

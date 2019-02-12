@@ -92,6 +92,33 @@ function espacioMiles(stringNumero) {
     }
 }
 
+function cardinalAOrdinal(numero) {
+    switch(numero){
+        case '1':
+            return 'primer';
+        case '2':
+            return 'segundo';
+        case '3':
+            return 'tercer';
+        case '4':
+            return 'cuarto';
+        case '5':
+            return 'quinto';
+        case '6':
+            return 'sexto';
+        case '7':
+            return 'séptimo';
+        case '8':
+            return 'octavo';
+        case '9':
+            return 'noveno';
+        case '10':
+            return 'décimo';
+        default:
+            return '';
+    }
+}
+
 // Si cumple una condición theCondition dada agrega una clase theClass, si theCondition es false no muestra el elemento
 export function show(theCondition, theClass) { return `${theCondition ? theClass ? theClass : '' : 'hidden'}` }
 
