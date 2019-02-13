@@ -245,14 +245,26 @@ export function ver(action, state) {
 
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
-			const bootstrapCss = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/css/bootstrap.min.css';
-			const appCss = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/css/app.css';
-			const appJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/app.js`;
-			const interfazJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/interfaz.js`;
-			const jsEjerciciosJs = `https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/${OAIE}/jsEjercicios.js`;
-			const bootstrapJs = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/bootstrap.min.js';
-			const jquery = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/jquery-3.3.1.slim.min.js';
-			const popper = 'https://desarrolloadaptatin.blob.core.windows.net/frontejercicios/js/popper.min.js';
+				//https://contenedoradapt.adaptativamente.cl/
+				
+			const bootstrapCss = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/css/bootstrap.min.css';
+			const appCss = `https://contenedoradapt.adaptativamente.cl/fontejercicios/css/${OAIE}/app.css`;
+			const appJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/app.js`;
+			const interfazJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/interfaz.js`;
+			const jsEjerciciosJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/jsEjercicios.js`;
+			const bootstrapJs = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/bootstrap.min.js';
+			const jquery = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/jquery-3.3.1.slim.min.js';
+			const popper = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/popper.min.js';
+		/*
+			const bootstrapCss = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/css/bootstrap.min.css';
+			const appCss = `../../css/${OAIE}/app.css`;
+			const appJs = `../../js/${OAIE}/app.js`;
+			const interfazJs = `../../js/${OAIE}/interfaz.js`;
+			const jsEjerciciosJs = `../../js/${OAIE}/jsEjercicios.js`;
+			const bootstrapJs = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/bootstrap.min.js';
+			const jquery = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/jquery-3.3.1.slim.min.js';
+			const popper = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/popper.min.js';
+				*/
 				let documento = `<!doctype html>
 <html lang="en">
 <head>
@@ -331,7 +343,7 @@ export function ver(action, state) {
 											<span>Solución</span>
 										</div>
 										<div class="col-2 d-none d-sm-block">
-											<img class="img-fluid" src="https://desarrolloadaptatin.blob.core.windows.net/prueba/diseno_prototipo/svg/togaSuki.svg">
+											<img class="img-fluid" src="https://contenedoradapt.adaptativamente.cl//fontejercicios/imagenes_front/imagenes_todos/togaSuki.svg">
 										</div>
 										<div class="col-12 col-sm-10" id="glosa">
 										</div>

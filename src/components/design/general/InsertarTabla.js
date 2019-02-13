@@ -5,7 +5,7 @@ import { show } from 'actions'
 export default class InsertarTabla extends Component {
 	constructor(props) {
 		super(props)
-		this.state = props.push ? { active:0, cols:2, rows:2, x:null, y:null, encabezado:'arriba', cssclases:'tabla-bordes' } : props.params
+		this.state = props.push ? { active:0, cols:2, rows:2, x:null, y:null, encabezado:'arriba', cssclases:'tabla-bordes', lineasHorizontales:'', estiloLineaHorizontal:'2px solid #000' } : props.params
 	}
 	componentWillMount() {
 		if (this.props.push) {
@@ -59,7 +59,7 @@ export default class InsertarTabla extends Component {
 			}
 			case 'text-image': {
 				table[i][j].type = 'text'
-				table[i][j].value = { text:'-' }
+				table[i][j].value = { text:'-', tachar: 'no' }
 			}
 		}
 		this.setState({ table })
@@ -107,12 +107,15 @@ export default class InsertarTabla extends Component {
 		this.setState({ ...state, table })
 	}
 	render() {
-		const { x, y, table, cssclases, encabezado } = this.state; let k = 0
+		const { x, y, table, cssclases, encabezado, lineasHorizontales, estiloLineaHorizontal } = this.state; let k = 0;
+		const grid = ["1","2","3","4","5","6","7","8","9","10","11","12"];
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Clases" parent={this}>
 					<Input id="cssclases" prefix="CSS Clases" parent={this} value={cssclases} />
 					<Select id="encabezado" parent={this} prefix="Encabezado" options={['sin encabezado', 'arriba','izquierda']} value={encabezado}/>
+					<Input id="lineasHorizontales" parent={this} prefix="Lin. Horizont" value={lineasHorizontales} />
+					{ lineasHorizontales !== '' && <Input id="estiloLineaHorizontal" parent={this} prefix="Estilo Lineas" value={estiloLineaHorizontal} /> }
 				</Item>
 				<Item id={k++} title="Tabla" parent={this}>
 					<Input id="rows" prefix="filas" type="number" update={s => ::this.update(s, 'rows')} parent={this}/>
@@ -358,6 +361,13 @@ export default class InsertarTabla extends Component {
 													<input name="text" type="text" defaultValue={n.value.text} class="form-control"
 													onChange={e => ::this.handleChange(e, i, j)}></input>
 												</div>
+												<div class="input-group">
+													<span class="input-group-addon">Tachar</span>
+													<select name="tachar" defaultValue={n.value.tachar} class="form-control" onChange={e => ::this.handleChange(e, i, j)}>
+															<option value="no">no</option>
+															<option value="si">si</option>
+													</select>
+												</div>
 											</div>
 										</td>
 									)
@@ -368,6 +378,13 @@ export default class InsertarTabla extends Component {
 						</tbody>
 					</table>
 				</Item>
+				{ this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
+          <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
+					<Select id="col" prefix="Ancho Mobil" parent={this} value={this.state.col} options={grid}/>
+					<Select id="colsm" prefix="Ancho Tablet" parent={this} value={this.state.colsm} options={grid}/>
+					<Select id="colmd" prefix="Ancho Escritorio" parent={this} value={this.state.colmd} options={grid}/>
+        </Item> }
 			</Editor>
 		)
 	}

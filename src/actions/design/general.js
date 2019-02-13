@@ -164,21 +164,28 @@ export function insertarImagen(config){
 	});
 }
 export function insertarTabla(config) {
-	const { container, params, variables, versions, vt } = config, { table, cssclases, encabezado } = params, vars = vt ? variables : versions
+	const { container, params, variables, versions, vt } = config, { table, cssclases, encabezado, lineasHorizontales, estiloLineaHorizontal } = params, vars = vt ? variables : versions
 	if (container) {
 		let r = `<div class="table-responsive"><table class="tabla ${cssclases}"><tbody>`;
 		for(var row = 0; row < table.length; row++) {
-			r += '<tr>';
+			if(lineasHorizontales === '') {
+				r += '<tr>';
+			} else {
+				r += String(lineasHorizontales).split(',').includes(String(row+1)) ? `<tr style="border-bottom: ${estiloLineaHorizontal};">` : '<tr>';
+			}
 			for(var col = 0; col < table[row].length; col++) {
 				r+= '<td>';
 				switch(table[row][col].type) {
 					case 'text':
+						var tachado = table[row][col].value.tachar === 'si' ? 
+							//`style="background: linear-gradient(to left top, transparent 47.75%, #ff0000, #ff0000, transparent 52.25%);"` : '';
+							`class="strikethrough"` : '';
 						if(encabezado==='arriba' && row === 0) {
-							r+= `<p><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
+							r+= `<p ${tachado}><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
 						} else if(encabezado==='izquierda' && col === 0) {
-							r+= `<p><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
+							r+= `<p ${tachado}><b>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</b></p>`;
 						} else {
-							r+= `<p>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</p>`;
+							r+= `<p ${tachado}>${regexFunctions(regex(table[row][col].value.text, vars, vt))}</p>`;
 						}
 						break;
 					case 'image':

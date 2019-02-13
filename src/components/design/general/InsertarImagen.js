@@ -50,6 +50,10 @@ export default class InsertImage extends Component {
 					{ display === 'auto' && <Select id="colmd" parent={this} prefix="col-md" options={cols} value={colmd}/> }
 					{ display === 'auto' && <Select id="offsetmd" parent={this} prefix="offsetmd" options={cols} value={offsetmd}/> }
 				</Item>
+				{ this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
+          <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
+        </Item> }
 			</Editor>
 		)
 	}
