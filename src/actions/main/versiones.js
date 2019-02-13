@@ -4,7 +4,7 @@ import { data, src, DEFAULT, LINKS } from 'stores'
 var num = 0, max = Math.pow(2, 13)
 // le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para las versiones} a las versiones
 export function ver(action, state) {
-	const { code, update } = state, base = data.child(code.concat('/versions'))
+	const { code, update, esProduccion } = state, base = data.child(code.concat('/versions'))
 	switch(action) {
 		case 'CREATE': {
 			const { fns, limit, selected, variables } = state
@@ -243,28 +243,35 @@ export function ver(action, state) {
 			s = code.substring(10, 15),
 			OAIE = code.substring(4,8);
 
+			console.log(esProduccion);
+			const bootstrapCss = esProduccion ?
+			 	'../../../../css/bootstrap.min.css' : 
+			 	'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/bootstrap.min.css';
+			const appCss = esProduccion ?
+				`../../../../css/${OAIE}/app.css` :
+				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/${OAIE}/app.css`;
+			const appJs = esProduccion ?
+				`../../../../js/${OAIE}/app.js` :
+				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/app.js`;
+			const interfazJs = esProduccion ?
+				`../../../../js/${OAIE}/interfaz.js` :
+				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/interfaz.js`;
+			const jsEjerciciosJs = esProduccion ?
+				`../../../../js/${OAIE}/jsEjercicios.js` :
+				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/jsEjercicios.js`;
+			const bootstrapJs = esProduccion ?
+				'../../../../js/bootstrap.min.js' :
+				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/bootstrap.min.js';
+			const jquery = esProduccion ?
+				'../../../../js/jquery-3.3.1.slim.min.js' :
+				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/jquery-3.3.1.slim.min.js';
+			const popper = esProduccion ? 
+				'../../../../js/popper.min.js' :
+				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/popper.min.js';
+			console.log(appCss, appJs, interfazJs, jsEjerciciosJs, bootstrapJs, jquery, popper);
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
 				//https://contenedoradapt.adaptativamente.cl/
-				
-			const bootstrapCss = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/css/bootstrap.min.css';
-			const appCss = `https://contenedoradapt.adaptativamente.cl/fontejercicios/css/${OAIE}/app.css`;
-			const appJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/app.js`;
-			const interfazJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/interfaz.js`;
-			const jsEjerciciosJs = `https://contenedoradapt.adaptativamente.cl/fontejercicios/js/${OAIE}/jsEjercicios.js`;
-			const bootstrapJs = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/bootstrap.min.js';
-			const jquery = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/jquery-3.3.1.slim.min.js';
-			const popper = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/popper.min.js';
-		/*
-			const bootstrapCss = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/css/bootstrap.min.css';
-			const appCss = `../../css/${OAIE}/app.css`;
-			const appJs = `../../js/${OAIE}/app.js`;
-			const interfazJs = `../../js/${OAIE}/interfaz.js`;
-			const jsEjerciciosJs = `../../js/${OAIE}/jsEjercicios.js`;
-			const bootstrapJs = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/bootstrap.min.js';
-			const jquery = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/jquery-3.3.1.slim.min.js';
-			const popper = 'https://contenedoradapt.adaptativamente.cl/fontejercicios/js/popper.min.js';
-				*/
 				let documento = `<!doctype html>
 <html lang="en">
 <head>
@@ -343,7 +350,7 @@ export function ver(action, state) {
 											<span>Solución</span>
 										</div>
 										<div class="col-2 d-none d-sm-block">
-											<img class="img-fluid" src="https://contenedoradapt.adaptativamente.cl//fontejercicios/imagenes_front/imagenes_todos/togaSuki.svg">
+											<img class="img-fluid" src="https://contenedoradapt.adaptativamente.cl/frontejercicios/imagenes_front/patos/togaSuki.svg">
 										</div>
 										<div class="col-12 col-sm-10" id="glosa">
 										</div>

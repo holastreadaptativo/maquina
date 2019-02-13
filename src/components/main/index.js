@@ -22,9 +22,10 @@ export class OnePage extends Component {
 	componentWillReceiveProps(next) {
 		if (next.code != this.props.code) this.refresh(next.code)
 	}
-	download() {
+	download(esProduccion) {
+		console.log(esProduccion);
 		this.refresh(this.props.code)
-		action.ver('DOWNLOAD2', { ...this.props, vt:this.state.vt }) //genera el html de los ejercicios creados
+		action.ver('DOWNLOAD2', { ...this.props, vt:this.state.vt, esProduccion }) //genera el html de los ejercicios creados
 	}
 	refresh(code) {
 		action.ver('CHECK', { code, update:(::this.setState) })

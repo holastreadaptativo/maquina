@@ -4,13 +4,14 @@ import { ROUTES } from 'stores'
 import { show } from 'actions'
 
 export default class Section extends Component {
-    handlerSubmit(e) {
+    handlerSubmit(e, esProduccion) {
 			e.preventDefault()
+			console.log(esProduccion);
 			if (!this.props.download) {
 				let i = this.props.active + 1; this.props.setActive(i)
 				browserHistory.push(ROUTES[i].path)
 			} else {
-				this.props.download()
+				this.props.download(esProduccion)
 			}
 		}
 	render() {
@@ -20,8 +21,13 @@ export default class Section extends Component {
         			{this.props.children}
         			<div class={show(this.props.condition, 'row')}>
 								<article>						
-									<button class="btn btn-success" onClick={::this.handlerSubmit}>
-										{!this.props.download ? 'Continuar' : 'Descargar'}
+									<button class="btn btn-success" onClick={(e) => this.handlerSubmit(e, false)}>
+										{!this.props.download ? 'Continuar' : 'Descargar Desarrollo'}
+									</button>
+								</article>
+								<article>						
+									<button class="btn btn-success" onClick={(e) => this.handlerSubmit(e, true)}>
+										{!this.props.download ? 'Continuar' : 'Descargar Produccion'}
 									</button>
 								</article>
 							</div>
