@@ -268,10 +268,11 @@ export function ver(action, state) {
 			const popper = esProduccion ? 
 				'../../../../js/popper.min.js' :
 				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/popper.min.js';
-			console.log(appCss, appJs, interfazJs, jsEjerciciosJs, bootstrapJs, jquery, popper);
+			const srcImgPatoGlosa = esProduccion ?
+				'../../../../imagenes_front/patos/togaSuki.svg' :
+				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/patos/togaSuki.svg';
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
-				//https://contenedoradapt.adaptativamente.cl/
 				let documento = `<!doctype html>
 <html lang="en">
 <head>
@@ -350,7 +351,7 @@ export function ver(action, state) {
 											<span>Solución</span>
 										</div>
 										<div class="col-2 d-none d-sm-block">
-											<img class="img-fluid" src="https://contenedoradapt.adaptativamente.cl/frontejercicios/imagenes_front/patos/togaSuki.svg">
+											<img class="img-fluid" src="${srcImgPatoGlosa}">
 										</div>
 										<div class="col-12 col-sm-10" id="glosa">
 										</div>
