@@ -281,6 +281,7 @@ export function ver(action, state) {
 	<link rel="stylesheet" href="${bootstrapCss}">
 	<link rel="stylesheet" href="${appCss}">
 	<title>${name}</title>
+	<script>document.domain = "adaptativamente.cl";</script>
 </head>
 <body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">
 	<header class="barraprogreso">
