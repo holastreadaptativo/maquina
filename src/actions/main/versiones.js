@@ -287,10 +287,12 @@ export function ver(action, state) {
 	<header class="barraprogreso">
 			<div class="container-fluid">
 				<div class="row justify-content-center no-gutters align-items-center">
-					<div class="col-11 col-sm-10 pr-4 pr-sm-0">
-						<div id="progressbar" class="barra-progreso"></div>
+					<div class="col-11 lineasbarra">
+						<hr class="sidelinebar d-none d-sm-block">
+						<svg xmlns="http://www.w3.org/2000/svg" id="progressbar" version="1.1" class="mx-sm-auto d-sm-block"></svg>
+						<hr class="sidelinebar d-none d-sm-block">
 					</div>
-					<div class="col-1">
+					<div class="col-1 d-sm-none">
 						<!--<svg id="botonSalir" class="float-right" xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" data-toggle="tooltip" data-placement="bottom" title="Salir de la misión">
 							<path d="M0 0h24v24H0z" fill="none"/><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
 						</svg>-->
