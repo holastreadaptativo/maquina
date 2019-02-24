@@ -140,7 +140,7 @@ export function cargaImagen(src) {
             resolve(img);
         }
         img.onerror = function() {
-            reject('no pasa nada');
+            reject('no pasa nada con ', src);
         }
     });
 }
