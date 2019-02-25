@@ -67,7 +67,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
     altoTexto: _altoTextoPisoUno,
     umilAltoImg: _altoImgMilesPisoUno,
     decAltoImg: _altoImgDecPisoUno,
-    centAltoImg: _altoImgDecPisoUno,
+    centAltoImg: _altoImgCentPisoUno,
     uniAltoImg: _altoImgUniPisoUno
   }]
   if (datosEjercicio.tabla.configuracion.pisosTabla > 1) {
@@ -81,7 +81,7 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
       altoTexto: _altoTextoPisoDos,
       umilAltoImg: _altoImgMilesPisoDos,
       decAltoImg: _altoImgDecPisoDos,
-      centAltoImg: _altoImgDecPisoDos,
+      centAltoImg: _altoImgCentPisoDos,
       uniAltoImg: _altoImgUniPisoDos
     }
   }
@@ -95,9 +95,9 @@ _dibujaTextoResultado,_altoTextoResultado,_resultado} = params;
       unidad: _unidadPisoTres,
       altoTexto: _altoTextoPisoTres,
       umilAltoImg: _altoImgMilesPisoTres,
-      decAltoImg: _altoImgDecPisoUnoTres,
-      centAltoImg: _altoImgDecPisoUnoTres,
-      uniAltoImg: _altoImgUniPisoUnoTres
+      decAltoImg: _altoImgDecPisoTres,
+      centAltoImg: _altoImgCentPisoTres,
+      uniAltoImg: _altoImgUniPisoTres
     }
   }
   datosEjercicio.valoresPosicionales = [];
