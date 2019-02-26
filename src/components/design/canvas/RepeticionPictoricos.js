@@ -12,6 +12,7 @@ export default class RepeticionPictoricos extends Component {
     this.state = props.push ? { 
       _pictoricos: '0',opcionPictorica: 'Bloques Multibase',
       _separacion: '20', heightCanvas:'300', widthCanvas:'1000',
+      _tituloCanvas: '',_canvasBorder:'',_canvasBorderRadius:'',
       _imagen1:'',_altoImagen1:'0',_formaRepeticion1:'',_repeticiones1:'1',_separacion1:'10',_separaciony1:'0',
       _imagen2:'',_altoImagen2:'0',_formaRepeticion2:'',_repeticiones2:'1',_separacion2:'10',_separaciony2:'0',
       _imagen3:'',_altoImagen3:'0',_formaRepeticion3:'',_repeticiones3:'1',_separacion3:'10',_separaciony3:'0',
@@ -20,6 +21,10 @@ export default class RepeticionPictoricos extends Component {
       _imagen6:'',_altoImagen6:'0',_formaRepeticion6:'',_repeticiones6:'1',_separacion6:'10',_separaciony6:'0',
       _imagen7:'',_altoImagen7:'0',_formaRepeticion7:'',_repeticiones7:'1',_separacion7:'10',_separaciony7:'0',
       _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0',
+      _imagen9:'',_altoImagen9:'0',_formaRepeticion9:'',_repeticiones9:'1',_separacion9:'10',_separaciony9:'0',
+      _imagen10:'',_altoImagen10:'0',_formaRepeticion10:'',_repeticiones10:'1',_separacion10:'10',_separaciony10:'0',
+      _imagen11:'',_altoImagen11:'0',_formaRepeticion11:'',_repeticiones11:'1',_separacion11:'10',_separaciony11:'0',
+      _imagen12:'',_altoImagen12:'0',_formaRepeticion12:'',_repeticiones12:'1',_separacion12:'10',_separaciony12:'0',
       errFrec: "", feed: ""
     } : props.params
   }
@@ -30,7 +35,7 @@ export default class RepeticionPictoricos extends Component {
 
   render() {
     var k = 0;
-    const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,
+    const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,_tituloCanvas,_canvasBorder,_canvasBorderRadius,
       _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,
       _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,
       _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,
@@ -38,13 +43,17 @@ export default class RepeticionPictoricos extends Component {
       _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,
       _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,
       _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,
-      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8 } = this.state;
+      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8,
+      _imagen9,_altoImagen9,_formaRepeticion9,_repeticiones9,_separacion9,_separaciony9,
+      _imagen10,_altoImagen10,_formaRepeticion10,_repeticiones10,_separacion10,_separaciony10,
+      _imagen11,_altoImagen11,_formaRepeticion11,_repeticiones11,_separacion11,_separaciony11,
+      _imagen12,_altoImagen12,_formaRepeticion12,_repeticiones12,_separacion12,_separaciony12 } = this.state;
     var opcionesDePictoricos = ['Seleccione','Monedas y billetes', 'Bloques Multibase'];
-    var cantidad = ['0','1','2','3','4','5','6','7','8'];
+    var cantidad = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];
     var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical'];
     var imagenes;
     if(opcionPictorica == 'Monedas y billetes') {
-      imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco'];
+      imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco', 'signo resta', 'signo igual', 'signo mayor', 'signo menor'];
     } else if(opcionPictorica == 'Bloques Multibase') {
       imagenes = ['Seleccionar','bloque mil', 'bloque cien', 'bloque diez', 'bloque uno'];
     }
@@ -54,6 +63,9 @@ export default class RepeticionPictoricos extends Component {
         <Item id={k++} title="General" parent={this}>
           <Input id="heightCanvas" prefix="alto" postfix="px" type="number" parent={this} value={heightCanvas}/>	
           <Input id="widthCanvas" prefix="ancho" postfix="px" type="number" parent={this} value={widthCanvas}/>
+          <Input id="_tituloCanvas" prefix="Titulo" type="text" parent={this} value={_tituloCanvas}/>
+          <Input id="_canvasBorder" prefix="Borde" type="text" parent={this} value={_canvasBorder}/>
+          { _canvasBorder !== '' && <Input id="_canvasBorderRadius" prefix="Radio borde" type="text" parent={this} value={_canvasBorderRadius}/> }
         </Item>
         <Item id={k++} title="Imágenes" parent={this}>
           <Input id="_separacion" type="number" value={_separacion} prefix="Sep Repeticion" parent={this}/>
@@ -146,6 +158,50 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion8" type="number" prefix="Separacion" parent={this} value={_separacion8} />
             { (_formaRepeticion8 === 'diagonal' || _formaRepeticion8 === 'diagonal/apilado') && 
                 <Input id="_separaciony8" type="number" prefix="Separacion y " parent={this} value={_separaciony8} /> }
+        </Item> }
+
+        { _pictoricos > 8 &&
+        <Item id={k++} title="Imagen 9" parent={this}>
+          <Select id="_imagen9" prefix="Imagen" options={imagenes} parent={this} value={_imagen9} /> 
+            <Select id="_formaRepeticion9" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion9} />
+            <Input id="_repeticiones9" prefix="Cantidad" parent={this} value={_repeticiones9} />
+            <Input id="_altoImagen9" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen9} />
+            <Input id="_separacion9" type="number" prefix="Separacion" parent={this} value={_separacion9} />
+            { (_formaRepeticion9 === 'diagonal' || _formaRepeticion9 === 'diagonal/apilado') && 
+                <Input id="_separaciony9" type="number" prefix="Separacion y " parent={this} value={_separaciony9} /> }
+        </Item> }
+
+        { _pictoricos > 9 &&
+        <Item id={k++} title="Imagen 10" parent={this}>
+          <Select id="_imagen10" prefix="Imagen" options={imagenes} parent={this} value={_imagen10} /> 
+            <Select id="_formaRepeticion10" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion10} />
+            <Input id="_repeticiones10" prefix="Cantidad" parent={this} value={_repeticiones10} />
+            <Input id="_altoImagen10" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen10} />
+            <Input id="_separacion10" type="number" prefix="Separacion" parent={this} value={_separacion10} />
+            { (_formaRepeticion10 === 'diagonal' || _formaRepeticion10 === 'diagonal/apilado') && 
+                <Input id="_separaciony10" type="number" prefix="Separacion y " parent={this} value={_separaciony10} /> }
+        </Item> }
+
+        { _pictoricos > 10 &&
+        <Item id={k++} title="Imagen 11" parent={this}>
+          <Select id="_imagen11" prefix="Imagen" options={imagenes} parent={this} value={_imagen11} /> 
+            <Select id="_formaRepeticion11" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion11} />
+            <Input id="_repeticiones11" prefix="Cantidad" parent={this} value={_repeticiones11} />
+            <Input id="_altoImagen11" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen11} />
+            <Input id="_separacion11" type="number" prefix="Separacion" parent={this} value={_separacion11} />
+            { (_formaRepeticion11 === 'diagonal' || _formaRepeticion11 === 'diagonal/apilado') && 
+                <Input id="_separaciony11" type="number" prefix="Separacion y " parent={this} value={_separaciony11} /> }
+        </Item> }
+
+        { _pictoricos > 11 &&
+        <Item id={k++} title="Imagen 12" parent={this}>
+          <Select id="_imagen12" prefix="Imagen" options={imagenes} parent={this} value={_imagen12} /> 
+            <Select id="_formaRepeticion12" prefix="forma rep" options={opcionesDeRepeticion} parent={this} value={_formaRepeticion12} />
+            <Input id="_repeticiones12" prefix="Cantidad" parent={this} value={_repeticiones12} />
+            <Input id="_altoImagen12" type="number" prefix="Alto Imagen" parent={this} value={_altoImagen12} />
+            <Input id="_separacion12" type="number" prefix="Separacion" parent={this} value={_separacion12} />
+            { (_formaRepeticion12 === 'diagonal' || _formaRepeticion12 === 'diagonal/apilado') && 
+                <Input id="_separaciony12" type="number" prefix="Separacion y " parent={this} value={_separaciony12} /> }
         </Item> }
         
         { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>

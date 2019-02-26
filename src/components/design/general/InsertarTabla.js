@@ -17,7 +17,7 @@ export default class InsertarTabla extends Component {
 			estiloLineaHorizontal:'2px solid #000', 
 			destacado:'',
 			estiloFondoTD: '#fff',
-			anchoCols
+			anchoCols: ''
 		} : props.params
 	}
 	componentWillMount() {
