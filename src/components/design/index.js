@@ -47,6 +47,10 @@ export const FUNCIONES = [{
 		id:'Valor Posicional', 
 		component:components.ValorPosicional, 
 		action:actions.valorPosicional 
+	},{
+		id: 'Repeticion Bidimensional',
+		component:components.RepeticionBidimensional,
+		action:actions.repeticionBidimensional
 	}]
 },{ 
 	name:'Álgebra', 
