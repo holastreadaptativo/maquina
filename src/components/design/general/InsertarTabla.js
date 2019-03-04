@@ -17,7 +17,9 @@ export default class InsertarTabla extends Component {
 			estiloLineaHorizontal:'2px solid #000', 
 			destacado:'',
 			estiloFondoTD: '#fff',
-			anchoCols: ''
+			anchoCols: '',
+			widthTabla:'100%',
+    	tituloTabla: ''
 		} : props.params
 	}
 	componentWillMount() {
@@ -120,11 +122,13 @@ export default class InsertarTabla extends Component {
 		this.setState({ ...state, table })
 	}
 	render() {
-		const { x, y, table, cssclases, encabezado, lineasHorizontales, estiloLineaHorizontal, destacado, estiloFondoTD, anchoCols } = this.state; let k = 0;
+		const { x, y, table, cssclases, encabezado, lineasHorizontales, estiloLineaHorizontal, destacado, estiloFondoTD, anchoCols, tituloTabla, widthTabla } = this.state; let k = 0;
 		const grid = ["1","2","3","4","5","6","7","8","9","10","11","12"];
 		return (
 			<Editor params={this.state} store={this.props} parent={this}>
 				<Item id={k++} title="Clases" parent={this}>
+					<Input id="widthTabla" prefix="Width % o px" parent={this} value={widthTabla} />
+					<Input id="tituloTabla" prefix="Titulo" parent={this} value={tituloTabla} />
 					<Input id="cssclases" prefix="CSS Clases" parent={this} value={cssclases} />
 					<Select id="encabezado" parent={this} prefix="Encabezado" options={['sin encabezado', 'arriba','izquierda']} value={encabezado}/>
 					<Input id="lineasHorizontales" parent={this} prefix="Lin. Horizont" value={lineasHorizontales} />
