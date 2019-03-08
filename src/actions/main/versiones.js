@@ -26,7 +26,15 @@ export function ver(action, state) {
 				}
 			}
 			
-			base.set({ box, bup, gen, limit, selected, total })
+			try {
+				base.set({ box, bup, gen, limit, selected, total })
+			} catch(error) {
+				console.log('---------------ERROR AL GENERAR VARIABLES---------------');
+				console.log('ERROR => ', error);
+				console.log('VARIABLES => ', gen);
+				console.log('---------------ERROR AL GENERAR VARIABLES---------------');
+			}
+			
 
 			function getmtx(fns, variables) {
 				let aux = variables.slice(0), vars = [], matrix = []; num = 1

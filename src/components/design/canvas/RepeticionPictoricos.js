@@ -53,9 +53,9 @@ export default class RepeticionPictoricos extends Component {
     var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical'];
     var imagenes;
     if(opcionPictorica == 'Monedas y billetes') {
-      imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco', 'signo resta', 'signo igual', 'signo mayor', 'signo menor'];
+      imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco', 'signo resta', 'signo igual', 'signo mayor', 'signo menor', 'signo suma'];
     } else if(opcionPictorica == 'Bloques Multibase') {
-      imagenes = ['Seleccionar','bloque mil', 'bloque cien', 'bloque diez', 'bloque uno'];
+      imagenes = ['Seleccionar','bloque mil', 'bloque cien', 'bloque diez', 'bloque uno', 'signo resta', 'signo igual', 'signo mayor', 'signo menor', 'signo suma'];
     }
     const grid = ["1","2","3","4","5","6","7","8","9","10","11","12"];
     return (

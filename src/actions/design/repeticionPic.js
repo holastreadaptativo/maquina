@@ -48,6 +48,9 @@ export function repeticionPic(config) {
    }, {
       name: 'signo menor',
       src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/simbolos/menor.svg'
+   }, {
+      name: 'signo suma',
+      src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/tablas_posicionales/num_sig_mas.svg'
    }];
    //'signo resta', 'signo igual', 'signo mayor', 'signo menor'
    let { _pictoricos, _separacion, heightCanvas, widthCanvas, _tituloCanvas, _canvasBorder, _canvasBorderRadius,
