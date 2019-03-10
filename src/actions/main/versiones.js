@@ -4,7 +4,7 @@ import { data, src, DEFAULT, LINKS } from 'stores'
 var num = 0, max = Math.pow(2, 13)
 // le pasa la action => {CREATE, READ, ... } y el state => {contiene las variables necesarias para las versiones} a las versiones
 export function ver(action, state) {
-	const { code, update, esProduccion } = state, base = data.child(code.concat('/versions'))
+	const { code, update, opcionDescarga } = state, base = data.child(code.concat('/versions'))
 	switch(action) {
 		case 'CREATE': {
 			const { fns, limit, selected, variables } = state
@@ -251,34 +251,40 @@ export function ver(action, state) {
 			s = code.substring(10, 15),
 			OAIE = code.substring(4,8);
 
-			console.log(esProduccion);
-			const bootstrapCss = esProduccion ?
-			 	'../../../../css/bootstrap.min.css' : 
-			 	'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/bootstrap.min.css';
-			const appCss = esProduccion ?
-				`../../../../css/${OAIE}/app.css` :
-				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/${OAIE}/app.css`;
-			const appJs = esProduccion ?
-				`../../../../js/${OAIE}/app.js` :
-				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/app.js`;
-			const interfazJs = esProduccion ?
-				`../../../../js/${OAIE}/interfaz.js` :
-				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/interfaz.js`;
-			const jsEjerciciosJs = esProduccion ?
-				`../../../../js/${OAIE}/jsEjercicios.js` :
-				`https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/jsEjercicios.js`;
-			const bootstrapJs = esProduccion ?
-				'../../../../js/bootstrap.min.js' :
-				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/bootstrap.min.js';
-			const jquery = esProduccion ?
-				'../../../../js/jquery-3.3.1.slim.min.js' :
-				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/jquery-3.3.1.slim.min.js';
-			const popper = esProduccion ? 
-				'../../../../js/popper.min.js' :
-				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/popper.min.js';
-			const srcImgPatoGlosa = esProduccion ?
-				'../../../../imagenes_front/patos/togaSuki.svg' :
-				'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/patos/togaSuki.svg';
+			let bootstrapCss, appCss,appJs,interfazJs,jsEjerciciosJs,bootstrapJs,jquery,srcImgPatoGlosa,mathjaxLib;
+			console.log(opcionDescarga);
+			if(opcionDescarga === 'des') {
+				bootstrapCss = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/bootstrap.min.css';
+				appCss = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/${OAIE}/app.css`;
+				appJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/app.js`;
+				interfazJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/interfaz.js`;
+				jsEjerciciosJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/jsEjercicios.js`;
+				bootstrapJs = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/bootstrap.min.js';
+				jquery = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/jquery-3.3.1.slim.min.js';
+				srcImgPatoGlosa = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/patos/togaSuki.svg';
+				mathjaxLib = '<!-- MATHJAX NO IMPORTADO -->';
+			} else if(opcionDescarga === 'prod') {
+				bootstrapCss = '../../../../css/bootstrap.min.css';
+				appCss = `../../../../css/${OAIE}/app.css`;
+				appJs = `../../../../js/${OAIE}/app.js`;
+				interfazJs = `../../../../js/${OAIE}/interfaz.js`;
+				jsEjerciciosJs = `../../../../js/${OAIE}/jsEjercicios.js`;
+				bootstrapJs = '../../../../js/bootstrap.min.js';
+				jquery = '../../../../js/jquery-3.3.1.slim.min.js';
+				srcImgPatoGlosa = '../../../../imagenes_front/patos/togaSuki.svg';
+				mathjaxLib = '<!-- MATHJAX NO IMPORTADO -->';
+			} else if(opcionDescarga === 'mathjax') {
+				bootstrapCss = '../../../../css/bootstrap.min.css';
+				appCss = `../../../../css/${OAIE}/app.css`;
+				appJs = `../../../../js/${OAIE}/app.js`;
+				interfazJs = `../../../../js/${OAIE}/interfaz.js`;
+				jsEjerciciosJs = `../../../../js/${OAIE}/jsEjercicios.js`;
+				bootstrapJs = '../../../../js/bootstrap.min.js';
+				jquery = '../../../../js/jquery-3.3.1.slim.min.js';
+				srcImgPatoGlosa = '../../../../imagenes_front/patos/togaSuki.svg';
+				mathjaxLib = `<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]} }); </script>
+				<script src="../../../../js/MathJax.js?config=TeX-AMS_HTML-full"></script>`;
+			}
 			v.forEach(m => {
 				let name=`${s}_${m.id}`, file=`${code}_${m.id}`;
 				let documento = `<!doctype html>
@@ -289,6 +295,7 @@ export function ver(action, state) {
 	<link rel="stylesheet" href="${bootstrapCss}">
 	<link rel="stylesheet" href="${appCss}">
 	<title>${name}</title>
+	${mathjaxLib}
 	<script>document.domain = "adaptativamente.cl";</script>
 </head>
 <body id="${code}" data-content="{'e':${e}, 'r':${r}, 'g':${g}}" data-version="${stringify(m)}">

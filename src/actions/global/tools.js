@@ -49,7 +49,11 @@ export function regexFunctions(text) {
     var result = text.replace(/(?=\{).*?(\})/g, function(coincidencia){ //coincidencia => '{funcion()}'
         var final = coincidencia.length - 2;
         var funcion = coincidencia.substr(1,final);
-        return eval(funcion);
+        try {
+            return eval(funcion);
+        } catch(error) {
+            return coincidencia;
+        }
     });
     return result;
 }
