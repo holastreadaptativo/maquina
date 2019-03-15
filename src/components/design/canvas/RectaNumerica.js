@@ -23,8 +23,11 @@
         initValue: '3.56', valuesSeparator: 'coma',
         // Mostrar
         showExValues: 'si', showFirstValue: 'no', showAllValues: 'no', selectValuesToShow: '', showPointValue: 'no', 
-        wichPointValue: '5.15,5.87,5.66', showFigValue: 'no', wichFigValues: '5.15,5.87,5.66',
+        wichPointValue: '5.15,5.87,5.66', showFigValue: 'no', wichFigValues: '5.15',
+        srcFig1:'',altoFig1:'',ubicacionFig1:'arriba',textoFig1:'',posicionesFig1:'',
+        srcFig2:'',altoFig2:'',ubicacionFig2:'arriba',textoFig2:'',posicionesFig2:'',
         showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71', showConstant:'no',
+        showTramoLlave:'no',tramoInicio:'0',tramoFin:'0',tramoTexto:'',tramoAltoTexto:'30px',tramoColor:'#000',tramoForma:'igual',tramoAltura:'40',
         // Mini Escala
         showMiniScale: 'no', showMiniTheValue: '5.71', showMiniExValues: 'si', showMiniAllValues: 'no',
         showMiniPointValue: 'no', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', showMiniArcs: 'no',
@@ -40,8 +43,13 @@
     componentDidUpdate() {
       numeracion.rectNumFn({ container:$('container'), params:this.state, variables:this.props.variables, vt:true })
     }
+    
     render() {
-      const { rectType, showAllValues, showArcs, showPointValue, showFigValue, showMiniScale, /*showMiniFig,*/ showMiniArcs, showFirstValue, showConstant } = this.state
+      const { rectType, showAllValues, showArcs, showPointValue, showFigValue,wichFigValues, showMiniScale, /*showMiniFig,*/ showMiniArcs, showFirstValue, showConstant,
+        showTramoLlave,tramoInicio,tramoFin,tramoTexto,tramoAltoTexto,tramoColor,tramoForma,tramoAltura,
+        srcFig1,altoFig1,ubicacionFig1,textoFig1,posicionesFig1,
+        srcFig2,altoFig2,ubicacionFig2,textoFig2,posicionesFig2,
+         } = this.state
 
       let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
           borderCanvas = ['solid','dashed','dotted','double'], fontWeightOptions = ['normal', 'bold'],
@@ -95,13 +103,40 @@
             <Input id="selectValuesToShow" prefix="escoger" type="text" parent={this} hide={showAllValues === 'no' || showAllValues === 'todos'}/>
             <Select id="showPointValue" prefix="punto" options={showPointValueOpt} parent={this}/>
             <Input id="wichPointValue" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showPointValue === 'no'} />
-            <Select id="showFigValue" prefix="figura" options={showFigValueOpt} parent={this}/>
-            <Input id="wichFigValues" prefix="valores" type="text" placeholder={'$a.$b$c,2.34,2.56'} parent={this}  hide={showFigValue === 'no'} />
             <Select id="showArcs" prefix="arcos" options={arcsDirectionOptions} parent={this}/>
             <Input id="initArcPt" prefix="desde" type="text" parent={this} hide={showArcs === 'no'}/>
             <Input id="endArcPt" prefix="hasta" type="text" parent={this} hide={showArcs === 'no'}/>
-            <Select id="showConstant" prefix="constante" type="text" parent={this} hide={showArcs === 'no'} options={['si','no']} value={showConstant}/>
+            <Select id="showConstant" prefix="constante" parent={this} hide={showArcs === 'no'} options={['si','no']} value={showConstant}/>
             <Select id="showMiniScale" prefix="mini escala" options={yesNoOptions} parent={this} hide={mostrarMiniRecta}/>
+          </Item>
+          <Item id={k++} title="Mostrar Imagen" parent={this}>
+            <Select id="showFigValue" prefix="figura" options={yesNoOptions} parent={this} value={showFigValue}/>
+            { showFigValue === 'si' && <Input id="srcFig1" prefix="src 1" type="text" parent={this} hide={showFigValue == 'no'} value={srcFig1}/> }
+            { srcFig1 !== '' && 
+              <div>
+                <Input id="altoFig1" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig1}/>
+                <Select id="ubicacionFig1" prefix="posicion" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig1}/>
+                <Input id="textoFig1" prefix="texto" type="text" parent={this} hide={showFigValue == 'no'} value={textoFig1}/>
+                <Input id="posicionesFig1" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig1}/>
+              </div> }
+            { showFigValue === 'si' && <Input id="srcFig2" prefix="src 2" type="text" parent={this} hide={showFigValue == 'no'} value={srcFig2}/> }
+            { srcFig2 !== '' && 
+              <div>
+                <Input id="altoFig2" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig2}/>
+                <Select id="ubicacionFig2" prefix="posicion" type="text" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig2}/>
+                <Input id="textoFig2" prefix="texto" type="text" parent={this} hide={showFigValue == 'no'} value={textoFig2}/>
+                <Input id="posicionesFig2" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig2}/>
+              </div> }
+          </Item>
+          <Item id={k++} title="Mostrar Tramo Llave" parent={this}>
+            <Select id="showTramoLlave" prefix="tramo llave" options={yesNoOptions} parent={this} value={showTramoLlave} />
+            <Input id="tramoInicio" prefix="inicio" value={tramoInicio} hide={showTramoLlave === 'no'} parent={this}/>  
+            <Input id="tramoFin" prefix="fin" value={tramoFin} hide={showTramoLlave === 'no'} parent={this}/>
+            <Input id="tramoColor" prefix="color tramo" value={tramoColor} hide={showTramoLlave === 'no'} parent={this}/>
+            <Input id="tramoTexto" prefix="texto" value={tramoTexto} hide={showTramoLlave === 'no'} parent={this}/>
+            <Input id="tramoAltoTexto" prefix="alto texto" value={tramoAltoTexto} hide={showTramoLlave === 'no'} parent={this}/>
+            <Select id="tramoForma" prefix="forma" options={['igual', 'incluido', 'sin incluir']} value={tramoForma} hide={showTramoLlave === 'no'} parent={this} />
+            <Input id="tramoAltura" prefix="altura" value={tramoAltura} hide={showTramoLlave === 'no'} parent={this} />
           </Item>
           <Item id={k++} title="Mini Escala" parent={this} hide={(mostrarMiniRecta  || (showMiniScale === 'no'))}>
             <Input id="showMiniTheValue" prefix="valor" placeholder={'$a.$b$c o 2.34'} parent={this} />
@@ -129,12 +164,12 @@
             <Select id="fontWeight" prefix="estilo" options={fontWeightOptions} parent={this}/>
           </Item>
           { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
-          <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
-          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
-          <Select id="col" prefix="Ancho Mobil" parent={this} value={this.state.col} options={grid}/>
-					<Select id="colsm" prefix="Ancho Tablet" parent={this} value={this.state.colsm} options={grid}/>
-					<Select id="colmd" prefix="Ancho Escritorio" parent={this} value={this.state.colmd} options={grid}/>
-        </Item> }
+            <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+            <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
+            <Select id="col" prefix="Ancho Mobil" parent={this} value={this.state.col} options={grid}/>
+            <Select id="colsm" prefix="Ancho Tablet" parent={this} value={this.state.colsm} options={grid}/>
+            <Select id="colmd" prefix="Ancho Escritorio" parent={this} value={this.state.colmd} options={grid}/>
+          </Item> }
         </Editor>
       )
     }
