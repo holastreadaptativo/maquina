@@ -27,7 +27,7 @@
         srcFig1:'',altoFig1:'',ubicacionFig1:'arriba',textoFig1:'',posicionesFig1:'',
         srcFig2:'',altoFig2:'',ubicacionFig2:'arriba',textoFig2:'',posicionesFig2:'',
         showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71', showConstant:'no',
-        showTramoLlave:'no',tramoInicio:'0',tramoFin:'0',tramoTexto:'',tramoAltoTexto:'30px',tramoColor:'#000',tramoForma:'igual',tramoAltura:'40',
+        showTramoLlave:'no',tramoInicio:'0',tramoFin:'0',tramoTexto:'',tramoAltoTexto:'30',tramoColor:'#000',tramoForma:'igual',tramoAltura:'40',
         // Mini Escala
         showMiniScale: 'no', showMiniTheValue: '5.71', showMiniExValues: 'si', showMiniAllValues: 'no',
         showMiniPointValue: 'no', showMiniFig: 'no', wichMiniFigValues: '5.72,5.76', showMiniArcs: 'no',

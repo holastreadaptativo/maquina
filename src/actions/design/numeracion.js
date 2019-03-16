@@ -1,4 +1,4 @@
-import { regex, cargaImagen } from '../global/tools'
+import { regex, cargaImagen, espacioMiles } from '../global/tools'
 import { replace } from 'actions'
 //import { setInterval } from 'timers';
 
@@ -1142,7 +1142,7 @@ function numeroEntero(state, x, y, valor, multSize) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
   ctx.font = font.size + 'px ' + font.family
-  ctx.fillText(valor, x, y)
+  ctx.fillText(espacioMiles(valor), x, y)
   ctx.restore()
   ctx.save()
 }

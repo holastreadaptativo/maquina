@@ -78,7 +78,7 @@ function fraccion(entero, numerador, denominador) {
             </table>`;
 }
 
-function espacioMiles(stringNumero) {
+export function espacioMiles(stringNumero) {
     if(stringNumero.length >= 4) {
         var arrayReverse = String(stringNumero).split("").reverse();
         for(var i=0,count=0,valor=''; i < arrayReverse.length; i++) {
