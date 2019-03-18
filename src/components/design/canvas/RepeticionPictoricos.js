@@ -13,18 +13,18 @@ export default class RepeticionPictoricos extends Component {
       _pictoricos: '0',opcionPictorica: 'Bloques Multibase',
       _separacion: '20', heightCanvas:'300', widthCanvas:'1000',
       _tituloCanvas: '',_canvasBorder:'',_canvasBorderRadius:'',
-      _imagen1:'',_altoImagen1:'0',_formaRepeticion1:'',_repeticiones1:'1',_separacion1:'10',_separaciony1:'0',
-      _imagen2:'',_altoImagen2:'0',_formaRepeticion2:'',_repeticiones2:'1',_separacion2:'10',_separaciony2:'0',
-      _imagen3:'',_altoImagen3:'0',_formaRepeticion3:'',_repeticiones3:'1',_separacion3:'10',_separaciony3:'0',
-      _imagen4:'',_altoImagen4:'0',_formaRepeticion4:'',_repeticiones4:'1',_separacion4:'10',_separaciony4:'0',
-      _imagen5:'',_altoImagen5:'0',_formaRepeticion5:'',_repeticiones5:'1',_separacion5:'10',_separaciony5:'0',
-      _imagen6:'',_altoImagen6:'0',_formaRepeticion6:'',_repeticiones6:'1',_separacion6:'10',_separaciony6:'0',
-      _imagen7:'',_altoImagen7:'0',_formaRepeticion7:'',_repeticiones7:'1',_separacion7:'10',_separaciony7:'0',
-      _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0',
-      _imagen9:'',_altoImagen9:'0',_formaRepeticion9:'',_repeticiones9:'1',_separacion9:'10',_separaciony9:'0',
-      _imagen10:'',_altoImagen10:'0',_formaRepeticion10:'',_repeticiones10:'1',_separacion10:'10',_separaciony10:'0',
-      _imagen11:'',_altoImagen11:'0',_formaRepeticion11:'',_repeticiones11:'1',_separacion11:'10',_separaciony11:'0',
-      _imagen12:'',_altoImagen12:'0',_formaRepeticion12:'',_repeticiones12:'1',_separacion12:'10',_separaciony12:'0',
+      _imagen1:'',_altoImagen1:'0',_formaRepeticion1:'',_repeticiones1:'1',_separacion1:'10',_separaciony1:'0',_repBiY1:"0",
+      _imagen2:'',_altoImagen2:'0',_formaRepeticion2:'',_repeticiones2:'1',_separacion2:'10',_separaciony2:'0',_repBiY2:"0",
+      _imagen3:'',_altoImagen3:'0',_formaRepeticion3:'',_repeticiones3:'1',_separacion3:'10',_separaciony3:'0',_repBiY3:"0",
+      _imagen4:'',_altoImagen4:'0',_formaRepeticion4:'',_repeticiones4:'1',_separacion4:'10',_separaciony4:'0',_repBiY4:"0",
+      _imagen5:'',_altoImagen5:'0',_formaRepeticion5:'',_repeticiones5:'1',_separacion5:'10',_separaciony5:'0',_repBiY5:"0",
+      _imagen6:'',_altoImagen6:'0',_formaRepeticion6:'',_repeticiones6:'1',_separacion6:'10',_separaciony6:'0',_repBiY6:"0",
+      _imagen7:'',_altoImagen7:'0',_formaRepeticion7:'',_repeticiones7:'1',_separacion7:'10',_separaciony7:'0',_repBiY7:"0",
+      _imagen8:'',_altoImagen8:'0',_formaRepeticion8:'',_repeticiones8:'1',_separacion8:'10',_separaciony8:'0',_repBiY8:"0",
+      _imagen9:'',_altoImagen9:'0',_formaRepeticion9:'',_repeticiones9:'1',_separacion9:'10',_separaciony9:'0',_repBiY9:"0",
+      _imagen10:'',_altoImagen10:'0',_formaRepeticion10:'',_repeticiones10:'1',_separacion10:'10',_separaciony10:'0',_repBiY10:"0",
+      _imagen11:'',_altoImagen11:'0',_formaRepeticion11:'',_repeticiones11:'1',_separacion11:'10',_separaciony11:'0',_repBiY11:"0",
+      _imagen12:'',_altoImagen12:'0',_formaRepeticion12:'',_repeticiones12:'1',_separacion12:'10',_separaciony12:'0',_repBiY12:"0",
       errFrec: "", feed: ""
     } : props.params
   }
@@ -36,21 +36,21 @@ export default class RepeticionPictoricos extends Component {
   render() {
     var k = 0;
     const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,_tituloCanvas,_canvasBorder,_canvasBorderRadius,
-      _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,
-      _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,
-      _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,
-      _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,
-      _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,
-      _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,
-      _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,
-      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8,
-      _imagen9,_altoImagen9,_formaRepeticion9,_repeticiones9,_separacion9,_separaciony9,
-      _imagen10,_altoImagen10,_formaRepeticion10,_repeticiones10,_separacion10,_separaciony10,
-      _imagen11,_altoImagen11,_formaRepeticion11,_repeticiones11,_separacion11,_separaciony11,
-      _imagen12,_altoImagen12,_formaRepeticion12,_repeticiones12,_separacion12,_separaciony12 } = this.state;
+      _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,_repBiX1,_repBiY1,
+      _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,_repBiX2,_repBiY2,
+      _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,_repBiX3,_repBiY3,
+      _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,_repBiX4,_repBiY4,
+      _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,_repBiX5,_repBiY5,
+      _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,_repBiX6,_repBiY6,
+      _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,_repBiX7,_repBiY7,
+      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8,_repBiX8,_repBiY8,
+      _imagen9,_altoImagen9,_formaRepeticion9,_repeticiones9,_separacion9,_separaciony9,_repBiX9,_repBiY9,
+      _imagen10,_altoImagen10,_formaRepeticion10,_repeticiones10,_separacion10,_separaciony10,_repBiX10,_repBiY10,
+      _imagen11,_altoImagen11,_formaRepeticion11,_repeticiones11,_separacion11,_separaciony11,_repBiX11,_repBiY11,
+      _imagen12,_altoImagen12,_formaRepeticion12,_repeticiones12,_separacion12,_separaciony12,_repBiX12,_repBiY12, } = this.state;
     var opcionesDePictoricos = ['Seleccione','Monedas y billetes', 'Bloques Multibase'];
     var cantidad = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];
-    var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical'];
+    var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical', 'bidimensional'];
     var imagenes;
     if(opcionPictorica == 'Monedas y billetes') {
       imagenes = ['Seleccionar','billete mil', 'moneda diez', 'moneda cien', 'moneda uno', 'moneda quinientos', 'moneda cincuenta', 'moneda cinco', 'signo resta', 'signo igual', 'signo mayor', 'signo menor', 'signo suma'];
@@ -81,6 +81,8 @@ export default class RepeticionPictoricos extends Component {
           <Input id="_separacion1" type="number" prefix="Separacion" parent={this} value={_separacion1} />
           { (_formaRepeticion1 === 'diagonal' || _formaRepeticion1 === 'diagonal/apilado') && 
               <Input id="_separaciony1" type="number" prefix="Separacion y " parent={this} value={_separaciony1} /> }
+          { _formaRepeticion1 === 'bidimensional' &&
+              <Input id="_repBiY1" type="number" prefix="Y" parent={this} value={_repBiY1} />  }
         </Item> }
 
         { _pictoricos > 1 && 
@@ -92,6 +94,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion2" type="number" prefix="Separacion" parent={this} value={_separacion2} />
             { (_formaRepeticion2 === 'diagonal' || _formaRepeticion2 === 'diagonal/apilado') && 
                 <Input id="_separaciony2" type="number" prefix="Separacion y " parent={this} value={_separaciony2} /> }
+            { _formaRepeticion2 === 'bidimensional' &&
+                <Input id="_repBiY2" type="number" prefix="Y" parent={this} value={_repBiY2} />  }
         </Item> }
 
         { _pictoricos > 2 &&
@@ -103,6 +107,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion3" type="number" prefix="Separacion" parent={this} value={_separacion3} />
             { (_formaRepeticion3 === 'diagonal' || _formaRepeticion3 === 'diagonal/apilado') && 
                 <Input id="_separaciony3" type="number" prefix="Separacion y " parent={this} value={_separaciony3} /> }
+            { _formaRepeticion3 === 'bidimensional' &&
+                <Input id="_repBiY3" type="number" prefix="Y" parent={this} value={_repBiY3} />  }
         </Item> }
 
         { _pictoricos > 3 &&
@@ -114,6 +120,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion4" type="number" prefix="Separacion" parent={this} value={_separacion4} />
             { (_formaRepeticion4 === 'diagonal' || _formaRepeticion4 === 'diagonal/apilado') && 
                 <Input id="_separaciony4" type="number" prefix="Separacion y " parent={this} value={_separaciony4} /> }
+            { _formaRepeticion4 === 'bidimensional' &&
+                <Input id="_repBiY4" type="number" prefix="Y" parent={this} value={_repBiY4} />  }
         </Item> }
 
         { _pictoricos > 4 &&
@@ -125,6 +133,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion5" type="number" prefix="Separacion" parent={this} value={_separacion5} />
             { (_formaRepeticion5 === 'diagonal' || _formaRepeticion5 === 'diagonal/apilado') && 
                 <Input id="_separaciony5" type="number" prefix="Separacion y " parent={this} value={_separaciony5} /> }
+            { _formaRepeticion5 === 'bidimensional' &&
+                <Input id="_repBiY5" type="number" prefix="Y" parent={this} value={_repBiY5} />  }
         </Item> }
 
         { _pictoricos > 5 &&
@@ -136,6 +146,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion6" type="number" prefix="Separacion" parent={this} value={_separacion6} />
             { (_formaRepeticion6 === 'diagonal' || _formaRepeticion6 === 'diagonal/apilado') && 
                 <Input id="_separaciony6" type="number" prefix="Separacion y " parent={this} value={_separaciony6} /> }
+            { _formaRepeticion6 === 'bidimensional' &&
+                <Input id="_repBiY6" type="number" prefix="Y" parent={this} value={_repBiY6} />  }
         </Item> }
 
         { _pictoricos > 6 &&
@@ -147,6 +159,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion7" type="number" prefix="Separacion" parent={this} value={_separacion7} />
             { (_formaRepeticion7 === 'diagonal' || _formaRepeticion7 === 'diagonal/apilado') && 
                 <Input id="_separaciony7" type="number" prefix="Separacion y " parent={this} value={_separaciony7} /> }
+            { _formaRepeticion7 === 'bidimensional' &&
+                <Input id="_repBiY7" type="number" prefix="Y" parent={this} value={_repBiY7} />  }
         </Item> }
 
         { _pictoricos > 7 &&
@@ -158,6 +172,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion8" type="number" prefix="Separacion" parent={this} value={_separacion8} />
             { (_formaRepeticion8 === 'diagonal' || _formaRepeticion8 === 'diagonal/apilado') && 
                 <Input id="_separaciony8" type="number" prefix="Separacion y " parent={this} value={_separaciony8} /> }
+            { _formaRepeticion8 === 'bidimensional' &&
+                <Input id="_repBiY8" type="number" prefix="Y" parent={this} value={_repBiY8} />  }
         </Item> }
 
         { _pictoricos > 8 &&
@@ -169,6 +185,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion9" type="number" prefix="Separacion" parent={this} value={_separacion9} />
             { (_formaRepeticion9 === 'diagonal' || _formaRepeticion9 === 'diagonal/apilado') && 
                 <Input id="_separaciony9" type="number" prefix="Separacion y " parent={this} value={_separaciony9} /> }
+            { _formaRepeticion9 === 'bidimensional' &&
+                <Input id="_repBiY9" type="number" prefix="Y" parent={this} value={_repBiY9} />  }
         </Item> }
 
         { _pictoricos > 9 &&
@@ -180,6 +198,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion10" type="number" prefix="Separacion" parent={this} value={_separacion10} />
             { (_formaRepeticion10 === 'diagonal' || _formaRepeticion10 === 'diagonal/apilado') && 
                 <Input id="_separaciony10" type="number" prefix="Separacion y " parent={this} value={_separaciony10} /> }
+            { _formaRepeticion10 === 'bidimensional' &&
+                <Input id="_repBiY10" type="number" prefix="Y" parent={this} value={_repBiY10} />  }
         </Item> }
 
         { _pictoricos > 10 &&
@@ -191,6 +211,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion11" type="number" prefix="Separacion" parent={this} value={_separacion11} />
             { (_formaRepeticion11 === 'diagonal' || _formaRepeticion11 === 'diagonal/apilado') && 
                 <Input id="_separaciony11" type="number" prefix="Separacion y " parent={this} value={_separaciony11} /> }
+            { _formaRepeticion11 === 'bidimensional' &&
+                <Input id="_repBiY11" type="number" prefix="Y" parent={this} value={_repBiY11} />  }
         </Item> }
 
         { _pictoricos > 11 &&
@@ -202,6 +224,8 @@ export default class RepeticionPictoricos extends Component {
             <Input id="_separacion12" type="number" prefix="Separacion" parent={this} value={_separacion12} />
             { (_formaRepeticion12 === 'diagonal' || _formaRepeticion12 === 'diagonal/apilado') && 
                 <Input id="_separaciony12" type="number" prefix="Separacion y " parent={this} value={_separaciony12} /> }
+            { _formaRepeticion12 === 'bidimensional' &&
+                <Input id="_repBiY12" type="number" prefix="Y" parent={this} value={_repBiY12} />  }
         </Item> }
         
         { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
