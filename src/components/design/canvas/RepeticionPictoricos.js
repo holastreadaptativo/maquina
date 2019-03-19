@@ -12,7 +12,7 @@ export default class RepeticionPictoricos extends Component {
     this.state = props.push ? { 
       _pictoricos: '0',opcionPictorica: 'Bloques Multibase',
       _separacion: '20', heightCanvas:'300', widthCanvas:'1000',
-      _tituloCanvas: '',_canvasBorder:'',_canvasBorderRadius:'',
+      _tituloCanvas: '',_canvasBorder:'',_canvasBorderRadius:'',_agruparRepeticiones:"",
       _imagen1:'',_altoImagen1:'0',_formaRepeticion1:'',_repeticiones1:'1',_separacion1:'10',_separaciony1:'0',_repBiY1:"0",
       _imagen2:'',_altoImagen2:'0',_formaRepeticion2:'',_repeticiones2:'1',_separacion2:'10',_separaciony2:'0',_repBiY2:"0",
       _imagen3:'',_altoImagen3:'0',_formaRepeticion3:'',_repeticiones3:'1',_separacion3:'10',_separaciony3:'0',_repBiY3:"0",
@@ -35,19 +35,19 @@ export default class RepeticionPictoricos extends Component {
 
   render() {
     var k = 0;
-    const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,_tituloCanvas,_canvasBorder,_canvasBorderRadius,
-      _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,_repBiX1,_repBiY1,
-      _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,_repBiX2,_repBiY2,
-      _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,_repBiX3,_repBiY3,
-      _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,_repBiX4,_repBiY4,
-      _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,_repBiX5,_repBiY5,
-      _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,_repBiX6,_repBiY6,
-      _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,_repBiX7,_repBiY7,
-      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8,_repBiX8,_repBiY8,
-      _imagen9,_altoImagen9,_formaRepeticion9,_repeticiones9,_separacion9,_separaciony9,_repBiX9,_repBiY9,
-      _imagen10,_altoImagen10,_formaRepeticion10,_repeticiones10,_separacion10,_separaciony10,_repBiX10,_repBiY10,
-      _imagen11,_altoImagen11,_formaRepeticion11,_repeticiones11,_separacion11,_separaciony11,_repBiX11,_repBiY11,
-      _imagen12,_altoImagen12,_formaRepeticion12,_repeticiones12,_separacion12,_separaciony12,_repBiX12,_repBiY12, } = this.state;
+    const { _pictoricos,_separacion,heightCanvas,widthCanvas,opcionPictorica,_tituloCanvas,_canvasBorder,_canvasBorderRadius,_agruparRepeticiones,
+      _imagen1,_altoImagen1,_formaRepeticion1,_repeticiones1,_separacion1,_separaciony1,_repBiY1,
+      _imagen2,_altoImagen2,_formaRepeticion2,_repeticiones2,_separacion2,_separaciony2,_repBiY2,
+      _imagen3,_altoImagen3,_formaRepeticion3,_repeticiones3,_separacion3,_separaciony3,_repBiY3,
+      _imagen4,_altoImagen4,_formaRepeticion4,_repeticiones4,_separacion4,_separaciony4,_repBiY4,
+      _imagen5,_altoImagen5,_formaRepeticion5,_repeticiones5,_separacion5,_separaciony5,_repBiY5,
+      _imagen6,_altoImagen6,_formaRepeticion6,_repeticiones6,_separacion6,_separaciony6,_repBiY6,
+      _imagen7,_altoImagen7,_formaRepeticion7,_repeticiones7,_separacion7,_separaciony7,_repBiY7,
+      _imagen8,_altoImagen8,_formaRepeticion8,_repeticiones8,_separacion8,_separaciony8,_repBiY8,
+      _imagen9,_altoImagen9,_formaRepeticion9,_repeticiones9,_separacion9,_separaciony9,_repBiY9,
+      _imagen10,_altoImagen10,_formaRepeticion10,_repeticiones10,_separacion10,_separaciony10,_repBiY10,
+      _imagen11,_altoImagen11,_formaRepeticion11,_repeticiones11,_separacion11,_separaciony11,_repBiY11,
+      _imagen12,_altoImagen12,_formaRepeticion12,_repeticiones12,_separacion12,_separaciony12,_repBiY12, } = this.state;
     var opcionesDePictoricos = ['Seleccione','Monedas y billetes', 'Bloques Multibase'];
     var cantidad = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];
     var opcionesDeRepeticion = ['Seleccionar','dado', 'diagonal/apilado', 'diagonal', 'horizontal/vertical', 'horizontal', 'vertical', 'bidimensional'];
@@ -71,6 +71,7 @@ export default class RepeticionPictoricos extends Component {
           <Input id="_separacion" type="number" value={_separacion} prefix="Sep Repeticion" parent={this}/>
           <Select id="opcionPictorica" prefix="tipo" options={opcionesDePictoricos} parent={this} value={opcionPictorica}/>
           <Select id="_pictoricos" prefix={'cantidad'} options={cantidad} parent={this} value={_pictoricos}/>
+          <Input id="_agruparRepeticiones" prefix="agrupar" parent={this} value={_agruparRepeticiones} />
         </Item>
         { _pictoricos > 0 && 
         <Item id={k++} title="Imagen 1" parent={this}>
