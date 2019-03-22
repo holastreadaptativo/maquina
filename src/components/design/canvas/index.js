@@ -12,3 +12,4 @@ export IgualPerimetro from './IgualPerimetro'
 export TablaPosicional from './TablaPosicional'
 export ValorPosicional from './ValorPosicional'
 export RepeticionBidimensional from './RepeticionBidimensional.js'
+export MultiplicacionPictoricos from './MultiplicacionPictoricos.js';

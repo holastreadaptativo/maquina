@@ -10,10 +10,10 @@ export default class RepeticionBidimensional extends React.Component {
     this.state = props.push ? { 
       active:0,
       datos:[],
-      _separacion:40,
-      _altoOpciones:20,
-      _anchoCanvas:400,
-      _altoCanvas:200,
+      _separacion:'40',
+      _altoOpciones:'20',
+      _anchoCanvas:'400',
+      _altoCanvas:'200',
       errFrec: "", feed: ""} : props.params;
   }
   componentDidUpdate() {
@@ -28,7 +28,9 @@ export default class RepeticionBidimensional extends React.Component {
         repY: 0,
         textoEjeX: '',
         textoEjeY: '',
+        tipoOpcion: 'texto',
         opcion: '',
+        altoOpcion: '20',
         altoImagen: 0,
         anchoImagen: 0,
         separacion: 0,
@@ -60,6 +62,8 @@ export default class RepeticionBidimensional extends React.Component {
           textoEjeX: '',
           textoEjeY: '',
           opcion: '',
+          tipoOpcion: 'texto',
+          altoOpcion: '20',
           altoImagen: 0,
         };
         break;
@@ -148,8 +152,19 @@ export default class RepeticionBidimensional extends React.Component {
               <input id="textoEjeY" type="text" class="form-control" value={dato.textoEjeY} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
             </div> }
             { dato.tipo === 'arreglo' && <div class="input-group">
+              <span class="input-group-addon prefix">Tipo opcion</span>
+              <select id="tipoOpcion" class="form-control select" value={dato.tipoOpcion} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}>
+                <option value="texto">Texto</option>
+                <option value="imagen">Imagen</option>
+              </select>
+            </div> }
+            { dato.tipo === 'arreglo' && <div class="input-group">
               <span class="input-group-addon prefix">Opcion</span>
               <input id="opcion" type="text" class="form-control" value={dato.opcion} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+            </div> }
+            { dato.tipo === 'arreglo' && <div class="input-group">
+              <span class="input-group-addon prefix">Alto Opcion</span>
+              <input id="altoOpcion" type="text" class="form-control" value={dato.altoOpcion} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
             </div> }
             { (dato.tipo === 'arreglo' || dato.tipo === 'imagen') && <div class="input-group">
               <span class="input-group-addon prefix">Alto Imagen</span>

@@ -51,6 +51,10 @@ export const FUNCIONES = [{
 		id: 'Repeticion Bidimensional',
 		component:components.RepeticionBidimensional,
 		action:actions.repeticionBidimensional
+	},{
+		id: 'Multiplicacion Pictoricos',
+		component:components.MultiplicacionPictoricos,
+		action:actions.multiplicacionPic
 	}]
 },{ 
 	name:'Álgebra', 

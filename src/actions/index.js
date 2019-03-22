@@ -20,6 +20,7 @@ export * from './design/recta'
 export * from './design/tablaPosicional';
 export * from './design/valorPosicional';
 export * from './design/repeticionBidimensional';
+export * from './design/multiplicacionPic';
 
 import * as functions from 'actions'
 
