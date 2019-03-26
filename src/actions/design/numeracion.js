@@ -583,7 +583,7 @@ imagenes: [{
 */
 
 function mostrarImagenesEnPosicion(state, valores, dataRecta) {
-  const { ctx, show, scale, font } = state;
+  const { ctx, show, scale, font, chart } = state;
   const { figures } = show;
   const { xIni, centroY, segmento } = dataRecta;
   Promise.all(figures.imagenes.map(x => x.src !== '' ? cargaImagen(x.src) : null)).then((imagen) => {
@@ -612,7 +612,7 @@ function mostrarImagenesEnPosicion(state, valores, dataRecta) {
           let xImagen = xCentro - widthImagen/2;
           ctx.drawImage(imagenRecta, xImagen, yImagen, widthImagen, alto);
         } else {
-          xCentro = xIni + (posicion * segmento / scale.value);
+          xCentro = posicion * xIni / Number(chart.values.initValue);  //(posicion * segmento / scale.value);
           let xImagen = xCentro - widthImagen/2;
           ctx.drawImage(imagenRecta, xImagen, yImagen, widthImagen, alto);
         }

@@ -10,10 +10,14 @@ export default class MultiplicacionPictoricos extends React.Component {
     this.state = props.push ? { 
       active:0,
       datos:[],
-      _separacion:'20',
+      valores:[],
+      _separacion:'0',
+      _sepImgs:'10',
       _altoCanvas:'200',
       _anchoCanvas:'500',
-      _repeticiones:'0'
+      _repeticiones:'0',
+      _separar:'no',
+      _mostrarValores:'no'
     } : props.params;
   }
   componentDidUpdate() {
@@ -91,8 +95,11 @@ export default class MultiplicacionPictoricos extends React.Component {
       datos,
       _anchoCanvas,
       _altoCanvas,
+      _separar,
+      _sepImgs,
       _separacion,
-      _repeticiones
+      _repeticiones,
+      _mostrarValores
     } = this.state;
     let k = 0;
     console.log(datos);
@@ -103,7 +110,10 @@ export default class MultiplicacionPictoricos extends React.Component {
           <Input id="_anchoCanvas" prefix="Ancho Canvas" parent={this} value={_anchoCanvas}/>
           <Input id="_altoCanvas" prefix="Alto Canvas" parent={this} value={_altoCanvas}/>
           <Input id="_separacion" prefix="Sep Elem" parent={this} value={_separacion}/>
+          <Input id="_sepImgs" prefix="Sep Imgs" parent={this} value={_sepImgs}/>
           <Input id="_repeticiones" prefix="Repeticiones" parent={this} value={_repeticiones}/>
+          <Select id="_separar" prefix="Separar" parent={this} options={['no','si']} value={_separar} />
+          <Select id="_mostrarValores" prefix="Valores" parent={this} options={['no','si']} value={_mostrarValores} />
         </Item>
         {datos.map((dato, index) => <Item id={k++} key={index} title={`Objeto ${index+1}`} parent={this}>
           <div class="form-config">
@@ -150,6 +160,7 @@ export default class MultiplicacionPictoricos extends React.Component {
             <button class="btn btn-primary" onClick={(event) => this.handleDeleteElement(index)}>Eliminar</button>
           </div>
         </Item>)}
+
         <button class="btn btn-block " onClick={this.handleAgregarElemento}>Agregar</button>
         { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
           <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />

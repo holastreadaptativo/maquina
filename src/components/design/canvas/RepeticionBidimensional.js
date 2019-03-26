@@ -31,6 +31,7 @@ export default class RepeticionBidimensional extends React.Component {
         tipoOpcion: 'texto',
         opcion: '',
         altoOpcion: '20',
+        colorTextoOpcion: '',
         altoImagen: 0,
         anchoImagen: 0,
         separacion: 0,
@@ -64,6 +65,7 @@ export default class RepeticionBidimensional extends React.Component {
           opcion: '',
           tipoOpcion: 'texto',
           altoOpcion: '20',
+          colorTextoOpcion: '',
           altoImagen: 0,
         };
         break;
@@ -165,6 +167,10 @@ export default class RepeticionBidimensional extends React.Component {
             { dato.tipo === 'arreglo' && <div class="input-group">
               <span class="input-group-addon prefix">Alto Opcion</span>
               <input id="altoOpcion" type="text" class="form-control" value={dato.altoOpcion} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+            </div> }
+            { (dato.tipo === 'arreglo' && dato.tipoOpcion === 'texto') && <div class="input-group">
+              <span class="input-group-addon prefix">Color texto</span>
+              <input id="colorTextoOpcion" type="text" class="form-control" value={dato.colorTextoOpcion} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
             </div> }
             { (dato.tipo === 'arreglo' || dato.tipo === 'imagen') && <div class="input-group">
               <span class="input-group-addon prefix">Alto Imagen</span>
