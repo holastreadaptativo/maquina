@@ -96,28 +96,28 @@ export function espacioMiles(stringNumero) {
     }
 }
 
-function cardinalAOrdinal(numero) {
+function cardinalAOrdinal(numero, genero) {//M o F
     switch(numero){
         case '1':
-            return 'primer';
+            return genero === 'M' ? 'primer' : 'primera';
         case '2':
-            return 'segundo';
+            return genero === 'M' ? 'segundo' : 'segunda';
         case '3':
-            return 'tercer';
+            return genero === 'M' ? 'tercer' : 'tercera';
         case '4':
-            return 'cuarto';
+            return genero === 'M' ? 'cuarto' : 'tercera';
         case '5':
-            return 'quinto';
+            return genero === 'M' ? 'quinto' : 'quinta';
         case '6':
-            return 'sexto';
+            return genero === 'M' ? 'sexto' : 'sexta';
         case '7':
-            return 'séptimo';
+            return genero === 'M' ? 'séptimo' : 'séptima';
         case '8':
-            return 'octavo';
+            return genero === 'M' ? 'octavo' : 'octava';
         case '9':
-            return 'noveno';
+            return genero === 'M' ? 'noveno' : 'novena';
         case '10':
-            return 'décimo';
+            return genero === 'M' ? 'décimo' : 'décima';
         default:
             return '';
     }

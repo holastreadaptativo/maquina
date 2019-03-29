@@ -27,10 +27,14 @@ export default class MultiplicacionPictoricos extends React.Component {
   handleAgregarElemento = () => {
     this.setState((state,props) => { 
       state.datos.push({
-        src: '',
-        alto: '0',
-        formaRepeticion: 'izqDer',
+        src:'',
+        alto:'0',
+        formaRepeticion:'izqDer',
         cantidad: '0',
+        tipoValorFinal:'texto',
+        valorFinal:'',
+        altoValorFinal:'',
+        colorValorFinal:''
       });
       return { datos: state.datos }
     });
@@ -156,6 +160,29 @@ export default class MultiplicacionPictoricos extends React.Component {
               <div class="input-group">
                 <span class="input-group-addon prefix">Largo Fila</span>
                 <input id="numeroX" type="number" class="form-control" value={dato.numeroX} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+              </div> }
+            { _mostrarValores === 'si' &&
+              <div class="input-group">
+                <span class="input-group-addon prefix">Tipo Valor</span>
+                <select id="tipoValorFinal" class="form-control select" value={dato.tipoValorFinal} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}>
+                  <option value="texto">texto</option>
+                  <option value="imagen">imagen</option>
+                </select>  
+              </div> }
+            { _mostrarValores === 'si' &&
+              <div class="input-group">
+                <span class="input-group-addon prefix">Valor</span>
+                <input id="valorFinal" class="form-control" value={dato.valorFinal} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+              </div> }
+            { _mostrarValores === 'si' &&
+              <div class="input-group">
+                <span class="input-group-addon prefix">Alto Valor</span>
+                <input id="altoValorFinal" type="number" class="form-control" value={dato.altoValorFinal} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+              </div> }
+            { _mostrarValores === 'si' &&
+              <div class="input-group">
+                <span class="input-group-addon prefix">Color Texto</span>
+                <input id="colorValorFinal" class="form-control" value={dato.colorValorFinal} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
               </div> }
             <button class="btn btn-primary" onClick={(event) => this.handleDeleteElement(index)}>Eliminar</button>
           </div>

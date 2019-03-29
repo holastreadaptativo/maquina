@@ -24,8 +24,10 @@
         // Mostrar
         showExValues: 'si', showFirstValue: 'no', showAllValues: 'no', selectValuesToShow: '', showPointValue: 'no', 
         wichPointValue: '5.15,5.87,5.66', showFigValue: 'no', wichFigValues: '5.15',
-        srcFig1:'',altoFig1:'',ubicacionFig1:'arriba',textoFig1:'',posicionesFig1:'',
-        srcFig2:'',altoFig2:'',ubicacionFig2:'arriba',textoFig2:'',posicionesFig2:'',
+        srcFig1:'',altoFig1:'',ubicacionFig1:'arriba',mostrarNum1:'no',mostrarMar1:'no',posicionesFig1:'',
+        srcFig2:'',altoFig2:'',ubicacionFig2:'arriba',mostrarNum2:'no',mostrarMar2:'no',posicionesFig2:'',
+        srcFig3:'',altoFig3:'',ubicacionFig3:'arriba',mostrarNum3:'no',mostrarMar3:'no',posicionesFig3:'',
+        srcFig4:'',altoFig4:'',ubicacionFig4:'arriba',mostrarNum4:'no',mostrarMar4:'no',posicionesFig4:'',
         showArcs: 'no', initArcPt: '5.26', endArcPt: '5.71', showConstant:'no',
         showTramoLlave:'no',tramoInicio:'0',tramoFin:'0',tramoTexto:'',tramoAltoTexto:'30',tramoColor:'#000',tramoForma:'igual',tramoAltura:'40',
         // Mini Escala
@@ -47,8 +49,10 @@
     render() {
       const { rectType, showAllValues, showArcs, showPointValue, showFigValue,wichFigValues, showMiniScale, /*showMiniFig,*/ showMiniArcs, showFirstValue, showConstant,
         showTramoLlave,tramoInicio,tramoFin,tramoTexto,tramoAltoTexto,tramoColor,tramoForma,tramoAltura,
-        srcFig1,altoFig1,ubicacionFig1,textoFig1,posicionesFig1,
-        srcFig2,altoFig2,ubicacionFig2,textoFig2,posicionesFig2,
+        srcFig1,altoFig1,ubicacionFig1,mostrarNum1,mostrarMar1,posicionesFig1,
+        srcFig2,altoFig2,ubicacionFig2,mostrarNum2,mostrarMar2,posicionesFig2,
+        srcFig3,altoFig3,ubicacionFig3,mostrarNum3,mostrarMar3,posicionesFig3,
+        srcFig4,altoFig4,ubicacionFig4,mostrarNum4,mostrarMar4,posicionesFig4,
          } = this.state
 
       let k = 0, rectTypeOptions = ['enteros','enteros con decimales', 'decimal', 'centesimal', 'mixta', 'mixta decimal', 'mixta centesimal'],
@@ -116,16 +120,36 @@
               <div>
                 <Input id="altoFig1" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig1}/>
                 <Select id="ubicacionFig1" prefix="posicion" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig1}/>
-                <Input id="textoFig1" prefix="texto" type="text" parent={this} hide={showFigValue == 'no'} value={textoFig1}/>
                 <Input id="posicionesFig1" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig1}/>
+                <Select id="mostrarNum1" prefix="Num 1"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarNum1}/>
+                <Select id="mostrarMar1" prefix="Mar 1"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarMar1}/>
               </div> }
             { showFigValue === 'si' && <Input id="srcFig2" prefix="src 2" type="text" parent={this} hide={showFigValue == 'no'} value={srcFig2}/> }
             { srcFig2 !== '' && 
               <div>
                 <Input id="altoFig2" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig2}/>
                 <Select id="ubicacionFig2" prefix="posicion" type="text" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig2}/>
-                <Input id="textoFig2" prefix="texto" type="text" parent={this} hide={showFigValue == 'no'} value={textoFig2}/>
                 <Input id="posicionesFig2" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig2}/>
+                <Select id="mostrarNum2" prefix="Num 2"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarNum2}/>
+                <Select id="mostrarMar2" prefix="Mar 2"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarMar2}/>
+              </div> }
+            { showFigValue === 'si' && <Input id="srcFig3" prefix="src 3" type="text" parent={this} hide={showFigValue == 'no'} value={srcFig3}/> }
+            { srcFig3 !== '' && 
+              <div>
+                <Input id="altoFig3" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig3}/>
+                <Select id="ubicacionFig3" prefix="posicion" type="text" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig3}/>
+                <Input id="posicionesFig3" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig3}/>
+                <Select id="mostrarNum3" prefix="Num 3"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarNum3}/>
+                <Select id="mostrarMar3" prefix="Mar 3"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarMar3}/>
+              </div> }
+            { showFigValue === 'si' && <Input id="srcFig4" prefix="src 4" type="text" parent={this} hide={showFigValue == 'no'} value={srcFig4}/> }
+            { srcFig4 !== '' && 
+              <div>
+                <Input id="altoFig4" prefix="alto" type="text" parent={this} hide={showFigValue == 'no'} value={altoFig4}/>
+                <Select id="ubicacionFig4" prefix="posicion" type="text" parent={this} options={['arriba','abajo']} hide={showFigValue == 'no'} value={ubicacionFig4}/>
+                <Input id="posicionesFig4" prefix="posiciones" type="text" parent={this} hide={showFigValue == 'no'} value={posicionesFig4}/>
+                <Select id="mostrarNum4" prefix="Num 4"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarNum4}/>
+                <Select id="mostrarMar4" prefix="Mar 4"  parent={this} options={yesNoOptions} hide={showFigValue == 'no'} value={mostrarMar4}/>
               </div> }
           </Item>
           <Item id={k++} title="Mostrar Tramo Llave" parent={this}>

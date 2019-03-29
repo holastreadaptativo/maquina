@@ -8,7 +8,9 @@ export default class InsertInput extends Component {
 		this.state = props.push ? { 
 			active:0, 
 			inputSize:'1', 
-			inputType:'input', 
+			inputType:'input',
+			placeholder:'',
+			anchoInput:'', 
 			value1:'', 
 			value2:'', 
 			value3:'', 
@@ -36,6 +38,8 @@ export default class InsertInput extends Component {
 		var { 
 			inputSize, 
 			inputType, 
+			placeholder,
+			anchoInput,
 			value1, 
 			value2, 
 			value3, 
@@ -64,6 +68,8 @@ export default class InsertInput extends Component {
 					<Select id="inputSize" parent={this} prefix="cantidad" options={['1','2','3','4']} value={inputSize}/>
 					{ inputType === 'input' && <Input id="maxLength" prefix="Largo Max" type="number" parent={this} value={maxLength}/> }
 					{ inputType === 'input' && <Select id="tipoInput" parent={this} prefix="tipo" options={['texto', 'numero', 'alfanumerico']} value={tipoInput} /> }
+					{ inputType === 'input' && <Input id="placeholder" parent={this} prefix="placeholder" value={placeholder} /> }
+					{ inputType === 'input' && <Input id="anchoInput" parent={this} prefix="ancho" value={anchoInput} /> }
 					<Text id="value1" prefix="Correcta" postfix={<span class={glyph('ok')}/>} parent={this} value={value1}/>
 					<Text id="value2" prefix="opción 2" postfix={<span class={glyph('remove')}/>} hide={inputSize < 2} parent={this} value={value2}/> 
 					<Text id="value3" prefix="opción 3" postfix={<span class={glyph('remove')}/>} hide={inputSize < 3} parent={this} value={value3}/> 

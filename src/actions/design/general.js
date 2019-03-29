@@ -14,7 +14,8 @@ export function insertarTexto(config) {
 }
 export function insertarInput(config) {
 	const { container, params, variables, versions, vt } = config,
-		{ tipoInput, maxLength, inputSize, error0, error2, error3, error4, defaultError,
+		{ tipoInput, maxLength, inputSize, placeholder, anchoInput, 
+			error0, error2, error3, error4, defaultError,
 			feed0, feed1, feed2, feed3, feed4, defaultFeed,
 			value1, value2, value3, value4, inputType, colmd, colsm, col } = params
 	var vars = vt ? variables : versions;
@@ -59,13 +60,13 @@ export function insertarInput(config) {
 				//almodificar los inputs se arrojaran errores ya que las funciones que se llaman solo estan en el resultado final
 				switch (tipoInput) {
 					case 'texto':
-						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
 						break;
 					case 'numero':
-						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
 						break;
 					case 'alfanumerico':
-						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+						container.innerHTML = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
 						break;
 				}
 				break;
@@ -219,7 +220,7 @@ export function insertarTabla(config) {
             r += `<img src=${regex(table[row][col].value.url, vars, vt)} height=${table[row][col].value.height} width=${table[row][col].value.width}/>`;
             break;
           case 'input':
-            var { tipoInput, maxLength, error0, error2, error3, error4, defaultError,
+            var { tipoInput, maxLength, placeholder, anchoInput, error0, error2, error3, error4, defaultError,
               feed0, feed1, feed2, feed3, feed4, defaultFeed,
               value1, value2, value3, value4 } = table[row][col].value;
             var feedGenerico = regex(feed0, vars, vt);
@@ -257,18 +258,18 @@ export function insertarTabla(config) {
             };
             switch (tipoInput) {
               case 'text':
-                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
                 break;
               case 'numero':
-                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
                 break;
               case 'alfanumerico':
-                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+                r += `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
                 break;
             }
             break;
           case 'text-input':
-            var { text, tipoInput, maxLength, error0, error2, error3, error4, defaultError,
+            var { text, tipoInput, maxLength, placeholder, anchoInput, error0, error2, error3, error4, defaultError,
               feed0, feed1, feed2, feed3, feed4, defaultFeed,
               value1, value2, value3, value4 } = table[row][col].value;
             var p = regex(text, vars, vt);
@@ -308,13 +309,13 @@ export function insertarTabla(config) {
             var input;
             switch (tipoInput) {
               case 'text':
-                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
+                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputTexto(event)" />`;
                 break;
               case 'numero':
-                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
+                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputNumerico(event)" onkeyup="formatearNumero(event)" />`;
                 break;
               case 'alfanumerico':
-                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="Respuesta" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
+                input = `<input type="text" name="answer" maxlength="${maxLength}" placeholder="${placeholder}" style="width:${anchoInput};" autocomplete="off" data-content='${JSON.stringify(dataContent)}' onkeypress="cambiaInputAlfanumerico(event)"/>`;
                 break;
             }
             r += `<p>${p.replace('{input}', input)}</p>`;

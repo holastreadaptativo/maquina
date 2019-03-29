@@ -55,7 +55,7 @@ export default class InsertarTabla extends Component {
 				table[i][j].type = 'text-input'
 				table[i][j].value = { 
 					text:'-',
-					tipoInput:'numero',maxLength:'4',
+					tipoInput:'numero',maxLength:'4',placeholder:'',anchoInput:'',
 					value1:'-',value2:'',value3:'',value4:'',
 					error0:'',error2:'',error3:'',error4:'',defaultError:'',
 					feed0:'',feed1:'',feed2:'',feed3:'',feed4:'',defaultFeed:''
@@ -65,7 +65,7 @@ export default class InsertarTabla extends Component {
 			case 'text-input': {
 				table[i][j].type = 'input'
 				table[i][j].value = { 
-					tipoInput:'numero',maxLength:'4',
+					tipoInput:'numero',maxLength:'4',placeholder:'',anchoInput:'',
 					value1:'-',value2:'',value3:'',value4:'',
 					error0:'',error2:'',error3:'',error4:'',defaultError:'',
 					feed0:'',feed1:'',feed2:'',feed3:'',feed4:'',defaultFeed:''
@@ -205,6 +205,16 @@ export default class InsertarTabla extends Component {
 													onChange={e => ::this.handleChange(e, i, j)}></input>
 												</div>
 												<div class="input-group">
+													<span class="input-group-addon">placeholder</span>
+													<input name="placeholder" class="form-control" type="text" defaultValue={n.value.placeholder} 
+													onChange={e => ::this.handleChange(e, i, j)}></input>
+												</div>
+												<div class="input-group">
+													<span class="input-group-addon">ancho input</span>
+													<input name="anchoInput" class="form-control" type="text" defaultValue={n.value.anchoInput} 
+													onChange={e => ::this.handleChange(e, i, j)}></input>
+												</div>
+												<div class="input-group">
 													<span class="input-group-addon">correcta</span>
 													<input name="value1" class="form-control" type="text" defaultValue={n.value.value1} 
 													onChange={e => ::this.handleChange(e, i, j)}></input>
@@ -297,6 +307,16 @@ export default class InsertarTabla extends Component {
 												<div class="input-group">
 													<span class="input-group-addon">max lenght</span>
 													<input name="maxLength" class="form-control" type="number" defaultValue={n.value.maxLength} 
+													onChange={e => ::this.handleChange(e, i, j)}></input>
+												</div>
+												<div class="input-group">
+													<span class="input-group-addon">placeholder</span>
+													<input name="placeholder" class="form-control" type="text" defaultValue={n.value.placeholder} 
+													onChange={e => ::this.handleChange(e, i, j)}></input>
+												</div>
+												<div class="input-group">
+													<span class="input-group-addon">ancho input</span>
+													<input name="anchoInput" class="form-control" type="text" defaultValue={n.value.anchoInput} 
 													onChange={e => ::this.handleChange(e, i, j)}></input>
 												</div>
 												<div class="input-group">

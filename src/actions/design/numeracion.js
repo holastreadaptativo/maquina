@@ -23,8 +23,10 @@ export function rectNumFn(config) {
     wichPointValue, showFigValue, wichFigValues,
     showArcs, initArcPt, endArcPt, showConstant,
     //mostrar figuras
-    srcFig1,altoFig1,ubicacionFig1,textoFig1,altoTextoFig1,posicionTextoFig1,posicionesFig1,separacionRectaFig1,
-    srcFig2,altoFig2,ubicacionFig2,textoFig2,altoTextoFig2,posicionTextoFig2,posicionesFig2,separacionRectaFig2,
+    srcFig1,altoFig1,ubicacionFig1,mostrarNum1,mostrarMar1,posicionesFig1,
+    srcFig2,altoFig2,ubicacionFig2,mostrarNum2,mostrarMar2,posicionesFig2,
+    srcFig3,altoFig3,ubicacionFig3,mostrarNum3,mostrarMar3,posicionesFig3,
+    srcFig4,altoFig4,ubicacionFig4,mostrarNum4,mostrarMar4,posicionesFig4,
     // Tramo LLave
     showTramoLlave,tramoInicio,tramoFin,tramoTexto,tramoAltoTexto,tramoMostrarNumero,tramoColor,tramoForma,tramoAltura,
     // Mini Escala
@@ -87,14 +89,30 @@ export function rectNumFn(config) {
         src:srcFig1,
         alto:Number(altoFig1),
         ubicacion:ubicacionFig1,
-        texto: regex(textoFig1, vars, vt),
         posiciones: regex(posicionesFig1, vars, vt),
+        mostrarNumero: mostrarNum1 == 'si' ? true : false,
+        mostrarMarca: mostrarMar1 == 'si' ? true : false
       },{
         src:srcFig2,
         alto:Number(altoFig2),
         ubicacion:ubicacionFig2,
-        texto: regex(textoFig2, vars, vt),
         posiciones: regex(posicionesFig2, vars, vt),
+        mostrarNumero: mostrarNum2 == 'si' ? true : false,
+        mostrarMarca: mostrarMar2 == 'si' ? true : false
+      },{
+        src:srcFig3,
+        alto:Number(altoFig3),
+        ubicacion:ubicacionFig3,
+        posiciones: regex(posicionesFig3, vars, vt),
+        mostrarNumero: mostrarNum3 == 'si' ? true : false,
+        mostrarMarca: mostrarMar3 == 'si' ? true : false
+      },{
+        src:srcFig4,
+        alto:Number(altoFig4),
+        ubicacion:ubicacionFig4,
+        posiciones: regex(posicionesFig4, vars, vt),
+        mostrarNumero: mostrarNum4 == 'si' ? true : false,
+        mostrarMarca: mostrarMar4 == 'si' ? true : false
       }]
     },
     arcs: {
@@ -562,40 +580,35 @@ function mostrarDatos(state, dataRecta) {
 
 /*
 imagenes: [{
-  src:srcFig1.replace('https://contenedoradapt.blob.core.windows.net/recursos/ejercicios/Nivel-4/', '../../../../'),
+  src:srcFig1,
   alto:Number(altoFig1),
   ubicacion:ubicacionFig1,
-  texto:textoFig1,
-  altoTexto:Number(altoTextoFig1),
-  posicionTexto:posicionTextoFig1,
-  posiciones:posicionesFig1,
-  separacion:Number(separacionRectaFig1)
-},{
-  src:srcFig2.replace('https://contenedoradapt.blob.core.windows.net/recursos/ejercicios/Nivel-4/', '../../../../'),
-  alto:Number(altoFig2),
-  ubicacion:ubicacionFig2,
-  texto:textoFig2,
-  altoTexto:Number(altoTextoFig2),
-  posicionTexto:posicionTextoFig2,
-  posiciones:posicionesFig2,
-  separacion:Number(separacionRectaFig2)
+  posiciones: regex(posicionesFig1, vars, vt),
+  mostrarNumero: mostrarNum1 === 'si',
+  mostrarMarca: mostrarMar1 === 'si'
 }]
 */
 
 function mostrarImagenesEnPosicion(state, valores, dataRecta) {
   const { ctx, show, scale, font, chart } = state;
+  const { initValue } = chart.values
   const { figures } = show;
-  const { xIni, centroY, segmento } = dataRecta;
+  const { xIni, xFin, centroY, segmento, escalaValor, divisiones } = dataRecta;
   Promise.all(figures.imagenes.map(x => x.src !== '' ? cargaImagen(x.src) : null)).then((imagen) => {
     imagen.forEach((imagen, index) => {
       figures.imagenes[index].imagenRecta = imagen;
     });
     return figures.imagenes;
   }).then(imagenes => {
-    console.log(imagenes);
+    let xInicio = xIni - segmento;
+    let xFinal = xFin + segmento;
+    let anchoTotalRecta = xFinal - xInicio; // calcula en el canvas cuanto espacio ocupa la recta del canvas
+    let valorInicial = Number(initValue) - escalaValor;
+    let valorFinal = Number(initValue) + escalaValor * (divisiones+1);
+    let dimensionRecta = valorFinal - valorInicial; //calcula el largo de la escala de la recta,
     imagenes.forEach(img => {
       
-      const { alto, ubicacion, texto, posiciones, imagenRecta } = img; //texto no se usa
+      const { alto, ubicacion, posiciones, imagenRecta, mostrarNumero, mostrarMarca } = img; //texto no se usa
       if(imagenRecta === null) {
         return;
       }
@@ -612,15 +625,29 @@ function mostrarImagenesEnPosicion(state, valores, dataRecta) {
           let xImagen = xCentro - widthImagen/2;
           ctx.drawImage(imagenRecta, xImagen, yImagen, widthImagen, alto);
         } else {
-          xCentro = posicion * xIni / Number(chart.values.initValue);  //(posicion * segmento / scale.value);
+          xCentro = xInicio + (posicion * anchoTotalRecta / dimensionRecta) - segmento*2;
           let xImagen = xCentro - widthImagen/2;
           ctx.drawImage(imagenRecta, xImagen, yImagen, widthImagen, alto);
         }
-        if(texto != '') {
-          let textoImagen = texto.split(',');
-          let textoImagenPosicion = textoImagen[index] === 'numero' ? posicion :  textoImagen[index];
-          let yTexto = ubicacion === 'arriba' ? centroY : centroY - (scale.length * 1.7)*2 - font.size;
-          mostrarValor(state, xCentro, yTexto, 0, textoImagenPosicion, [posicion]);
+        if(mostrarNumero) { 
+          let yNumero = ubicacion === 'arriba' ? centroY : centroY - (scale.length * 1.7)*2 - font.size;
+          console.log({yNumero, xCentro, posicion});
+          mostrarValor(state, xCentro, yNumero, 0, posicion, [posicion]);
+        }
+        if(mostrarMarca) {
+          ctx.save()
+          let bordersScales = scale.length
+          ctx.strokeStyle = scale.color
+          ctx.lineCap = 'round'
+          ctx.lineJoin = 'round'
+          ctx.lineWidth = scale.width
+          ctx.beginPath()
+          ctx.moveTo(xCentro, centroY - bordersScales)
+          ctx.lineTo(xCentro, centroY + bordersScales)
+          ctx.stroke()
+          ctx.closePath()
+          ctx.restore()
+          ctx.save()
         }
       });
     });
@@ -1047,7 +1074,7 @@ function mostrarArco(state, dataRecta, xPos, centroY, i, valor, desde, hasta, co
         ctx.fillStyle = '#A84C4E';
         ctx.textAlign = "center"; 
         ctx.font = '15px Helvetica';
-        ctx.fillText(`+${scale.value}`, xPos + arcoRadio, centroY-arcoRadio-10);
+        ctx.fillText(scale.value, xPos + arcoRadio, centroY-arcoRadio-10);
       }
     }
   }
