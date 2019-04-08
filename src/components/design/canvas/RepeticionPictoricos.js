@@ -230,12 +230,13 @@ export default class RepeticionPictoricos extends Component {
         </Item> }
         
         { this.props.section === 'answers' && <Item id="k++" title="Valores Respuesta" parent={this}>
-          <Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
-          <Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
-          <Select id="col" prefix="Ancho Mobil" parent={this} value={this.state.col} options={grid}/>
+					<Input id="errFrec" prefix="Error Frecte." type="text" parent={this} value={this.state.errFrec} />
+					<Input id="feed" prefix="Feedback" type="text" parent={this} value={this.state.feed} />
+					<Input id="textoOpcion" prefix="Texto Opcion" type="text" parent={this} value={this.state.textoOpcion} />
+					<Select id="col" prefix="Ancho Mobil" parent={this} value={this.state.col} options={grid}/>
 					<Select id="colsm" prefix="Ancho Tablet" parent={this} value={this.state.colsm} options={grid}/>
 					<Select id="colmd" prefix="Ancho Escritorio" parent={this} value={this.state.colmd} options={grid}/>
-        </Item> }
+				</Item> }
 
       </Editor>
     )

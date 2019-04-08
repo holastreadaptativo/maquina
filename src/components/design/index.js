@@ -48,13 +48,17 @@ export const FUNCIONES = [{
 		component:components.ValorPosicional, 
 		action:actions.valorPosicional 
 	},{
-		id: 'Repeticion Bidimensional',
+		id:'Repeticion Bidimensional',
 		component:components.RepeticionBidimensional,
 		action:actions.repeticionBidimensional
 	},{
-		id: 'Multiplicacion Pictoricos',
+		id:'Multiplicacion Pictoricos',
 		component:components.MultiplicacionPictoricos,
 		action:actions.multiplicacionPic
+	},{
+		id: 'Abaco',
+		component:components.Abaco,
+		action:actions.abaco
 	}]
 },{ 
 	name:'Álgebra', 
