@@ -24,7 +24,7 @@ export function abaco(config) {
           numComp: Number(regex(obj.numComp, vars, vt)),
           esAgrupado: obj.esAgrupado === 'si' ? true : false,
           grupos: Number(obj.grupos),
-          agrupar: obj.esAgrupado === 'si' ? true : false,
+          agrupar: obj.agrupar === 'si' ? true : false,
           numerosArriba: obj.numerosArriba === 'si' ? true : false,
           agruparCanje: obj.agruparCanje === 'si' ? true : false
         };
@@ -106,25 +106,117 @@ export function abaco(config) {
             if(datosfn[j].esAgrupado) {
               let espacioFichas = datosfn[j].altoImg - datosfn[j].altoImg*.125
               let altoDiviciones = espacioFichas / datosfn[j].grupos;
+              let contadorUnidades = 0, contadorDecenas = 0, yDecimaUnidad = 0, yDecimaCentena = 0;
               for(let grupo = 0, centroGrupo, yStartUnidades, yStartDecenas, yStartCentenas; grupo < datosfn[j].grupos; grupo++) {
-                centroGrupo = yInicio - altoDiviciones - altoDiviciones*grupo + altoDiviciones/2;
-                yStartUnidades = centroGrupo + (datosfn[j].unidad * altoImgFicha)/2;
-                yStartDecenas = centroGrupo + (datosfn[j].decena * altoImgFicha)/2;
-                yStartCentenas = centroGrupo + (datosfn[j].centena * altoImgFicha)/2;
+                //centroGrupo = yInicio - altoDiviciones - altoDiviciones*grupo + altoDiviciones/2;
+                centroGrupo = yImg + altoDiviciones*grupo + altoDiviciones/2;
+                yStartUnidades = centroGrupo - (datosfn[j].unidad * altoImgFicha)/2;
+                yStartDecenas = centroGrupo - (datosfn[j].decena * altoImgFicha)/2;
+                yStartCentenas = centroGrupo - (datosfn[j].centena * altoImgFicha)/2
+
                 for(let u = 0, yUnidad; u < datosfn[j].unidad; u++) {
-                  yUnidad = yStartUnidades - altoImgFicha - altoImgFicha*u;
+                  yUnidad = yStartUnidades + altoImgFicha*u;
                   ctx.drawImage(imagenFicha, xUnidad-anchoImgFicha/2, yUnidad, anchoImgFicha, altoImgFicha);
+                  contadorUnidades++;
+                  if(contadorUnidades === 10) {
+                    yDecimaUnidad = yUnidad+altoImgFicha;
+                  }
                 }
                 for(let d = 0, yDecena; d < datosfn[j].decena; d++) {
-                  yDecena = yStartDecenas - altoImgFicha - altoImgFicha*d;
+                  yDecena = yStartDecenas + altoImgFicha*d;
                   ctx.drawImage(imagenFicha, xDecena-anchoImgFicha/2, yDecena, anchoImgFicha, altoImgFicha);
+                  contadorDecenas++;
+                  if(contadorDecenas === 10) {
+                    yDecimaCentena = yDecena+altoImgFicha;
+                  }
                 }
                 for(let c = 0, yCentena; c < datosfn[j].centena; c++) {
-                  yCentena = yStartCentenas - altoImgFicha - altoImgFicha*c;
+                  yCentena = yStartCentenas + altoImgFicha*c;
                   ctx.drawImage(imagenFicha, xCentena-anchoImgFicha/2, yCentena, anchoImgFicha, altoImgFicha);
                 }
-                datosfn[j].agrupar && ctx.ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle);
+                
+                if(datosfn[j].agrupar) {
+                  let maxHeight = Math.max((datosfn[j].unidad * altoImgFicha),(datosfn[j].decena * altoImgFicha),(datosfn[j].centena * altoImgFicha))
+                  ctx.save();
+                  ctx.strokeStyle = "#ff0000";
+                  ctx.beginPath();
+                  ctx.rect(xImg+5, centroGrupo-maxHeight/2, anchoImg-10, maxHeight);
+                  ctx.stroke();
+                  ctx.restore();
+                }
               }
+              if(datosfn[j].agruparCanje) {
+                if(datosfn[j].unidad * datosfn[j].grupos >= 10) { 
+                  let yInicio = yImg + (altoDiviciones/2) - datosfn[j].unidad*(altoImgFicha/2);
+                  let yFin = yDecimaUnidad - yInicio;
+                  
+                  ctx.save();
+                  ctx.strokeStyle = "#ff0000";
+                  ctx.beginPath();
+                  ctx.rect(xUnidad-anchoImgFicha/2-5, yInicio, anchoImgFicha+10, yFin);
+                  ctx.stroke();
+
+                  //dibuja arco por sobre el abaco
+                  let rArc = (xUnidad-xDecena)/2;
+                  let xArc = xDecena + rArc;
+                  let yArc = yImg+rArc*0.8;
+                  ctx.beginPath();
+                  ctx.arc(xArc, yArc, rArc+10, 1.25*Math.PI, 1.75*Math.PI);
+                  ctx.stroke();
+                  //dibuja linea hacia arriba de la flecha
+                  let difX = Math.cos(0.25*Math.PI) * rArc+10*0.8;
+                  let difY = Math.sin(0.25*Math.PI) * rArc+10*0.8;
+                  let xPuntoInicial = xArc - difX;
+                  let yPuntoInicial = yArc - difY;
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial+10, yPuntoInicial);
+                  ctx.stroke();
+                  //dibuja linea hacia la derecha de la flecha
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial, yPuntoInicial-10);
+                  ctx.stroke();
+                  ctx.restore();
+
+                  ctx.drawImage(imagenFicha, xArc-anchoImgFicha/2, yImg-(rArc*0.8)-altoImgFicha, anchoImgFicha, altoImgFicha);
+                }
+                if(datosfn[j].unidad * datosfn[j].grupos >= 10) { 
+                  let yInicio = yImg + (altoDiviciones/2) - datosfn[j].decena*(altoImgFicha/2);
+                  let yFin = yDecimaCentena - yInicio;
+                  
+                  ctx.save();
+                  ctx.strokeStyle = "#ff0000";
+                  ctx.beginPath();
+                  ctx.rect(xDecena-anchoImgFicha/2-5, yInicio, anchoImgFicha+10, yFin);
+                  ctx.stroke();
+
+                  let rArc = (xDecena-xCentena)/2;
+                  let xArc = xCentena + rArc;
+                  let yArc = yImg+rArc*0.8;
+                  ctx.beginPath();
+                  ctx.arc(xArc, yArc, rArc+10, 1.25*Math.PI, 1.75*Math.PI);
+                  ctx.stroke();
+                  
+                  let difX = Math.cos(0.25*Math.PI) * rArc+10*0.8;
+                  let difY = Math.sin(0.25*Math.PI) * rArc+10*0.8;
+                  let xPuntoInicial = xArc - difX;
+                  let yPuntoInicial = yArc - difY;
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial+10, yPuntoInicial);
+                  ctx.stroke();
+
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial, yPuntoInicial-10);
+                  ctx.stroke();
+                  ctx.restore();
+
+                  ctx.drawImage(imagenFicha, xArc-anchoImgFicha/2, yImg-(rArc*0.8)-altoImgFicha, anchoImgFicha, altoImgFicha);
+                }                
+              }
+              
             } else {
               for(let u = 0, yUnidad; u < datosfn[j].unidad; u++) {
                 yUnidad = yInicio - altoImgFicha - altoImgFicha*u;
@@ -137,6 +229,75 @@ export function abaco(config) {
               for(let c = 0, yCentena; c < datosfn[j].centena; c++) {
                 yCentena = yInicio - altoImgFicha - altoImgFicha*c;
                 ctx.drawImage(imagenFicha, xCentena-anchoImgFicha/2, yCentena, anchoImgFicha, altoImgFicha);
+              }
+              if(datosfn[j].agruparCanje) {
+                let yUltimaUnidad = yInicio - datosfn[j].unidad*altoImgFicha;
+                let yUltimaDecena = yInicio - datosfn[j].decena*altoImgFicha;
+                if(datosfn[j].unidad >= 10) {
+                  //dibuja rectangulo de agrupacion de 10
+                  ctx.save();
+                  ctx.strokeStyle = "#ff0000";
+                  ctx.beginPath();
+                  ctx.rect(xUnidad-anchoImgFicha/2-5, yUltimaUnidad, anchoImgFicha+10, altoImgFicha*10);
+                  ctx.stroke();
+                  //dibuja arco por sobre el abaco
+                  let rArc = (xUnidad-xDecena)/2;
+                  let xArc = xDecena + rArc;
+                  let yArc = yImg+rArc*0.8;
+                  ctx.beginPath();
+                  ctx.arc(xArc, yArc, rArc+10, 1.25*Math.PI, 1.75*Math.PI);
+                  ctx.stroke();
+                  //dibuja linea hacia arriba de la flecha
+                  let difX = Math.cos(0.25*Math.PI) * rArc+10*0.8;
+                  let difY = Math.sin(0.25*Math.PI) * rArc+10*0.8;
+                  let xPuntoInicial = xArc - difX;
+                  let yPuntoInicial = yArc - difY;
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial+10, yPuntoInicial);
+                  ctx.stroke();
+                  //dibuja linea hacia la derecha de la flecha
+                  ctx.beginPath();
+                  ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                  ctx.lineTo(xPuntoInicial, yPuntoInicial-10);
+                  ctx.stroke();
+                  ctx.restore();
+
+                  ctx.drawImage(imagenFicha, xArc-anchoImgFicha/2, yImg-(rArc*0.8)-altoImgFicha, anchoImgFicha, altoImgFicha);
+                }
+                if(datosfn[j].decena >= 10) {
+                  if(datosfn[j].unidad >= 10) {
+                    ctx.save();
+                    ctx.strokeStyle = "#ff0000";
+                    ctx.beginPath();
+                    ctx.rect(xDecena-anchoImgFicha/2-5, yUltimaDecena, anchoImgFicha+10, altoImgFicha*10);
+                    ctx.stroke();
+  
+                    let rArc = (xDecena-xCentena)/2;
+                    let xArc = xCentena + rArc;
+                    let yArc = yImg+rArc*0.8;
+                    ctx.beginPath();
+                    ctx.arc(xArc, yArc, rArc+10, 1.25*Math.PI, 1.75*Math.PI);
+                    ctx.stroke();
+                    
+                    let difX = Math.cos(0.25*Math.PI) * rArc+10*0.8;
+                    let difY = Math.sin(0.25*Math.PI) * rArc+10*0.8;
+                    let xPuntoInicial = xArc - difX;
+                    let yPuntoInicial = yArc - difY;
+                    ctx.beginPath();
+                    ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                    ctx.lineTo(xPuntoInicial+10, yPuntoInicial);
+                    ctx.stroke();
+  
+                    ctx.beginPath();
+                    ctx.moveTo(xPuntoInicial, yPuntoInicial);
+                    ctx.lineTo(xPuntoInicial, yPuntoInicial-10);
+                    ctx.stroke();
+                    ctx.restore();
+  
+                    ctx.drawImage(imagenFicha, xArc-anchoImgFicha/2, yImg-(rArc*0.8)-altoImgFicha, anchoImgFicha, altoImgFicha);
+                  }
+                }
               }
             }
           }

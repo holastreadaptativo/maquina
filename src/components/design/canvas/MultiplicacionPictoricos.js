@@ -131,7 +131,7 @@ export default class MultiplicacionPictoricos extends React.Component {
             </div>
             <div class="input-group">
               <span class="input-group-addon prefix">Cantidad rep</span>
-              <input id="cantidad" type="number" class="form-control" value={dato.cantidad} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
+              <input id="cantidad" class="form-control" value={dato.cantidad} onChange={(event) => this.handleChangePropiedad(index, event.target.id, event.target.value)}/>
             </div>
             <div class="input-group">
               <span class="input-group-addon prefix">Forma repeticion</span>

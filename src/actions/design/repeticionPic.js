@@ -1,4 +1,4 @@
-import { regex, cargaImagen } from '../global/tools'
+import { regex, cargaImagen, regexFunctions } from '../global/tools'
 
 export function repeticionPic(config) {
    const { container, params, variables, versions, vt } = config;
@@ -51,6 +51,9 @@ export function repeticionPic(config) {
    }, {
       name: 'signo suma',
       src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/tablas_posicionales/num_sig_mas.svg'
+   }, {
+      name: 'signo distinto',
+      src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/simbolos/Numeracion_Distinto.svg'
    }];
    //'signo resta', 'signo igual', 'signo mayor', 'signo menor'
    let { _pictoricos, _separacion, heightCanvas, widthCanvas, _tituloCanvas, _canvasBorder, _canvasBorderRadius, _agruparRepeticiones,
@@ -69,18 +72,18 @@ export function repeticionPic(config) {
 
    var vars = vt ? variables : versions;
    try {
-      _repeticiones1 = regex(_repeticiones1, vars, vt);
-      _repeticiones2 = regex(_repeticiones2, vars, vt);
-      _repeticiones3 = regex(_repeticiones3, vars, vt);
-      _repeticiones4 = regex(_repeticiones4, vars, vt);
-      _repeticiones5 = regex(_repeticiones5, vars, vt);
-      _repeticiones6 = regex(_repeticiones6, vars, vt);
-      _repeticiones7 = regex(_repeticiones7, vars, vt);
-      _repeticiones8 = regex(_repeticiones8, vars, vt);
-      _repeticiones9 = regex(_repeticiones9, vars, vt);
-      _repeticiones10 = regex(_repeticiones10, vars, vt);
-      _repeticiones11 = regex(_repeticiones11, vars, vt);
-      _repeticiones12 = regex(_repeticiones12, vars, vt);
+      _repeticiones1 = regexFunctions(regex(_repeticiones1, vars, vt));
+      _repeticiones2 = regexFunctions(regex(_repeticiones2, vars, vt));
+      _repeticiones3 = regexFunctions(regex(_repeticiones3, vars, vt));
+      _repeticiones4 = regexFunctions(regex(_repeticiones4, vars, vt));
+      _repeticiones5 = regexFunctions(regex(_repeticiones5, vars, vt));
+      _repeticiones6 = regexFunctions(regex(_repeticiones6, vars, vt));
+      _repeticiones7 = regexFunctions(regex(_repeticiones7, vars, vt));
+      _repeticiones8 = regexFunctions(regex(_repeticiones8, vars, vt));
+      _repeticiones9 = regexFunctions(regex(_repeticiones9, vars, vt));
+      _repeticiones10 = regexFunctions(regex(_repeticiones10, vars, vt));
+      _repeticiones11 = regexFunctions(regex(_repeticiones11, vars, vt));
+      _repeticiones12 = regexFunctions(regex(_repeticiones12, vars, vt));
    } catch (error) {
       console.log(error);
    }
@@ -140,8 +143,8 @@ export function repeticionPic(config) {
                   console.log(repeticion);
                   break;
             }
-            posicicionesInicio.push(xStart);
          }
+         posicicionesInicio.push(xStart);
       }
       if (_agruparRepeticiones !== "") {
          dibujaAgrupacionDePictoricos();
@@ -166,7 +169,7 @@ export function repeticionPic(config) {
          let puntos = agrupacion.split('-');
          let puntoInicio = Number(puntos[0]);
          let puntoFinal = Number(puntos[1]);
-         let color = puntos[2] ? puntos[2] : getColorDeEje(ejeF);
+         let color = puntos[2] ? puntos[2] : getColorDeEje('01');
          let xRect = posicicionesInicio[puntoInicio - 1] - (_separacion / 2);
          let widthRect = posicicionesInicio[puntoFinal] - (_separacion / 2) - xRect;
          ctx.save();

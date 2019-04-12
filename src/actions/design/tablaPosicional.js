@@ -275,13 +275,17 @@ export function tablaPosicional(config) {
           switch (ruta) {
             case 4:
               if (tipoRepeticion === 'bloques') {
-                dibujaRepeticionDado(numero, anchoSeparacion, altoCuadro, image, cx, cy, altoImgRep);
+                dibujaBloqueEnPosicionTres(numero, image, cx, cy, altoImgRep);
               } else if (tipoRepeticion === 'monedas y billetes') {
                 dibujaRepeticionDadoBilletes(numero, anchoSeparacion, altoCuadro, image, cx, cy);
               }
               break;
             case 3:
-              dibujaRepeticionDado(numero, anchoSeparacion, altoCuadro, image, cx, cy, altoImgRep);
+              if(tipoRepeticion === 'bloques') {
+                dibujaBloqueEnPosicionTres(numero, image, cx, cy, altoImgRep);
+              } else {
+                dibujaRepeticionDado(numero, anchoSeparacion, altoCuadro, image, cx, cy, altoImgRep);
+              }
               break;
             case 2:
               if (tipoRepeticion === 'bloques') {
@@ -396,9 +400,9 @@ export function tablaPosicional(config) {
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             break;
           case '3':
+            dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(1, image, altoImg, anchoImg, cx, cy, separacion);
             dibujaBloqueEnPosicionNueve(5, image, altoImg, anchoImg, cx, cy, separacion);
-            dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
             break;
           case '4':
             dibujaBloqueEnPosicionNueve(9, image, altoImg, anchoImg, cx, cy, separacion);
@@ -453,7 +457,8 @@ export function tablaPosicional(config) {
             break;
         }
 
-        function dibujaBloqueEnPosicionNueve(posicion, image, altoImg, anchoImg, cx, cy, separacion, altoCuadro) { //posicion 1-9
+        function dibujaBloqueEnPosicionNueve(posicion, image, altoImg, anchoImg, cx, cy, separacion) { //posicion 1-9
+          separacion = altoImg == 6 ? separacion*4 : separacion;
           var x, y;
           if (posicion == 1 || posicion == 4 || posicion == 7) {
             x = cx - (anchoImg * 1.5) - separacion;
@@ -470,6 +475,33 @@ export function tablaPosicional(config) {
             y = cy + (altoImg / 2) + separacion;
           }
           ctx.drawImage(image, x, y, anchoImg, altoImg);
+        }
+      }
+
+      function dibujaBloqueEnPosicionTres(numero, image, cx, cy, altoImgRep) {
+        console.log('se ejecuto');
+        var altoImg = altoImgRep;
+        var anchoImg = image.width * altoImg / image.height;
+        numero = Number(numero)
+        var x, y;
+        altoImg = Number(altoImg);
+        if(numero === 1) {
+          x = cx - anchoImg/2;
+          y = cy - altoImg/2;
+          ctx.drawImage(image, x, y, anchoImg, altoImg);
+        } else if(numero === 2) {
+          x = cx - (anchoImg+anchoImg/2)/2;
+          y = cy - (altoImg+altoImg/2)/2;
+          ctx.drawImage(image, x, y, anchoImg, altoImg);
+          x = x + anchoImg/2;
+          y = y + altoImg/2;
+          ctx.drawImage(image, x, y, anchoImg, altoImg);
+        } else if(numero === 3) {
+          x = cx - anchoImg/2;
+          y = cy - altoImg/2;
+          ctx.drawImage(image, x-anchoImg/2, y-altoImg/2, anchoImg, altoImg);
+          ctx.drawImage(image, x, y, anchoImg, altoImg);
+          ctx.drawImage(image, cx, cy, anchoImg, altoImg);
         }
       }
     }

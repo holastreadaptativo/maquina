@@ -52,6 +52,7 @@ export function regexFunctions(text) {
         try {
             return eval(funcion);
         } catch(error) {
+            console.log(error);
             return coincidencia;
         }
     });
