@@ -54,6 +54,9 @@ export function repeticionPic(config) {
    }, {
       name: 'signo distinto',
       src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/simbolos/Numeracion_Distinto.svg'
+   }, {
+      name: 'rectangulo',
+      src: 'https://desarrolloadaptatin.blob.core.windows.net/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/figuras_geometricas/rectangulo_2.svg'
    }];
    //'signo resta', 'signo igual', 'signo mayor', 'signo menor'
    let { _pictoricos, _separacion, heightCanvas, widthCanvas, _tituloCanvas, _canvasBorder, _canvasBorderRadius, _agruparRepeticiones,
