@@ -59,6 +59,10 @@ export const FUNCIONES = [{
 		id: 'Abaco',
 		component:components.Abaco,
 		action:actions.abaco
+	},{
+		id: 'Multiplicacion Elementos',
+		component:components.MultiplicacionPictoricos,
+		action:actions.multiplicacionElem
 	}]
 },{ 
 	name:'Álgebra', 

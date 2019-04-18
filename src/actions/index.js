@@ -22,6 +22,7 @@ export * from './design/valorPosicional';
 export * from './design/repeticionBidimensional';
 export * from './design/multiplicacionPic';
 export * from './design/abaco';
+export * from './design/multiplicacionElem';
 
 import * as functions from 'actions'
 

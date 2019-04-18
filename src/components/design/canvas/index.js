@@ -12,5 +12,6 @@ export IgualPerimetro from './IgualPerimetro'
 export TablaPosicional from './TablaPosicional'
 export ValorPosicional from './ValorPosicional'
 export RepeticionBidimensional from './RepeticionBidimensional'
-export MultiplicacionPictoricos from './MultiplicacionPictoricos';
+export MultiplicacionPictoricos from './MultiplicacionPictoricos'
 export Abaco from './Abaco'
+export MultiplicacionElementos from './MultiplicacionElementos'
