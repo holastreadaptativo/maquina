@@ -22,12 +22,12 @@ export default class Section extends Component {
         			<div class={show(this.props.condition, 'row')}>
 								<article>						
 									<button class="btn btn-success" onClick={(e) => this.handlerSubmit(e, 'des')}>
-										{!this.props.download ? 'Continuar' : 'Descargar Desarrollo'}
+										{!this.props.download ? 'Continuar' : 'Descargar CSS Propio'}
 									</button>
 								</article>
 								<article>						
 									<button class="btn btn-success" onClick={(e) => this.handlerSubmit(e, 'prod')}>
-										{!this.props.download ? 'Continuar' : 'Descargar Produccion'}
+										{!this.props.download ? 'Continuar' : 'Descargar CSS Global'}
 									</button>
 								</article>
 								<article>						

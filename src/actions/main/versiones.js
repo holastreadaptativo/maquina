@@ -254,31 +254,31 @@ export function ver(action, state) {
 			let bootstrapCss, appCss,appJs,interfazJs,jsEjerciciosJs,bootstrapJs,jquery,srcImgPatoGlosa,mathjaxLib;
 			console.log(opcionDescarga);
 			if(opcionDescarga === 'des') {
-				bootstrapCss = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/bootstrap.min.css';
-				appCss = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/css/${OAIE}/app.css`;
-				appJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/app.js`;
-				interfazJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/interfaz.js`;
-				jsEjerciciosJs = `https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/${OAIE}/jsEjercicios.js`;
-				bootstrapJs = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/bootstrap.min.js';
-				jquery = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/js/jquery-3.3.1.slim.min.js';
-				srcImgPatoGlosa = 'https://desarrolloadaptatin.blob.core.windows.net:443/sistemaejercicios/ejercicios/Nivel-4/imagenes_front/patos/togaSuki.svg';
+				bootstrapCss = '../../../../css/bootstrap.min.css';
+				appCss = 'app.css';
+				appJs = `app.js`;
+				interfazJs = `interfaz.js`;
+				jsEjerciciosJs = `../../../../js/jsEjercicios.js`;
+				bootstrapJs = '../../../../js/bootstrap.min.js';
+				jquery = '../../../../js/jquery-3.3.1.slim.min.js';
+				srcImgPatoGlosa = '../../../../imagenes_front/patos/togaSuki.svg';
 				mathjaxLib = '<!-- MATHJAX NO IMPORTADO -->';
 			} else if(opcionDescarga === 'prod') {
 				bootstrapCss = '../../../../css/bootstrap.min.css';
-				appCss = `../../../../css/${OAIE}/app.css`;
-				appJs = `../../../../js/${OAIE}/app.js`;
-				interfazJs = `../../../../js/${OAIE}/interfaz.js`;
-				jsEjerciciosJs = `../../../../js/${OAIE}/jsEjercicios.js`;
+				appCss = '../../../../css/app.css';
+				appJs = `app.js`;
+				interfazJs = `interfaz.js`;
+				jsEjerciciosJs = `../../../../js/jsEjercicios.js`;
 				bootstrapJs = '../../../../js/bootstrap.min.js';
 				jquery = '../../../../js/jquery-3.3.1.slim.min.js';
 				srcImgPatoGlosa = '../../../../imagenes_front/patos/togaSuki.svg';
 				mathjaxLib = '<!-- MATHJAX NO IMPORTADO -->';
 			} else if(opcionDescarga === 'mathjax') {
 				bootstrapCss = '../../../../css/bootstrap.min.css';
-				appCss = `../../../../css/${OAIE}/app.css`;
-				appJs = `../../../../js/${OAIE}/app.js`;
-				interfazJs = `../../../../js/${OAIE}/interfaz.js`;
-				jsEjerciciosJs = `../../../../js/${OAIE}/jsEjercicios.js`;
+				appCss = '../../../../css/app.css';
+				appJs = `app.js`;
+				interfazJs = `interfaz.js`;
+				jsEjerciciosJs = `../../../../js/jsEjercicios.js`;
 				bootstrapJs = '../../../../js/bootstrap.min.js';
 				jquery = '../../../../js/jquery-3.3.1.slim.min.js';
 				srcImgPatoGlosa = '../../../../imagenes_front/patos/togaSuki.svg';
